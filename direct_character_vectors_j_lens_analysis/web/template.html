@@ -1,0 +1,474 @@
+<meta charset="utf-8">
+<title>The Bard Direction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* ---- tokens: light is the base, both themes defined at token level ---- */
+  :root {
+    --ground:    #f3f3f7;
+    --surface:   #ffffff;
+    --surface-2: #eceaf2;
+    --ink:       #191726;
+    --ink-2:     #56516d;
+    --ink-3:     #8b86a1;
+    --rule:      #ddd9e6;
+    --rule-soft: #e9e6f0;
+    --accent:    #8f6216;
+    --accent-ink:#6d4a10;
+    --cool:      #35616f;
+    --on-accent: #ffffff;
+    --accent-rgb: 143, 98, 22;
+    --cool-rgb:   53, 97, 111;
+    --shadow: 0 1px 2px rgba(25, 23, 38, .06), 0 8px 24px rgba(25, 23, 38, .05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:    #121121;
+      --surface:   #1a1929;
+      --surface-2: #232236;
+      --ink:       #eeecf6;
+      --ink-2:     #a8a3c1;
+      --ink-3:     #716c8d;
+      --rule:      #2e2c45;
+      --rule-soft: #252338;
+      --accent:    #e0aa55;
+      --accent-ink:#f0c684;
+      --cool:      #71b4ca;
+    --on-accent: #17150f;
+      --on-accent: #17150f;
+      --accent-rgb: 224, 170, 85;
+      --cool-rgb:   113, 180, 202;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:    #121121;
+    --surface:   #1a1929;
+    --surface-2: #232236;
+    --ink:       #eeecf6;
+    --ink-2:     #a8a3c1;
+    --ink-3:     #716c8d;
+    --rule:      #2e2c45;
+    --rule-soft: #252338;
+    --accent:    #e0aa55;
+    --accent-ink:#f0c684;
+    --cool:      #71b4ca;
+    --accent-rgb: 224, 170, 85;
+    --cool-rgb:   113, 180, 202;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .3);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ---- masthead ---- */
+  header { padding: 56px 0 32px; }
+  .eyebrow {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--accent-ink);
+    display: flex; gap: 10px; align-items: center; margin-bottom: 18px;
+  }
+  .eyebrow::after {
+    content: ""; flex: 1; height: 1px; background: var(--rule);
+  }
+  h1 {
+    font-family: Fraunces, Georgia, serif;
+    font-optical-sizing: auto;
+    font-weight: 600; font-size: clamp(38px, 6vw, 62px);
+    line-height: 1.02; letter-spacing: -.02em;
+    margin: 0 0 20px; text-wrap: balance;
+  }
+  .standfirst {
+    font-size: 17.5px; line-height: 1.62; color: var(--ink-2);
+    max-width: 64ch; margin: 0 0 26px;
+  }
+  .standfirst em { color: var(--ink); font-style: italic; }
+
+  .provenance { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .prov {
+    font-size: 12.5px; color: var(--ink-2);
+    border: 1px solid var(--rule); border-radius: 3px;
+    padding: 4px 10px; background: var(--surface);
+    text-decoration: none; display: inline-flex; gap: 7px;
+  }
+  a.prov:hover { border-color: var(--accent); color: var(--ink); }
+  .prov b { font-weight: 600; color: var(--ink-3); font-size: 11px;
+            letter-spacing: .06em; text-transform: uppercase; align-self: center; }
+
+  .caveat {
+    border-left: 2px solid var(--accent);
+    padding: 2px 0 2px 14px; margin: 0;
+    font-size: 13.5px; color: var(--ink-2); max-width: 72ch;
+  }
+  .caveat strong { color: var(--ink); font-weight: 600; }
+
+  /* ---- controls ---- */
+  .controls {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--ground) 92%, transparent);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 0; margin-bottom: 4px;
+    display: flex; flex-wrap: wrap; gap: 22px; align-items: center;
+  }
+  .field { display: flex; align-items: center; gap: 9px; }
+  .field > label {
+    font-size: 11px; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .pills { display: flex; flex-wrap: wrap; gap: 4px; }
+  .pill, .seg button {
+    font: inherit; font-size: 13px;
+    border: 1px solid var(--rule); background: var(--surface);
+    color: var(--ink-2); padding: 5px 11px; border-radius: 3px;
+    cursor: pointer; transition: background .12s, color .12s, border-color .12s;
+  }
+  .pill:hover, .seg button:hover { color: var(--ink); border-color: var(--ink-3); }
+  .pill[aria-pressed="true"] {
+    background: var(--accent); border-color: var(--accent);
+    color: var(--on-accent); font-weight: 500;
+  }
+
+  .seg { display: flex; }
+  .seg button { border-radius: 0; margin-left: -1px; }
+  .seg button:first-child { border-radius: 3px 0 0 3px; margin-left: 0; }
+  .seg button:last-child  { border-radius: 0 3px 3px 0; }
+  .seg button[aria-pressed="true"] {
+    background: var(--surface-2); color: var(--ink);
+    border-color: var(--ink-3); font-weight: 500;
+  }
+  select {
+    font: inherit; font-size: 13px; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 3px; padding: 5px 8px;
+  }
+  input[type="range"] { accent-color: var(--accent); width: 96px; }
+  input[type="checkbox"] { accent-color: var(--accent); }
+  .count { font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+           color: var(--ink-2); font-variant-numeric: tabular-nums; min-width: 2ch; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---- description + entropy chart ---- */
+  .readingline {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+    gap: 36px; align-items: end; padding: 22px 0 14px;
+  }
+  .desc { font-size: 14px; color: var(--ink-2); max-width: 62ch; margin: 0; }
+  .desc .name {
+    font-family: Fraunces, Georgia, serif; font-size: 17px;
+    color: var(--ink); font-weight: 600; display: block; margin-bottom: 3px;
+  }
+  .chart-label {
+    font-size: 11px; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--ink-3);
+    display: flex; justify-content: space-between; margin-bottom: 4px;
+  }
+  .chart { width: 100%; height: 62px; display: block; overflow: visible; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 18px; align-items: center;
+    font-size: 12.5px; color: var(--ink-3);
+    border-top: 1px solid var(--rule-soft); padding-top: 12px; margin-bottom: 6px;
+  }
+  .ramp { display: inline-flex; gap: 2px; vertical-align: middle; margin-right: 6px; }
+  .ramp i { width: 13px; height: 11px; border-radius: 1px;
+            background: rgba(var(--accent-rgb), var(--a)); }
+
+  /* ---- the descent ---- */
+  .lanes-head {
+    display: grid; gap: 0 18px; align-items: end;
+    padding-bottom: 7px; border-bottom: 1px solid var(--rule);
+    position: sticky; top: 60px; z-index: 10;
+    background: color-mix(in srgb, var(--ground) 92%, transparent);
+  }
+  .lane-name {
+    font-size: 11px; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; padding-bottom: 2px;
+  }
+  .lane-name.a { color: var(--accent-ink); border-bottom: 2px solid var(--accent); }
+  .lane-name.b { color: var(--cool); border-bottom: 2px solid var(--cool); }
+
+  .row {
+    display: grid; gap: 0 18px; align-items: start;
+    border-bottom: 1px solid var(--rule-soft);
+    padding: 7px 0;
+  }
+  .row:hover { background: var(--surface-2); }
+  .rail { display: flex; align-items: center; gap: 9px; padding-top: 2px; }
+  .depth {
+    font-family: "IBM Plex Mono", monospace; font-size: 12px;
+    font-variant-numeric: tabular-nums; color: var(--ink-3); width: 3.2ch;
+  }
+  .row.milestone .depth { color: var(--ink); font-weight: 500; }
+  .meter { width: 46px; height: 4px; background: var(--rule); border-radius: 2px; overflow: hidden; }
+  .meter i { display: block; height: 100%; background: var(--accent); border-radius: 2px; }
+
+  .lane { display: flex; flex-wrap: wrap; gap: 3px; min-width: 0; }
+  .tok {
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px; line-height: 1.5;
+    white-space: pre; padding: 1px 5px; border-radius: 2px;
+    color: var(--ink); background: rgba(var(--accent-rgb), var(--a));
+    border: 1px solid rgba(var(--accent-rgb), calc(var(--a) * .55));
+    cursor: default;
+  }
+  .lane.b .tok {
+    background: rgba(var(--cool-rgb), var(--a));
+    border-color: rgba(var(--cool-rgb), calc(var(--a) * .55));
+  }
+  .void { font-size: 12.5px; color: var(--ink-3); font-style: italic; }
+
+  footer {
+    margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--rule);
+    font-size: 13px; color: var(--ink-2); display: grid; gap: 12px;
+  }
+  footer code {
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+    background: var(--surface-2); padding: 2px 6px; border-radius: 2px; color: var(--ink);
+  }
+  footer a { color: var(--accent-ink); text-decoration-thickness: 1px;
+             text-underline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (max-width: 860px) {
+    .readingline { grid-template-columns: 1fr; gap: 20px; }
+    .controls { position: static; }
+    .lanes-head { position: static; }
+    header { padding-top: 36px; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Qwen3-32B &#183; Jacobian lens</div>
+    <h1>The Bard Direction</h1>
+    <p class="standfirst">
+      Every layer of Qwen3-32B carries a direction that means <em>bard</em>. The Jacobian
+      lens transports each one into the model's output basis and decodes it with the
+      model's own unembedding &#8212; so you can read what the character is disposed to
+      <em>say</em> at each depth. Digits and noise near the input; an epic register
+      through the middle; a storyteller's voice by the end.
+    </p>
+    <div class="provenance" id="provenance"></div>
+    <p class="caveat">
+      <strong>Read the middle layers loosely.</strong> The published lens is a fit
+      checkpoint averaged over <span id="nprompts">80</span> prompts of generic web text &#8212;
+      short of the convergence threshold its own config set. Broad trends across the stack
+      are solid; fine distinctions between adjacent layers are not.
+    </p>
+  </header>
+
+  <div class="controls">
+    <div class="field">
+      <label id="lbl-dir">Direction</label>
+      <div class="pills" id="directions" role="group" aria-labelledby="lbl-dir"></div>
+    </div>
+    <div class="field">
+      <label for="compare">Compare</label>
+      <select id="compare"></select>
+    </div>
+    <div class="field">
+      <label id="lbl-mode">Lens</label>
+      <div class="seg" id="mode" role="group" aria-labelledby="lbl-mode">
+        <button type="button" data-mode="jlens" aria-pressed="true">Jacobian</button>
+        <button type="button" data-mode="logit_lens" aria-pressed="false">Logit only</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="topn">Tokens</label>
+      <input type="range" id="topn" min="4" max="25" value="10">
+      <span class="count" id="topn-out">10</span>
+    </div>
+    <div class="field">
+      <label for="wordlike">Words only</label>
+      <input type="checkbox" id="wordlike" checked>
+    </div>
+  </div>
+
+  <div class="readingline">
+    <p class="desc" id="desc"></p>
+    <div>
+      <div class="chart-label"><span>Entropy &#8212; confidence of the readout</span>
+        <span id="chart-range"></span></div>
+      <svg class="chart" id="chart" viewBox="0 0 420 62" preserveAspectRatio="none"
+           role="img" aria-label="Readout entropy by layer"></svg>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><span class="ramp"><i style="--a:.14"></i><i style="--a:.34"></i><i style="--a:.6"></i><i style="--a:.95"></i></span>
+      tint = probability, relative to the strongest token in that layer</span>
+    <span>&#9644; bar = confidence (longer is lower entropy)</span>
+    <span>layers descend from input (00) to output (<span id="lastlayer">63</span>)</span>
+  </div>
+
+  <div class="lanes-head" id="lanes-head"></div>
+  <div id="descent"></div>
+
+  <footer>
+    <div><code>lens_l(h) = unembed( J_l &#183; h )</code> &nbsp;&#183;&nbsp;
+      <code>J_l = E[ &#8706;h_final / &#8706;h_l ]</code> &nbsp;&#183;&nbsp;
+      unembed = final RMSNorm then <code>lm_head</code>.
+      Because the readout ends in a norm, it is invariant to the scale of the direction.</div>
+    <div>
+      Role vectors: <a href="https://huggingface.co/datasets/lu-christina/assistant-axis-vectors">lu-christina/assistant-axis-vectors</a> &#183;
+      Lens: <a href="https://huggingface.co/neuronpedia/jacobian-lens">neuronpedia/jacobian-lens</a> &#183;
+      Method: <a href="https://github.com/anthropics/jacobian-lens">anthropics/jacobian-lens</a>,
+      <a href="https://arxiv.org/abs/2607.15495">Verbalizable Representations Form a Global Workspace</a> &#183;
+      Axis: <a href="https://arxiv.org/abs/2601.10387">The Assistant Axis</a>
+    </div>
+  </footer>
+</div>
+
+<script type="application/json" id="readout-data">__DATA__</script>
+<script>
+(function () {
+  "use strict";
+  const DATA = JSON.parse(document.getElementById("readout-data").textContent);
+  const INDEX = new Map();
+  for (const r of DATA.readouts) INDEX.set(r.mode + "|" + r.direction + "|" + r.layer, r);
+
+  const keys = Object.keys(DATA.directions);
+  const primary = keys.find(k => DATA.directions[k].primary) || keys[0];
+  const state = { dir: primary, cmp: "none", mode: "jlens", topN: 10, wordlike: true };
+
+  const $ = id => document.getElementById(id);
+  const layers = Array.from({ length: DATA.meta.n_layers }, (_, i) => i);
+  const get = (dir, layer) => INDEX.get(state.mode + "|" + dir + "|" + layer);
+
+  /* Render a token so whitespace and control characters stay visible. */
+  function show(text) {
+    if (text === "") return "\u2205";
+    if (!text.trim()) return "\u2420".repeat(Math.min(text.length, 4));
+    return text.replace(/\r/g, "").replace(/\n/g, "\u23ce").replace(/\t/g, "\u21e5");
+  }
+  const esc = s => s.replace(/[&<>"]/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  /* ---- masthead chips ---- */
+  $("provenance").innerHTML = [
+    ["Model", DATA.meta.model],
+    ["Role", DATA.meta.role],
+    ["Lens", DATA.meta.lens_prompts_fitted + " prompts \u00b7 wikitext"],
+    ["Layers", DATA.meta.n_layers + " (Jacobian for " + DATA.meta.jlens_layers.length + ")"],
+  ].map(([k, v]) => `<span class="prov"><b>${k}</b>${esc(String(v))}</span>`).join("");
+  $("nprompts").textContent = DATA.meta.lens_prompts_fitted;
+  $("lastlayer").textContent = DATA.meta.n_layers - 1;
+
+  /* ---- controls ---- */
+  $("directions").innerHTML = keys.map(k =>
+    `<button type="button" class="pill" data-dir="${k}" aria-pressed="${k === state.dir}">${esc(DATA.directions[k].label)}</button>`).join("");
+  $("compare").innerHTML = `<option value="none">\u2014 none \u2014</option>` + keys.map(k =>
+    `<option value="${k}">${esc(DATA.directions[k].label)}</option>`).join("");
+
+  $("directions").addEventListener("click", e => {
+    const b = e.target.closest("[data-dir]"); if (!b) return;
+    state.dir = b.dataset.dir;
+    for (const p of $("directions").children) p.setAttribute("aria-pressed", p === b);
+    render();
+  });
+  $("mode").addEventListener("click", e => {
+    const b = e.target.closest("[data-mode]"); if (!b) return;
+    state.mode = b.dataset.mode;
+    for (const p of $("mode").children) p.setAttribute("aria-pressed", p === b);
+    render();
+  });
+  $("compare").addEventListener("change", e => { state.cmp = e.target.value; render(); });
+  $("topn").addEventListener("input", e => {
+    state.topN = +e.target.value; $("topn-out").textContent = state.topN; render();
+  });
+  $("wordlike").addEventListener("change", e => { state.wordlike = e.target.checked; render(); });
+
+  /* ---- entropy sparkline ---- */
+  function sparkline(series) {
+    const W = 420, H = 62, pad = 3;
+    const all = series.flatMap(s => s.points.map(p => p[1]));
+    if (!all.length) return "";
+    const lo = Math.min(...all), hi = Math.max(...all), span = hi - lo || 1;
+    const x = l => pad + (l / (DATA.meta.n_layers - 1)) * (W - 2 * pad);
+    const y = v => pad + (1 - (v - lo) / span) * (H - 2 * pad);
+    $("chart-range").textContent = hi.toFixed(1) + " \u2192 " + lo.toFixed(1) + " nats";
+
+    return series.map(s => {
+      const d = s.points.map((p, i) => (i ? "L" : "M") + x(p[0]).toFixed(1) + " " + y(p[1]).toFixed(1)).join(" ");
+      const last = s.points[s.points.length - 1];
+      const area = `${d} L${x(last[0]).toFixed(1)} ${H - pad} L${x(s.points[0][0]).toFixed(1)} ${H - pad} Z`;
+      return `<path d="${area}" fill="${s.color}" opacity=".10"></path>
+              <path d="${d}" fill="none" stroke="${s.color}" stroke-width="1.6"
+                    stroke-linejoin="round" vector-effect="non-scaling-stroke"></path>
+              <circle cx="${x(last[0]).toFixed(1)}" cy="${y(last[1]).toFixed(1)}" r="2.6" fill="${s.color}"></circle>`;
+    }).join("");
+  }
+
+  function entropySeries(dir, color) {
+    const points = [];
+    for (const l of layers) { const r = get(dir, l); if (r) points.push([l, r.entropy]); }
+    return { points, color };
+  }
+
+  /* ---- the descent ---- */
+  function lane(rec, cls) {
+    if (!rec) return `<div class="lane ${cls}"><span class="void">no fitted Jacobian at this layer</span></div>`;
+    const toks = (state.wordlike ? rec.top_wordlike : rec.top).slice(0, state.topN);
+    const max = Math.max(...toks.map(t => t.prob)) || 1;
+    return `<div class="lane ${cls}">` + toks.map(t => {
+      const a = (0.10 + 0.88 * Math.pow(t.prob / max, 0.55)).toFixed(3);
+      const tip = `p=${t.prob.toPrecision(3)} \u00b7 logit ${t.logit.toFixed(2)} \u00b7 id ${t.id}`;
+      return `<span class="tok" style="--a:${a}" title="${esc(tip)}">${esc(show(t.text))}</span>`;
+    }).join("") + `</div>`;
+  }
+
+  function render() {
+    const cmp = state.cmp !== "none" && state.cmp !== state.dir ? state.cmp : null;
+    const cols = cmp ? "108px minmax(0,1fr) minmax(0,1fr)" : "108px minmax(0,1fr)";
+
+    $("desc").innerHTML =
+      `<span class="name">${esc(DATA.directions[state.dir].label)}</span>` +
+      esc(DATA.directions[state.dir].description) +
+      (cmp ? ` <b style="color:var(--cool)">Compared with ${esc(DATA.directions[cmp].label)}:</b> `
+           + esc(DATA.directions[cmp].description) : "");
+
+    const series = [entropySeries(state.dir, "var(--accent)")];
+    if (cmp) series.push(entropySeries(cmp, "var(--cool)"));
+    $("chart").innerHTML = sparkline(series);
+
+    const head = $("lanes-head");
+    head.style.gridTemplateColumns = cols;
+    head.innerHTML = `<div class="lane-name" style="color:var(--ink-3)">Layer</div>
+      <div class="lane-name a">${esc(DATA.directions[state.dir].label)}</div>` +
+      (cmp ? `<div class="lane-name b">${esc(DATA.directions[cmp].label)}</div>` : "");
+
+    // Entropy range across the visible stack drives the confidence meters.
+    const vals = layers.map(l => get(state.dir, l)).filter(Boolean).map(r => r.entropy);
+    const lo = Math.min(...vals), hi = Math.max(...vals), span = hi - lo || 1;
+
+    $("descent").innerHTML = layers.map(l => {
+      const rec = get(state.dir, l);
+      const fill = rec ? (1 - (rec.entropy - lo) / span) * 100 : 0;
+      const tip = rec ? `entropy ${rec.entropy.toFixed(2)} nats` : "";
+      return `<div class="row${l % 8 === 0 ? " milestone" : ""}" style="grid-template-columns:${cols}">
+          <div class="rail">
+            <span class="depth">${String(l).padStart(2, "0")}</span>
+            <span class="meter" title="${tip}"><i style="width:${fill.toFixed(1)}%"></i></span>
+          </div>
+          ${lane(rec, "a")}${cmp ? lane(get(cmp, l), "b") : ""}
+        </div>`;
+    }).join("");
+  }
+
+  render();
+})();
+</script>

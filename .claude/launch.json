@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "readout-viewer",
+      "runtimeExecutable": "direct_character_vectors_j_lens_analysis/.venv/Scripts/python.exe",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8777",
+        "--directory",
+        "direct_character_vectors_j_lens_analysis/out"
+      ],
+      "port": 8777
+    }
+  ]
+}

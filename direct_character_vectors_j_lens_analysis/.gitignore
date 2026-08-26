@@ -1,0 +1,9 @@
+# Fetched inputs (~8.2 GB) and the local environment: both reproducible.
+.venv/
+data/
+
+# Rebuilt from web/template.html + out/readout.json by src/build_web.py.
+out/index.html
+
+__pycache__/
+*.pyc
