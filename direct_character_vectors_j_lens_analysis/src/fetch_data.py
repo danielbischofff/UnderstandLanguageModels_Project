@@ -51,13 +51,15 @@ def _get(url: str, start: int | None = None, end: int | None = None):
     )
 
 
-def _download(url: str, dest: Path, start: int = 0, end: int | None = None) -> Path:
+def _download(url: str, dest: Path, start: int = 0, end: int | None = None,
+              *, quiet: bool = False) -> Path:
     """Stream ``url`` (optionally one byte range) to ``dest``, resuming if partial."""
     dest.parent.mkdir(parents=True, exist_ok=True)
     total = None if end is None else end - start + 1
     have = dest.stat().st_size if dest.exists() else 0
     if total is not None and have == total:
-        print(f"  have {dest.name}")
+        if not quiet:
+            print(f"  have {dest.name}")
         return dest
     if total is None and have:  # size unknown; re-fetch rather than guess
         have = 0
@@ -68,10 +70,11 @@ def _download(url: str, dest: Path, start: int = 0, end: int | None = None) -> P
         while chunk := resp.read(_CHUNK):
             fh.write(chunk)
             done += len(chunk)
-            if done % (1 << 28) < _CHUNK:
+            if not quiet and done % (1 << 28) < _CHUNK:
                 pct = f" ({100 * done / total:.0f}%)" if total else ""
                 print(f"  {dest.name}: {done / 1e9:.2f} GB{pct}", flush=True)
-    print(f"  wrote {dest.name} ({dest.stat().st_size / 1e6:.1f} MB)")
+    if not quiet:
+        print(f"  wrote {dest.name} ({dest.stat().st_size / 1e6:.1f} MB)")
     return dest
 
 
@@ -83,18 +86,39 @@ def safetensors_header(url: str) -> tuple[dict, int]:
         return json.loads(resp.read()), 8 + header_len
 
 
-def fetch_role(role: str) -> Path:
+def fetch_role(role: str, *, quiet: bool = False) -> Path:
     """Download one role vector on demand, returning its local path.
 
-    The dataset ships 275 roles; only the one being analysed is worth fetching,
-    so ``run_analysis --role <name>`` routes through here.
+    The dataset ships 275 roles; ``run_analysis --role <name>`` routes through
+    here so only the one being analysed is fetched.
     """
     dest = DATA / "vectors" / f"{role}.pt"
     if not dest.exists():
-        print(f"fetching role vector {role!r}:")
+        if not quiet:
+            print(f"fetching role vector {role!r}:")
         _download(_url(AXIS_REPO, f"{AXIS_PREFIX}/role_vectors/{role}.pt",
-                       dataset=True), dest)
+                       dataset=True), dest, quiet=quiet)
     return dest
+
+
+def list_roles() -> list[str]:
+    """Every role name published for this model, from the Hub tree listing."""
+    url = (f"https://huggingface.co/api/datasets/{AXIS_REPO}/tree/main/"
+           f"{AXIS_PREFIX}/role_vectors?limit=1000")
+    with _get(url) as resp:
+        tree = json.load(resp)
+    return sorted(Path(e["path"]).stem for e in tree if e["path"].endswith(".pt"))
+
+
+def fetch_all_roles() -> list[str]:
+    """Download every role vector (~180 MB); used by the whole-cast sweep."""
+    roles = list_roles()
+    print(f"role vectors: {len(roles)} roles")
+    for i, role in enumerate(roles, 1):
+        fetch_role(role, quiet=True)
+        if i % 50 == 0 or i == len(roles):
+            print(f"  {i}/{len(roles)}", flush=True)
+    return roles
 
 
 def fetch_vectors() -> None:

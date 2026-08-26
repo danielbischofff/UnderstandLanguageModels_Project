@@ -2,8 +2,9 @@
 .venv/
 data/
 
-# Rebuilt from web/template.html + out/readout.json by src/build_web.py.
+# Rebuilt from web/*.html + out/*.json by src/build_web.py.
 out/index.html
+out/atlas.html
 
 __pycache__/
 *.pyc

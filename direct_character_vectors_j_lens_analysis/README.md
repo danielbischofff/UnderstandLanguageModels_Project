@@ -79,6 +79,25 @@ The controls behave as they should:
 The assistant axis reading out as *list formatting and discourse connectives* is a
 useful independent check: that is the Assistant's most characteristic surface habit.
 
+**The Assistant is the null control.** There is an `assistant` role vector among the
+275, and reading it out exactly like any other character produces no character at all —
+web-scrape noise early, then generic institutional filler (`Numerous`, `subsequent`,
+`associated`, `Establish`) through the deep layers, where `bard` is producing `tale` and
+`whispered`. The geometry says why: `assistant` sits at cosine **0.9993** from
+`default`, so `assistant − default` is a ~5% residual and the lens is mostly reading
+sampling noise.
+
+| role | cos(role, default), L32 / L58 | ‖role − default‖ / ‖default‖, L32 / L58 |
+| --- | --- | --- |
+| `assistant` | 0.9993 / 0.9991 | 0.05 / 0.05 |
+| `bard` | 0.9386 / 0.9132 | 0.35 / 0.45 |
+| `pirate` | 0.9186 / 0.8398 | 0.40 / 0.58 |
+
+The default persona simply *is* the Assistant — which is the Assistant Axis paper's
+premise — and the useful consequence here is a null that runs through the identical
+pipeline, confirming the bard signal is not an artifact of the subtraction. Run it with
+`--role assistant`; the output is kept as `out/readout_assistant.json`.
+
 **The contrast is the only direction that never degenerates.** At eight layers some
 direction collapses onto a formatting attractor — a newline, a zero-width space, a
 backtick — with entropy below 0.5. This happens to the norm-matched random direction at
@@ -95,6 +114,40 @@ Jacobian version surfaces coherent bardic vocabulary from layer 4 onward.
 Taken together this is a positive result for Hypothesis 1 at the level of the vectors
 themselves: a persona direction has a specific, legible, non-generic verbalizable
 signature, distinct from the Assistant's and absent from matched noise.
+
+## The whole cast
+
+`run_sweep.py` runs the same readout over all 275 characters in two contrasts, one
+vocabulary pass each (~22 min total); `noise_floor.py` then calibrates it.
+
+**Pick the metric carefully — the two obvious ones are both confounded, in opposite
+directions.** *Entropy* looks like confidence, but a readout that collapses onto a
+single junk attractor (a newline, a backtick) is also very low entropy: the `assistant`
+null bottoms out at 1.06 nats, **sharper** than `bard`'s 1.53. *Distinctiveness* — how
+rare a signature's tokens are across the cast — looks like specificity, but a direction
+landing on its own private patch of tokenizer garbage scores maximally distinctive.
+Neither separates signal from noise.
+
+**Stability does.** Take the mean Jaccard overlap between the top-8 sets of
+*consecutive* layers across the deep band. A real character signal persists over a
+stretch of layers; a degenerate collapse is layer-local, and noise is uncorrelated from
+one layer to the next.
+
+| direction | layer-to-layer stability |
+| --- | --- |
+| 24 norm-matched random directions | **0.00** — not one token survives a layer |
+| the cast, median | **0.75** |
+| `assistant` | 0.64 — rank 255 of 275 |
+| most stable | `cartographer` 0.96, `reporter` 0.96, `architect` 0.94 |
+| least stable | `provincial` 0.58, `criminal` 0.58, `luddite` 0.59 |
+
+**All 275 characters clear the random ceiling**, in both contrasts. `assistant` sits
+near the bottom of its own cast, which is what a null should do — though note it is not
+*at* the floor: its readout is stable, just stably generic rather than character-like.
+
+**Name leakage.** The character's own name token appears somewhere in its deep readout
+for **40%** of characters, and inside the 6-token signature for **19%**. Real, but not
+the whole story: four signatures in five are not simply re-reading the name.
 
 ## What the inputs actually are
 
@@ -128,10 +181,13 @@ src/inspect_lens.py   read a .pt archive's metadata without loading tensors —
                       works over HTTP, which is how the two points above were found
 src/unembed.py        Qwen3 final RMSNorm + lm_head, streamed from disk
 src/readout.py        memory-mapped per-layer Jacobian transport
-src/run_analysis.py   the driver: directions × modes × layers -> out/readout.json
-src/build_web.py      inline the readout into the viewer -> out/index.html
-web/template.html     the viewer, with a __DATA__ placeholder
-out/readout.json      the result (committed; the page is rebuilt from it)
+src/run_analysis.py   one character in depth: directions × modes × layers
+                      -> out/readout.json
+src/run_sweep.py      all 275 characters, two contrasts -> out/atlas.json
+src/build_web.py      inline a readout into its viewer -> out/*.html
+web/template.html     the single-character viewer
+web/atlas_template.html   the whole-cast viewer
+out/readout*.json     results (committed; the pages are rebuilt from them)
 ```
 
 ### Why it streams
@@ -171,6 +227,17 @@ Add `--role <name>` to read out any of the 275 roles in the dataset; the vector 
 fetched on demand. `pirate`, for instance, runs colloquial (`kinda`, `gonna`, `booze`)
 through the middle layers into nautical vocabulary (`ship`, `sails`, `船`, `航行`) by
 layer 52, and lands on `ye`, `yer`, `sail`, `captain`, `plunder` at the output.
+
+For the whole cast at once — 275 characters, both contrasts, one pass over the
+vocabulary per contrast:
+
+```bash
+./.venv/Scripts/python src/run_sweep.py && ./.venv/Scripts/python src/build_web.py --page atlas
+```
+
+That writes `out/atlas.json` and `out/atlas.html`. It fetches the remaining role
+vectors (~180 MB) on first run and takes roughly half an hour, almost all of it in the
+two unembedding passes.
 
 ## Caveats
 
