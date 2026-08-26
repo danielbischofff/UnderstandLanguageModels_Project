@@ -149,6 +149,40 @@ near the bottom of its own cast, which is what a null should do — though note 
 for **40%** of characters, and inside the 6-token signature for **19%**. Real, but not
 the whole story: four signatures in five are not simply re-reading the name.
 
+## A different direction: refusal
+
+Nothing here is specific to personas — the readout applies to anything living in the
+residual stream. `refusal_readout.py` runs it on a difference-of-means **refusal**
+direction for Qwen3-32B, in the style of
+[Arditi et al.](https://arxiv.org/abs/2406.11717):
+
+| layers | tokens |
+| --- | --- |
+| L08–32 | the rare-token attractor, plus `阴谋` *conspiracy*, `作弊` *cheating*, `骗局` *scam* |
+| L40–46 | `illegal`, `非法`, `违法`, `色情`, `走私` *smuggling*, `伪造` *forgery*, `毒品` *drugs* |
+| L52 | `legality`, `禁止` *forbidden*, `不允许` *not allowed*, `拒绝` *refuse*, `我不想` *I don't want* |
+| L56–62 | `sorry`, `抱歉`, `对不起`, `apologize`, `regret`, `죄` — entropy down to **0.1** |
+
+The subject matter of harm, then its legal status, then the apology itself. Negating
+the direction gives digits and noise (entropy 8.6 at the output), which settles the
+undocumented sign convention; a norm-matched random direction is noise at every depth.
+Layer 46 — where the harmful-content cluster peaks — is the layer the source selected
+for ablation, arrived at independently.
+
+**The published file needed forensics**, documented in the module: its README states
+dimension 6656 (Qwen3-32B's residual stream is 5120) and describes a single vector,
+but the 21 MB file is a `[5120]` *view* into a `[512, 5120]` float64 storage that
+`torch.save` carried along — the entire 8-position × 64-layer candidate grid. The axis
+order was recovered from the norm profile: read one way it rises with depth (Spearman
+0.99), transposed it is unordered (0.08). Provenance is third-party and unverified;
+the readout is the evidence, since a mislabelled direction would not verbalize refusal.
+
+**It also bears on the attractor.** The rare-token cluster shows up at L08–L32 here
+too — on a direction computed by someone else, from a different dataset, with no
+personas and no cast mean involved. So it is neither persona-specific nor caused by
+the subtraction in this project: it looks like a property of difference-of-means
+directions read at early and middle layers.
+
 ## What the inputs actually are
 
 Two things about the published artifacts are worth recording, because neither is
@@ -184,10 +218,14 @@ src/readout.py        memory-mapped per-layer Jacobian transport
 src/run_analysis.py   one character in depth: directions × modes × layers
                       -> out/readout.json
 src/run_sweep.py      all 275 characters, two contrasts -> out/atlas.json
+src/refusal_readout.py    the same readout on a refusal direction
+src/noise_floor.py    calibrates the atlas against random directions
+src/raw_vs_contrast.py    open question: what causes the rare-token attractor
 src/build_web.py      inline a readout into its viewer -> out/*.html
-web/template.html     the single-character viewer
+web/template.html         the single-character viewer
 web/atlas_template.html   the whole-cast viewer
-out/readout*.json     results (committed; the pages are rebuilt from them)
+web/refusal_template.html the refusal viewer
+out/*.json            results (committed; the pages are rebuilt from them)
 ```
 
 ### Why it streams

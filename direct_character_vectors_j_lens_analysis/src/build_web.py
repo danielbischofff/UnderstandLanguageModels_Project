@@ -24,6 +24,7 @@ BACKSLASH = chr(92)
 PAGES = {
     "role": ("template.html", "readout.json", "index.html"),
     "atlas": ("atlas_template.html", "atlas.json", "atlas.html"),
+    "refusal": ("refusal_template.html", "refusal.json", "refusal.html"),
 }
 
 
