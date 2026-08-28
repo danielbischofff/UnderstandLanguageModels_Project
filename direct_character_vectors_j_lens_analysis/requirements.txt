@@ -1,0 +1,6 @@
+# CPU-only is sufficient; install torch from the CPU index:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch>=2.1          # torch.load(mmap=True) streams the 6.6 GB lens per layer
+numpy>=1.24
+tokenizers>=0.15    # decodes Qwen3 token ids; no full transformers needed
+huggingface_hub>=0.23

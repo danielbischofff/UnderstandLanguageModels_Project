@@ -1,0 +1,467 @@
+<meta charset="utf-8">
+<title>Character Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* Same token system as the single-character page: these are a pair. */
+  :root {
+    --ground:    #f3f3f7;
+    --surface:   #ffffff;
+    --surface-2: #eceaf2;
+    --ink:       #191726;
+    --ink-2:     #56516d;
+    --ink-3:     #8b86a1;
+    --rule:      #ddd9e6;
+    --rule-soft: #e9e6f0;
+    --accent:    #8f6216;
+    --accent-ink:#6d4a10;
+    --cool:      #35616f;
+    --on-accent: #ffffff;
+    --accent-rgb: 143, 98, 22;
+    --cool-rgb:   53, 97, 111;
+    --scrim: rgba(25, 23, 38, .42);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:    #121121;
+      --surface:   #1a1929;
+      --surface-2: #232236;
+      --ink:       #eeecf6;
+      --ink-2:     #a8a3c1;
+      --ink-3:     #716c8d;
+      --rule:      #2e2c45;
+      --rule-soft: #252338;
+      --accent:    #e0aa55;
+      --accent-ink:#f0c684;
+      --cool:      #71b4ca;
+      --on-accent: #17150f;
+      --accent-rgb: 224, 170, 85;
+      --cool-rgb:   113, 180, 202;
+      --scrim: rgba(6, 5, 14, .66);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:    #121121;
+    --surface:   #1a1929;
+    --surface-2: #232236;
+    --ink:       #eeecf6;
+    --ink-2:     #a8a3c1;
+    --ink-3:     #716c8d;
+    --rule:      #2e2c45;
+    --rule-soft: #252338;
+    --accent:    #e0aa55;
+    --accent-ink:#f0c684;
+    --cool:      #71b4ca;
+    --on-accent: #17150f;
+    --accent-rgb: 224, 170, 85;
+    --cool-rgb:   113, 180, 202;
+    --scrim: rgba(6, 5, 14, .66);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1400px; margin: 0 auto; padding: 0 24px 90px; }
+
+  header { padding: 56px 0 28px; }
+  .eyebrow {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--accent-ink);
+    display: flex; gap: 10px; align-items: center; margin-bottom: 18px;
+  }
+  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+  h1 {
+    font-family: Fraunces, Georgia, serif; font-optical-sizing: auto;
+    font-weight: 600; font-size: clamp(38px, 6vw, 60px); line-height: 1.02;
+    letter-spacing: -.02em; margin: 0 0 20px; text-wrap: balance;
+  }
+  .standfirst {
+    font-size: 17.5px; line-height: 1.62; color: var(--ink-2);
+    max-width: 66ch; margin: 0 0 24px;
+  }
+  .standfirst em { color: var(--ink); font-style: italic; }
+  .caveat {
+    border-left: 2px solid var(--accent); padding: 2px 0 2px 14px; margin: 0;
+    font-size: 13.5px; color: var(--ink-2); max-width: 74ch;
+  }
+  .caveat strong { color: var(--ink); font-weight: 600; }
+
+  .controls {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--ground) 93%, transparent);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    padding: 13px 0; margin: 26px 0 22px;
+    display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
+  }
+  .field { display: flex; align-items: center; gap: 9px; }
+  .field > label {
+    font-size: 11px; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .seg { display: flex; }
+  .seg button {
+    font: inherit; font-size: 13px; border: 1px solid var(--rule);
+    background: var(--surface); color: var(--ink-2); padding: 5px 12px;
+    border-radius: 0; margin-left: -1px; cursor: pointer;
+  }
+  .seg button:first-child { border-radius: 3px 0 0 3px; margin-left: 0; }
+  .seg button:last-child  { border-radius: 0 3px 3px 0; }
+  .seg button:hover { color: var(--ink); }
+  .seg button[aria-pressed="true"] {
+    background: var(--accent); border-color: var(--accent);
+    color: var(--on-accent); font-weight: 500;
+  }
+  input[type="search"], select {
+    font: inherit; font-size: 13.5px; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 3px; padding: 6px 10px;
+  }
+  input[type="search"] { width: 260px; }
+  input[type="search"]::placeholder { color: var(--ink-3); }
+  .tally {
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+    color: var(--ink-3); font-variant-numeric: tabular-nums; margin-left: auto;
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .contrast-note { font-size: 13.5px; color: var(--ink-2); margin: 0 0 20px; max-width: 74ch; }
+
+  /* ---- the cast ---- */
+  .grid {
+    display: grid; gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  }
+  .card {
+    font: inherit; text-align: left; cursor: pointer;
+    background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 4px; padding: 11px 12px 12px;
+    display: flex; flex-direction: column; gap: 8px;
+    transition: border-color .12s, transform .12s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .card-top { display: flex; align-items: baseline; gap: 8px; }
+  .card-name {
+    font-family: Fraunces, Georgia, serif; font-size: 16.5px;
+    font-weight: 600; color: var(--ink); letter-spacing: -.01em;
+  }
+  .badge {
+    font-size: 9.5px; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; padding: 2px 5px; border-radius: 2px;
+    background: var(--surface-2); color: var(--ink-3); border: 1px solid var(--rule);
+  }
+  .badge.control { color: var(--cool); border-color: var(--cool); }
+  .badge.anchor  { color: var(--accent-ink); border-color: var(--accent); }
+  .card-conf {
+    margin-left: auto; font-family: "IBM Plex Mono", monospace;
+    font-size: 11px; color: var(--ink-3); font-variant-numeric: tabular-nums;
+  }
+  .sig { display: flex; flex-wrap: wrap; gap: 3px; }
+
+  .tok {
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; line-height: 1.5;
+    white-space: pre; padding: 1px 5px; border-radius: 2px; color: var(--ink);
+    background: rgba(var(--accent-rgb), var(--a));
+    border: 1px solid rgba(var(--accent-rgb), calc(var(--a) * .55));
+  }
+
+  /* ---- detail drawer ---- */
+  .scrim {
+    position: fixed; inset: 0; background: var(--scrim); z-index: 40;
+    opacity: 0; pointer-events: none; transition: opacity .16s;
+  }
+  .scrim[data-open="true"] { opacity: 1; pointer-events: auto; }
+  .drawer {
+    position: fixed; top: 0; right: 0; bottom: 0; width: min(760px, 100vw);
+    background: var(--ground); border-left: 1px solid var(--rule); z-index: 50;
+    transform: translateX(100%); transition: transform .2s ease;
+    display: flex; flex-direction: column;
+  }
+  .drawer[data-open="true"] { transform: none; }
+  .drawer-head {
+    padding: 20px 26px 14px; border-bottom: 1px solid var(--rule);
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .drawer-head h2 {
+    font-family: Fraunces, Georgia, serif; font-size: 27px; font-weight: 600;
+    margin: 0 0 3px; letter-spacing: -.02em;
+  }
+  .drawer-head p { margin: 0; font-size: 13px; color: var(--ink-2); }
+  .close {
+    margin-left: auto; font: inherit; font-size: 20px; line-height: 1;
+    background: none; border: 1px solid var(--rule); border-radius: 3px;
+    color: var(--ink-2); cursor: pointer; padding: 5px 10px;
+  }
+  .close:hover { color: var(--ink); border-color: var(--ink-3); }
+  .descent { overflow-y: auto; padding: 4px 26px 30px; }
+  .row {
+    display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 0 16px;
+    align-items: start; border-bottom: 1px solid var(--rule-soft); padding: 6px 0;
+  }
+  .row:hover { background: var(--surface-2); }
+  .rail { display: flex; align-items: center; gap: 8px; padding-top: 2px; }
+  .depth {
+    font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+    font-variant-numeric: tabular-nums; color: var(--ink-3); width: 3.2ch;
+  }
+  .meter { width: 44px; height: 4px; background: var(--rule); border-radius: 2px; overflow: hidden; }
+  .meter i { display: block; height: 100%; background: var(--accent); border-radius: 2px; }
+  .lane { display: flex; flex-wrap: wrap; gap: 3px; min-width: 0; }
+
+  .empty { color: var(--ink-3); font-size: 14px; padding: 36px 0; }
+
+  footer {
+    margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--rule);
+    font-size: 13px; color: var(--ink-2); display: grid; gap: 10px;
+  }
+  footer code {
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+    background: var(--surface-2); padding: 2px 6px; border-radius: 2px; color: var(--ink);
+  }
+  footer a { color: var(--accent-ink); text-underline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (max-width: 720px) {
+    .controls { position: static; }
+    input[type="search"] { width: 100%; }
+    .tally { margin-left: 0; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Qwen3-32B · Jacobian lens · <span id="nroles">275</span> characters</div>
+    <h1>Character Atlas</h1>
+    <p class="standfirst">
+      Every character vector published for Qwen3-32B, transported through the Jacobian
+      lens at each layer and decoded into the tokens it is disposed to make the model
+      <em>say</em>. Each card is one character's signature — what it verbalizes in the
+      deep layers, where the readout is most confident. Open one to read the whole
+      descent, layer 0 to 62.
+    </p>
+    <p class="caveat">
+      <strong>Calibrated against noise.</strong> Twenty-four norm-matched random
+      directions, pushed through the same lens, score <b>0.00</b> stability — not one
+      token survives from one layer to the next. All 275 characters clear that floor, at
+      a median of <b>0.75</b>. The <code>assistant</code> vector sits at cosine 0.999
+      from the default persona, so <code>assistant &minus; default</code> is a ~5%
+      residual; it ranks 255th of 275, near the bottom of its own cast, which is what a
+      null should do. Two honest limits: the lens is an 80-prompt fit, so read broad
+      trends rather than adjacent layers, and about 19% of signatures contain the
+      character's own name token.
+    </p>
+  </header>
+
+  <div class="controls">
+    <div class="field">
+      <label id="lbl-c">Contrast</label>
+      <div class="seg" id="contrast" role="group" aria-labelledby="lbl-c"></div>
+    </div>
+    <div class="field">
+      <label for="q">Search</label>
+      <input type="search" id="q" placeholder="character or token, e.g. sword">
+    </div>
+    <div class="field">
+      <label for="sort">Sort</label>
+      <select id="sort">
+        <option value="alpha">A to Z</option>
+        <option value="stable">Most stable</option>
+        <option value="unstable">Least stable</option>
+      </select>
+    </div>
+    <span class="tally" id="tally"></span>
+  </div>
+
+  <p class="contrast-note" id="contrast-note"></p>
+  <div class="grid" id="grid"></div>
+  <p class="empty" id="empty" hidden>Nothing matches that.</p>
+
+  <footer>
+    <div><code>lens_l(h) = unembed( J_l · h )</code> ·
+      <code>J_l = E[ ∂h_final / ∂h_l ]</code>. Signature = rank-weighted vote over
+      layers <span id="band"></span>. <b>S</b> = layer-to-layer stability across that
+      band, the mean Jaccard overlap of consecutive top-8 sets; random directions score
+      0.00. Inside a character, the bar is per-layer entropy and tint is probability
+      within a layer.</div>
+    <div>
+      Vectors: <a href="https://huggingface.co/datasets/lu-christina/assistant-axis-vectors">lu-christina/assistant-axis-vectors</a> ·
+      Lens: <a href="https://huggingface.co/neuronpedia/jacobian-lens">neuronpedia/jacobian-lens</a> ·
+      Method: <a href="https://github.com/anthropics/jacobian-lens">anthropics/jacobian-lens</a>,
+      <a href="https://arxiv.org/abs/2607.15495">Verbalizable Representations Form a Global Workspace</a> ·
+      Axis: <a href="https://arxiv.org/abs/2601.10387">The Assistant Axis</a>
+    </div>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Character detail">
+  <div class="drawer-head">
+    <div>
+      <h2 id="d-name"></h2>
+      <p id="d-sub"></p>
+    </div>
+    <button class="close" id="d-close" aria-label="Close">&times;</button>
+  </div>
+  <div class="descent" id="d-body"></div>
+</aside>
+
+<script type="application/json" id="atlas-data">__DATA__</script>
+<script>
+(function () {
+  "use strict";
+  const D = JSON.parse(document.getElementById("atlas-data").textContent);
+  const K = D.meta.top_k, LAYERS = D.layers, VOCAB = D.vocab;
+  const CKEYS = Object.keys(D.contrasts);
+  const state = { contrast: CKEYS[0], q: "", sort: "alpha" };
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const show = t => t === "" ? "∅" : (!t.trim() ? "␠".repeat(Math.min(t.length, 4))
+    : t.replace(/\r/g, "").replace(/\n/g, "⏎").replace(/\t/g, "⇥"));
+  const text = id => VOCAB[id] !== undefined ? VOCAB[id] : "?";
+
+  $("nroles").textContent = D.meta.n_roles;
+  $("band").textContent = D.meta.signature_band.join("–");
+
+  /* Rows = the cast plus that contrast's anchor direction. */
+  function roster(contrast) {
+    const anchor = D.contrasts[contrast].anchor;
+    const names = D.roles.filter(r => D.data[contrast][r]);
+    return (D.data[contrast][anchor] ? [anchor] : []).concat(names);
+  }
+
+  /* Mean Jaccard overlap between the top-k sets of consecutive layers in the
+     deep band. Entropy looks like the obvious quality measure but a readout
+     that collapses onto one junk token is also very low entropy; stability is
+     what noise cannot fake. Norm-matched random directions score 0.00 — not a
+     single token survives one layer to the next — against a cast median of
+     0.75. */
+  function stability(entry) {
+    const [lo, hi] = D.meta.signature_band;
+    const bands = [];
+    LAYERS.forEach((layer, i) => {
+      if (layer >= lo && layer <= hi) bands.push(entry.i.slice(i * K, i * K + K));
+    });
+    let total = 0;
+    for (let j = 1; j < bands.length; j++) {
+      const a = new Set(bands[j - 1]), b = new Set(bands[j]);
+      let shared = 0;
+      b.forEach(t => { if (a.has(t)) shared++; });
+      total += shared / (a.size + b.size - shared);
+    }
+    return bands.length > 1 ? total / (bands.length - 1) : 0;
+  }
+
+  const cache = {};
+  function rows(contrast) {
+    if (cache[contrast]) return cache[contrast];
+    const anchor = D.contrasts[contrast].anchor;
+    const built = roster(contrast).map(name => {
+      const entry = D.data[contrast][name];
+      const sig = entry.sig.map(text);
+      return {
+        name, entry, sig, stab: stability(entry),
+        kind: name === anchor ? "anchor" : (name === "assistant" ? "control" : ""),
+        haystack: (name + " " + sig.join(" ")).toLowerCase(),
+      };
+    });
+    cache[contrast] = built;
+    return built;
+  }
+
+  function chip(id, prob, max) {
+    const a = (0.12 + 0.86 * Math.pow(prob / max, 0.55)).toFixed(3);
+    return `<span class="tok" style="--a:${a}" title="p=${prob}">${esc(show(text(id)))}</span>`;
+  }
+
+  function render() {
+    const spec = D.contrasts[state.contrast];
+    $("contrast-note").innerHTML =
+      `<b>role ${esc(spec.suffix)}</b> — ${esc(spec.description)} ` +
+      `The anchor <b>${esc(spec.anchor)}</b> is the other end of that comparison, not a character.`;
+
+    let list = rows(state.contrast);
+    if (state.q) list = list.filter(r => r.haystack.includes(state.q));
+    list = list.slice().sort(
+      state.sort === "alpha" ? (a, b) => a.name.localeCompare(b.name)
+      : state.sort === "stable" ? (a, b) => b.stab - a.stab
+      : (a, b) => a.stab - b.stab);
+
+    $("tally").textContent = list.length + " / " + rows(state.contrast).length;
+    $("empty").hidden = list.length > 0;
+
+    $("grid").innerHTML = list.map(r => {
+      // Signature chips are graded by their vote order, not a probability.
+      const chips = r.sig.map((t, i) => {
+        const a = (0.95 - i * 0.12).toFixed(3);
+        return `<span class="tok" style="--a:${a}">${esc(show(t))}</span>`;
+      }).join("");
+      const badge = r.kind ? `<span class="badge ${r.kind}">${r.kind}</span>` : "";
+      return `<button class="card" data-role="${esc(r.name)}">
+          <span class="card-top"><span class="card-name">${esc(r.name)}</span>${badge}
+            <span class="card-conf" title="layer-to-layer stability; random directions score 0.00">S ${r.stab.toFixed(2)}</span></span>
+          <span class="sig">${chips}</span>
+        </button>`;
+    }).join("");
+  }
+
+  /* ---- detail drawer ---- */
+  function open(name) {
+    const spec = D.contrasts[state.contrast];
+    const entry = D.data[state.contrast][name];
+    $("d-name").textContent = name;
+    $("d-sub").textContent = `${name} ${spec.suffix} — top ${K} word-like tokens per layer`;
+
+    const ents = LAYERS.map((_, i) => entry.h[i]);
+    const lo = Math.min(...ents), hi = Math.max(...ents), span = hi - lo || 1;
+
+    $("d-body").innerHTML = LAYERS.map((layer, i) => {
+      const ids = entry.i.slice(i * K, i * K + K);
+      const ps = entry.p.slice(i * K, i * K + K);
+      const max = Math.max.apply(null, ps) || 1;
+      const fill = (1 - (entry.h[i] - lo) / span) * 100;
+      return `<div class="row">
+          <div class="rail"><span class="depth">${String(layer).padStart(2, "0")}</span>
+            <span class="meter" title="entropy ${entry.h[i].toFixed(2)} nats"><i style="width:${fill.toFixed(1)}%"></i></span></div>
+          <div class="lane">${ids.map((id, j) => chip(id, ps[j], max)).join("")}</div>
+        </div>`;
+    }).join("");
+
+    $("drawer").dataset.open = "true";
+    $("drawer").setAttribute("aria-hidden", "false");
+    $("scrim").dataset.open = "true";
+    $("d-close").focus();
+  }
+  function close() {
+    $("drawer").dataset.open = "false";
+    $("drawer").setAttribute("aria-hidden", "true");
+    $("scrim").dataset.open = "false";
+  }
+
+  /* ---- wiring ---- */
+  $("contrast").innerHTML = CKEYS.map((k, i) =>
+    `<button type="button" data-c="${k}" aria-pressed="${i === 0}">${esc(D.contrasts[k].label)}</button>`).join("");
+  $("contrast").addEventListener("click", e => {
+    const b = e.target.closest("[data-c]"); if (!b) return;
+    state.contrast = b.dataset.c;
+    for (const p of $("contrast").children) p.setAttribute("aria-pressed", p === b);
+    close(); render();
+  });
+  $("q").addEventListener("input", e => { state.q = e.target.value.trim().toLowerCase(); render(); });
+  $("sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
+  $("grid").addEventListener("click", e => {
+    const c = e.target.closest("[data-role]"); if (c) open(c.dataset.role);
+  });
+  $("d-close").addEventListener("click", close);
+  $("scrim").addEventListener("click", close);
+  document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+
+  render();
+})();
+</script>
