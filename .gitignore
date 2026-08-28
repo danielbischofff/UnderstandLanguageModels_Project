@@ -1,1 +1,12 @@
+# macOS metadata
+.DS_Store
 
+# Local and generated artifacts
+data/*
+!data/.gitkeep
+models/*
+!models/.gitkeep
+logs/*
+!logs/.gitkeep
+Outputs/*
+!Outputs/.gitkeep
