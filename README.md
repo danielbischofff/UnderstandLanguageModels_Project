@@ -4,8 +4,20 @@ The project is associated with the lecture, entitled "Understanding Large Langua
 
 # Persona-vector steering experiments
 
-`steering` package provides inspectable PyTorch interventions for
+The `steering` package provides inspectable PyTorch interventions for
 Hugging Face causal language models. The implementation preserves the model's Transformers forward pass, chat template, generation loop, and KV cache.
+
+Focused documentation:
+
+- [`src/steering/README.md`](src/steering/README.md) covers the Python utilities.
+- [`src/steering/cli/README.md`](src/steering/cli/README.md) covers the CLI tools.
+
+Additional, lower-level documentation is available for:
+
+- [Experiment configuration conventions](configs/README.md)
+- [Container setup](container/README.md)
+- [Slurm jobs](slurm/README.md)
+- [Direct character-vector and J-Lens analysis](direct_character_vectors_j_lens_analysis/README.md)
 
 ## Setup
 
@@ -203,6 +215,10 @@ tests/         Unit tests and opt-in Hugging Face/GPU integration tests
 Run ordinary tests with `uv run pytest`. Set `RUN_HF_INTEGRATION=1` to run the
 tiny public-model integration test. Qwen3-32B checks remain opt-in GPU smoke
 tests.
+
+---
+
+### Other project notes
 
 
 Large datasets, model files, logs, and generated outputs should remain local or on the cluster and should not be committed to Git.
