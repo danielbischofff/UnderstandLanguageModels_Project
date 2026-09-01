@@ -90,6 +90,7 @@ def test_run_records_compact_matrix_without_activation_artifacts(tmp_path):
         (recorder.run_dir / "experiment-results.json").read_text(encoding="utf-8")
     )
     assert len(results["trials"]) == 4
+    assert (recorder.run_dir / "report.html").is_file()
     assert [trial["character"] for trial in results["trials"]] == [
         "unsteered",
         "demon",

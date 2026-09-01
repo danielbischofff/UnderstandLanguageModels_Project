@@ -23,6 +23,7 @@ from .inference import GenerationResponse, InferenceRunner
 from .j_lens import JLenseReader
 from .interventions import SteeringRequest
 from .recipes import RoleDirection
+from .report import write_experiment_report
 
 UNSTEERED = "unsteered"
 
@@ -431,17 +432,16 @@ class ExperimentRecorder:
             json.loads(path.read_text(encoding="utf-8"))
             for path in sorted((self.run_dir / "trials").glob("*/result.json"))
         ]
+        document = {
+            "schema_version": 1,
+            "experiment": self.config.to_mapping(),
+            "trials": results,
+        }
         _atomic_text(
             self.run_dir / "experiment-results.json",
-            json.dumps(
-                {
-                    "schema_version": 1,
-                    "experiment": self.config.to_mapping(),
-                    "trials": results,
-                },
-                ensure_ascii=False,
-            ) + "\n",
+            json.dumps(document, ensure_ascii=False) + "\n",
         )
+        write_experiment_report(self.run_dir / "report.html", document)
 
 
 def _steering_for_trial(trial: Mapping[str, Any]) -> SteeringRequest | None:
