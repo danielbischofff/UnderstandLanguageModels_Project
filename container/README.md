@@ -18,4 +18,6 @@ docker build --platform linux/amd64 \
 docker run --rm ullm-project:dev
 ```
 
-The first image is intentionally small: it contains Python and PyTorch only. We can add Transformers, Accelerate, and the project dependencies after the container runs successfully on the cluster.
+The image installs the locked uv environment, including Transformers, Accelerate,
+and the steering package. For a CUDA-specific PyTorch build or bitsandbytes,
+build from the cluster's CUDA base image and run `uv sync --extra quantization`.

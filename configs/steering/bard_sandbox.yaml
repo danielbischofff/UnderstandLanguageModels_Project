@@ -1,0 +1,31 @@
+study: sandbox
+experiment: bard-sandbox-smoke
+model:
+  id: Qwen/Qwen3-32B-FP8
+  dtype: bfloat16
+  device_map: auto
+  enable_thinking: false
+vectors:
+  revision: main
+conversation:
+  - role: user
+    content: Who are you?
+generation:
+  max_new_tokens: 128
+  do_sample: false
+seed: 0
+collect_diagnostics: true
+activation_capture:
+  layers: [32]
+  # Direct before-first-operation / after-last-operation comparison at layer 32.
+  points: [pre_intervention, post_intervention]
+  # "all" means all token positions in each forward call, not all model layers.
+  positions: all
+  dtype: bfloat16
+steering:
+  vector:
+    type: role_direction
+    name: bard
+  coefficient: 1
+  scaling: raw
+  positions: all

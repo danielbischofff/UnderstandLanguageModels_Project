@@ -8,6 +8,7 @@ models/*
 logs/*
 Outputs/*
 outputs/*
+runtime/
 
 *.pt
 *.pth

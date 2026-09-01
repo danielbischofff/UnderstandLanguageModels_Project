@@ -23,7 +23,9 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-DATA = Path(__file__).resolve().parent.parent / "data"
+DATA = Path(
+    os.environ.get("JLENS_DATA_ROOT", Path(__file__).resolve().parent.parent / "data")
+)
 
 AXIS_REPO = "lu-christina/assistant-axis-vectors"
 AXIS_PREFIX = "qwen-3-32b"

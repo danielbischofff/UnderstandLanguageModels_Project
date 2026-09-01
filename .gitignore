@@ -8,5 +8,12 @@ models/*
 !models/.gitkeep
 logs/*
 !logs/.gitkeep
-Outputs/*
-!Outputs/.gitkeep
+outputs/*
+!outputs/.gitkeep
+calibration/*
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+runtime/

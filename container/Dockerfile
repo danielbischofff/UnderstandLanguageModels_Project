@@ -6,13 +6,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /workspace
 
-COPY container/requirements-linux.txt /tmp/requirements-linux.txt
+RUN python -m pip install --no-cache-dir uv
 
-RUN python -m pip install --upgrade pip \
-    && python -m pip install --index-url https://pypi.org/simple \
-        -r /tmp/requirements-linux.txt \
-    && rm -f /tmp/requirements-linux.txt
+COPY pyproject.toml uv.lock README.md /workspace/
+COPY src /workspace/src
+RUN uv sync --frozen --no-dev
 
 COPY main.py /workspace/main.py
 
-CMD ["python", "main.py"]
+CMD ["uv", "run", "python", "main.py"]
