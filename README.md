@@ -21,21 +21,137 @@ Additional, lower-level documentation is available for:
 
 ## Setup
 
-Install the locked development environment:
+The only starting assumption is that this repository has been pulled somewhere
+on the node. Set its absolute path first, then keep all generated runtime state
+inside one ignored `runtime/` directory in the checkout:
 
 ```bash
-uv sync --extra dev
+export ULM_REPO_ROOT=/absolute/path/to/UnderstandLanguageModels_Project
+export ULM_RUNTIME_ROOT="$ULM_REPO_ROOT/runtime"
+
+cd "$ULM_REPO_ROOT"
+export UV_PROJECT_ENVIRONMENT="$ULM_RUNTIME_ROOT/venv"
+export HF_HOME="$ULM_RUNTIME_ROOT/models/huggingface"
+export STEERING_OUTPUT_ROOT="$ULM_RUNTIME_ROOT/outputs/steering"
+mkdir -p "$HF_HOME" "$STEERING_OUTPUT_ROOT" "$ULM_RUNTIME_ROOT/logs"
 ```
 
-For optional bitsandbytes 4/8-bit loading:
+This produces a contained hierarchy:
+
+```text
+runtime/
+  venv/                 Locked uv environment
+  models/huggingface/   Hugging Face model and vector cache
+  outputs/steering/     Experiment runs and activation records
+  logs/                 Slurm logs
+```
+
+The complete directory is ignored by Git. `ULM_RUNTIME_ROOT` remains
+overridable if a cluster later requires model files on another filesystem.
+
+Install uv if necessary and create the locked environment at
+`$UV_PROJECT_ENVIRONMENT`:
 
 ```bash
-uv sync --extra dev --extra quantization
+command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.local/bin:$PATH"
+uv sync --frozen --extra dev
 ```
+
+CLI and Slurm processes inherit these variables and therefore reuse the same
+external environment, model downloads, and results directory. Export them
+again when starting a fresh login shell.
 
 Qwen 3 support requires Transformers 4.51 or newer. Full Qwen/Qwen3-32B runs
 default to bfloat16 and `device_map="auto"`; quantization is an explicit local
-development option rather than the research default.
+development option rather than the research default. On a smaller CUDA node,
+install bitsandbytes and add `--quantization 4bit` to the one-off CLI command:
+
+```bash
+uv sync --frozen --extra dev --extra quantization
+```
+
+### First Bard steering sandbox
+
+Run the fast unit-test preflight, then fetch only the Bard and default vectors.
+Fetching vectors does not load Qwen or allocate a GPU:
+
+```bash
+uv run pytest -q
+uv run python -m steering.cli.fetch_vectors \
+  --model Qwen/Qwen3-32B \
+  --role-direction bard
+```
+
+The following smoke experiment steers `R_bard - D` at Qwen's default middle
+layer 32 while asking a self-reflective question. It uses raw scaling for the first run:
+
+```bash
+uv run python -m steering.cli.steer_generate \
+  --model Qwen/Qwen3-32B \
+  --role bard \
+  --coefficient 0.05 \
+  --scaling raw \
+  --positions all \
+  --prompt "Who are you?" \
+  --max-new-tokens 128 \
+  --seed 0 \
+  --study sandbox \
+  --experiment bard-cli-smoke \
+  --output-root "$STEERING_OUTPUT_ROOT"
+```
+
+The command prints its run directory. Inspect the response and the recorded
+pre/post-intervention projections:
+
+```bash
+RUN_DIR=$(find "$STEERING_OUTPUT_ROOT/sandbox/bard-cli-smoke/runs" \
+  -mindepth 1 -maxdepth 1 -type d | sort | tail -n 1)
+cat "$RUN_DIR"/trials/*/response.txt
+head "$RUN_DIR"/trials/*/projections.jsonl
+```
+
+Raw coefficient `0.05` is suitable for this wiring smoke test but is not
+comparable across vectors, layers, or models. Use a calibration record and
+`average-residual-norm` or `projection-std` for controlled experiments.
+
+### Final activation test: direct CLI
+
+The Bard command above is the direct CLI activation test. It passes when the
+run manifest reports `complete`, `response.txt` contains a generation, and
+`projections.jsonl` contains layer-32 records (normally both prefill and cached
+decoding records):
+
+```bash
+cat "$RUN_DIR"/manifest.json
+grep '"layer": 32' "$RUN_DIR"/trials/*/projections.jsonl | head
+```
+
+### Final activation test: Slurm
+
+The equivalent Slurm-ready experiment is
+[`configs/steering/bard_sandbox.yaml`](configs/steering/bard_sandbox.yaml).
+Review the resource directives in `slurm/steering.sbatch` for the cluster, then
+submit it from the same shell so the repository and runtime variables are
+inherited:
+
+```bash
+JOB_ID=$(sbatch --parsable \
+  --output="$ULM_RUNTIME_ROOT/logs/steering-%j.out" \
+  slurm/steering.sbatch configs/steering/bard_sandbox.yaml)
+squeue -j "$JOB_ID"
+tail -f "$ULM_RUNTIME_ROOT/logs/steering-$JOB_ID.out"
+```
+
+After the job exits, inspect its recorded activation projections:
+
+```bash
+SLURM_RUN=$(find "$STEERING_OUTPUT_ROOT/sandbox/bard-slurm-smoke/runs" \
+  -mindepth 1 -maxdepth 1 -type d | sort | tail -n 1)
+cat "$SLURM_RUN"/manifest.json
+cat "$SLURM_RUN"/trials/*/response.txt
+grep '"layer": 32' "$SLURM_RUN"/trials/*/projections.jsonl | head
+```
 
 ## Vector geometry
 
@@ -174,10 +290,10 @@ uv run python -m steering.cli.sweep \
   --config configs/steering/role_direction.yaml
 ```
 
-Experiments are stored beneath:
+With the setup above, experiments are stored beneath:
 
 ```text
-outputs/steering/<study>/<experiment>/
+$STEERING_OUTPUT_ROOT/<study>/<experiment>/
   README.md
   experiment.yaml
   summary.csv
@@ -203,11 +319,8 @@ are attempted again. A run directory permits one writer at a time.
 ```text
 container/     Reproducible container setup
 configs/       Human-authored experiment configurations
-calibration/   Local calibration records (not committed)
-outputs/       Generated experiment records (not committed)
-models/        Local model/vector caches (not committed)
+runtime/       Ignored environment, model cache, experiment records, and logs
 slurm/         Cluster entry points
-container/     Reproducible container setup
 src/steering/  Steering, calibration, fetching, inference, and experiment code
 tests/         Unit tests and opt-in Hugging Face/GPU integration tests
 ```

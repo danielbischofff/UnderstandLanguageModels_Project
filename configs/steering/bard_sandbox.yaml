@@ -1,0 +1,24 @@
+study: sandbox
+experiment: bard-slurm-smoke
+model:
+  id: Qwen/Qwen3-32B
+  dtype: bfloat16
+  device_map: auto
+  enable_thinking: false
+vectors:
+  revision: main
+conversation:
+  - role: user
+    content: Who are you?
+generation:
+  max_new_tokens: 128
+  do_sample: false
+seed: 0
+collect_diagnostics: true
+steering:
+  vector:
+    type: role_direction
+    name: bard
+  coefficient: 0.05
+  scaling: raw
+  positions: all

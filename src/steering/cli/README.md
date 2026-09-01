@@ -43,7 +43,8 @@ its layout.
 
 ## Generate one recorded response
 
-The one-off command automatically writes a run beneath `outputs/steering/`:
+The one-off command automatically records a run. Pass the external output root
+configured during setup so generated data stays outside the checkout:
 
 ```bash
 uv run python -m steering.cli.steer_generate \
@@ -54,7 +55,8 @@ uv run python -m steering.cli.steer_generate \
   --scaling average-residual-norm \
   --calibration calibration/qwen3-32b-lawyer.json \
   --positions all \
-  --prompt "Who are you?"
+  --prompt "Who are you?" \
+  --output-root "$STEERING_OUTPUT_ROOT"
 ```
 
 Add an explicit lower cap along the published Assistant Axis:
@@ -76,7 +78,8 @@ uv run python -m steering.cli.steer_generate \
 
 ```bash
 uv run python -m steering.cli.sweep \
-  --config configs/steering/role_direction.yaml
+  --config configs/steering/role_direction.yaml \
+  --output-root "$STEERING_OUTPUT_ROOT"
 ```
 
 The command prints the created run directory. Resume that same run after an
@@ -84,11 +87,10 @@ interruption:
 
 ```bash
 uv run python -m steering.cli.sweep \
-  --resume outputs/steering/<study>/<experiment>/runs/<run-directory>
+  --resume "$STEERING_OUTPUT_ROOT/<study>/<experiment>/runs/<run-directory>"
 ```
 
 Completed trial hashes are skipped, while failed or incomplete trials are
 retried in the same run. Example configurations in `configs/steering/` cover
 signed Assistant Axis steering, `R-D`, `R-C`, scaling comparisons, and
 multi-layer activation capping.
-
