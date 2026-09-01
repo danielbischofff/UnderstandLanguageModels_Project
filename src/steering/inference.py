@@ -157,15 +157,19 @@ class InferenceRunner:
             revision=tokenizer_revision or model_revision,
             trust_remote_code=trust_remote_code,
         )
-        model = AutoModelForCausalLM.from_pretrained(
-            model_id,
-            revision=model_revision,
-            device_map=device_map,
-            torch_dtype=dtype,
-            quantization_config=quantization_config,
-            trust_remote_code=trust_remote_code,
+        load_kwargs = {
+            "revision": model_revision,
+            "device_map": device_map,
+            "dtype": dtype,
+            "trust_remote_code": trust_remote_code,
             **model_kwargs,
-        )
+        }
+        # Do not pass an absent override: pre-quantized checkpoints may carry
+        # their quantization config in config.json, and explicit None replaces it.
+        # Transformers handles compatible merging and rejects conflicting configs.
+        if quantization_config is not None:
+            load_kwargs["quantization_config"] = quantization_config
+        model = AutoModelForCausalLM.from_pretrained(model_id, **load_kwargs)
         store = vector_store or VectorStore(model_id=model_id)
         return cls(
             model,

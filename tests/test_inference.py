@@ -3,6 +3,7 @@ from types import SimpleNamespace
 import pytest
 import torch
 
+import steering.inference as inference_module
 from steering.inference import InferenceRunner
 from steering.interventions import CappingRequest, SteeringPlan, SteeringRequest
 from steering.recipes import PublishedAssistantAxis, RoleDirection
@@ -138,3 +139,60 @@ def test_interval_quantile_cap():
         calibration=calibration,
     )
     assert runner().resolve(request)[0].threshold == (-2.0, 3.0)
+
+
+def test_loader_does_not_override_checkpoint_quantization_config(monkeypatch):
+    observed = {}
+    model = Model(4)
+    tokenizer = object()
+
+    monkeypatch.setattr(
+        inference_module.AutoTokenizer,
+        "from_pretrained",
+        lambda *args, **kwargs: tokenizer,
+    )
+
+    def load_model(*args, **kwargs):
+        observed.update(kwargs)
+        return model
+
+    monkeypatch.setattr(
+        inference_module.AutoModelForCausalLM, "from_pretrained", load_model
+    )
+    loaded = InferenceRunner.from_pretrained(
+        "publisher/prequantized-model-with-arbitrary-name",
+        dtype=torch.bfloat16,
+        vector_store=Store(),
+    )
+    assert loaded.model is model
+    assert observed["dtype"] is torch.bfloat16
+    assert "torch_dtype" not in observed
+    assert "quantization_config" not in observed
+
+
+def test_explicit_quantization_is_forwarded_for_unquantized_checkpoint(monkeypatch):
+    observed = {}
+    quantization_config = object()
+
+    monkeypatch.setattr(
+        inference_module.AutoTokenizer,
+        "from_pretrained",
+        lambda *args, **kwargs: object(),
+    )
+    monkeypatch.setattr(
+        inference_module,
+        "BitsAndBytesConfig",
+        lambda **kwargs: quantization_config,
+    )
+
+    def load_model(*args, **kwargs):
+        observed.update(kwargs)
+        return Model(4)
+
+    monkeypatch.setattr(
+        inference_module.AutoModelForCausalLM, "from_pretrained", load_model
+    )
+    InferenceRunner.from_pretrained(
+        "publisher/ordinary-model", quantization="4bit", vector_store=Store()
+    )
+    assert observed["quantization_config"] is quantization_config
