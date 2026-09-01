@@ -1,5 +1,6 @@
 from types import SimpleNamespace
 
+import numpy as np
 import pytest
 import torch
 
@@ -177,3 +178,38 @@ def test_complete_sequence_capture_includes_final_generated_token(monkeypatch):
     assert events[0].input_token_ids == [[10, 11, 12, 13]]
     assert events[0].point == "post_intervention"
     assert events[0].tensor.dtype is torch.bfloat16
+
+
+def test_j_lens_readout_uses_model_norm_and_head():
+    class Base(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.norm = torch.nn.RMSNorm(2)
+
+    class ReadoutModel(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.model = Base()
+            self.lm_head = torch.nn.Linear(2, 4, bias=False)
+            self.config = SimpleNamespace(num_hidden_layers=2, hidden_size=2)
+            with torch.no_grad():
+                self.lm_head.weight.copy_(
+                    torch.tensor([[1.0, 0.0], [0.0, 1.0], [2.0, 0.0], [-1.0, 0.0]])
+                )
+
+        def get_output_embeddings(self):
+            return self.lm_head
+
+    loaded = InferenceRunner(
+        ReadoutModel(), object(), vector_store=Store(), model_id="test"
+    )
+    ids, scores, probabilities = loaded.j_lens_top_k(
+        torch.eye(2),
+        1.0,
+        torch.tensor([[1.0, 0.0]]),
+        2,
+        np.array([True, True, False, True]),
+    )
+    assert ids.tolist() == [[0, 1]]
+    assert scores.shape == probabilities.shape == (1, 2)
+    assert np.all(probabilities > 0)

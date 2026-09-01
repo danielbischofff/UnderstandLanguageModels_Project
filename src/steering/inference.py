@@ -340,3 +340,39 @@ class InferenceRunner:
         with torch.inference_mode(), context:
             self.model(**full_inputs, use_cache=False)
         return context.activation_events
+
+    def j_lens_top_k(
+        self,
+        jacobian: torch.Tensor,
+        jacobian_scale: float,
+        activations: torch.Tensor,
+        top_k_count: int,
+        allowed: Any,
+    ) -> tuple[Any, Any, Any]:
+        """Transport and unembed a layer batch on the model device."""
+
+        base_model = getattr(self.model, "model", None)
+        final_norm = getattr(base_model, "norm", None)
+        lm_head = self.model.get_output_embeddings()
+        if final_norm is None or lm_head is None:
+            raise ValueError("J-Lens device readout requires model.norm and lm_head")
+        try:
+            norm_device = next(final_norm.parameters()).device
+            head_device = next(lm_head.parameters()).device
+        except StopIteration as error:
+            raise ValueError("J-Lens norm and lm_head must have parameters") from error
+        compute_dtype = torch.bfloat16 if norm_device.type == "cuda" else torch.float32
+        vectors = activations.to(device=norm_device, dtype=compute_dtype)
+        transport = jacobian.to(device=norm_device, dtype=compute_dtype)
+        transported = (vectors @ transport.T) * float(jacobian_scale)
+        normalized = final_norm(transported).to(head_device)
+        logits = lm_head(normalized).to(torch.float32)
+        allowed_mask = torch.as_tensor(allowed, device=head_device, dtype=torch.bool)
+        ranked = logits.masked_fill(~allowed_mask.unsqueeze(0), -torch.inf)
+        scores, ids = torch.topk(ranked, top_k_count, dim=1)
+        probabilities = torch.exp(scores - torch.logsumexp(logits, dim=1, keepdim=True))
+        return (
+            ids.detach().cpu().numpy(),
+            scores.detach().cpu().numpy(),
+            probabilities.detach().cpu().numpy(),
+        )

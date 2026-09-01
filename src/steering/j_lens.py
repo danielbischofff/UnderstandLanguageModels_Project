@@ -124,6 +124,7 @@ class JLenseReader:
         events: Sequence[ActivationCaptureEvent],
         *,
         prompt_length: int,
+        device_readout: Any | None = None,
     ) -> dict[str, Any]:
         """Convert a full-sequence capture to top words and discardable JSON."""
 
@@ -159,12 +160,23 @@ class JLenseReader:
             event = selected[layer]
             if event.input_token_ids != reference.input_token_ids:
                 raise ValueError(f"token alignment differs at layer {layer}")
-            matrix = event.tensor[0].float().numpy().astype(np.float32, copy=False)
-            transported = self._lens.transport(layer, matrix)
-            logits = self._unembedding.logits(transported)
-            ids, scores, probabilities = self._top_k(
-                logits, self.top_k_count, allowed=self._wordlike
-            )
+            if device_readout is None:
+                matrix = event.tensor[0].float().numpy().astype(np.float32, copy=False)
+                transported = self._lens.transport(layer, matrix)
+                logits = self._unembedding.logits(transported)
+                ids, scores, probabilities = self._top_k(
+                    logits, self.top_k_count, allowed=self._wordlike
+                )
+                del logits
+            else:
+                jacobian, scale = self._lens.matrix(layer)
+                ids, scores, probabilities = device_readout(
+                    jacobian,
+                    scale,
+                    event.tensor[0],
+                    self.top_k_count,
+                    self._wordlike,
+                )
             layers.append(
                 {
                     "layer": layer,
@@ -174,8 +186,6 @@ class JLenseReader:
                     ],
                 }
             )
-            del logits
-
         return {
             "schema_version": 1,
             "source": {

@@ -127,6 +127,9 @@ def test_in_memory_reader_returns_each_layer_and_token(tmp_path, monkeypatch):
         def transport(self, layer, matrix):
             return matrix + layer
 
+        def matrix(self, layer):
+            return torch.eye(2), 0.5
+
     class Unembedding:
         vocab_size = 4
 
@@ -183,3 +186,20 @@ def test_in_memory_reader_returns_each_layer_and_token(tmp_path, monkeypatch):
     assert [item["layer"] for item in result["layers"]] == [0, 1]
     assert len(result["layers"][0]["positions"]) == 2
     assert len(result["layers"][0]["positions"][0]) == 2
+
+    observed = []
+
+    def device_readout(jacobian, scale, activations, count, allowed):
+        observed.append((jacobian.clone(), scale, activations.clone(), count, allowed.copy()))
+        return (
+            np.array([[3, 2], [2, 1]]),
+            np.array([[4.0, 3.0], [3.0, 2.0]]),
+            np.array([[0.4, 0.3], [0.3, 0.2]]),
+        )
+
+    accelerated = reader.read(
+        events, prompt_length=1, device_readout=device_readout
+    )
+    assert len(observed) == 2
+    assert observed[0][1] == 0.5
+    assert accelerated["layers"][0]["positions"][0][0]["text"] == "three"

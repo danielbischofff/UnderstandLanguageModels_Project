@@ -71,13 +71,17 @@ class FakeRunner:
         self.captured.append((conversation, generated_token_ids, steering, layers))
         return ["temporary activation"]
 
+    def j_lens_top_k(self, *args):
+        raise AssertionError("the fake lens should not execute the readout")
+
 
 class FakeLens:
     source_layers = (0, 1)
 
-    def read(self, events, *, prompt_length):
+    def read(self, events, *, prompt_length, device_readout):
         assert events == ["temporary activation"]
         assert prompt_length == 2
+        assert callable(device_readout)
         return {"tokens": [], "layers": []}
 
 

@@ -92,3 +92,9 @@ class LensTransport:
         # an order of magnitude slower and this is the inner loop.
         jacobian = self._at(layer).float().numpy()
         return (jacobian @ vectors.T).T * self._scale
+
+    def matrix(self, layer: int) -> tuple[torch.Tensor, float]:
+        """Return one memory-mapped Jacobian and its averaging scale."""
+        if layer not in self.source_layers:
+            raise KeyError(layer)
+        return self._at(layer), self._scale

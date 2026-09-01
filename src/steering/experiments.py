@@ -490,7 +490,11 @@ def run_experiment(
                     layers=lens.source_layers,
                 )
                 prompt_length = len(response.metadata["tokens"]["prompt_ids"])
-                readout = lens.read(events, prompt_length=prompt_length)
+                readout = lens.read(
+                    events,
+                    prompt_length=prompt_length,
+                    device_readout=runner.j_lens_top_k,
+                )
                 response.metadata["timing"] = {
                     "started_at": started_at.isoformat(),
                     "finished_at": datetime.now(UTC).isoformat(),
