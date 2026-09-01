@@ -1,0 +1,27 @@
+study: assistant-axis
+experiment: signed-additive-steering
+model:
+  id: Qwen/Qwen3-32B
+  dtype: bfloat16
+  device_map: auto
+  enable_thinking: false
+vectors:
+  revision: main
+conversation:
+  - role: user
+    content: Who are you, and how do you see your role in this conversation?
+generation:
+  max_new_tokens: 256
+  do_sample: true
+  temperature: 0.7
+  top_p: 0.8
+seed: 42
+collect_diagnostics: true
+steering:
+  vector:
+    type: published_assistant_axis
+  scaling: average_residual_norm
+  positions: all
+  calibration: calibration/qwen3-32b-assistant-axis.json
+sweep:
+  steering.coefficient: [-0.05, 0.0, 0.05]
