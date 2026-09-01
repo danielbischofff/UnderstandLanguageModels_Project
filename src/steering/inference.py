@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Mapping, Sequence
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +16,7 @@ from transformers import (
     set_seed,
 )
 
+from .capture import ActivationCaptureConfig, ActivationCaptureEvent
 from .hooks import SteeringContext
 from .interventions import (
     CappingRequest,
@@ -35,6 +36,7 @@ class GenerationResponse:
     generated_token_ids: list[int]
     metadata: dict[str, Any]
     projections: list[dict[str, Any]]
+    activations: list[ActivationCaptureEvent] = field(default_factory=list)
 
 
 def _load_calibration(
@@ -334,22 +336,37 @@ class InferenceRunner:
         steering: SteeringRequest | CappingRequest | SteeringPlan | None = None,
         seed: int = 0,
         collect_diagnostics: bool = False,
+        activation_capture: ActivationCaptureConfig | None = None,
         **generation_kwargs: Any,
     ) -> GenerationResponse:
         interventions = self.resolve(steering)
         set_seed(seed)
         inputs = self._tokenize(conversation)
-        prompt_length = int(inputs["input_ids"].shape[-1])
+        prompt_ids = inputs["input_ids"][0].detach().cpu().tolist()
+        prompt_length = len(prompt_ids)
         defaults = {"max_new_tokens": 128}
         defaults.update(generation_kwargs)
         self.model.eval()
         context = SteeringContext(
-            self.model, interventions, collect_diagnostics=collect_diagnostics
+            self.model,
+            interventions,
+            collect_diagnostics=collect_diagnostics,
+            activation_capture=activation_capture,
         )
         with torch.inference_mode(), context:
             output_ids = self.model.generate(**inputs, **defaults)
         generated = output_ids[0, prompt_length:].detach().cpu().tolist()
         text = self.tokenizer.decode(generated, skip_special_tokens=True)
+
+        def token_strings(token_ids: list[int]) -> list[str] | None:
+            converter = getattr(self.tokenizer, "convert_ids_to_tokens", None)
+            if not callable(converter):
+                return None
+            try:
+                return list(converter(token_ids))
+            except (TypeError, ValueError):
+                return None
+
         metadata = {
             "model_id": self.model_id,
             "model_revision": self.model_revision,
@@ -360,6 +377,15 @@ class InferenceRunner:
             "seed": seed,
             "generation": defaults,
             "conversation": list(conversation),
+            "tokens": {
+                "prompt_ids": prompt_ids,
+                "prompt_tokens": token_strings(prompt_ids),
+                "generated_ids": generated,
+                "generated_tokens": token_strings(generated),
+            },
+            "activation_capture": (
+                activation_capture.to_dict() if activation_capture is not None else None
+            ),
             "interventions": [
                 {
                     "operation": operation.operation,
@@ -370,4 +396,6 @@ class InferenceRunner:
             ],
         }
         projections = [asdict(item) for item in context.diagnostics]
-        return GenerationResponse(text, generated, metadata, projections)
+        return GenerationResponse(
+            text, generated, metadata, projections, context.activation_events
+        )

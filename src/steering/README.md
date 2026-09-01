@@ -98,6 +98,56 @@ response = runner.generate(conversation, steering=plan)
 Use `bound="lower"`, `"upper"`, or `"interval"`. Thresholds can be absolute,
 per-layer mappings, or quantiles stored in compatible calibration metadata.
 
+## Downstream activation exports
+
+Full post-MLP residual streams can be captured independently of steering for
+later J-Lens/J-space, NLA, SAE, probing, or other analysis. This package does
+not implement those methods; it exports a framework-neutral ingestion
+contract:
+
+```python
+from steering import ActivationCaptureConfig
+
+response = runner.generate(
+    [{"role": "user", "content": "Who are you?"}],
+    steering=plan,
+    activation_capture=ActivationCaptureConfig(
+        layers=[32, 40],
+        points=["pre_intervention", "post_intervention"],
+        positions="all",
+        dtype="bfloat16",
+    ),
+)
+
+for event in response.activations:
+    print(event.layer, event.point, event.phase, event.tensor.shape)
+```
+
+Captures are off by default because residual streams can be large. Recorded
+experiments write `activations/activations.safetensors` and a versioned
+`activations/manifest.json`. Each event includes its zero-based layer,
+pre/post-intervention stage, prefill/decode phase, forward index, model input
+token IDs, cache positions when exposed by Transformers, tensor shape, and
+dtype. Tensor axes are `[batch, selected_sequence_position, hidden]`.
+
+`positions="all"` retains full prefill and decode inputs, `"last"` retains the
+last input position in each call, and `"generated_only"` retains cached decode
+calls only. The first generated token is sampled from the last prefill
+position; the manifest states this explicitly so consumers do not shift token
+attribution accidentally. Use the pre/post pair to compare the same hook point
+before and after all ordered additions and caps.
+
+Downstream code can lazily load individual events without depending on the
+experiment runner:
+
+```python
+from steering import ActivationArtifact
+
+artifact = ActivationArtifact.open("path/to/trial/activations")
+for event, tensor in artifact.events():
+    consume(layer=event["layer"], token_ids=event["input_token_ids"], h=tensor)
+```
+
 ## Vector storage and calibration
 
 Fetch and materialize vectors without loading a language model:

@@ -15,6 +15,13 @@ generation:
   do_sample: false
 seed: 0
 collect_diagnostics: true
+activation_capture:
+  layers: [32]
+  # Direct before-first-operation / after-last-operation comparison at layer 32.
+  points: [pre_intervention, post_intervention]
+  # "all" means all token positions in each forward call, not all model layers.
+  positions: all
+  dtype: bfloat16
 steering:
   vector:
     type: role_direction

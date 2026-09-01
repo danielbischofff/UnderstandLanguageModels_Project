@@ -93,6 +93,10 @@ uv run python -m steering.cli.steer_generate \
   --coefficient 0.05 \
   --scaling raw \
   --positions all \
+  --capture-layer 32 \
+  --capture-point pre_intervention \
+  --capture-point post_intervention \
+  --capture-dtype bfloat16 \
   --prompt "Who are you?" \
   --max-new-tokens 128 \
   --seed 0 \
@@ -109,6 +113,7 @@ RUN_DIR=$(find "$STEERING_OUTPUT_ROOT/sandbox/bard-cli-smoke/runs" \
   -mindepth 1 -maxdepth 1 -type d | sort | tail -n 1)
 cat "$RUN_DIR"/trials/*/response.txt
 head "$RUN_DIR"/trials/*/projections.jsonl
+cat "$RUN_DIR"/trials/*/activations/manifest.json
 ```
 
 Raw coefficient `0.05` is suitable for this wiring smoke test but is not
@@ -118,13 +123,14 @@ comparable across vectors, layers, or models. Use a calibration record and
 ### Final activation test: direct CLI
 
 The Bard command above is the direct CLI activation test. It passes when the
-run manifest reports `complete`, `response.txt` contains a generation, and
-`projections.jsonl` contains layer-32 records (normally both prefill and cached
-decoding records):
+run manifest reports `complete`, `response.txt` contains a generation,
+`projections.jsonl` contains layer-32 records, and the activation manifest maps
+the saved residual tensors to prefill/decode calls and input tokens:
 
 ```bash
 cat "$RUN_DIR"/manifest.json
 grep '"layer": 32' "$RUN_DIR"/trials/*/projections.jsonl | head
+cat "$RUN_DIR"/trials/*/activations/manifest.json
 ```
 
 ### Final activation test: Slurm
@@ -143,7 +149,8 @@ squeue -j "$JOB_ID"
 tail -f "$ULM_RUNTIME_ROOT/logs/steering-$JOB_ID.out"
 ```
 
-After the job exits, inspect its recorded activation projections:
+After the job exits, inspect its recorded activation projections and exported
+residual-stream manifest:
 
 ```bash
 SLURM_RUN=$(find "$STEERING_OUTPUT_ROOT/sandbox/bard-slurm-smoke/runs" \
@@ -151,6 +158,7 @@ SLURM_RUN=$(find "$STEERING_OUTPUT_ROOT/sandbox/bard-slurm-smoke/runs" \
 cat "$SLURM_RUN"/manifest.json
 cat "$SLURM_RUN"/trials/*/response.txt
 grep '"layer": 32' "$SLURM_RUN"/trials/*/projections.jsonl | head
+cat "$SLURM_RUN"/trials/*/activations/manifest.json
 ```
 
 ## Vector geometry
@@ -304,8 +312,13 @@ $STEERING_OUTPUT_ROOT/<study>/<experiment>/
 ```
 
 Each trial contains the request, response, token IDs, resolved model/vector and
-calibration metadata, projections, timing, Git state, and status. Writes are
-atomic. To continue an interrupted run in place:
+calibration metadata, projections, timing, Git state, and status. When
+`activation_capture` is configured it also contains safely serialized residual
+tensors plus a versioned token-alignment manifest for later J-Lens/J-space,
+NLA, SAE, probing, or custom processing. No interpretability method is run by
+the steering pipeline itself. Captures are disabled by default because full
+residual streams are large. Writes are atomic. To continue an interrupted run
+in place:
 
 ```bash
 uv run python -m steering.cli.sweep --resume <run-directory>

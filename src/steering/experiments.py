@@ -18,7 +18,9 @@ from types import TracebackType
 from typing import Any, Self
 
 import yaml
+from safetensors.torch import save_file
 
+from .capture import ActivationCaptureConfig
 from .inference import GenerationResponse, InferenceRunner
 from .interventions import CappingRequest, SteeringPlan, SteeringRequest
 from .recipes import recipe_from_dict
@@ -109,6 +111,19 @@ def steering_from_config(value: Mapping[str, Any] | None) -> SteeringPlan | None
             )
         )
     return SteeringPlan(additions, caps, value.get("ordering", "add_then_cap"))
+
+
+def activation_capture_from_config(
+    value: Mapping[str, Any] | None,
+) -> ActivationCaptureConfig | None:
+    if value is None:
+        return None
+    return ActivationCaptureConfig(
+        layers=value.get("layers", []),
+        points=value.get("points", ["pre_intervention", "post_intervention"]),
+        positions=value.get("positions", "all"),
+        dtype=value.get("dtype", "model"),
+    )
 
 
 def _atomic_text(path: Path, text: str) -> None:
@@ -281,6 +296,7 @@ class ExperimentRecorder:
             )
             + "\n",
         )
+        activation_artifact = self._record_activations(trial_dir, response)
         _atomic_text(
             trial_dir / "metadata.json",
             json.dumps(
@@ -293,6 +309,7 @@ class ExperimentRecorder:
                         "trial_hash": trial_hash,
                         "run": self.run_dir.name,
                     },
+                    "activation_artifact": activation_artifact,
                 },
                 indent=2,
                 sort_keys=True,
@@ -318,6 +335,56 @@ class ExperimentRecorder:
             "path": str(trial_dir.relative_to(self.run_dir)),
         }
         self._write_manifest(manifest)
+
+    def _record_activations(
+        self, trial_dir: Path, response: GenerationResponse
+    ) -> dict[str, Any] | None:
+        if not response.activations:
+            return None
+        activation_dir = trial_dir / "activations"
+        activation_dir.mkdir(parents=True, exist_ok=True)
+        tensors = {
+            f"event_{index:06d}": event.tensor
+            for index, event in enumerate(response.activations)
+        }
+        tensor_path = activation_dir / "activations.safetensors"
+        temporary = tensor_path.with_name(f".{tensor_path.name}.{os.getpid()}.tmp")
+        save_file(tensors, temporary)
+        temporary.replace(tensor_path)
+        manifest = {
+            "schema_version": 1,
+            "format": "safetensors",
+            "tensor_file": tensor_path.name,
+            "capture": response.metadata.get("activation_capture"),
+            "coordinate_system": {
+                "hook_point": "transformer_block_output",
+                "residual_stream": "post_block_post_mlp",
+                "layer_indexing": "zero_based",
+                "tensor_axes": ["batch", "selected_sequence_position", "hidden"],
+            },
+            "alignment": {
+                "input_token_ids": "model input tokens for the recorded forward call",
+                "cache_positions": "absolute positions supplied by the model when available",
+                "first_generated_token": (
+                    "sampled from the final prefill position; decode events record the "
+                    "tokens subsequently supplied to cached decoding"
+                ),
+            },
+            "events": [
+                event.manifest_entry(key)
+                for key, event in zip(tensors, response.activations)
+            ],
+        }
+        _atomic_text(
+            activation_dir / "manifest.json",
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        )
+        return {
+            "directory": "activations",
+            "manifest": "activations/manifest.json",
+            "tensors": "activations/activations.safetensors",
+            "event_count": len(response.activations),
+        }
 
     def record_failure(
         self, index: int, trial: Mapping[str, Any], error: Exception
@@ -384,6 +451,9 @@ def run_experiment(
                     steering=steering,
                     seed=int(trial.get("seed", 0)),
                     collect_diagnostics=bool(trial.get("collect_diagnostics", True)),
+                    activation_capture=activation_capture_from_config(
+                        trial.get("activation_capture")
+                    ),
                     **trial.get("generation", {}),
                 )
                 response.metadata["timing"] = {

@@ -1,6 +1,15 @@
 import json
 
-from steering.experiments import ExperimentRecorder, canonical_hash, expand_sweep
+import torch
+from safetensors.torch import load_file
+
+from steering.capture import ActivationArtifact, ActivationCaptureEvent
+from steering.experiments import (
+    ExperimentRecorder,
+    activation_capture_from_config,
+    canonical_hash,
+    expand_sweep,
+)
 from steering.inference import GenerationResponse
 
 
@@ -32,3 +41,52 @@ def test_record_and_resume_skips_complete_trial(tmp_path):
     assert resumed.is_complete(canonical_hash(trial))
     result_path = next((recorder.run_dir / "trials").iterdir()) / "result.json"
     assert json.loads(result_path.read_text())["text"] == "answer"
+
+
+def test_activation_capture_config_and_safe_recording(tmp_path):
+    capture = activation_capture_from_config(
+        {
+            "layers": [2],
+            "points": ["post_intervention"],
+            "positions": "last",
+            "dtype": "float32",
+        }
+    )
+    assert capture is not None
+    assert capture.layers == (2,)
+    recorder = ExperimentRecorder.create(config(), root=tmp_path)
+    trial = expand_sweep(config())[0]
+    event = ActivationCaptureEvent(
+        tensor=torch.tensor([[[1.0, 2.0]]]),
+        layer=2,
+        point="post_intervention",
+        phase="decode",
+        forward_index=3,
+        input_token_ids=[[17]],
+        cache_positions=[9],
+        position_policy="last",
+    )
+    response = GenerationResponse(
+        "answer",
+        [1, 2],
+        {"activation_capture": capture.to_dict()},
+        [],
+        [event],
+    )
+    with recorder:
+        recorder.record_result(0, trial, response)
+    trial_dir = next((recorder.run_dir / "trials").iterdir())
+    tensors = load_file(trial_dir / "activations" / "activations.safetensors")
+    assert torch.equal(tensors["event_000000"], event.tensor)
+    manifest = json.loads((trial_dir / "activations" / "manifest.json").read_text())
+    assert manifest["coordinate_system"]["tensor_axes"] == [
+        "batch",
+        "selected_sequence_position",
+        "hidden",
+    ]
+    assert manifest["events"][0]["input_token_ids"] == [[17]]
+    assert manifest["events"][0]["cache_positions"] == [9]
+    artifact = ActivationArtifact.open(trial_dir / "activations")
+    metadata, loaded = next(artifact.events())
+    assert metadata["tensor_key"] == "event_000000"
+    assert torch.equal(loaded, event.tensor)

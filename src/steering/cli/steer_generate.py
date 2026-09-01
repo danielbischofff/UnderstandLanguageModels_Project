@@ -29,6 +29,35 @@ def main() -> None:
     parser.add_argument("--cap-threshold", type=float, nargs="+")
     parser.add_argument("--cap-quantile", type=float, nargs="+")
     parser.add_argument("--cap-calibration")
+    parser.add_argument(
+        "--capture-layer",
+        type=int,
+        action="append",
+        help="post-MLP layer to export for downstream analysis (repeatable)",
+    )
+    parser.add_argument(
+        "--capture-point",
+        action="append",
+        choices=["pre_intervention", "post_intervention"],
+        help=(
+            "layer output before the first or after the last ordered intervention "
+            "(repeatable; defaults to both)"
+        ),
+    )
+    parser.add_argument(
+        "--capture-positions",
+        default="all",
+        choices=["all", "last", "generated_only"],
+        help=(
+            "token positions per forward call: full sequence, final position, "
+            "or cached decode calls only; this does not select layers"
+        ),
+    )
+    parser.add_argument(
+        "--capture-dtype",
+        default="model",
+        choices=["model", "float32", "float16", "bfloat16"],
+    )
     parser.add_argument("--system-prompt")
     parser.add_argument("--prompt", required=True)
     parser.add_argument("--max-new-tokens", type=int, default=128)
@@ -39,6 +68,8 @@ def main() -> None:
     parser.add_argument("--experiment")
     parser.add_argument("--output-root", default="outputs/steering")
     args = parser.parse_args()
+    if args.capture_point and not args.capture_layer:
+        parser.error("--capture-point requires at least one --capture-layer")
     if args.cap:
         if not args.cap_recipe or not args.cap_layer:
             parser.error("--cap requires --cap-recipe and at least one --cap-layer")
@@ -87,6 +118,13 @@ def main() -> None:
             "calibration": args.calibration,
         },
     }
+    if args.capture_layer:
+        config["activation_capture"] = {
+            "layers": args.capture_layer,
+            "points": args.capture_point or ["pre_intervention", "post_intervention"],
+            "positions": args.capture_positions,
+            "dtype": args.capture_dtype,
+        }
     if args.cap:
         threshold = args.cap_threshold
         if threshold is not None and len(threshold) == 1:

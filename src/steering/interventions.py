@@ -13,6 +13,11 @@ import torch
 from .recipes import VectorRecipe
 
 ScalingMode = Literal["raw", "unit", "average_residual_norm", "projection_std"]
+# Token positions modified within each forward call (never a layer selector):
+# ``all`` modifies the full prefill sequence and all cached decode inputs;
+# ``last`` modifies only the final sequence position in each call; and
+# ``generated_only`` leaves prefill/first-token logits unchanged, then modifies
+# positions in cached decoding calls.
 PositionPolicy = Literal["all", "last", "generated_only"]
 BoundType = Literal["lower", "upper", "interval"]
 Ordering = Literal["add_then_cap", "cap_then_add"]

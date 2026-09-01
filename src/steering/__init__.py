@@ -1,5 +1,6 @@
 """Research-oriented persona-vector steering for Hugging Face causal LMs."""
 
+from .capture import ActivationArtifact, ActivationCaptureConfig, ActivationCaptureEvent
 from .inference import GenerationResponse, InferenceRunner
 from .interventions import CappingRequest, SteeringPlan, SteeringRequest
 from .recipes import (
@@ -20,6 +21,9 @@ from .recipes import (
 from .vector_store import MaterializedVector, VectorStore
 
 __all__ = [
+    "ActivationArtifact",
+    "ActivationCaptureConfig",
+    "ActivationCaptureEvent",
     "CappingRequest",
     "DefaultVector",
     "Difference",

@@ -55,9 +55,28 @@ uv run python -m steering.cli.steer_generate \
   --scaling average-residual-norm \
   --calibration calibration/qwen3-32b-lawyer.json \
   --positions all \
+  --capture-layer 32 \
+  --capture-point pre_intervention \
+  --capture-point post_intervention \
+  --capture-positions all \
+  --capture-dtype bfloat16 \
   --prompt "Who are you?" \
   --output-root "$STEERING_OUTPUT_ROOT"
 ```
+
+Activation capture is optional and may be requested on layers unrelated to the
+steering layers. The recorded trial then contains:
+
+```text
+activations/
+  activations.safetensors
+  manifest.json
+```
+
+The manifest maps stable tensor keys to layer, pre/post-intervention point,
+prefill/decode phase, forward call, input token IDs, and cache positions. This
+is the neutral input boundary for later J-Lens/J-space, NLA, SAE, or custom
+processing; those analyses are intentionally not performed by this CLI.
 
 Add an explicit lower cap along the published Assistant Axis:
 

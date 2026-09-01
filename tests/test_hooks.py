@@ -4,6 +4,7 @@ import pytest
 import torch
 from transformers.modeling_outputs import BaseModelOutput
 
+from steering.capture import ActivationCaptureConfig
 from steering.hooks import SteeringContext, locate_transformer_blocks
 from steering.interventions import ResolvedIntervention
 
@@ -30,6 +31,18 @@ class FakeModel(torch.nn.Module):
         for block in self.model.layers:
             value = block(value)[0]
         return value
+
+
+class TokenModel(FakeModel):
+    def forward(self, input_ids, *, cache_position=None, past_key_values=None):
+        hidden = torch.stack(
+            [input_ids.to(torch.float32), torch.zeros_like(input_ids).float()], dim=-1
+        )
+        return super().forward(
+            hidden,
+            cache_position=cache_position,
+            past_key_values=past_key_values,
+        )
 
 
 class ModelOutputBlock(torch.nn.Module):
@@ -114,3 +127,35 @@ def test_hook_uses_activation_dtype():
     with SteeringContext(model, [add_op()]):
         changed = model(torch.zeros(1, 1, 2, dtype=torch.bfloat16))
     assert changed.dtype == torch.bfloat16
+
+
+def test_capture_records_exact_pre_and_post_intervention_tensors():
+    model = FakeModel()
+    capture = ActivationCaptureConfig(layers=[1])
+    context = SteeringContext(model, [add_op()], activation_capture=capture)
+    with context:
+        model(torch.zeros(1, 2, 2))
+    assert len(context.activation_events) == 2
+    before, after = context.activation_events
+    assert before.point == "pre_intervention"
+    assert after.point == "post_intervention"
+    assert torch.equal(after.tensor - before.tensor, torch.tensor([[[2.0, 0.0]] * 2]))
+    assert not model.model.layers[1]._forward_hooks
+
+
+def test_capture_only_tracks_tokens_cache_positions_and_decode_policy():
+    model = TokenModel()
+    capture = ActivationCaptureConfig(
+        layers=[2], points=["post_intervention"], positions="generated_only"
+    )
+    context = SteeringContext(model, [], activation_capture=capture)
+    with context:
+        model(input_ids=torch.tensor([[10, 11]]), cache_position=torch.tensor([0, 1]))
+        model(input_ids=torch.tensor([[12]]), cache_position=torch.tensor([2]))
+    assert len(context.activation_events) == 1
+    event = context.activation_events[0]
+    assert event.phase == "decode"
+    assert event.forward_index == 1
+    assert event.input_token_ids == [[12]]
+    assert event.cache_positions == [2]
+    assert list(event.tensor.shape) == [1, 1, 2]

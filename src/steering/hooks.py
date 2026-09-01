@@ -10,6 +10,12 @@ from typing import Any, Self
 
 import torch
 
+from .capture import (
+    ActivationCaptureConfig,
+    ActivationCaptureEvent,
+    CapturePoint,
+    capture_dtype,
+)
 from .interventions import (
     ResolvedIntervention,
     apply_addition,
@@ -64,12 +70,35 @@ class ForwardPhaseTracker:
 
     def __init__(self) -> None:
         self.is_decode = False
+        self.forward_index = -1
+        self.input_token_ids: list[list[int]] | None = None
+        self.cache_positions: list[int] | None = None
 
     def pre_hook(
         self, module: torch.nn.Module, args: tuple[Any, ...], kwargs: dict[str, Any]
     ) -> None:
-        del module, args
+        del module
+        self.forward_index += 1
+        input_ids = kwargs.get("input_ids")
+        if input_ids is None and args and torch.is_tensor(args[0]):
+            candidate = args[0]
+            if candidate.ndim == 2 and candidate.dtype in {
+                torch.int8,
+                torch.int16,
+                torch.int32,
+                torch.int64,
+                torch.uint8,
+            }:
+                input_ids = candidate
+        self.input_token_ids = (
+            input_ids.detach().cpu().tolist() if torch.is_tensor(input_ids) else None
+        )
         cache_position = kwargs.get("cache_position")
+        self.cache_positions = (
+            cache_position.detach().to(torch.int64).flatten().cpu().tolist()
+            if torch.is_tensor(cache_position)
+            else None
+        )
         if torch.is_tensor(cache_position) and cache_position.numel():
             self.is_decode = bool(torch.min(cache_position).item() > 0)
             return
@@ -126,13 +155,51 @@ class SteeringContext:
         interventions: Iterable[ResolvedIntervention],
         *,
         collect_diagnostics: bool = False,
+        activation_capture: ActivationCaptureConfig | None = None,
     ) -> None:
         self.model = model
         self.interventions = tuple(interventions)
         self.collect_diagnostics = collect_diagnostics
+        self.activation_capture = activation_capture
         self.diagnostics: list[ProjectionDiagnostic] = []
+        self.activation_events: list[ActivationCaptureEvent] = []
         self._handles: list[Any] = []
         self._tracker = ForwardPhaseTracker()
+
+    def _capture_tensor(
+        self, tensor: torch.Tensor, layer: int, point: CapturePoint
+    ) -> None:
+        config = self.activation_capture
+        if config is None or layer not in config.layers or point not in config.points:
+            return
+        if config.positions == "generated_only" and not self._tracker.is_decode:
+            return
+        selected = tensor
+        input_token_ids = self._tracker.input_token_ids
+        cache_positions = self._tracker.cache_positions
+        if config.positions == "last":
+            selected = tensor[..., -1:, :]
+            if input_token_ids is not None:
+                input_token_ids = [row[-1:] for row in input_token_ids]
+            if cache_positions is not None:
+                cache_positions = cache_positions[-1:]
+        stored = (
+            selected.detach()
+            .to(device="cpu", dtype=capture_dtype(config.dtype, selected.dtype))
+            .contiguous()
+        )
+        self.activation_events.append(
+            ActivationCaptureEvent(
+                tensor=stored,
+                layer=layer,
+                point=point,
+                phase="decode" if self._tracker.is_decode else "prefill",
+                forward_index=self._tracker.forward_index,
+                input_token_ids=input_token_ids,
+                cache_positions=cache_positions,
+                position_policy=config.positions,
+            )
+        )
 
     def _hook(self, layer: int, operations: tuple[ResolvedIntervention, ...]):
         def hook(module: torch.nn.Module, args: tuple[Any, ...], output: Any) -> Any:
@@ -143,6 +210,7 @@ class SteeringContext:
                     f"Unsupported transformer block output at layer {layer}: {type(output).__name__}"
                 )
             changed = tensor
+            self._capture_tensor(changed, layer, "pre_intervention")
             for operation in operations:
                 if (
                     operation.positions == "generated_only"
@@ -201,12 +269,13 @@ class SteeringContext:
                             .tolist(),
                         )
                     )
+            self._capture_tensor(changed, layer, "post_intervention")
             return _replace_primary(output, changed, descriptor)
 
         return hook
 
     def __enter__(self) -> Self:
-        if not self.interventions:
+        if not self.interventions and self.activation_capture is None:
             return self
         blocks, _ = locate_transformer_blocks(self.model)
         grouped: dict[int, list[ResolvedIntervention]] = {}
@@ -216,6 +285,13 @@ class SteeringContext:
                     f"layer {intervention.layer} out of range for {len(blocks)} transformer blocks"
                 )
             grouped.setdefault(intervention.layer, []).append(intervention)
+        if self.activation_capture is not None:
+            for layer in self.activation_capture.layers:
+                if not 0 <= layer < len(blocks):
+                    raise IndexError(
+                        f"activation capture layer {layer} out of range for {len(blocks)} transformer blocks"
+                    )
+                grouped.setdefault(layer, [])
         try:
             self._handles.append(
                 self.model.register_forward_pre_hook(
