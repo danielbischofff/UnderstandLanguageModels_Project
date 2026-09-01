@@ -25,6 +25,7 @@ PAGES = {
     "role": ("template.html", "readout.json", "index.html"),
     "atlas": ("atlas_template.html", "atlas.json", "atlas.html"),
     "refusal": ("refusal_template.html", "refusal.json", "refusal.html"),
+    "compare": ("compare_template.html", "lens_compare.json", "compare.html"),
 }
 
 

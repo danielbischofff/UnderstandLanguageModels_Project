@@ -183,6 +183,45 @@ personas and no cast mean involved. So it is neither persona-specific nor caused
 the subtraction in this project: it looks like a property of difference-of-means
 directions read at early and middle layers.
 
+## Side investigation: is the early-layer junk the lens?
+
+Independent of the persona work. Every J-Lens readout here is polluted in early and
+middle layers by rare web-crawl tokens. **R-lens** (RelP,
+[arXiv:2508.21258](https://arxiv.org/abs/2508.21258)) is the *same* Jacobian estimator
+read through an LRP-modified backward graph — forward values bit-identical, only the
+gradients differ — and its claimed advantage is early-layer faithfulness.
+[`camilablank/workspace-lenses`](https://huggingface.co/camilablank/workspace-lenses)
+publishes matched J/R pairs, so both can read one direction with everything else held
+fixed. `compare_lenses.py` does that for Qwen3.6-27B.
+
+**The direction had to be recovered.** None is published for this model, but
+abliterated builds are — and abliteration projects the direction out of the weights, so
+`W_base − W_abliterated` is rank one with the direction as its leading left singular
+vector. `recover_refusal_direction.py` diffs one matrix per layer (~63 MB a side rather
+than ~120 GB of models): `s₁/‖D‖_F` was **0.997** at layer 11 and **0.996** at layer 31,
+and the two independently recovered vectors agree at **|cos| = 1.0000**. SVD fixes no
+sign; the semantics sit on `−r`, and `+r` is flat noise at near-maximum entropy.
+
+**R-lens reads the semantics nine layers earlier.**
+
+| | J-lens | R-lens |
+| --- | --- | --- |
+| first layer with a harm token | L12 | **L3** |
+| harm tokens in layers 0–15 | 1 | **30** |
+| top-k agreement, early → deep | 0.10 | → 0.77 |
+
+At L03 J-lens returns `agraph NOTE rape SDL pletely ilst SD` — tokenizer debris — while
+R-lens returns `legitimately attempting attempted incredibly horribly attempt`. By L12
+R-lens is on `合法 illegal 危害 malicious 非法` while J-lens is still on profanity. The
+arms converge by the deep layers, which is exactly where RelP claims no advantage.
+
+**The erotic cluster is a separate phenomenon.** It does not appear in Qwen3.6-27B at
+all — either lens, any layer. The two models have different tokenizers (152k vs 248k
+vocab), so that cluster looks like a property of one vocabulary's tail rather than of
+J-Lens. So the findings are independent: J-Lens *does* carry early-layer error and RelP
+removes it; separately, *which* junk surfaces is model-specific. Settling the cluster
+itself needs an R-lens for Qwen3-32B, which that repo does not ship.
+
 ## What the inputs actually are
 
 Two things about the published artifacts are worth recording, because neither is
@@ -226,7 +265,16 @@ web/template.html         the single-character viewer
 web/atlas_template.html   the whole-cast viewer
 web/refusal_template.html the refusal viewer
 out/*.json            results (committed; the pages are rebuilt from them)
+
+# the Qwen3.6-27B J-lens vs R-lens side investigation
+src/fetch_qwen36.py             its lenses, unembedding and tokenizer
+src/recover_refusal_direction.py  a refusal direction, by rank-1 weight diff
+src/compare_lenses.py           the two arms side by side -> out/lens_compare.json
+web/compare_template.html       the comparison viewer
 ```
+
+Hub downloads authenticate with `HF_TOKEN` or `~/.cache/huggingface/token` when one is
+present; anonymous requests get 503s once more than one large fetch is in flight.
 
 ### Why it streams
 

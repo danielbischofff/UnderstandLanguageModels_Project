@@ -46,16 +46,35 @@ class LensTransport:
 
     def __init__(self, path: str | Path) -> None:
         checkpoint = torch.load(path, map_location="cpu", mmap=True, weights_only=True)
-        if "jacobian_sum" in checkpoint:      # fit checkpoint (what is published)
+        if "jacobian_sum" in checkpoint:
+            # A fit checkpoint: an accumulated *sum* over prompts, so it has to
+            # be divided by the count to become the averaged Jacobian.
             self._jacobians = checkpoint["jacobian_sum"]
             self.n_prompts = int(checkpoint["n_done"])
-        elif "J" in checkpoint:               # JacobianLens.save() output
+            self._scale = 1.0 / self.n_prompts
+        elif "J" in checkpoint:
+            # JacobianLens.save() output: already the mean, so no rescaling.
             self._jacobians = checkpoint["J"]
             self.n_prompts = int(checkpoint["n_prompts"])
+            self._scale = 1.0
         else:
             raise ValueError(f"unrecognised lens file; keys={sorted(checkpoint)}")
-        self.source_layers = sorted(self._jacobians)
-        self.d_model = int(self._jacobians[self.source_layers[0]].shape[0])
+
+        # J is either {layer: [d, d]} or a stacked [n_source, d, d] tensor whose
+        # rows follow `source_layers`; index by layer number either way.
+        if isinstance(self._jacobians, torch.Tensor):
+            self.source_layers = [int(l) for l in checkpoint["source_layers"]]
+            self._row = {l: i for i, l in enumerate(self.source_layers)}
+        else:
+            self.source_layers = sorted(self._jacobians)
+            self._row = None
+        self.d_model = int(self._at(self.source_layers[0]).shape[0])
+        self.provenance = checkpoint.get("provenance")
+
+    def _at(self, layer: int) -> torch.Tensor:
+        """The Jacobian for ``layer``, whichever layout the file uses."""
+        return (self._jacobians[self._row[layer]] if self._row is not None
+                else self._jacobians[layer])
 
     def __repr__(self) -> str:
         first, last = self.source_layers[0], self.source_layers[-1]
@@ -69,5 +88,7 @@ class LensTransport:
         native row-major order and never transposed into a copy.
         """
         vectors = np.atleast_2d(np.asarray(directions, dtype=np.float32))
-        jacobian = self._jacobians[layer].numpy()
-        return (jacobian @ vectors.T).T / self.n_prompts
+        # Lenses ship as fp32 or fp16; promote, since numpy's fp16 matmul is
+        # an order of magnitude slower and this is the inner loop.
+        jacobian = self._at(layer).float().numpy()
+        return (jacobian @ vectors.T).T * self._scale

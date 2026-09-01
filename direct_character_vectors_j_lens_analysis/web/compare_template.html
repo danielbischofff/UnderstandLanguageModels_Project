@@ -1,0 +1,445 @@
+<meta charset="utf-8">
+<title>Two Lenses on Refusal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* Family neutrals. The only saturated colour is the two arms, because the
+     arms are the entire content of this page. */
+  :root {
+    --ground:    #f3f3f7;
+    --surface:   #ffffff;
+    --surface-2: #eceaf2;
+    --ink:       #191726;
+    --ink-2:     #56516d;
+    --ink-3:     #8b86a1;
+    --rule:      #ddd9e6;
+    --rule-soft: #e9e6f0;
+    --accent:    #4e4b7d;
+    --j:         #8f6216;
+    --r:         #22646e;
+    --warn:      #a1403a;
+    --on-accent: #ffffff;
+    --j-rgb:  143, 98, 22;
+    --r-rgb:  34, 100, 110;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:    #121121;
+      --surface:   #1a1929;
+      --surface-2: #232236;
+      --ink:       #eeecf6;
+      --ink-2:     #a8a3c1;
+      --ink-3:     #716c8d;
+      --rule:      #2e2c45;
+      --rule-soft: #252338;
+      --accent:    #a9a5e6;
+      --j:         #e0aa55;
+      --r:         #6fc0cb;
+      --warn:      #e59080;
+      --on-accent: #14132a;
+      --j-rgb:  224, 170, 85;
+      --r-rgb:  111, 192, 203;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:    #121121;
+    --surface:   #1a1929;
+    --surface-2: #232236;
+    --ink:       #eeecf6;
+    --ink-2:     #a8a3c1;
+    --ink-3:     #716c8d;
+    --rule:      #2e2c45;
+    --rule-soft: #252338;
+    --accent:    #a9a5e6;
+    --j:         #e0aa55;
+    --r:         #6fc0cb;
+    --warn:      #e59080;
+    --on-accent: #14132a;
+    --j-rgb:  224, 170, 85;
+    --r-rgb:  111, 192, 203;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 24px 96px; }
+
+  header { padding: 56px 0 26px; }
+  .eyebrow {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--ink-3);
+    display: flex; gap: 10px; align-items: center; margin-bottom: 18px;
+  }
+  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+  h1 {
+    font-family: Fraunces, Georgia, serif; font-optical-sizing: auto;
+    font-weight: 600; font-size: clamp(38px, 6vw, 62px); line-height: 1.02;
+    letter-spacing: -.02em; margin: 0 0 20px; text-wrap: balance;
+  }
+  .standfirst {
+    font-size: 17.5px; line-height: 1.62; color: var(--ink-2);
+    max-width: 68ch; margin: 0 0 22px;
+  }
+  .standfirst em { color: var(--ink); font-style: italic; }
+  .jname { color: var(--j); font-weight: 600; font-style: normal; }
+  .rname { color: var(--r); font-weight: 600; font-style: normal; }
+
+  /* ---- the findings, which are three numbers ---- */
+  .findings {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+    border-radius: 4px; overflow: hidden; margin: 24px 0 8px;
+  }
+  .finding { background: var(--surface); padding: 14px 16px; }
+  .finding .k {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px;
+  }
+  .finding .v {
+    font-family: "IBM Plex Mono", monospace; font-size: 21px;
+    font-variant-numeric: tabular-nums; letter-spacing: -.01em; margin-bottom: 3px;
+  }
+  .finding .n { font-size: 12.5px; color: var(--ink-2); }
+
+  .caveat {
+    border-left: 2px solid var(--ink-3); padding: 2px 0 2px 14px; margin: 20px 0 0;
+    font-size: 13.5px; color: var(--ink-2); max-width: 78ch;
+  }
+  .caveat strong { color: var(--ink); font-weight: 600; }
+  code {
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+    background: var(--surface-2); padding: 1px 5px; border-radius: 2px; color: var(--ink);
+  }
+
+  .controls {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--ground) 93%, transparent);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    padding: 13px 0; margin: 26px 0 0;
+    display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
+  }
+  .field { display: flex; align-items: center; gap: 9px; }
+  .field > label {
+    font-size: 11px; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .seg { display: flex; }
+  .seg button {
+    font: inherit; font-size: 13px; border: 1px solid var(--rule);
+    background: var(--surface); color: var(--ink-2); padding: 5px 12px;
+    border-radius: 0; margin-left: -1px; cursor: pointer;
+  }
+  .seg button:first-child { border-radius: 3px 0 0 3px; margin-left: 0; }
+  .seg button:last-child  { border-radius: 0 3px 3px 0; }
+  .seg button:hover { color: var(--ink); }
+  .seg button[aria-pressed="true"] {
+    background: var(--accent); border-color: var(--accent);
+    color: var(--on-accent); font-weight: 500;
+  }
+  input[type="range"] { accent-color: var(--accent); width: 88px; }
+  input[type="checkbox"] { accent-color: var(--accent); }
+  .count {
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+    color: var(--ink-2); font-variant-numeric: tabular-nums; min-width: 2ch;
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---- chart ---- */
+  .chartwrap { padding: 20px 0 6px; }
+  .chart-label {
+    font-size: 11px; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--ink-3);
+    display: flex; gap: 18px; align-items: center; margin-bottom: 6px;
+  }
+  .swatch { display: inline-flex; align-items: center; gap: 5px; }
+  .swatch i { width: 14px; height: 2.5px; border-radius: 2px; }
+  .chart { width: 100%; height: 96px; display: block; overflow: visible; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+    font-size: 12.5px; color: var(--ink-3);
+    border-top: 1px solid var(--rule-soft); padding-top: 12px; margin-bottom: 4px;
+  }
+
+  /* ---- the side-by-side ---- */
+  .head, .row {
+    display: grid; grid-template-columns: 92px minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0 16px; align-items: start;
+  }
+  .head {
+    position: sticky; top: 56px; z-index: 10; padding: 7px 0;
+    background: color-mix(in srgb, var(--ground) 93%, transparent);
+    border-bottom: 1px solid var(--rule);
+    font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
+  }
+  .head .jh { color: var(--j); }
+  .head .rh { color: var(--r); }
+  .head .lh { color: var(--ink-3); }
+  .row { border-bottom: 1px solid var(--rule-soft); padding: 6px 0; }
+  .row:hover { background: var(--surface-2); }
+  .row.firstharm { background: rgba(var(--r-rgb), .10); }
+  .rail { display: flex; align-items: baseline; gap: 8px; padding-top: 2px; }
+  .depth {
+    font-family: "IBM Plex Mono", monospace; font-size: 12px;
+    font-variant-numeric: tabular-nums; color: var(--ink-3); width: 3.2ch;
+  }
+  .agree {
+    font-family: "IBM Plex Mono", monospace; font-size: 10.5px;
+    color: var(--ink-3); font-variant-numeric: tabular-nums;
+  }
+  .lane { display: flex; flex-wrap: wrap; gap: 3px; min-width: 0; }
+  .tok {
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px; line-height: 1.5;
+    white-space: pre; padding: 1px 5px; border-radius: 2px;
+    color: var(--ink-2); background: var(--surface-2);
+    border: 1px solid transparent;
+  }
+  .lane.j .tok.harm {
+    background: rgba(var(--j-rgb), .30); border-color: rgba(var(--j-rgb), .65);
+    color: var(--ink); font-weight: 500;
+  }
+  .lane.r .tok.harm {
+    background: rgba(var(--r-rgb), .30); border-color: rgba(var(--r-rgb), .65);
+    color: var(--ink); font-weight: 500;
+  }
+  .tok.refusal { border-color: var(--accent); color: var(--ink); }
+  .tok.flagged { border-color: var(--warn); color: var(--warn); }
+  .plain .tok.harm, .plain .tok.refusal, .plain .tok.flagged {
+    background: var(--surface-2); border-color: transparent;
+    color: var(--ink-2); font-weight: 400;
+  }
+
+  footer {
+    margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--rule);
+    font-size: 13px; color: var(--ink-2); display: grid; gap: 10px;
+  }
+  footer a { color: var(--accent); text-underline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (max-width: 900px) {
+    .controls, .head { position: static; }
+    .head, .row { grid-template-columns: 62px minmax(0, 1fr); }
+    .head .rh, .row .lane.r { grid-column: 2; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Qwen3.6-27B &middot; matched lens pair &middot; refusal direction</div>
+    <h1>Two Lenses on Refusal</h1>
+    <p class="standfirst">
+      <span class="jname">J-lens</span> and <span class="rname">R-lens</span> are the
+      same Jacobian estimator over the same forward pass &mdash; RelP only changes how
+      gradients flow backward, through an LRP-modified graph. Same target layer, same
+      corpus, same 25 prompts. So when the two columns below disagree, the difference
+      <em>is the lens</em>, not the input. Both read one recovered refusal direction, at
+      every layer. RelP claims better faithfulness on early layers; here is what that
+      looks like.
+    </p>
+    <div class="findings" id="findings"></div>
+    <p class="caveat">
+      <strong>The direction was not published &mdash; it was recovered.</strong>
+      Abliteration removes a direction by projecting it out of the weights, so
+      <code>W_base &minus; W_abliterated</code> is rank one and its leading left
+      singular vector <em>is</em> the direction. Measured
+      <code>s&#8321;/&#8214;D&#8214;<sub>F</sub></code> was 0.997 at layer 11 and 0.996
+      at layer 31, and the two independently recovered vectors agree at
+      <code>|cos| = 1.0000</code> &mdash; one global direction, confirmed twice. SVD
+      fixes no sign, and the semantics turned out to sit on <code>&minus;r</code>;
+      <code>+r</code> is flat noise at near-maximum entropy.
+    </p>
+  </header>
+
+  <div class="controls">
+    <div class="field">
+      <label id="lbl-s">Sign</label>
+      <div class="seg" id="sign" role="group" aria-labelledby="lbl-s"></div>
+    </div>
+    <div class="field">
+      <label for="topn">Tokens</label>
+      <input type="range" id="topn" min="4" max="15" value="9">
+      <span class="count" id="topn-out">9</span>
+    </div>
+    <div class="field">
+      <label for="highlight">Highlight lexicons</label>
+      <input type="checkbox" id="highlight" checked>
+    </div>
+    <div class="field">
+      <label for="wordlike">Words only</label>
+      <input type="checkbox" id="wordlike" checked>
+    </div>
+  </div>
+
+  <div class="chartwrap">
+    <div class="chart-label">
+      <span>Harm-lexicon tokens in the top-k, by layer</span>
+      <span class="swatch"><i style="background:var(--j)"></i> J-lens</span>
+      <span class="swatch"><i style="background:var(--r)"></i> R-lens</span>
+    </div>
+    <svg class="chart" id="chart" viewBox="0 0 900 96" preserveAspectRatio="none"
+         role="img" aria-label="Harm-lexicon token count by layer, both lenses"></svg>
+  </div>
+
+  <div class="legend">
+    <span>filled = <b>harm</b> (dangerous, illegal, 危险, 非法)</span>
+    <span>outlined = <b>refusal</b> (sorry, cannot, 抱歉, 拒绝)</span>
+    <span>red = the Qwen3-32B web-crawl cluster</span>
+    <span>agree = top-k Jaccard between the two lenses at that layer</span>
+  </div>
+
+  <div class="head" id="head"></div>
+  <div id="rows"></div>
+
+  <footer>
+    <div><code>lens_l(h) = unembed( J_l &middot; h )</code>. R-lens applies RelP's
+      LN-rule, identity-rule and half-rule to the backward graph; forward values are
+      bit-identical to J-lens. Lenses fitted with <code>target_layer=62</code>,
+      <code>skip_first=4</code>, n=25 on <code>pile-10k</code>.</div>
+    <div>
+      Lenses: <a href="https://huggingface.co/camilablank/workspace-lenses">camilablank/workspace-lenses</a> &middot;
+      RelP: <a href="https://arxiv.org/abs/2508.21258">arXiv:2508.21258</a> &middot;
+      <a href="https://www.lesswrong.com/posts/nv8oedrnLXKRzNEL9/r-lens-making-j-lens-more-faithful-on-early-layers">R-lens writeup</a> &middot;
+      J-lens: <a href="https://arxiv.org/abs/2607.15495">Verbalizable Representations Form a Global Workspace</a> &middot;
+      Direction recovered from <a href="https://huggingface.co/huihui-ai/Huihui-Qwen3.6-27B-abliterated">huihui-ai/Huihui-Qwen3.6-27B-abliterated</a>
+    </div>
+  </footer>
+</div>
+
+<script type="application/json" id="compare-data">__DATA__</script>
+<script>
+(function () {
+  "use strict";
+  const D = JSON.parse(document.getElementById("compare-data").textContent);
+  const LAYERS = D.meta.lens_layers;
+  const INDEX = new Map();
+  for (const r of D.readouts) INDEX.set(r.arm + "|" + r.sign + "|" + r.layer, r);
+  const SIGNS = [...new Set(D.readouts.map(r => r.sign))];
+  const LEX = Object.fromEntries(
+    Object.entries(D.meta.lexicons).map(([k, v]) => [k, new RegExp(v, "i")]));
+  const state = { sign: SIGNS.includes("-r") ? "-r" : SIGNS[0], topN: 9,
+                  highlight: true, wordlike: true };
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const show = t => t === "" ? "∅" : (!t.trim() ? "␠".repeat(Math.min(t.length, 4))
+    : t.replace(/\r/g, "").replace(/\n/g, "⏎").replace(/\t/g, "⇥"));
+  const get = (arm, layer) => INDEX.get(arm + "|" + state.sign + "|" + layer);
+  const klass = text => LEX.flagged.test(text) ? "flagged"
+    : LEX.harm.test(text) ? "harm" : LEX.refusal.test(text) ? "refusal" : "";
+
+  function firstHarm(arm) {
+    for (const l of LAYERS) {
+      const rec = get(arm, l);
+      if (rec && rec.counts.harm > 0) return l;
+    }
+    return null;
+  }
+
+  function renderFindings() {
+    const fj = firstHarm("j"), fr = firstHarm("r");
+    const band = (arm, lo, hi) => LAYERS.filter(l => l >= lo && l <= hi)
+      .reduce((s, l) => s + (get(arm, l)?.counts.harm || 0), 0);
+    const agree = (lo, hi) => {
+      const xs = LAYERS.filter(l => l >= lo && l <= hi)
+        .map(l => get("j", l)?.agreement).filter(v => v !== undefined);
+      return xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0;
+    };
+    const cards = [
+      ["First layer reading harm", fj === null || fr === null
+        ? "&mdash;"
+        : `<span class="jname">L${fj}</span> &rarr; <span class="rname">L${fr}</span>`,
+        fj !== null && fr !== null
+          ? `R-lens recovers the semantics ${fj - fr} layers earlier`
+          : "one arm never reads harm"],
+      ["Harm tokens, layers 0&ndash;15",
+        `<span class="jname">${band("j", 0, 15)}</span> vs <span class="rname">${band("r", 0, 15)}</span>`,
+        "where RelP claims its advantage"],
+      ["Top-k agreement, early &rarr; deep",
+        `${agree(0, 15).toFixed(2)} &rarr; ${agree(48, 62).toFixed(2)}`,
+        "the lenses converge with depth"],
+    ];
+    $("findings").innerHTML = cards.map(([k, v, n]) =>
+      `<div class="finding"><div class="k">${k}</div><div class="v">${v}</div>
+       <div class="n">${n}</div></div>`).join("");
+  }
+
+  function renderChart() {
+    const W = 900, H = 96, pad = 4;
+    const series = ["j", "r"].map(arm => ({
+      arm, color: arm === "j" ? "var(--j)" : "var(--r)",
+      pts: LAYERS.map(l => [l, get(arm, l)?.counts.harm || 0]),
+    }));
+    const hi = Math.max(1, ...series.flatMap(s => s.pts.map(p => p[1])));
+    const x = l => pad + (l / (LAYERS[LAYERS.length - 1])) * (W - 2 * pad);
+    const y = v => H - pad - (v / hi) * (H - 2 * pad - 8);
+    const grid = [0, hi].map(v =>
+      `<line x1="${pad}" x2="${W - pad}" y1="${y(v)}" y2="${y(v)}"
+             stroke="var(--rule)" stroke-width="1" vector-effect="non-scaling-stroke"/>
+       <text x="${pad + 2}" y="${y(v) - 3}" font-size="9" fill="var(--ink-3)"
+             font-family="IBM Plex Mono, monospace">${v}</text>`).join("");
+    const lines = series.map(s => {
+      const d = s.pts.map((p, i) => (i ? "L" : "M") + x(p[0]).toFixed(1) + " " + y(p[1]).toFixed(1)).join(" ");
+      const f = firstHarm(s.arm);
+      const mark = f === null ? "" :
+        `<circle cx="${x(f).toFixed(1)}" cy="${y(get(s.arm, f).counts.harm).toFixed(1)}"
+                 r="3.5" fill="${s.color}"/>
+         <text x="${x(f).toFixed(1)}" y="12" font-size="10" fill="${s.color}"
+               text-anchor="middle" font-family="IBM Plex Mono, monospace">L${f}</text>`;
+      return `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="1.7"
+                    stroke-linejoin="round" vector-effect="non-scaling-stroke"/>${mark}`;
+    }).join("");
+    $("chart").innerHTML = grid + lines;
+  }
+
+  function lane(arm, layer) {
+    const rec = get(arm, layer);
+    if (!rec) return `<div class="lane ${arm}"></div>`;
+    const toks = (state.wordlike ? rec.top_wordlike : rec.top).slice(0, state.topN);
+    return `<div class="lane ${arm}">` + toks.map(t => {
+      const c = state.highlight ? klass(t.text) : "";
+      const tip = `p=${t.prob.toPrecision(3)} · logit ${t.logit.toFixed(2)}`;
+      return `<span class="tok ${c}" title="${esc(tip)}">${esc(show(t.text))}</span>`;
+    }).join("") + `</div>`;
+  }
+
+  function render() {
+    renderFindings();
+    renderChart();
+    $("head").innerHTML = `<div class="lh">Layer</div>
+      <div class="jh">J-lens</div><div class="rh">R-lens</div>`;
+    const fr = firstHarm("r");
+    $("rows").className = state.highlight ? "" : "plain";
+    $("rows").innerHTML = LAYERS.map(l => {
+      const a = get("j", l)?.agreement;
+      return `<div class="row${l === fr ? " firstharm" : ""}">
+          <div class="rail"><span class="depth">${String(l).padStart(2, "0")}</span>
+            <span class="agree" title="top-k Jaccard between the lenses">${a === undefined ? "" : a.toFixed(2)}</span></div>
+          ${lane("j", l)}${lane("r", l)}
+        </div>`;
+    }).join("");
+  }
+
+  $("sign").innerHTML = SIGNS.map(s =>
+    `<button type="button" data-s="${s}" aria-pressed="${s === state.sign}">${esc(s)}</button>`).join("");
+  $("sign").addEventListener("click", e => {
+    const b = e.target.closest("[data-s]"); if (!b) return;
+    state.sign = b.dataset.s;
+    for (const p of $("sign").children) p.setAttribute("aria-pressed", p === b);
+    render();
+  });
+  $("topn").addEventListener("input", e => {
+    state.topN = +e.target.value; $("topn-out").textContent = state.topN; render();
+  });
+  $("highlight").addEventListener("change", e => { state.highlight = e.target.checked; render(); });
+  $("wordlike").addEventListener("change", e => { state.wordlike = e.target.checked; render(); });
+
+  render();
+})();
+</script>

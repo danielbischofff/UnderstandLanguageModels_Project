@@ -16,7 +16,10 @@ Four sources, all skipped when already present:
 from __future__ import annotations
 
 import json
+import os
 import struct
+import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -35,6 +38,8 @@ UNEMBED_TENSORS = ("lm_head.weight", "model.norm.weight")
 VECTORS = ("role_vectors/bard.pt", "assistant_axis.pt", "default_vector.pt")
 
 _CHUNK = 1 << 22
+#: Attempts per request before giving up, with exponential backoff.
+_RETRIES = 6
 
 
 def _url(repo: str, filename: str, *, dataset: bool = False) -> str:
@@ -42,13 +47,45 @@ def _url(repo: str, filename: str, *, dataset: bool = False) -> str:
     return f"https://huggingface.co/{kind}{repo}/resolve/main/{filename}"
 
 
+def _token() -> str | None:
+    """The Hub token, from the environment or the standard token file.
+
+    Anonymous requests are rate-limited hard enough that concurrent multi-GB
+    fetches start returning 503; a read token avoids that. Never put it in a
+    URL -- it goes in the Authorization header only.
+    """
+    for name in ("HF_TOKEN", "HUGGING_FACE_HUB_TOKEN"):
+        if os.environ.get(name):
+            return os.environ[name].strip()
+    path = Path.home() / ".cache" / "huggingface" / "token"
+    return path.read_text(encoding="utf-8").strip() if path.exists() else None
+
+
 def _get(url: str, start: int | None = None, end: int | None = None):
+    """Open ``url`` (optionally one byte range), retrying transient failures.
+
+    The Hub answers 503 under load and rate-limits unauthenticated clients, so
+    a bare ``urlopen`` does not survive a multi-gigabyte fetch running
+    alongside anything else. Only 5xx, 429 and timeouts are retried; a 404 or
+    401 is a real error and raises immediately.
+    """
     headers = {"User-Agent": "curl/8"}
+    token = _token()
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
     if start is not None:
         headers["Range"] = f"bytes={start}-{end}"
-    return urllib.request.urlopen(
-        urllib.request.Request(url, headers=headers), timeout=180
-    )
+    request = urllib.request.Request(url, headers=headers)
+    for attempt in range(_RETRIES):
+        try:
+            return urllib.request.urlopen(request, timeout=180)
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as exc:
+            code = getattr(exc, "code", None)
+            fatal = code is not None and code < 500 and code != 429
+            if fatal or attempt == _RETRIES - 1:
+                raise
+            time.sleep(2 ** attempt * 3)
+    raise RuntimeError("unreachable")
 
 
 def _download(url: str, dest: Path, start: int = 0, end: int | None = None,
@@ -56,23 +93,39 @@ def _download(url: str, dest: Path, start: int = 0, end: int | None = None,
     """Stream ``url`` (optionally one byte range) to ``dest``, resuming if partial."""
     dest.parent.mkdir(parents=True, exist_ok=True)
     total = None if end is None else end - start + 1
-    have = dest.stat().st_size if dest.exists() else 0
-    if total is not None and have == total:
-        if not quiet:
-            print(f"  have {dest.name}")
-        return dest
-    if total is None and have:  # size unknown; re-fetch rather than guess
-        have = 0
 
-    mode = "ab" if have else "wb"
-    with _get(url, start + have if total is not None else None, end) as resp, open(dest, mode) as fh:
-        done = have
-        while chunk := resp.read(_CHUNK):
-            fh.write(chunk)
-            done += len(chunk)
-            if not quiet and done % (1 << 28) < _CHUNK:
-                pct = f" ({100 * done / total:.0f}%)" if total else ""
-                print(f"  {dest.name}: {done / 1e9:.2f} GB{pct}", flush=True)
+    # A dropped connection ends the read loop without raising, which silently
+    # leaves a truncated file. When the expected length is known, verify it and
+    # resume from wherever the last attempt stopped.
+    for attempt in range(_RETRIES):
+        have = dest.stat().st_size if dest.exists() else 0
+        if total is not None and have == total:
+            if not quiet and attempt == 0:
+                print(f"  have {dest.name}")
+            return dest
+        if total is not None and have > total:  # stale or corrupt; start over
+            have = 0
+        if total is None and have:  # size unknown; re-fetch rather than guess
+            have = 0
+
+        with _get(url, start + have if total is not None else None, end) as resp, \
+                open(dest, "ab" if have else "wb") as fh:
+            done = have
+            while chunk := resp.read(_CHUNK):
+                fh.write(chunk)
+                done += len(chunk)
+                if not quiet and done % (1 << 28) < _CHUNK:
+                    pct = f" ({100 * done / total:.0f}%)" if total else ""
+                    print(f"  {dest.name}: {done / 1e9:.2f} GB{pct}", flush=True)
+
+        if total is None or dest.stat().st_size == total:
+            break
+        if not quiet:
+            print(f"  {dest.name}: short read, resuming "
+                  f"({dest.stat().st_size / 1e6:.0f}/{total / 1e6:.0f} MB)", flush=True)
+    else:
+        raise IOError(f"{dest.name}: incomplete after {_RETRIES} attempts")
+
     if not quiet:
         print(f"  wrote {dest.name} ({dest.stat().st_size / 1e6:.1f} MB)")
     return dest
