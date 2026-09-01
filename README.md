@@ -107,25 +107,15 @@ uv run python -m steering.cli.fetch_vectors \
   --role-direction bard
 ```
 
-The following smoke experiment steers `R_bard - D` at Qwen's default middle
-layer 32 while asking a self-reflective question. It uses raw scaling for the first run:
+The committed sandbox YAML steers `R_bard - D` at Qwen's default middle layer
+32 while asking a self-reflective question. It uses raw scaling for the first
+run. The two command-line options only select the environment-specific model
+and output location; the experiment itself is defined in the YAML:
 
 ```bash
-uv run python -m steering.cli.steer_generate \
+uv run python -m steering.cli.sweep \
+  --config configs/steering/bard_sandbox.yaml \
   --model "$STEERING_MODEL_ID" \
-  --role bard \
-  --coefficient 0.05 \
-  --scaling raw \
-  --positions all \
-  --capture-layer 32 \
-  --capture-point pre_intervention \
-  --capture-point post_intervention \
-  --capture-dtype bfloat16 \
-  --prompt "Who are you?" \
-  --max-new-tokens 128 \
-  --seed 0 \
-  --study sandbox \
-  --experiment bard-cli-smoke \
   --output-root "$STEERING_OUTPUT_ROOT"
 ```
 
@@ -133,7 +123,7 @@ The command prints its run directory. Inspect the response and the recorded
 pre/post-intervention projections:
 
 ```bash
-RUN_DIR=$(find "$STEERING_OUTPUT_ROOT/sandbox/bard-cli-smoke/runs" \
+RUN_DIR=$(find "$STEERING_OUTPUT_ROOT/sandbox/bard-sandbox-smoke/runs" \
   -mindepth 1 -maxdepth 1 -type d | sort | tail -n 1)
 cat "$RUN_DIR"/trials/*/response.txt
 head "$RUN_DIR"/trials/*/projections.jsonl
@@ -206,7 +196,7 @@ cat "$RUN_DIR"/trials/*/activations/manifest.json
 
 ### Final activation test: Slurm
 
-The equivalent Slurm-ready experiment is
+The same experiment is Slurm-ready through
 [`configs/steering/bard_sandbox.yaml`](configs/steering/bard_sandbox.yaml).
 Review the resource directives in `slurm/steering.sbatch` for the cluster, then
 submit it from the same shell so the repository and runtime variables are
@@ -224,7 +214,7 @@ After the job exits, inspect its recorded activation projections and exported
 residual-stream manifest:
 
 ```bash
-SLURM_RUN=$(find "$STEERING_OUTPUT_ROOT/sandbox/bard-slurm-smoke/runs" \
+SLURM_RUN=$(find "$STEERING_OUTPUT_ROOT/sandbox/bard-sandbox-smoke/runs" \
   -mindepth 1 -maxdepth 1 -type d | sort | tail -n 1)
 cat "$SLURM_RUN"/manifest.json
 cat "$SLURM_RUN"/trials/*/response.txt

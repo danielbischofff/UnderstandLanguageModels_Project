@@ -30,8 +30,9 @@ export STEERING_OUTPUT_ROOT=${STEERING_OUTPUT_ROOT:-"$ULM_RUNTIME_ROOT/outputs/s
 export TOKENIZERS_PARALLELISM=false
 mkdir -p "$HF_HOME" "$JLENS_DATA_ROOT" "$STEERING_OUTPUT_ROOT" "$ULM_RUNTIME_ROOT/logs"
 
+selected_model=${STEERING_MODEL_ID:-Qwen/Qwen3-32B-FP8}
 uv run steering-preflight \
-  --model "${STEERING_MODEL_ID:-Qwen/Qwen3-32B-FP8}" \
+  --model "$selected_model" \
   --minimum-vram-gb "${STEERING_MIN_VRAM_GB:-75}" \
   --minimum-free-disk-gb "${STEERING_MIN_FREE_DISK_GB:-80}"
 
@@ -40,5 +41,6 @@ if [[ -n "$resume_dir" ]]; then
 else
   uv run python -m steering.cli.sweep \
     --config "$config_path" \
+    --model "$selected_model" \
     --output-root "$STEERING_OUTPUT_ROOT"
 fi

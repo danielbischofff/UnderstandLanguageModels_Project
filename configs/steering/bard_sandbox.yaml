@@ -1,5 +1,5 @@
 study: sandbox
-experiment: bard-slurm-smoke
+experiment: bard-sandbox-smoke
 model:
   id: Qwen/Qwen3-32B-FP8
   dtype: bfloat16
@@ -26,6 +26,6 @@ steering:
   vector:
     type: role_direction
     name: bard
-  coefficient: 0.05
+  coefficient: 1
   scaling: raw
   positions: all
