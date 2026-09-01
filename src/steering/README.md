@@ -148,6 +148,10 @@ for event, tensor in artifact.events():
     consume(layer=event["layer"], token_ids=event["input_token_ids"], h=tensor)
 ```
 
+For a lightweight token inspection, `steering-j-lens` passes selected events
+to the existing repository J-Lens transport and unembedding utilities. See the
+[CLI guide](cli/README.md#quick-j-lens-token-readout).
+
 ## Vector storage and calibration
 
 Fetch and materialize vectors without loading a language model:

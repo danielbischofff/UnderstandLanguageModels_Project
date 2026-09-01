@@ -16,11 +16,14 @@ Four sources, all skipped when already present:
 from __future__ import annotations
 
 import json
+import os
 import struct
 import urllib.request
 from pathlib import Path
 
-DATA = Path(__file__).resolve().parent.parent / "data"
+DATA = Path(
+    os.environ.get("JLENS_DATA_ROOT", Path(__file__).resolve().parent.parent / "data")
+)
 
 AXIS_REPO = "lu-christina/assistant-axis-vectors"
 AXIS_PREFIX = "qwen-3-32b"

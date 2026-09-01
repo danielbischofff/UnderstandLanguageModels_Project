@@ -78,6 +78,27 @@ prefill/decode phase, forward call, input token IDs, and cache positions. This
 is the neutral input boundary for later J-Lens/J-space, NLA, SAE, or custom
 processing; those analyses are intentionally not performed by this CLI.
 
+## Quick J-Lens token readout
+
+After fetching the inputs documented in the root README, read the last prefill
+position from a recorded activation directory:
+
+```bash
+uv run steering-j-lens path/to/trial/activations \
+  --layer 32 \
+  --phase prefill \
+  --token-index -1 \
+  --top-k 10 \
+  --output path/to/j-lens-tokens.json
+```
+
+The default reads both capture boundaries and adds their `post - pre` delta.
+Use `--point pre_intervention` or `--point post_intervention` for one boundary,
+and `--phase decode --forward-index N` for a particular cached decoding call.
+The wrapper only selects recorded tensors and calls the existing utilities in
+`direct_character_vectors_j_lens_analysis`; it does not implement or fit a new
+lens.
+
 Add an explicit lower cap along the published Assistant Axis:
 
 ```bash

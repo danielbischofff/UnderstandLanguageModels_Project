@@ -32,8 +32,10 @@ export ULM_RUNTIME_ROOT="$ULM_REPO_ROOT/runtime"
 cd "$ULM_REPO_ROOT"
 export UV_PROJECT_ENVIRONMENT="$ULM_RUNTIME_ROOT/venv"
 export HF_HOME="$ULM_RUNTIME_ROOT/models/huggingface"
+export JLENS_DATA_ROOT="$ULM_RUNTIME_ROOT/models/j-lens/qwen3-32b"
 export STEERING_OUTPUT_ROOT="$ULM_RUNTIME_ROOT/outputs/steering"
-mkdir -p "$HF_HOME" "$STEERING_OUTPUT_ROOT" "$ULM_RUNTIME_ROOT/logs"
+mkdir -p "$HF_HOME" "$JLENS_DATA_ROOT" "$STEERING_OUTPUT_ROOT" \
+  "$ULM_RUNTIME_ROOT/logs"
 ```
 
 This produces a contained hierarchy:
@@ -42,6 +44,7 @@ This produces a contained hierarchy:
 runtime/
   venv/                 Locked uv environment
   models/huggingface/   Hugging Face model and vector cache
+  models/j-lens/        Jacobian lens, unembedding, and tokenizer inputs
   outputs/steering/     Experiment runs and activation records
   logs/                 Slurm logs
 ```
@@ -119,6 +122,34 @@ cat "$RUN_DIR"/trials/*/activations/manifest.json
 Raw coefficient `0.05` is suitable for this wiring smoke test but is not
 comparable across vectors, layers, or models. Use a calibration record and
 `average-residual-norm` or `projection-std` for controlled experiments.
+
+For a quick Jacobian-Lens token reading of the captured final prompt position,
+fetch the existing analysis package's inputs once. This downloads approximately
+8.2 GB into the ignored runtime tree and does not load the full Qwen model:
+
+```bash
+uv run python direct_character_vectors_j_lens_analysis/src/fetch_data.py
+```
+
+Then run the thin steering wrapper. By default it reuses the existing
+`LensTransport`, `Unembedding`, `top_k`, and vocabulary utilities to report the
+layer-32 tokens for the residual before steering, after steering, and the
+`post - pre` change:
+
+```bash
+ACTIVATIONS_DIR=$(find "$RUN_DIR/trials" -mindepth 2 -maxdepth 2 \
+  -type d -name activations | head -n 1)
+uv run steering-j-lens "$ACTIVATIONS_DIR" \
+  --layer 32 \
+  --phase prefill \
+  --token-index -1 \
+  --top-k 10 \
+  --output "$RUN_DIR/bard-j-lens-tokens.json"
+```
+
+This is a readout helper, not a new lens implementation. The fitted lens was
+trained on generic text and had only 80 completed fitting prompts, so treat the
+tokens as exploratory diagnostics rather than calibrated predictions.
 
 ### Final activation test: direct CLI
 
