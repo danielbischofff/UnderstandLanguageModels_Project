@@ -5,14 +5,13 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
-from pathlib import Path
 from typing import Any, Literal
 
 import torch
 
 from .recipes import VectorRecipe
 
-ScalingMode = Literal["raw", "unit", "average_residual_norm", "projection_std"]
+ScalingMode = Literal["raw", "unit"]
 # Token positions modified within each forward call (never a layer selector):
 # ``all`` modifies the full prefill sequence and all cached decode inputs;
 # ``last`` modifies only the final sequence position in each call; and
@@ -55,7 +54,6 @@ class SteeringRequest:
     layers: tuple[int, ...] | None = None
     scaling: ScalingMode = "raw"
     positions: PositionPolicy = "all"
-    calibration: str | Path | Mapping[str, Any] | None = None
     preserve_original_activation_norm: bool = False
 
     def __post_init__(self) -> None:
@@ -65,7 +63,7 @@ class SteeringRequest:
             self, "layers", _validate_layers(self.layers, required=False)
         )
         scaling = _normalize_scaling(self.scaling)
-        if scaling not in {"raw", "unit", "average_residual_norm", "projection_std"}:
+        if scaling not in {"raw", "unit"}:
             raise ValueError(f"unknown scaling mode: {self.scaling!r}")
         object.__setattr__(self, "scaling", scaling)
         if self.positions not in {"all", "last", "generated_only"}:
@@ -105,9 +103,7 @@ class CappingRequest:
     direction: VectorRecipe
     bound: BoundType
     layers: tuple[int, ...]
-    threshold: Threshold | None = None
-    quantile: float | tuple[float, float] | None = None
-    calibration: str | Path | Mapping[str, Any] | None = None
+    threshold: Threshold
     positions: PositionPolicy = "all"
 
     def __post_init__(self) -> None:
@@ -116,37 +112,10 @@ class CappingRequest:
         object.__setattr__(self, "layers", _validate_layers(self.layers, required=True))
         if self.bound not in {"lower", "upper", "interval"}:
             raise ValueError("bound must be 'lower', 'upper', or 'interval'")
-        if (self.threshold is None) == (self.quantile is None):
-            raise ValueError("provide exactly one of threshold or quantile")
-        if self.quantile is not None:
-            quantiles = (
-                tuple(float(value) for value in self.quantile)
-                if isinstance(self.quantile, (tuple, list))
-                else (float(self.quantile),)
-            )
-            if not all(0.0 <= value <= 1.0 for value in quantiles):
-                raise ValueError("quantile must be between 0 and 1")
-            if self.calibration is None:
-                raise ValueError(
-                    "a calibration record is required for quantile capping"
-                )
-            if self.bound == "interval" and len(quantiles) != 2:
-                raise ValueError("interval quantile must be a (lower, upper) pair")
-            if self.bound != "interval" and len(quantiles) != 1:
-                raise ValueError("lower and upper caps accept one quantile")
-            if self.bound == "interval" and quantiles[0] > quantiles[1]:
-                raise ValueError("interval quantiles must be ordered lower to upper")
-            object.__setattr__(
-                self,
-                "quantile",
-                quantiles if self.bound == "interval" else quantiles[0],
-            )
         if self.positions not in {"all", "last", "generated_only"}:
             raise ValueError(f"unknown token-position policy: {self.positions!r}")
 
     def threshold_for(self, layer: int) -> float | tuple[float, float]:
-        if self.threshold is None:
-            raise ValueError("threshold is calibration-derived")
         value: Any = self.threshold
         if isinstance(value, Mapping):
             if layer in value:

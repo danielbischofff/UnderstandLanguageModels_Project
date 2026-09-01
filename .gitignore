@@ -10,7 +10,6 @@ logs/*
 !logs/.gitkeep
 outputs/*
 !outputs/.gitkeep
-calibration/*
 .venv/
 __pycache__/
 *.py[cod]

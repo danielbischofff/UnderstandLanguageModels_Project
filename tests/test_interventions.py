@@ -43,13 +43,9 @@ def test_lower_upper_and_interval_caps():
     assert torch.equal(interval[..., 1], activations[..., 1])
 
 
-def test_capping_requires_explicit_layers_and_one_threshold_mode():
+def test_capping_requires_explicit_layers():
     with pytest.raises(ValueError, match="layers"):
         CappingRequest(RoleDirection("lawyer"), "upper", None, threshold=1.0)  # type: ignore[arg-type]
-    with pytest.raises(ValueError, match="exactly one"):
-        CappingRequest(
-            RoleDirection("lawyer"), "upper", [1], threshold=1.0, quantile=0.9
-        )
 
 
 def test_coefficients_must_be_finite():

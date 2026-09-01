@@ -6,7 +6,6 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "accelerate>=1.0",
-    "datasets>=3.0",
     "huggingface-hub>=0.30",
     "numpy>=1.26",
     "pyyaml>=6.0",
@@ -23,7 +22,6 @@ dev = ["pytest>=8", "pytest-cov>=5"]
 
 [project.scripts]
 steering-fetch = "steering.cli.fetch_vectors:main"
-steering-calibrate = "steering.cli.calibrate:main"
 steering-clean-model = "steering.cli.clean_model_cache:main"
 steering-experiment = "steering.cli.experiment:main"
 steering-j-lens = "steering.cli.j_lens_tokens:main"

@@ -63,82 +63,15 @@ def test_raw_unit_and_per_layer_coefficients():
     assert torch.equal(raw[0].delta, torch.tensor([3.0, 0.0]))
 
 
-def test_scaling_modes_and_calibration():
-    calibration = {
-        "layers": {
-            "3": {
-                "residual_norm": {"mean": 10.0},
-                "directions": {
-                    RoleDirection("lawyer").stable_hash(): {
-                        "std": 2.0,
-                        "quantiles": {"0.25": -1.0},
-                    }
-                },
-            }
-        }
-    }
-    request = SteeringRequest(
-        RoleDirection("lawyer"),
-        coefficient=0.5,
-        scaling="average_residual_norm",
-        calibration=calibration,
-    )
-    assert torch.equal(runner().resolve(request)[0].delta, torch.tensor([5.0, 0.0]))
-    request = SteeringRequest(
-        RoleDirection("lawyer"),
-        coefficient=0.5,
-        scaling="projection_std",
-        calibration=calibration,
-    )
-    assert torch.equal(runner().resolve(request)[0].delta, torch.tensor([1.0, 0.0]))
-
-
-def test_quantile_cap_and_add_then_cap_order():
+def test_add_then_cap_order():
     recipe = PublishedAssistantAxis()
-    calibration = {
-        "layers": {
-            "4": {
-                "residual_norm": {"mean": 1.0},
-                "directions": {
-                    recipe.stable_hash(): {"std": 1.0, "quantiles": {"0.25": -2.0}}
-                },
-            }
-        }
-    }
     plan = SteeringPlan(
         additive=[SteeringRequest(RoleDirection("lawyer"), layers=[4])],
-        caps=[
-            CappingRequest(recipe, "lower", [4], quantile=0.25, calibration=calibration)
-        ],
+        caps=[CappingRequest(recipe, "lower", [4], threshold=-2.0)],
     )
     resolved = runner().resolve(plan)
     assert [item.operation for item in resolved] == ["add", "cap"]
     assert resolved[1].threshold == -2.0
-
-
-def test_interval_quantile_cap():
-    recipe = PublishedAssistantAxis()
-    calibration = {
-        "layers": {
-            "4": {
-                "residual_norm": {"mean": 1.0},
-                "directions": {
-                    recipe.stable_hash(): {
-                        "std": 1.0,
-                        "quantiles": {"0.25": -2.0, "0.75": 3.0},
-                    }
-                },
-            }
-        }
-    }
-    request = CappingRequest(
-        recipe,
-        "interval",
-        [4],
-        quantile=(0.25, 0.75),
-        calibration=calibration,
-    )
-    assert runner().resolve(request)[0].threshold == (-2.0, 3.0)
 
 
 def test_loader_does_not_override_checkpoint_quantization_config(monkeypatch):
