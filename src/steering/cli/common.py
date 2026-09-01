@@ -7,7 +7,7 @@ from typing import Any
 import torch
 import yaml
 
-from ..inference import InferenceRunner
+from ..inference import DEFAULT_MODEL_ID, InferenceRunner
 from ..vector_store import VectorStore
 
 DTYPES = {
@@ -28,7 +28,7 @@ def load_yaml(path: str | Path) -> dict[str, Any]:
 
 def runner_from_config(config: Mapping[str, Any]) -> InferenceRunner:
     model = config.get("model", {})
-    model_id = model.get("id", "Qwen/Qwen3-32B")
+    model_id = model.get("id", DEFAULT_MODEL_ID)
     store = VectorStore(
         model_id=model_id,
         revision=config.get("vectors", {}).get("revision", "main"),

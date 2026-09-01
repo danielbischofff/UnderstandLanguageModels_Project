@@ -24,8 +24,10 @@ dev = ["pytest>=8", "pytest-cov>=5"]
 [project.scripts]
 steering-fetch = "steering.cli.fetch_vectors:main"
 steering-calibrate = "steering.cli.calibrate:main"
+steering-clean-model = "steering.cli.clean_model_cache:main"
 steering-generate = "steering.cli.steer_generate:main"
 steering-j-lens = "steering.cli.j_lens_tokens:main"
+steering-preflight = "steering.cli.preflight:main"
 steering-sweep = "steering.cli.sweep:main"
 
 [build-system]

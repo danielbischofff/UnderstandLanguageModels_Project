@@ -25,9 +25,15 @@ cd "$repo_root"
 export ULM_RUNTIME_ROOT=${ULM_RUNTIME_ROOT:-"$repo_root/runtime"}
 export UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT:-"$ULM_RUNTIME_ROOT/venv"}
 export HF_HOME=${HF_HOME:-"$ULM_RUNTIME_ROOT/models/huggingface"}
+export JLENS_DATA_ROOT=${JLENS_DATA_ROOT:-"$ULM_RUNTIME_ROOT/models/j-lens/qwen3-32b"}
 export STEERING_OUTPUT_ROOT=${STEERING_OUTPUT_ROOT:-"$ULM_RUNTIME_ROOT/outputs/steering"}
 export TOKENIZERS_PARALLELISM=false
-mkdir -p "$HF_HOME" "$STEERING_OUTPUT_ROOT" "$ULM_RUNTIME_ROOT/logs"
+mkdir -p "$HF_HOME" "$JLENS_DATA_ROOT" "$STEERING_OUTPUT_ROOT" "$ULM_RUNTIME_ROOT/logs"
+
+uv run steering-preflight \
+  --model "${STEERING_MODEL_ID:-Qwen/Qwen3-32B-FP8}" \
+  --minimum-vram-gb "${STEERING_MIN_VRAM_GB:-75}" \
+  --minimum-free-disk-gb "${STEERING_MIN_FREE_DISK_GB:-80}"
 
 if [[ -n "$resume_dir" ]]; then
   uv run python -m steering.cli.sweep --resume "$resume_dir"

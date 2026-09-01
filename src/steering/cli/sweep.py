@@ -16,12 +16,13 @@ def main() -> None:
     args = parser.parse_args()
     if bool(args.config) == bool(args.resume):
         parser.error("provide exactly one of --config or --resume")
-    recorder = (
-        ExperimentRecorder.create(load_yaml(args.config), root=args.output_root)
-        if args.config
-        else ExperimentRecorder.resume(args.resume)
-    )
-    runner = runner_from_config(recorder.config)
+    if args.config:
+        config = load_yaml(args.config)
+        runner = runner_from_config(config)
+        recorder = ExperimentRecorder.create(config, root=args.output_root)
+    else:
+        recorder = ExperimentRecorder.resume(args.resume)
+        runner = runner_from_config(recorder.config)
     run_experiment(runner, recorder)
     print(recorder.run_dir)
 

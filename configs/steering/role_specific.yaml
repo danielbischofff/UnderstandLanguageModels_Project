@@ -1,7 +1,7 @@
 study: target-role-steering
 experiment: lawyer-r-minus-c
 model:
-  id: Qwen/Qwen3-32B
+  id: Qwen/Qwen3-32B-FP8
   dtype: bfloat16
   device_map: auto
   enable_thinking: false

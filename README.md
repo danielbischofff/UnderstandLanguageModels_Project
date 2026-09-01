@@ -34,6 +34,7 @@ export UV_PROJECT_ENVIRONMENT="$ULM_RUNTIME_ROOT/venv"
 export HF_HOME="$ULM_RUNTIME_ROOT/models/huggingface"
 export JLENS_DATA_ROOT="$ULM_RUNTIME_ROOT/models/j-lens/qwen3-32b"
 export STEERING_OUTPUT_ROOT="$ULM_RUNTIME_ROOT/outputs/steering"
+export STEERING_MODEL_ID=Qwen/Qwen3-32B-FP8
 mkdir -p "$HF_HOME" "$JLENS_DATA_ROOT" "$STEERING_OUTPUT_ROOT" \
   "$ULM_RUNTIME_ROOT/logs"
 ```
@@ -61,14 +62,34 @@ export PATH="$HOME/.local/bin:$PATH"
 uv sync --frozen --extra dev
 ```
 
+Before downloading the default 34.3 GB FP8 model, verify that the allocated node—not a
+login node—is visible to the locked PyTorch build, supports bf16, has at least
+75 GB of VRAM, and has 80 GB of free runtime storage:
+
+```bash
+uv run steering-preflight
+```
+
+The command also prints the resolved repository, cache, output, CUDA, and
+package-version information. A roughly 96 GB GPU comfortably clears this
+preflight for the short Bard prompt; actual availability still depends on the
+cluster allocation exposing that GPU to the process.
+
 CLI and Slurm processes inherit these variables and therefore reuse the same
 external environment, model downloads, and results directory. Export them
 again when starting a fresh login shell.
 
-Qwen 3 support requires Transformers 4.51 or newer. Full Qwen/Qwen3-32B runs
-default to bfloat16 and `device_map="auto"`; quantization is an explicit local
-development option rather than the research default. On a smaller CUDA node,
-install bitsandbytes and add `--quantization 4bit` to the one-off CLI command:
+Qwen 3 support requires Transformers 4.51 or newer. The default checkpoint is
+`Qwen/Qwen3-32B-FP8` with bf16 residual activations and `device_map="auto"`.
+Switch back to the original 65.5 GB checkpoint with:
+
+```bash
+export STEERING_MODEL_ID=Qwen/Qwen3-32B
+```
+
+The published persona vectors are shared because both checkpoints have the
+same 64-layer, 5120-wide architecture. On a smaller CUDA node, bitsandbytes
+remains a separate option for the original checkpoint:
 
 ```bash
 uv sync --frozen --extra dev --extra quantization
@@ -82,7 +103,7 @@ Fetching vectors does not load Qwen or allocate a GPU:
 ```bash
 uv run pytest -q
 uv run python -m steering.cli.fetch_vectors \
-  --model Qwen/Qwen3-32B \
+  --model "$STEERING_MODEL_ID" \
   --role-direction bard
 ```
 
@@ -91,7 +112,7 @@ layer 32 while asking a self-reflective question. It uses raw scaling for the fi
 
 ```bash
 uv run python -m steering.cli.steer_generate \
-  --model Qwen/Qwen3-32B \
+  --model "$STEERING_MODEL_ID" \
   --role bard \
   --coefficient 0.05 \
   --scaling raw \
@@ -149,7 +170,26 @@ uv run steering-j-lens "$ACTIVATIONS_DIR" \
 
 This is a readout helper, not a new lens implementation. The fitted lens was
 trained on generic text and had only 80 completed fitting prompts, so treat the
-tokens as exploratory diagnostics rather than calibrated predictions.
+tokens as exploratory diagnostics rather than calibrated predictions. It was
+fit against the original checkpoint, so applying it to FP8 activations adds a
+quantization approximation.
+
+When `steering-generate` exits, its Python process ends and CUDA releases the
+loaded model automatically. To also remove only the selected checkpoint from
+the on-disk Hugging Face cache, inspect the deletion first and then confirm it:
+
+```bash
+uv run steering-clean-model --model "$STEERING_MODEL_ID"
+uv run steering-clean-model --model "$STEERING_MODEL_ID" --yes
+```
+
+This does not remove persona vectors, J-Lens inputs, other models, or recorded
+experiments. In a long-lived Python session, release GPU memory with
+`del runner`, `gc.collect()`, and `torch.cuda.empty_cache()`.
+
+Any failed recorded trial now makes the CLI and Slurm process exit nonzero
+after preserving its failure details and reporting its run directory. A
+successful sandbox should still pass the explicit manifest checks below.
 
 ### Final activation test: direct CLI
 
@@ -214,10 +254,10 @@ and validated against `num_hidden_layers` and `hidden_size` before inference.
 
 ```bash
 uv run python -m steering.cli.fetch_vectors \
-  --model Qwen/Qwen3-32B --role-direction lawyer
+  --model "$STEERING_MODEL_ID" --role-direction lawyer
 
 uv run python -m steering.cli.fetch_vectors \
-  --model Qwen/Qwen3-32B --list-roles
+  --model "$STEERING_MODEL_ID" --list-roles
 ```
 
 Use `--offline` to prohibit network access and `--local-dir` for a local mirror.
@@ -308,7 +348,7 @@ sampled.
 
 ```bash
 uv run python -m steering.cli.calibrate \
-  --model Qwen/Qwen3-32B \
+  --model "$STEERING_MODEL_ID" \
   --dataset data/reference.jsonl \
   --layers 32,46,47,48,49,50,51,52,53 \
   --direction configs/recipes/lawyer.yaml \
@@ -356,7 +396,9 @@ uv run python -m steering.cli.sweep --resume <run-directory>
 ```
 
 Completed deterministic trial hashes are skipped; interrupted or failed trials
-are attempted again. A run directory permits one writer at a time.
+are attempted again. A run directory permits one writer at a time. Its
+advisory lock is released by the operating system if a local or Slurm process
+dies, so a stale lock file does not prevent explicit resumption.
 
 ## Repository structure
 

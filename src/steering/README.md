@@ -36,7 +36,7 @@ as the neutral `DefaultVector()`.
 ```python
 from steering import InferenceRunner, RoleDirection, SteeringRequest
 
-runner = InferenceRunner.from_pretrained("Qwen/Qwen3-32B")
+runner = InferenceRunner.from_pretrained("Qwen/Qwen3-32B-FP8")
 request = SteeringRequest(
     vector=RoleDirection("lawyer"),
     coefficient=0.05,
@@ -159,7 +159,7 @@ Fetch and materialize vectors without loading a language model:
 ```python
 from steering import RoleDirection, VectorStore
 
-store = VectorStore(model_id="Qwen/Qwen3-32B", revision="main")
+store = VectorStore(model_id="Qwen/Qwen3-32B-FP8", revision="main")
 print(store.list_roles())
 
 lawyer = store.materialize(RoleDirection("lawyer"))
@@ -196,6 +196,8 @@ record = calibrator.run(
 )
 ```
 
-The default Qwen configuration uses bfloat16 and disables thinking. Optional
-quantized loading uses `quantization="4bit"` or `"8bit"`. Python hooks are not
-advertised as compatible with `torch.compile`.
+The default Qwen checkpoint is `Qwen/Qwen3-32B-FP8`; non-quantized residual
+activations are handled in bfloat16 and thinking is disabled. Pass
+`model_id="Qwen/Qwen3-32B"` for the original bf16 checkpoint. Optional
+bitsandbytes loading uses `quantization="4bit"` or `"8bit"`. Python hooks are
+not advertised as compatible with `torch.compile`.

@@ -1,5 +1,6 @@
 import json
 
+import pytest
 import torch
 from safetensors.torch import load_file
 
@@ -9,6 +10,7 @@ from steering.experiments import (
     activation_capture_from_config,
     canonical_hash,
     expand_sweep,
+    run_experiment,
 )
 from steering.inference import GenerationResponse
 
@@ -90,3 +92,29 @@ def test_activation_capture_config_and_safe_recording(tmp_path):
     metadata, loaded = next(artifact.events())
     assert metadata["tensor_key"] == "event_000000"
     assert torch.equal(loaded, event.tensor)
+
+
+def test_failed_trials_are_recorded_and_raise_nonzero_failure(tmp_path):
+    class FailingRunner:
+        def generate(self, *args, **kwargs):
+            raise RuntimeError("generation failed")
+
+    failed_config = {
+        "study": "study",
+        "experiment": "failure",
+        "conversation": [{"role": "user", "content": "hello"}],
+    }
+    recorder = ExperimentRecorder.create(failed_config, root=tmp_path)
+    with pytest.raises(RuntimeError, match="1 of 1 experiment trials failed"):
+        run_experiment(FailingRunner(), recorder)
+    assert recorder.manifest()["status"] == "complete_with_failures"
+    status_path = next((recorder.run_dir / "trials").iterdir()) / "status.json"
+    assert json.loads(status_path.read_text())["status"] == "failed"
+
+
+def test_resume_ignores_a_stale_unlocked_writer_file(tmp_path):
+    recorder = ExperimentRecorder.create(config(), root=tmp_path)
+    recorder.lock_path.write_text("host=dead-node pid=999999\n")
+    resumed = ExperimentRecorder.resume(recorder.run_dir)
+    with resumed:
+        assert "pid=" in resumed.lock_path.read_text()

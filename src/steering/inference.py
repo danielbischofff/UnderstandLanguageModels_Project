@@ -27,7 +27,7 @@ from .interventions import (
 )
 from .vector_store import VectorStore
 
-DEFAULT_MODEL_ID = "Qwen/Qwen3-32B"
+DEFAULT_MODEL_ID = "Qwen/Qwen3-32B-FP8"
 
 
 @dataclass(frozen=True)

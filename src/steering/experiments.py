@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import fcntl
 import hashlib
 import itertools
 import json
@@ -14,6 +15,7 @@ from copy import deepcopy
 from datetime import UTC, datetime
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
+from socket import gethostname
 from types import TracebackType
 from typing import Any, Self
 
@@ -163,6 +165,7 @@ class ExperimentRecorder:
         self.config = deepcopy(dict(config))
         self.config_hash = canonical_hash(self.config)
         self.lock_path = run_dir / ".writer.lock"
+        self._lock_handle: Any | None = None
         if create:
             run_dir.mkdir(parents=True, exist_ok=False)
             (run_dir / "trials").mkdir()
@@ -214,14 +217,19 @@ class ExperimentRecorder:
         return cls(path, config, create=False)
 
     def __enter__(self) -> Self:
+        handle = self.lock_path.open("a+", encoding="utf-8")
         try:
-            descriptor = os.open(self.lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-            os.write(descriptor, str(os.getpid()).encode())
-            os.close(descriptor)
-        except FileExistsError as error:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as error:
+            handle.close()
             raise RuntimeError(
                 f"run already has a writer lock: {self.run_dir}"
             ) from error
+        handle.seek(0)
+        handle.truncate()
+        handle.write(f"host={gethostname()} pid={os.getpid()}\n")
+        handle.flush()
+        self._lock_handle = handle
         return self
 
     def __exit__(
@@ -246,7 +254,10 @@ class ExperimentRecorder:
         if exc is not None:
             manifest["last_error"] = f"{type(exc).__name__}: {exc}"
         self._write_manifest(manifest)
-        self.lock_path.unlink(missing_ok=True)
+        if self._lock_handle is not None:
+            fcntl.flock(self._lock_handle.fileno(), fcntl.LOCK_UN)
+            self._lock_handle.close()
+            self._lock_handle = None
         return False
 
     def manifest(self) -> dict[str, Any]:
@@ -437,6 +448,7 @@ def run_experiment(
     recorder: ExperimentRecorder,
 ) -> None:
     trials = expand_sweep(recorder.config)
+    failures: list[tuple[int, str, Exception]] = []
     with recorder:
         for index, trial in enumerate(trials):
             trial_hash = canonical_hash(trial)
@@ -464,4 +476,14 @@ def run_experiment(
                 recorder.record_result(index, trial, response)
             except Exception as error:  # noqa: BLE001 - persist trial failure and continue
                 recorder.record_failure(index, trial, error)
+                failures.append((index, trial_hash, error))
         recorder.write_summary()
+    if failures:
+        details = "; ".join(
+            f"trial {index} ({trial_hash}): {type(error).__name__}: {error}"
+            for index, trial_hash, error in failures
+        )
+        raise RuntimeError(
+            f"{len(failures)} of {len(trials)} experiment trials failed in "
+            f"{recorder.run_dir}; {details}"
+        )

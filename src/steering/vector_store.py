@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -28,6 +29,7 @@ from .recipes import (
 
 DEFAULT_VECTOR_REPO = "lu-christina/assistant-axis-vectors"
 MODEL_DIRECTORIES = {
+    "Qwen/Qwen3-32B-FP8": "qwen-3-32b",
     "Qwen/Qwen3-32B": "qwen-3-32b",
     "google/gemma-2-27b-it": "gemma-2-27b",
     "meta-llama/Llama-3.3-70B-Instruct": "llama-3.3-70b",
@@ -123,7 +125,7 @@ class VectorStore:
 
     def __init__(
         self,
-        model_id: str = "Qwen/Qwen3-32B",
+        model_id: str = "Qwen/Qwen3-32B-FP8",
         *,
         repo_id: str = DEFAULT_VECTOR_REPO,
         revision: str = "main",
@@ -140,7 +142,10 @@ class VectorStore:
         self.local_dir = Path(local_dir).expanduser() if local_dir else None
         self.cache_dir = str(Path(cache_dir).expanduser()) if cache_dir else None
         self.offline = offline
-        default_index = Path.home() / ".cache" / "steering" / "indices"
+        huggingface_home = Path(
+            os.environ.get("HF_HOME", Path.home() / ".cache" / "huggingface")
+        ).expanduser()
+        default_index = huggingface_home / "steering" / "indices"
         self.index_cache_dir = Path(index_cache_dir or default_index).expanduser()
         self._resolved_revision: str | None = None
         self._cached_index: list[str] | None = None

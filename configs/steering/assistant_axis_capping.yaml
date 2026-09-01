@@ -1,7 +1,7 @@
 study: assistant-axis
 experiment: lower-cap-stabilization
 model:
-  id: Qwen/Qwen3-32B
+  id: Qwen/Qwen3-32B-FP8
   dtype: bfloat16
   device_map: auto
   enable_thinking: false

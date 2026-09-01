@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import argparse
+import os
 
 from datasets import load_dataset
 
 from ..calibration import CalibrationRunner, iter_jsonl_conversations, save_calibration
+from ..inference import DEFAULT_MODEL_ID
 from ..recipes import load_recipe
 from .common import runner_from_config
 
@@ -13,7 +15,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Calibrate post-MLP residual statistics"
     )
-    parser.add_argument("--model", default="Qwen/Qwen3-32B")
+    parser.add_argument(
+        "--model", default=os.environ.get("STEERING_MODEL_ID", DEFAULT_MODEL_ID)
+    )
     parser.add_argument("--model-revision")
     parser.add_argument(
         "--dataset", required=True, help="Local JSONL path or Hugging Face dataset ID"

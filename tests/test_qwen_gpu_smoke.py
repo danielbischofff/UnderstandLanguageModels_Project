@@ -11,9 +11,9 @@ from steering import InferenceRunner, RoleDirection, SteeringRequest
     os.environ.get("RUN_QWEN_SMOKE") != "1",
     reason="set RUN_QWEN_SMOKE=1 on a node with enough VRAM for Qwen3-32B",
 )
-def test_qwen3_32b_bfloat16_steering_smoke():
+def test_qwen3_32b_fp8_steering_smoke():
     runner = InferenceRunner.from_pretrained(
-        "Qwen/Qwen3-32B", dtype=torch.bfloat16, device_map="auto"
+        "Qwen/Qwen3-32B-FP8", dtype=torch.bfloat16, device_map="auto"
     )
     conversation = [{"role": "user", "content": "Who are you?"}]
     baseline = runner.generate(conversation, seed=7, do_sample=False, max_new_tokens=8)

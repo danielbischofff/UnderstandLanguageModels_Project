@@ -8,7 +8,7 @@ Fetch a role direction and print its resolved metadata:
 
 ```bash
 uv run python -m steering.cli.fetch_vectors \
-  --model Qwen/Qwen3-32B \
+  --model "${STEERING_MODEL_ID:-Qwen/Qwen3-32B-FP8}" \
   --role-direction lawyer
 ```
 
@@ -30,7 +30,7 @@ assistant response. The direction is expressed as a recipe YAML.
 
 ```bash
 uv run python -m steering.cli.calibrate \
-  --model Qwen/Qwen3-32B \
+  --model "${STEERING_MODEL_ID:-Qwen/Qwen3-32B-FP8}" \
   --dataset data/reference.jsonl \
   --layers 32,46,47,48,49,50,51,52,53 \
   --direction configs/recipes/lawyer.yaml \
@@ -48,7 +48,7 @@ configured during setup so generated data stays outside the checkout:
 
 ```bash
 uv run python -m steering.cli.steer_generate \
-  --model Qwen/Qwen3-32B \
+  --model "${STEERING_MODEL_ID:-Qwen/Qwen3-32B-FP8}" \
   --role lawyer \
   --coefficient 0.05 \
   --layer 32 \
@@ -98,6 +98,16 @@ and `--phase decode --forward-index N` for a particular cached decoding call.
 The wrapper only selects recorded tensors and calls the existing utilities in
 `direct_character_vectors_j_lens_analysis`; it does not implement or fit a new
 lens.
+
+## Release model storage
+
+CUDA releases the model when a CLI process exits. To remove the selected model
+from disk as well, first dry-run and then confirm the targeted cache deletion:
+
+```bash
+uv run steering-clean-model --model "${STEERING_MODEL_ID:-Qwen/Qwen3-32B-FP8}"
+uv run steering-clean-model --model "${STEERING_MODEL_ID:-Qwen/Qwen3-32B-FP8}" --yes
+```
 
 Add an explicit lower cap along the published Assistant Axis:
 

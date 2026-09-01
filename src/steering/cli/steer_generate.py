@@ -1,15 +1,19 @@
 from __future__ import annotations
 
 import argparse
+import os
 
 from ..experiments import ExperimentRecorder, run_experiment
+from ..inference import DEFAULT_MODEL_ID
 from ..recipes import load_recipe
 from .common import runner_from_config
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run one recorded steering generation")
-    parser.add_argument("--model", default="Qwen/Qwen3-32B")
+    parser.add_argument(
+        "--model", default=os.environ.get("STEERING_MODEL_ID", DEFAULT_MODEL_ID)
+    )
     parser.add_argument("--model-revision")
     parser.add_argument("--role", required=True)
     parser.add_argument("--coefficient", type=float, required=True)
@@ -143,8 +147,8 @@ def main() -> None:
                 "positions": args.positions,
             }
         ]
-    recorder = ExperimentRecorder.create(config, root=args.output_root)
     runner = runner_from_config(config)
+    recorder = ExperimentRecorder.create(config, root=args.output_root)
     run_experiment(runner, recorder)
     print(recorder.run_dir)
 

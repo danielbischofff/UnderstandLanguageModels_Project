@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 
+from ..inference import DEFAULT_MODEL_ID
 from ..recipes import (
     DefaultVector,
     PublishedAssistantAxis,
@@ -18,7 +20,9 @@ def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(
         description="Fetch and inspect persona-vector artifacts"
     )
-    result.add_argument("--model", default="Qwen/Qwen3-32B")
+    result.add_argument(
+        "--model", default=os.environ.get("STEERING_MODEL_ID", DEFAULT_MODEL_ID)
+    )
     result.add_argument("--dataset-model-dir")
     result.add_argument("--revision", default="main")
     result.add_argument("--local-dir")

@@ -68,3 +68,15 @@ def test_unknown_model_defers_vector_mapping_requirement():
     store = VectorStore(model_id="custom/model", offline=True)
     with pytest.raises(VectorStoreError, match="dataset_model_dir"):
         store.materialize(DefaultVector())
+
+
+def test_default_index_cache_stays_under_huggingface_home(tmp_path, monkeypatch):
+    huggingface_home = tmp_path / "runtime" / "models" / "huggingface"
+    monkeypatch.setenv("HF_HOME", str(huggingface_home))
+    store = VectorStore()
+    assert store.index_cache_dir == huggingface_home / "steering" / "indices"
+
+
+def test_fp8_checkpoint_uses_base_model_vector_directory():
+    store = VectorStore(model_id="Qwen/Qwen3-32B-FP8")
+    assert store._model_dir() == "qwen-3-32b"
