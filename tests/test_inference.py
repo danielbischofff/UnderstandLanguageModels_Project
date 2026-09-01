@@ -196,3 +196,51 @@ def test_explicit_quantization_is_forwarded_for_unquantized_checkpoint(monkeypat
         "publisher/ordinary-model", quantization="4bit", vector_store=Store()
     )
     assert observed["quantization_config"] is quantization_config
+
+
+def test_complete_sequence_capture_includes_final_generated_token(monkeypatch):
+    class Block(torch.nn.Module):
+        def forward(self, hidden):
+            return (hidden + 1,)
+
+    class Inner(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.layers = torch.nn.ModuleList([Block(), Block()])
+
+    class CaptureModel(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.model = Inner()
+            self.config = SimpleNamespace(num_hidden_layers=2, hidden_size=2)
+            self.weight = torch.nn.Parameter(torch.ones(1))
+
+        def forward(self, input_ids, attention_mask=None, use_cache=False):
+            hidden = torch.stack(
+                [input_ids.float(), torch.zeros_like(input_ids).float()], dim=-1
+            )
+            for block in self.model.layers:
+                hidden = block(hidden)[0]
+            return hidden
+
+    loaded = InferenceRunner(
+        CaptureModel(), object(), vector_store=Store(), model_id="test"
+    )
+    monkeypatch.setattr(
+        loaded,
+        "_tokenize",
+        lambda conversation: {
+            "input_ids": torch.tensor([[10, 11]]),
+            "attention_mask": torch.tensor([[1, 1]]),
+        },
+    )
+    events = loaded.capture_complete_sequence(
+        [{"role": "user", "content": "hello"}],
+        [12, 13],
+        steering=None,
+        layers=[0, 1],
+    )
+    assert len(events) == 2
+    assert events[0].input_token_ids == [[10, 11, 12, 13]]
+    assert events[0].point == "post_intervention"
+    assert events[0].tensor.dtype is torch.bfloat16

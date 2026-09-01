@@ -403,3 +403,53 @@ class InferenceRunner:
         return GenerationResponse(
             text, generated, metadata, projections, context.activation_events
         )
+
+    def capture_complete_sequence(
+        self,
+        conversation: Sequence[Mapping[str, str]],
+        generated_token_ids: Sequence[int],
+        *,
+        steering: SteeringRequest | CappingRequest | SteeringPlan | None,
+        layers: Sequence[int],
+    ) -> list[ActivationCaptureEvent]:
+        """Capture one teacher-forced prompt+response pass for J-Lens.
+
+        This second causal forward pass is equivalent to cached decoding at each
+        position for ``positions='all'`` steering, but includes the final sampled
+        token and avoids retaining every intermediate generation forward call.
+        """
+
+        inputs = self._tokenize(conversation)
+        input_ids = inputs["input_ids"]
+        generated = torch.tensor(
+            [list(generated_token_ids)], device=input_ids.device, dtype=input_ids.dtype
+        )
+        full_input_ids = torch.cat((input_ids, generated), dim=1)
+        full_inputs: dict[str, torch.Tensor] = {"input_ids": full_input_ids}
+        attention_mask = inputs.get("attention_mask")
+        if attention_mask is not None:
+            generated_mask = torch.ones(
+                (attention_mask.shape[0], generated.shape[1]),
+                device=attention_mask.device,
+                dtype=attention_mask.dtype,
+            )
+            full_inputs["attention_mask"] = torch.cat(
+                (attention_mask, generated_mask), dim=1
+            )
+
+        capture = ActivationCaptureConfig(
+            layers=list(layers),
+            points=["post_intervention"],
+            positions="all",
+            dtype="bfloat16",
+        )
+        context = SteeringContext(
+            self.model,
+            self.resolve(steering),
+            collect_diagnostics=False,
+            activation_capture=capture,
+        )
+        self.model.eval()
+        with torch.inference_mode(), context:
+            self.model(**full_inputs, use_cache=False)
+        return context.activation_events
