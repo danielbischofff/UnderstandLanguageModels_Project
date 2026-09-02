@@ -59,6 +59,81 @@ def test_offline_missing_artifact_lists_filename(tmp_path):
     assert "role_vectors/lawyer.pt" in str(error.value)
 
 
+def test_role_vector_falls_back_to_same_named_trait(tmp_path):
+    tensor = torch.arange(6, dtype=torch.float32).reshape(2, 3) + 1
+    store = make_store(tmp_path, torch.ones(2, 3))
+    trait = store.local_dir / "qwen-3-32b" / "trait_vectors" / "evil.pt"
+    trait.parent.mkdir(parents=True)
+    torch.save(tensor, trait)
+    store._index_path.write_text(
+        json.dumps(
+            {
+                "resolved_revision": "commit",
+                "files": [
+                    "qwen-3-32b/default_vector.pt",
+                    "qwen-3-32b/trait_vectors/evil.pt",
+                ],
+            }
+        )
+    )
+
+    materialized = store.materialize(RoleVector("evil"))
+
+    assert torch.equal(materialized.tensor, tensor)
+    assert materialized.artifacts[0].filename.endswith("trait_vectors/evil.pt")
+
+
+def test_role_vector_prefers_role_when_name_is_also_a_trait(tmp_path):
+    role_tensor = torch.full((2, 3), 2.0)
+    trait_tensor = torch.full((2, 3), 3.0)
+    store = make_store(tmp_path, torch.ones(2, 3))
+    role = store.local_dir / "qwen-3-32b" / "role_vectors" / "shared.pt"
+    trait = store.local_dir / "qwen-3-32b" / "trait_vectors" / "shared.pt"
+    role.parent.mkdir(parents=True)
+    trait.parent.mkdir(parents=True)
+    torch.save(role_tensor, role)
+    torch.save(trait_tensor, trait)
+    store._index_path.write_text(
+        json.dumps(
+            {
+                "resolved_revision": "commit",
+                "files": [
+                    "qwen-3-32b/default_vector.pt",
+                    "qwen-3-32b/role_vectors/shared.pt",
+                    "qwen-3-32b/trait_vectors/shared.pt",
+                ],
+            }
+        )
+    )
+
+    materialized = store.materialize(RoleVector("shared"))
+
+    assert torch.equal(materialized.tensor, role_tensor)
+    assert materialized.artifacts[0].filename.endswith("role_vectors/shared.pt")
+
+
+def test_unknown_role_reports_available_traits(tmp_path):
+    store = make_store(tmp_path, torch.ones(2, 3))
+    store._index_path.write_text(
+        json.dumps(
+            {
+                "resolved_revision": "commit",
+                "files": [
+                    "qwen-3-32b/default_vector.pt",
+                    "qwen-3-32b/role_vectors/lawyer.pt",
+                    "qwen-3-32b/trait_vectors/evil.pt",
+                ],
+            }
+        )
+    )
+
+    with pytest.raises(VectorStoreError, match="Unknown role or trait") as error:
+        store.materialize(RoleVector("missing"))
+
+    assert "available roles: lawyer" in str(error.value)
+    assert "available traits: evil" in str(error.value)
+
+
 def test_assistant_role_is_never_default(tmp_path):
     store = make_store(tmp_path, torch.ones(2, 3))
     assert store.fetch("default_vector.pt").name == "default_vector.pt"
