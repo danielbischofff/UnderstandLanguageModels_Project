@@ -25,7 +25,8 @@ falls back to `trait_vectors/evil.pt`; a role wins if both have the same name.
 Enter `/stop` to unload the model and exit.
 
 Responses default to 300 visible tokens. After each response, the CLI prints
-top-10 J-Lens tokens for the mean, first, and last post-steering output-token
-residuals. Missing J-Lens assets are downloaded automatically (they require
-several GB); use `--no-j-lens` to skip them. Run `uv run steering-chat --help`
-for model, cache, quantization, and path options.
+top-10 J-Lens tokens for the concrete post-steering output tokens at the 25th,
+50th, and 75th percentile positions. Each line identifies the selected output
+token and its exact position. Missing J-Lens assets are downloaded automatically
+(they require several GB); use `--no-j-lens` to skip them. Run
+`uv run steering-chat --help` for model, cache, quantization, and path options.

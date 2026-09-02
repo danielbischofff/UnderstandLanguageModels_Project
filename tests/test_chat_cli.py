@@ -9,6 +9,7 @@ from steering.vector_store import VectorStore
 from steering_chat.cli import (
     completion_residuals,
     parse_turn,
+    percentile_token_indices,
     plan_for_tags,
     tags_with_defaults,
     visible_token_ids,
@@ -109,6 +110,14 @@ def test_completion_residuals_align_visible_tokens_and_ignore_lookahead():
     events = [_event(0, 99, 0.0), _event(1, 10, 1.0), _event(2, 11, 2.0)]
     result = completion_residuals(events, [10, 11], layer=32)
     assert torch.equal(result, torch.tensor([[1.0, 0.0], [2.0, 0.0]]))
+
+
+def test_percentile_positions_use_concrete_nearest_rank_tokens():
+    assert percentile_token_indices(100) == (24, 49, 74)
+    assert percentile_token_indices(4) == (0, 1, 2)
+    assert percentile_token_indices(1) == (0, 0, 0)
+    with pytest.raises(ValueError, match="positive"):
+        percentile_token_indices(0)
 
 
 def test_visible_tokens_remove_lookahead_and_trailing_specials():

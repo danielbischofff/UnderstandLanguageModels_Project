@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import gc
 import importlib
+import math
 import os
 import re
 import sys
@@ -56,7 +57,10 @@ class LensToken:
 
 @dataclass(frozen=True)
 class LensRow:
-    label: str
+    percentile: int
+    position: int
+    total_positions: int
+    source_token: str
     tokens: tuple[LensToken, ...]
 
 
@@ -179,6 +183,17 @@ def completion_residuals(
     return torch.stack(rows)
 
 
+def percentile_token_indices(token_count: int) -> tuple[int, int, int]:
+    """Return zero-based nearest-rank positions for 25%, 50%, and 75%."""
+
+    if token_count <= 0:
+        raise ValueError("token_count must be positive")
+    return tuple(
+        min(token_count - 1, math.ceil(token_count * percentile / 100) - 1)
+        for percentile in (25, 50, 75)
+    )
+
+
 @contextmanager
 def _source_imports(source_dir: Path):
     source = str(source_dir.resolve())
@@ -233,36 +248,51 @@ class JLensReader:
         ):
             self.lens = readout_module.LensTransport(lens_path)
             self.unembedding = unembed_module.Unembedding(data_dir)
-            tokenizer = Tokenizer.from_file(str(data_dir / "tokenizer.json"))
+            self.tokenizer = Tokenizer.from_file(str(data_dir / "tokenizer.json"))
             self.texts, _ = analysis_module.decode_vocab(
-                tokenizer, self.unembedding.vocab_size
+                self.tokenizer, self.unembedding.vocab_size
             )
             self._top_k = unembed_module.top_k
         self.top_k = top_k
 
-    def read(self, residuals: torch.Tensor, *, layer: int) -> tuple[LensRow, ...]:
+    def read(
+        self,
+        residuals: torch.Tensor,
+        output_token_ids: list[int],
+        *,
+        layer: int,
+    ) -> tuple[LensRow, ...]:
         if layer not in self.lens.source_layers:
             raise ValueError(
                 f"J-Lens has no fitted Jacobian for layer {layer}; "
                 f"available={self.lens.source_layers}"
             )
+        if residuals.shape[0] != len(output_token_ids):
+            raise ValueError("output token IDs and residual rows must have equal length")
+        positions = percentile_token_indices(len(output_token_ids))
         values = residuals.numpy()
-        matrix = np.stack((values.mean(axis=0), values[0], values[-1])).astype(
+        matrix = np.stack([values[position] for position in positions]).astype(
             np.float32, copy=False
         )
         transported = self.lens.transport(layer, matrix)
         logits = self.unembedding.logits(transported)
         ids, _, probabilities = self._top_k(logits, self.top_k)
-        labels = ("average", "first", "last")
         return tuple(
             LensRow(
-                label,
+                percentile,
+                position,
+                len(output_token_ids),
+                self.tokenizer.decode(
+                    [output_token_ids[position]], skip_special_tokens=False
+                ),
                 tuple(
                     LensToken(self.texts[int(token_id)], float(probability))
                     for token_id, probability in zip(ids[index], probabilities[index])
                 ),
             )
-            for index, label in enumerate(labels)
+            for index, (percentile, position) in enumerate(
+                zip((25, 50, 75), positions)
+            )
         )
 
 
@@ -316,7 +346,7 @@ class ChatSession:
             residuals = completion_residuals(
                 response.activations, ids, layer=self.layer
             )
-            rows = self.reader.read(residuals, layer=self.layer)
+            rows = self.reader.read(residuals, ids, layer=self.layer)
         self.history = [
             *conversation,
             {"role": "assistant", "content": text},
@@ -329,7 +359,10 @@ def _render_row(row: LensRow) -> str:
     tokens = ", ".join(
         f"{token.text!r} ({token.probability:.3g})" for token in row.tokens
     )
-    return f"J-Lens {row.label}: {tokens}"
+    return (
+        f"J-Lens {row.percentile}% (output token {row.position + 1}/"
+        f"{row.total_positions}, {row.source_token!r}): {tokens}"
+    )
 
 
 def _run_turn(session: ChatSession, turn: ParsedTurn) -> None:
