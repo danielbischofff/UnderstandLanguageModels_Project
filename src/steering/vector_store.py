@@ -331,11 +331,18 @@ class VectorStore:
             return tensor, [metadata]
         if isinstance(recipe, RoleVector):
             roles = self.list_roles()
-            if recipe.name not in roles:
-                raise VectorStoreError(
-                    f"Unknown role {recipe.name!r} for {self.model_id}; available roles: {', '.join(roles)}"
-                )
-            tensor, metadata = self._load_artifact(f"role_vectors/{recipe.name}.pt")
+            if recipe.name in roles:
+                relative_filename = f"role_vectors/{recipe.name}.pt"
+            else:
+                traits = self.list_traits()
+                if recipe.name not in traits:
+                    raise VectorStoreError(
+                        f"Unknown role or trait {recipe.name!r} for {self.model_id}; "
+                        f"available roles: {', '.join(roles)}; "
+                        f"available traits: {', '.join(traits)}"
+                    )
+                relative_filename = f"trait_vectors/{recipe.name}.pt"
+            tensor, metadata = self._load_artifact(relative_filename)
             return tensor, [metadata]
         if isinstance(recipe, TraitVector):
             traits = self.list_traits()

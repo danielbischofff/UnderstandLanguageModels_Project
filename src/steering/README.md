@@ -29,6 +29,11 @@ direction = Difference(
 `role_vectors/assistant.pt` remains an elicited role vector and is never used
 as the neutral `DefaultVector()`.
 
+`RoleVector(name)` first resolves `role_vectors/name.pt`, then automatically
+falls back to `trait_vectors/name.pt` when no same-named role exists. A role
+artifact wins if both exist; use `TraitVector(name)` to require the trait
+namespace explicitly.
+
 ## Additive steering
 
 `layers=None` selects the zero-based middle layer—layer 32 for Qwen3-32B.

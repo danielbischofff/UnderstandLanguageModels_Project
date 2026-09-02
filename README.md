@@ -241,6 +241,10 @@ and `Sum`.
 Vectors are downloaded selectively from
 `lu-christina/assistant-axis-vectors`, loaded on CPU with safe tensor loading,
 and validated against `num_hidden_layers` and `hidden_size` before inference.
+When a requested `RoleVector(name)` is not present under `role_vectors/`, the
+vector store automatically checks `trait_vectors/` for the same name. If both
+exist, the role vector takes precedence. `TraitVector(name)` remains available
+when callers want to require an explicit trait-vector lookup.
 
 ```bash
 uv run python -m steering.cli.fetch_vectors \
