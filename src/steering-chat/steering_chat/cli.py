@@ -97,7 +97,7 @@ def parse_turn(value: str) -> ParsedTurn:
 
 
 def recipe_for_tag(name: str) -> VectorRecipe:
-    """Resolve reserved controls; all other names are published role vectors."""
+    """Resolve controls; other names use the store's role-or-trait lookup."""
 
     if name in {"default", "default_vector"}:
         return DefaultVector()
@@ -106,8 +106,18 @@ def recipe_for_tag(name: str) -> VectorRecipe:
     return RoleVector(name)
 
 
-def plan_for_tags(tags: tuple[SteeringTag, ...], layer: int) -> SteeringPlan | None:
-    if not tags:
+def tags_with_defaults(
+    tags: tuple[SteeringTag, ...], *, neutral: bool
+) -> tuple[SteeringTag, ...]:
+    default_tags = (SteeringTag("default_vector", -1.0),) if neutral else ()
+    return (*default_tags, *tags)
+
+
+def plan_for_tags(
+    tags: tuple[SteeringTag, ...], layer: int, *, neutral: bool = False
+) -> SteeringPlan | None:
+    effective_tags = tags_with_defaults(tags, neutral=neutral)
+    if not effective_tags:
         return None
     return SteeringPlan(
         additive=[
@@ -118,7 +128,7 @@ def plan_for_tags(tags: tuple[SteeringTag, ...], layer: int) -> SteeringPlan | N
                 scaling="raw",
                 positions="all",
             )
-            for tag in tags
+            for tag in effective_tags
         ]
     )
 
@@ -264,17 +274,19 @@ class ChatSession:
         reader: JLensReader | None,
         max_new_tokens: int,
         seed: int,
+        neutral: bool = False,
     ) -> None:
         self.runner = runner
         self.reader = reader
         self.max_new_tokens = max_new_tokens
         self.seed = seed
+        self.neutral = neutral
         self.history: list[dict[str, str]] = []
         self.turn_index = 0
         self.layer = int(runner.model.config.num_hidden_layers) // 2
 
     def respond(self, turn: ParsedTurn) -> TurnResult:
-        plan = plan_for_tags(turn.tags, self.layer)
+        plan = plan_for_tags(turn.tags, self.layer, neutral=self.neutral)
         conversation = [*self.history, {"role": "user", "content": turn.text}]
         capture = (
             ActivationCaptureConfig(
@@ -321,7 +333,8 @@ def _render_row(row: LensRow) -> str:
 
 
 def _run_turn(session: ChatSession, turn: ParsedTurn) -> None:
-    setting = ", ".join(tag.display() for tag in turn.tags) or "unsteered"
+    effective_tags = tags_with_defaults(turn.tags, neutral=session.neutral)
+    setting = ", ".join(tag.display() for tag in effective_tags) or "unsteered"
     print(f"steering layer {session.layer}: {setting}", flush=True)
     result = session.respond(turn)
     print(f"\nassistant> {result.text}")
@@ -366,6 +379,12 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--vector-cache-dir")
     result.add_argument("--dataset-model-dir")
     result.add_argument("--offline", action="store_true")
+    result.add_argument(
+        "-neutral",
+        "--neutral",
+        action="store_true",
+        help="subtract the default vector on every turn",
+    )
     result.add_argument("--max-new-tokens", type=int, default=300)
     result.add_argument("--seed", type=int, default=0)
     result.add_argument("--top-k", type=int, default=10)
@@ -443,10 +462,12 @@ def main() -> None:
             reader=reader,
             max_new_tokens=args.max_new_tokens,
             seed=args.seed,
+            neutral=args.neutral,
         )
         print(
             "Enter leading tags such as /bard, /-bard, or /5bard. "
-            "Tags apply to one turn; /stop exits."
+            "Tags apply to one turn; -neutral subtracts default_vector on every "
+            "turn; /stop exits."
         )
         pending = " ".join(args.initial).strip()
         while True:

@@ -1,12 +1,16 @@
+import json
+
 import pytest
 import torch
 
 from steering.capture import ActivationCaptureEvent
 from steering.recipes import DefaultVector, PublishedAssistantAxis, RoleVector
+from steering.vector_store import VectorStore
 from steering_chat.cli import (
     completion_residuals,
     parse_turn,
     plan_for_tags,
+    tags_with_defaults,
     visible_token_ids,
 )
 
@@ -42,6 +46,50 @@ def test_tags_become_direct_raw_middle_layer_additions():
     assert [item.coefficient for item in plan.additive] == [1.0, -1.0, 2.0]
     assert all(item.layers == (32,) for item in plan.additive)
     assert all(item.scaling == "raw" for item in plan.additive)
+
+
+def test_neutral_mode_subtracts_default_vector_on_every_turn():
+    turn = parse_turn("/bard hello")
+    effective = tags_with_defaults(turn.tags, neutral=True)
+    assert [(tag.name, tag.coefficient) for tag in effective] == [
+        ("default_vector", -1.0),
+        ("bard", 1.0),
+    ]
+
+    untagged_plan = plan_for_tags((), layer=32, neutral=True)
+    assert untagged_plan is not None
+    assert isinstance(untagged_plan.additive[0].vector, DefaultVector)
+    assert untagged_plan.additive[0].coefficient == -1.0
+
+
+def test_named_chat_tag_materializes_a_trait_when_no_role_exists(tmp_path):
+    local_dir = tmp_path / "vectors"
+    trait_path = local_dir / "qwen-3-32b/trait_vectors/evil.pt"
+    trait_path.parent.mkdir(parents=True)
+    expected = torch.arange(6, dtype=torch.float32).reshape(2, 3) + 1
+    torch.save(expected, trait_path)
+    store = VectorStore(
+        model_id="Qwen/Qwen3-32B-FP8",
+        local_dir=local_dir,
+        index_cache_dir=tmp_path / "indices",
+        offline=True,
+    )
+    store.index_cache_dir.mkdir(parents=True)
+    store._index_path.write_text(
+        json.dumps(
+            {
+                "resolved_revision": "test",
+                "files": ["qwen-3-32b/trait_vectors/evil.pt"],
+            }
+        )
+    )
+    turn = parse_turn("/2evil Be wicked")
+    plan = plan_for_tags(turn.tags, layer=1)
+
+    assert plan is not None
+    materialized = store.materialize(plan.additive[0].vector)
+    assert torch.equal(materialized.tensor, expected)
+    assert materialized.artifacts[0].filename.endswith("trait_vectors/evil.pt")
 
 
 def _event(index, token_id, value):
