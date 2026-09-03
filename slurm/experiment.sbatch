@@ -29,17 +29,19 @@ export STEERING_OUTPUT_ROOT=${STEERING_OUTPUT_ROOT:-"$ULM_RUNTIME_ROOT/outputs/e
 export TOKENIZERS_PARALLELISM=false
 mkdir -p "$HF_HOME" "$JLENS_DATA_ROOT" "$STEERING_OUTPUT_ROOT" "$ULM_RUNTIME_ROOT/logs"
 
-selected_model=${STEERING_MODEL_ID:-Qwen/Qwen3-32B-FP8}
+preflight_config=$config_path
+if [[ -n "$resume_dir" ]]; then
+  preflight_config="$resume_dir/resolved-config.yaml"
+fi
 uv run steering-preflight \
-  --model "$selected_model" \
+  --config "$preflight_config" \
   --minimum-vram-gb "${STEERING_MIN_VRAM_GB:-75}" \
   --minimum-free-disk-gb "${STEERING_MIN_FREE_DISK_GB:-80}"
 
 if [[ -n "$resume_dir" ]]; then
-  uv run steering-experiment --resume "$resume_dir" --model "$selected_model"
+  uv run steering-experiment --resume "$resume_dir"
 else
   uv run steering-experiment \
     --config "$config_path" \
-    --model "$selected_model" \
     --output-root "$STEERING_OUTPUT_ROOT"
 fi

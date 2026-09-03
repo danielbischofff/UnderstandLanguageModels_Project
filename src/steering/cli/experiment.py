@@ -7,7 +7,6 @@ import os
 from pathlib import Path
 
 from ..experiments import ExperimentConfig, ExperimentRecorder, run_experiment
-from ..inference import DEFAULT_MODEL_ID
 from ..j_lens import JLenseReader
 from .common import load_yaml, runner_from_config
 
@@ -21,9 +20,6 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, help="experiment YAML for a new run")
     parser.add_argument("--resume", type=Path, help="existing run directory")
-    parser.add_argument(
-        "--model", default=os.environ.get("STEERING_MODEL_ID", DEFAULT_MODEL_ID)
-    )
     parser.add_argument(
         "--output-root",
         type=Path,
@@ -58,7 +54,7 @@ def main() -> None:
             lens_path=lens_path,
             top_k_count=config.top_k,
         )
-        runner = runner_from_config({"model": {"id": args.model}})
+        runner = runner_from_config(config.to_mapping())
         run_experiment(runner, recorder, lens)
     except FileNotFoundError as error:
         parser.error(

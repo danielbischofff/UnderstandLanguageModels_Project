@@ -1,7 +1,10 @@
 import json
 
 import pytest
+import torch
+from safetensors.torch import load_file
 
+from steering.capture import ActivationCaptureEvent
 from steering.experiments import (
     ExperimentConfig,
     ExperimentRecorder,
@@ -14,6 +17,11 @@ from steering.inference import GenerationResponse
 def config():
     return {
         "name": "point-of-view",
+        "model": {
+            "id": "Qwen/Qwen3-32B",
+            "dtype": "bfloat16",
+            "enable_thinking": False,
+        },
         "questions": [
             {"id": "q1", "text": "first"},
             {"id": "q2", "text": "second"},
@@ -38,6 +46,8 @@ def test_config_expands_question_character_matrix_in_stable_order():
     assert trials[0]["steering"] is None
     assert trials[1]["steering"] == {"coefficient": 1.0, "layers": [2]}
     assert canonical_hash(trials[1]) == canonical_hash(parsed.trials()[1])
+    assert parsed.model["id"] == "Qwen/Qwen3-32B"
+    assert parsed.model["dtype"] == "bfloat16"
 
 
 def test_config_rejects_unknown_fields_and_duplicate_ids():
@@ -48,6 +58,17 @@ def test_config_rejects_unknown_fields_and_duplicate_ids():
     invalid = config()
     invalid["questions"][1]["id"] = "q1"
     with pytest.raises(ValueError, match="question ids must be unique"):
+        ExperimentConfig.from_mapping(invalid)
+
+
+def test_config_requires_model_and_validates_output_options():
+    invalid = config()
+    del invalid["model"]
+    with pytest.raises(TypeError, match="model must be a mapping"):
+        ExperimentConfig.from_mapping(invalid)
+    invalid = config()
+    invalid["outputs"] = {"keep_activations": "yes"}
+    with pytest.raises(TypeError, match="keep_activations must be a boolean"):
         ExperimentConfig.from_mapping(invalid)
 
 
@@ -108,6 +129,35 @@ def test_run_records_compact_matrix_without_activation_artifacts(tmp_path):
     assert recorder.manifest()["status"] == "complete"
 
 
+def test_optional_activation_retention_uses_safetensors(tmp_path):
+    value = config()
+    value["outputs"] = {"keep_activations": True}
+    recorder = ExperimentRecorder.create(value, root=tmp_path)
+    response = GenerationResponse(
+        "answer", [12], {"tokens": {"prompt_ids": [10, 11]}}, []
+    )
+    event = ActivationCaptureEvent(
+        tensor=torch.tensor([[[1.0, 2.0]]]),
+        layer=0,
+        point="post_intervention",
+        phase="prefill",
+        forward_index=0,
+        input_token_ids=[[10]],
+        cache_positions=None,
+        position_policy="all",
+    )
+    recorder.record_result(
+        0,
+        recorder.config.trials()[0],
+        response,
+        {"tokens": [], "layers": []},
+        [event],
+    )
+    activation_dir = next((recorder.run_dir / "trials").iterdir()) / "activations"
+    assert torch.equal(
+        load_file(activation_dir / "activations.safetensors")["event_000000"],
+        event.tensor,
+    )
 def test_resume_uses_resolved_experiment(tmp_path):
     recorder = ExperimentRecorder.create(config(), root=tmp_path)
     resumed = ExperimentRecorder.resume(recorder.run_dir)
@@ -128,3 +178,5 @@ def test_failed_cells_are_recorded_and_reported(tmp_path):
     with pytest.raises(RuntimeError, match="1 of 1 experiment trials failed"):
         run_experiment(FailingRunner(), recorder, FakeLens())
     assert recorder.manifest()["status"] == "complete_with_failures"
+    failure = next(iter(recorder.manifest()["trials"].values()))
+    assert failure["error"] == "RuntimeError: generation failed"

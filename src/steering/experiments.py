@@ -8,7 +8,7 @@ import json
 import os
 import subprocess
 import time
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from importlib.metadata import PackageNotFoundError, version
@@ -18,7 +18,9 @@ from types import TracebackType
 from typing import Any, Self
 
 import yaml
+from safetensors.torch import save_file
 
+from .capture import ActivationCaptureEvent
 from .inference import GenerationResponse, InferenceRunner
 from .j_lens import JLenseReader
 from .interventions import SteeringRequest
@@ -77,6 +79,8 @@ class ExperimentConfig:
     """The complete, human-authored definition of an experiment matrix."""
 
     name: str
+    model: Mapping[str, Any]
+    vector_revision: str
     questions: tuple[Question, ...]
     characters: tuple[str, ...]
     coefficient: float
@@ -84,6 +88,7 @@ class ExperimentConfig:
     generation: Mapping[str, Any]
     seed: int
     top_k: int
+    keep_activations: bool
     description: str | None = None
 
     @classmethod
@@ -91,12 +96,15 @@ class ExperimentConfig:
         allowed = {
             "name",
             "description",
+            "model",
+            "vectors",
             "questions",
             "characters",
             "steering",
             "generation",
             "seed",
             "j_lens",
+            "outputs",
         }
         unknown = set(value) - allowed
         if unknown:
@@ -104,6 +112,54 @@ class ExperimentConfig:
         name = str(value.get("name", "")).strip()
         if not name:
             raise ValueError("experiment name must be nonempty")
+
+        raw_model = value.get("model")
+        if not isinstance(raw_model, Mapping):
+            raise TypeError("model must be a mapping")
+        model_unknown = set(raw_model) - {
+            "id",
+            "dtype",
+            "revision",
+            "tokenizer_revision",
+            "quantization",
+            "enable_thinking",
+        }
+        if model_unknown:
+            raise ValueError(f"unknown model fields: {sorted(model_unknown)}")
+        model_id = str(raw_model.get("id", "")).strip()
+        if not model_id:
+            raise ValueError("model.id must be nonempty")
+        dtype = str(raw_model.get("dtype", "")).strip()
+        if dtype not in {"auto", "float32", "float16", "bfloat16"}:
+            raise ValueError("model.dtype must be auto, float32, float16, or bfloat16")
+        quantization = raw_model.get("quantization")
+        if quantization not in {None, "4bit", "8bit"}:
+            raise ValueError("model.quantization must be 4bit or 8bit")
+        enable_thinking = raw_model.get("enable_thinking", False)
+        if not isinstance(enable_thinking, bool):
+            raise TypeError("model.enable_thinking must be a boolean")
+        model: dict[str, Any] = {
+            "id": model_id,
+            "dtype": dtype,
+            "enable_thinking": enable_thinking,
+        }
+        for key in ("revision", "tokenizer_revision"):
+            if raw_model.get(key) is not None:
+                model[key] = str(raw_model[key]).strip()
+                if not model[key]:
+                    raise ValueError(f"model.{key} must be nonempty when provided")
+        if quantization is not None:
+            model["quantization"] = quantization
+
+        vectors = value.get("vectors", {})
+        if not isinstance(vectors, Mapping):
+            raise TypeError("vectors must be a mapping")
+        vector_unknown = set(vectors) - {"revision"}
+        if vector_unknown:
+            raise ValueError(f"unknown vectors fields: {sorted(vector_unknown)}")
+        vector_revision = str(vectors.get("revision", "main")).strip()
+        if not vector_revision:
+            raise ValueError("vectors.revision must be nonempty")
 
         raw_questions = value.get("questions")
         if not isinstance(raw_questions, list) or not raw_questions:
@@ -166,8 +222,20 @@ class ExperimentConfig:
         if top_k <= 0:
             raise ValueError("j_lens.top_k must be positive")
 
+        outputs = value.get("outputs", {})
+        if not isinstance(outputs, Mapping):
+            raise TypeError("outputs must be a mapping")
+        output_unknown = set(outputs) - {"keep_activations"}
+        if output_unknown:
+            raise ValueError(f"unknown outputs fields: {sorted(output_unknown)}")
+        keep_activations = outputs.get("keep_activations", False)
+        if not isinstance(keep_activations, bool):
+            raise TypeError("outputs.keep_activations must be a boolean")
+
         return cls(
             name=name,
+            model=model,
+            vector_revision=vector_revision,
             description=(
                 str(value["description"]).strip() if value.get("description") else None
             ),
@@ -178,6 +246,7 @@ class ExperimentConfig:
             generation=generation,
             seed=int(value.get("seed", 0)),
             top_k=top_k,
+            keep_activations=keep_activations,
         )
 
     def trials(self) -> list[dict[str, Any]]:
@@ -205,6 +274,8 @@ class ExperimentConfig:
         return {
             "name": self.name,
             **({"description": self.description} if self.description else {}),
+            "model": dict(self.model),
+            "vectors": {"revision": self.vector_revision},
             "questions": [
                 {"id": question.id, "text": question.text}
                 for question in self.questions
@@ -217,6 +288,7 @@ class ExperimentConfig:
             "generation": dict(self.generation),
             "seed": self.seed,
             "j_lens": {"top_k": self.top_k},
+            "outputs": {"keep_activations": self.keep_activations},
         }
 
 
@@ -339,6 +411,7 @@ class ExperimentRecorder:
         trial: Mapping[str, Any],
         response: GenerationResponse,
         j_lens: Mapping[str, Any],
+        activations: Sequence[ActivationCaptureEvent] = (),
     ) -> None:
         trial_hash = canonical_hash(trial)
         trial_dir = self.run_dir / "trials" / f"{index:05d}_{trial_hash}"
@@ -353,6 +426,7 @@ class ExperimentRecorder:
             },
             "j_lens": dict(j_lens),
         }
+        activation_artifact = self._record_activations(trial_dir, activations)
         _atomic_text(
             trial_dir / "result.json",
             json.dumps(result, indent=2, ensure_ascii=False) + "\n",
@@ -370,7 +444,7 @@ class ExperimentRecorder:
                         "trial_hash": trial_hash,
                         "run": self.run_dir.name,
                     },
-                    "activation_artifact": None,
+                    "activation_artifact": activation_artifact,
                 },
                 indent=2,
                 sort_keys=True,
@@ -391,21 +465,59 @@ class ExperimentRecorder:
         }
         self._write_manifest(manifest)
 
+    def _record_activations(
+        self, trial_dir: Path, events: Sequence[ActivationCaptureEvent]
+    ) -> dict[str, Any] | None:
+        if not self.config.keep_activations or not events:
+            return None
+        activation_dir = trial_dir / "activations"
+        activation_dir.mkdir(parents=True, exist_ok=True)
+        tensors = {
+            f"event_{index:06d}": event.tensor.contiguous()
+            for index, event in enumerate(events)
+        }
+        tensor_path = activation_dir / "activations.safetensors"
+        temporary = tensor_path.with_name(f".{tensor_path.name}.{os.getpid()}.tmp")
+        save_file(tensors, temporary)
+        temporary.replace(tensor_path)
+        manifest = {
+            "schema_version": 1,
+            "format": "safetensors",
+            "tensor_file": tensor_path.name,
+            "coordinate_system": {
+                "hook_point": "transformer_block_output",
+                "residual_stream": "post_block_post_mlp",
+                "layer_indexing": "zero_based",
+                "tensor_axes": ["batch", "sequence_position", "hidden"],
+            },
+            "events": [
+                event.manifest_entry(key) for key, event in zip(tensors, events)
+            ],
+        }
+        _atomic_text(
+            activation_dir / "manifest.json",
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        )
+        return {
+            "manifest": "activations/manifest.json",
+            "tensors": "activations/activations.safetensors",
+            "event_count": len(events),
+        }
+
     def record_failure(self, index: int, trial: Mapping[str, Any], error: Exception) -> None:
         trial_hash = canonical_hash(trial)
         trial_dir = self.run_dir / "trials" / f"{index:05d}_{trial_hash}"
         trial_dir.mkdir(parents=True, exist_ok=True)
+        failure = f"{type(error).__name__}: {error}"
         _atomic_text(
             trial_dir / "status.json",
-            json.dumps(
-                {"status": "failed", "error": f"{type(error).__name__}: {error}"},
-                indent=2,
-            ) + "\n",
+            json.dumps({"status": "failed", "error": failure}, indent=2) + "\n",
         )
         manifest = self.manifest()
         manifest.setdefault("trials", {})[trial_hash] = {
             "index": index,
             "status": "failed",
+            "error": failure,
             "question": trial["question"]["id"],
             "character": trial["character"],
             "path": str(trial_dir.relative_to(self.run_dir)),
@@ -500,7 +612,7 @@ def run_experiment(
                     "finished_at": datetime.now(UTC).isoformat(),
                     "duration_seconds": time.perf_counter() - started_clock,
                 }
-                recorder.record_result(index, trial, response, readout)
+                recorder.record_result(index, trial, response, readout, events)
                 del events
             except Exception as error:  # noqa: BLE001 - persist and continue matrix
                 recorder.record_failure(index, trial, error)

@@ -29,9 +29,10 @@ runtime/               Ignored models, environment, logs, and experiment output
 
 ## Experiment shape
 
-One YAML file is the complete user-facing experiment. Its `questions` and
-`characters` form a Cartesian matrix; `unsteered` is the explicit control and
-other names resolve to published Assistant Axis role directions.
+One YAML file is the complete user-facing experiment. It selects the model,
+inference dtype, and vector revision. Its `questions` and `characters` form a
+Cartesian matrix; `unsteered` is the explicit control and other names resolve
+to published Assistant Axis role directions.
 
 For each matrix cell the runner:
 
@@ -40,7 +41,9 @@ For each matrix cell the runner:
 2. performs one causal pass over the complete prompt and answer;
 3. converts the in-memory residual stream into J-Lens top words for every fitted
    layer and token position; and
-4. discards the activations, retaining only compact JSON results and provenance.
+4. discards the activations by default, retaining compact JSON results and
+   provenance. `outputs.keep_activations: true` keeps the intermediate tensors
+   for follow-up analysis.
 
 The starting experiment is
 [configs/experiments/tylenol-demon.yaml](configs/experiments/tylenol-demon.yaml).
@@ -62,9 +65,15 @@ sbatch slurm/experiment.sbatch configs/experiments/tylenol-demon.yaml
 
 `setup.sh` installs `uv` locally when necessary, creates the locked environment,
 fetches the demon/default vectors, and downloads the published J-Lens plus
-Qwen's unembedding (about 8.2 GB). The Slurm job performs a GPU/storage preflight
-before loading `Qwen/Qwen3-32B-FP8`; the model is downloaded into `runtime/` on
-its first run.
+Qwen's unembedding (about 8.2 GB). The Slurm job reads the model and dtype from
+the experiment YAML and performs a GPU/storage preflight before loading it; the
+model is downloaded into `runtime/` on its first run.
+
+That preflight verifies that the allocated node exposes CUDA to the locked
+PyTorch build, supports the configured BF16/FP8 requirements, and has enough
+VRAM and free runtime storage. It also prints the resolved model, cache/output
+paths, CUDA version, and core package versions, which makes cluster failures
+much easier to diagnose from the Slurm log.
 
 Results are written under
 `runtime/outputs/experiments/tylenol-demon/runs/<run>/`. Each run contains the
@@ -75,8 +84,9 @@ Slurm script by passing the run directory as its second argument.
 ## Interpretation boundaries
 
 The J-Lens was fitted on generic text using the original Qwen3-32B checkpoint
-and its available artifact reports only 80 completed fitting prompts. Reading
-FP8-model activations through it is therefore an exploratory approximation.
+and its available artifact reports only 80 completed fitting prompts. The
+included experiment therefore uses that model in bfloat16. Selecting an FP8 or
+otherwise quantized model makes the readout an exploratory approximation.
 Compare characters, positions, and persistent layer ranges; avoid treating a
 single surfaced token as a causal explanation.
 

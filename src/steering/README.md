@@ -12,7 +12,8 @@ This package contains the lower-level pieces used by that runner:
 - `SteeringContext` installs exception-safe hooks and can capture residuals in
   memory at explicit pre/post-intervention boundaries.
 - `JLenseReader` immediately converts full-sequence residuals into top vocabulary
-  words per layer and token position. Experiment runs do not save activations.
+  words per layer and token position. Experiment runs discard activations unless
+  `outputs.keep_activations` is enabled.
 
 The default experiment uses raw steering:
 
@@ -33,5 +34,7 @@ with `(R_role - D) / ||R_role - D||`. Explicit-threshold capping remains
 available in the Python API, but it is not part of the experiment YAML.
 
 Position policies are `all`, `last`, and `generated_only`. The matrix runner
-uses `all`, then reads every fitted J-Lens layer in one full-sequence causal
-pass so the final generated token is included.
+uses `all`, then reads the post-intervention residual at every fitted J-Lens
+layer in one full-sequence causal pass so the final generated token is included.
+For unsteered trials this is the original block output; for steered trials it
+includes the injection and its downstream effects.

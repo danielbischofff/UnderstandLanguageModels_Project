@@ -12,6 +12,8 @@ from pathlib import Path
 import torch
 
 from ..inference import DEFAULT_MODEL_ID
+from ..experiments import ExperimentConfig
+from .common import load_yaml
 
 
 def _gb(value: int) -> float:
@@ -20,12 +22,17 @@ def _gb(value: int) -> float:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--model", default=os.environ.get("STEERING_MODEL_ID", DEFAULT_MODEL_ID)
-    )
+    source = parser.add_mutually_exclusive_group()
+    source.add_argument("--config", type=Path, help="experiment YAML")
+    source.add_argument("--model", help="model id when checking without an experiment")
     parser.add_argument("--minimum-vram-gb", type=float, default=75.0)
     parser.add_argument("--minimum-free-disk-gb", type=float, default=80.0)
     args = parser.parse_args()
+    model_id = (
+        str(ExperimentConfig.from_mapping(load_yaml(args.config)).model["id"])
+        if args.config
+        else args.model or os.environ.get("STEERING_MODEL_ID", DEFAULT_MODEL_ID)
+    )
 
     repository = Path(
         os.environ.get("ULM_REPO_ROOT", Path(__file__).resolve().parents[3])
@@ -50,7 +57,7 @@ def main() -> None:
     if not torch.cuda.is_bf16_supported():
         raise SystemExit("preflight failed: the selected GPU does not support bfloat16")
     capability = torch.cuda.get_device_capability(0)
-    if args.model.upper().endswith("-FP8") and capability < (8, 9):
+    if model_id.upper().endswith("-FP8") and capability < (8, 9):
         raise SystemExit(
             "preflight failed: the FP8 checkpoint requires an FP8-capable NVIDIA "
             f"GPU (compute capability >= 8.9); GPU 0 reports {capability[0]}.{capability[1]}. "
@@ -74,7 +81,7 @@ def main() -> None:
     print(f"runtime: {runtime}")
     print(f"HF_HOME: {huggingface_home}")
     print(f"outputs: {output_root}")
-    print(f"model: {args.model}")
+    print(f"model: {model_id}")
     print(f"torch: {torch.__version__} (CUDA {torch.version.cuda})")
     print(f"transformers: {version('transformers')}")
     print(f"accelerate: {version('accelerate')}")
