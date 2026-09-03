@@ -15,7 +15,6 @@ hypothesis in [the project proposal](Project%20Proposals/j_lens_persona_space_re
 
 ```text
 configs/experiments/   Human-authored question x character matrices
-container/             Optional container packaging
 direct_character_vectors_j_lens_analysis/
                        Original character-vector and J/R-Lens analysis
 Project Proposals/     Research motivation and hypotheses
