@@ -77,9 +77,10 @@ much easier to diagnose from the Slurm log.
 
 Results are written under
 `runtime/outputs/experiments/tylenol-demon/runs/<run>/`. Each run contains the
-resolved YAML, status manifest, per-cell responses, `experiment-results.json`,
-and an interactive `report.html`. Interrupted runs can be resumed with the same
-Slurm script by passing the run directory as its second argument.
+resolved YAML, status manifest, per-cell result and metadata JSON,
+`experiment-results.json`, and an interactive `report.html`. Interrupted runs
+can be resumed with the same Slurm script by passing the run directory as its
+second argument.
 
 ## Interpretation boundaries
 

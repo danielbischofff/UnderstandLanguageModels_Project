@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import csv
 import hashlib
 import json
 import os
@@ -431,7 +430,6 @@ class ExperimentRecorder:
             trial_dir / "result.json",
             json.dumps(result, indent=2, ensure_ascii=False) + "\n",
         )
-        _atomic_text(trial_dir / "response.txt", response.text)
         _atomic_text(
             trial_dir / "metadata.json",
             json.dumps(
@@ -450,10 +448,6 @@ class ExperimentRecorder:
                 sort_keys=True,
                 default=str,
             ) + "\n",
-        )
-        _atomic_text(
-            trial_dir / "status.json",
-            json.dumps({"status": "complete", "trial_hash": trial_hash}, indent=2) + "\n",
         )
         manifest = self.manifest()
         manifest.setdefault("trials", {})[trial_hash] = {
@@ -506,13 +500,7 @@ class ExperimentRecorder:
 
     def record_failure(self, index: int, trial: Mapping[str, Any], error: Exception) -> None:
         trial_hash = canonical_hash(trial)
-        trial_dir = self.run_dir / "trials" / f"{index:05d}_{trial_hash}"
-        trial_dir.mkdir(parents=True, exist_ok=True)
         failure = f"{type(error).__name__}: {error}"
-        _atomic_text(
-            trial_dir / "status.json",
-            json.dumps({"status": "failed", "error": failure}, indent=2) + "\n",
-        )
         manifest = self.manifest()
         manifest.setdefault("trials", {})[trial_hash] = {
             "index": index,
@@ -520,26 +508,10 @@ class ExperimentRecorder:
             "error": failure,
             "question": trial["question"]["id"],
             "character": trial["character"],
-            "path": str(trial_dir.relative_to(self.run_dir)),
         }
         self._write_manifest(manifest)
 
     def write_outputs(self) -> None:
-        manifest = self.manifest()
-        rows = [
-            {"trial_hash": key, **value}
-            for key, value in sorted(manifest.get("trials", {}).items())
-        ]
-        if rows:
-            path = self.run_dir / "summary.csv"
-            temporary = path.with_suffix(".csv.tmp")
-            with temporary.open("w", encoding="utf-8", newline="") as handle:
-                writer = csv.DictWriter(
-                    handle, fieldnames=sorted({key for row in rows for key in row})
-                )
-                writer.writeheader()
-                writer.writerows(rows)
-            temporary.replace(path)
         results = [
             json.loads(path.read_text(encoding="utf-8"))
             for path in sorted((self.run_dir / "trials").glob("*/result.json"))

@@ -158,6 +158,8 @@ def test_optional_activation_retention_uses_safetensors(tmp_path):
         load_file(activation_dir / "activations.safetensors")["event_000000"],
         event.tensor,
     )
+    assert not (activation_dir.parent / "response.txt").exists()
+    assert not (activation_dir.parent / "status.json").exists()
 def test_resume_uses_resolved_experiment(tmp_path):
     recorder = ExperimentRecorder.create(config(), root=tmp_path)
     resumed = ExperimentRecorder.resume(recorder.run_dir)
@@ -180,3 +182,5 @@ def test_failed_cells_are_recorded_and_reported(tmp_path):
     assert recorder.manifest()["status"] == "complete_with_failures"
     failure = next(iter(recorder.manifest()["trials"].values()))
     assert failure["error"] == "RuntimeError: generation failed"
+    assert not list((recorder.run_dir / "trials").iterdir())
+    assert not (recorder.run_dir / "summary.csv").exists()
