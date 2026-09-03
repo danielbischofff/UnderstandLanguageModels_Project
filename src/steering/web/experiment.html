@@ -179,8 +179,8 @@
     };
 
     function renderSelectors() {
-      const characters = [...new Set(DATA.trials.map(item => item.character))];
-      const questions = [...new Map(DATA.trials.map(item => [item.question.id, item.question])).values()];
+      const characters = DATA.experiment.characters;
+      const questions = DATA.experiment.questions;
       options(characterSelect, characters.map(value => ({
         value, label: value === "unsteered" ? "Unsteered assistant" : value
       })), "Character");
@@ -305,6 +305,13 @@
     function renderTrial() {
       trial = trialForSelection();
       if (!trial) {
+        promptTokens.replaceChildren();
+        responseTokens.replaceChildren();
+        rawResponse.textContent = "No generated response is available for this cell.";
+        suggestions.replaceChildren();
+        selectedPosition.textContent = "No token selected";
+        searchSummary.textContent = "This matrix cell did not complete.";
+        searchLegend.hidden = true;
         layerGrid.innerHTML = '<p class="empty">This matrix cell did not complete.</p>';
         return;
       }

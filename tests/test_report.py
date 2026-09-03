@@ -43,3 +43,5 @@ def test_report_is_self_contained_and_escapes_script_endings():
     assert "const DATA =" in html
     assert "<\\/script><script>" in html
     assert "fetch(" not in html
+    assert "const characters = DATA.experiment.characters" in html
+    assert 'rawResponse.textContent = "No generated response is available for this cell."' in html
