@@ -55,18 +55,18 @@ h'[l,t] = h[l,t] + alpha * (R_character[l] - D[l]).
 
 ## Run on Slurm
 
-From a checkout on the cluster, setup and submission take two commands:
+From an internet-connected login node, setup and submission take two commands:
 
 ```bash
-bash setup.sh
+bash setup.sh configs/experiments/tylenol-demon.yaml
 sbatch slurm/experiment.sbatch configs/experiments/tylenol-demon.yaml
 ```
 
 `setup.sh` installs `uv` locally when necessary, creates the locked environment,
-fetches the demon/default vectors, and downloads the published J-Lens plus
-Qwen's unembedding (about 8.2 GB). The Slurm job reads the model and dtype from
-the experiment YAML and performs a GPU/storage preflight before loading it; the
-model is downloaded into `runtime/` on its first run.
+downloads the model and persona vectors named by the experiment, and downloads
+the published J-Lens plus Qwen's unembedding. Keep `runtime/` on storage visible
+to both login and compute nodes. The Slurm job forces Hub and package resolution
+offline, verifies the cached experiment artifacts, and then loads the model.
 
 That preflight verifies that the allocated node exposes CUDA to the locked
 PyTorch build, supports the configured BF16/FP8 requirements, and has enough

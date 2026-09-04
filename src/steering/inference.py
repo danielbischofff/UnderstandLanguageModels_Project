@@ -71,6 +71,7 @@ class InferenceRunner:
         quantization: str | None = None,
         enable_thinking: bool = False,
         trust_remote_code: bool = False,
+        local_files_only: bool = False,
         vector_store: VectorStore | None = None,
         **model_kwargs: Any,
     ) -> InferenceRunner:
@@ -90,12 +91,14 @@ class InferenceRunner:
             model_id,
             revision=tokenizer_revision or model_revision,
             trust_remote_code=trust_remote_code,
+            local_files_only=local_files_only,
         )
         load_kwargs = {
             "revision": model_revision,
             "device_map": device_map,
             "dtype": dtype,
             "trust_remote_code": trust_remote_code,
+            "local_files_only": local_files_only,
             **model_kwargs,
         }
         # Do not pass an absent override: pre-quantized checkpoints may carry

@@ -11,8 +11,9 @@ from pathlib import Path
 
 import torch
 
-from ..inference import DEFAULT_MODEL_ID
 from ..experiments import ExperimentConfig
+from ..inference import DEFAULT_MODEL_ID
+from ..prefetch import prepare_experiment_artifacts
 from .common import load_yaml
 
 
@@ -28,9 +29,12 @@ def main() -> None:
     parser.add_argument("--minimum-vram-gb", type=float, default=75.0)
     parser.add_argument("--minimum-free-disk-gb", type=float, default=80.0)
     args = parser.parse_args()
+    config = (
+        ExperimentConfig.from_mapping(load_yaml(args.config)) if args.config else None
+    )
     model_id = (
-        str(ExperimentConfig.from_mapping(load_yaml(args.config)).model["id"])
-        if args.config
+        str(config.model["id"])
+        if config
         else args.model or os.environ.get("STEERING_MODEL_ID", DEFAULT_MODEL_ID)
     )
 
@@ -76,6 +80,16 @@ def main() -> None:
             f"preflight failed: {runtime} has {free_disk_gb:.1f} GB free; "
             f"at least {args.minimum_free_disk_gb:.1f} GB is required"
         )
+
+    if config is not None:
+        try:
+            prepare_experiment_artifacts(config, local_files_only=True)
+        except Exception as error:
+            raise SystemExit(
+                "preflight failed: an experiment artifact is missing or invalid in the "
+                f"cache ({error}); run 'bash setup.sh "
+                f"{args.config}' on an internet-connected login node"
+            ) from error
 
     print(f"repository: {repository}")
     print(f"runtime: {runtime}")

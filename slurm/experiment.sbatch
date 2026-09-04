@@ -27,6 +27,10 @@ export HF_HOME=${HF_HOME:-"$ULM_RUNTIME_ROOT/models/huggingface"}
 export JLENS_DATA_ROOT=${JLENS_DATA_ROOT:-"$ULM_RUNTIME_ROOT/models/j-lens/qwen3-32b"}
 export STEERING_OUTPUT_ROOT=${STEERING_OUTPUT_ROOT:-"$ULM_RUNTIME_ROOT/outputs/experiments"}
 export TOKENIZERS_PARALLELISM=false
+export PATH="$ULM_RUNTIME_ROOT/bin:$PATH"
+export HF_HUB_OFFLINE=1
+export TRANSFORMERS_OFFLINE=1
+export UV_OFFLINE=1
 mkdir -p "$HF_HOME" "$JLENS_DATA_ROOT" "$STEERING_OUTPUT_ROOT" "$ULM_RUNTIME_ROOT/logs"
 
 preflight_config=$config_path
