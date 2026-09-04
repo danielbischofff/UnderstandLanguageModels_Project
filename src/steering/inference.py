@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-import json
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, dataclass, field
-from pathlib import Path
 from typing import Any
 
 import torch
@@ -37,70 +35,6 @@ class GenerationResponse:
     metadata: dict[str, Any]
     projections: list[dict[str, Any]]
     activations: list[ActivationCaptureEvent] = field(default_factory=list)
-
-
-def _load_calibration(
-    value: str | Path | Mapping[str, Any] | None,
-) -> Mapping[str, Any]:
-    if value is None:
-        raise ValueError("this intervention requires calibration metadata")
-    if isinstance(value, Mapping):
-        return value
-    with Path(value).open(encoding="utf-8") as handle:
-        return json.load(handle)
-
-
-def _layer_calibration(
-    calibration: Mapping[str, Any], layer: int, recipe_hash: str
-) -> Mapping[str, Any]:
-    try:
-        layer_data = calibration["layers"][str(layer)]
-    except KeyError as error:
-        raise ValueError(f"calibration has no statistics for layer {layer}") from error
-    directions = layer_data.get("directions", {})
-    if recipe_hash not in directions:
-        raise ValueError(
-            f"calibration layer {layer} has no direction matching recipe hash {recipe_hash}"
-        )
-    return {"layer": layer_data, "direction": directions[recipe_hash]}
-
-
-def _calibration_layer(calibration: Mapping[str, Any], layer: int) -> Mapping[str, Any]:
-    try:
-        return calibration["layers"][str(layer)]
-    except KeyError as error:
-        raise ValueError(f"calibration has no statistics for layer {layer}") from error
-
-
-def _calibration_provenance(
-    source: str | Path | Mapping[str, Any] | None,
-    calibration: Mapping[str, Any] | None,
-) -> dict[str, Any] | None:
-    if calibration is None:
-        return None
-    return {
-        "source": str(source) if not isinstance(source, Mapping) else "inline",
-        "dataset": calibration.get("dataset"),
-        "model_id": calibration.get("model_id"),
-        "model_revision": calibration.get("model_revision"),
-        "token_policy": calibration.get("token_policy"),
-        "reproduction_approximation": calibration.get("reproduction_approximation"),
-    }
-
-
-def _resolve_quantile(data: Mapping[str, Any], quantile: float) -> float:
-    quantiles = data.get("quantiles", {})
-    candidates = (str(quantile), f"{quantile:g}", f"{quantile:.6f}")
-    for key in candidates:
-        if key in quantiles:
-            return float(quantiles[key])
-    numeric = {float(key): float(value) for key, value in quantiles.items()}
-    for key, value in numeric.items():
-        if abs(key - quantile) < 1e-12:
-            return value
-    raise ValueError(
-        f"quantile {quantile} was not computed; available: {sorted(numeric)}"
-    )
 
 
 class InferenceRunner:
@@ -194,11 +128,6 @@ class InferenceRunner:
         materialized = self.vector_store.materialize(
             request.vector, model_config=self.model.config
         )
-        calibration = (
-            _load_calibration(request.calibration)
-            if request.scaling in {"average_residual_norm", "projection_std"}
-            else None
-        )
         result = []
         for layer in self._layers(request):
             coefficient = request.coefficient_for(layer)
@@ -206,23 +135,7 @@ class InferenceRunner:
                 continue
             vector = materialized.tensor[layer].to(torch.float32)
             unit = unit_direction(vector)
-            if request.scaling == "raw":
-                delta = coefficient * vector
-                scale_value = 1.0
-            elif request.scaling == "unit":
-                delta = coefficient * unit
-                scale_value = 1.0
-            else:
-                assert calibration is not None
-                if request.scaling == "average_residual_norm":
-                    layer_stats = _calibration_layer(calibration, layer)
-                    scale_value = float(layer_stats["residual_norm"]["mean"])
-                else:
-                    stats = _layer_calibration(
-                        calibration, layer, materialized.recipe_hash
-                    )
-                    scale_value = float(stats["direction"]["std"])
-                delta = coefficient * scale_value * unit
+            delta = coefficient * (vector if request.scaling == "raw" else unit)
             result.append(
                 ResolvedIntervention(
                     operation="add",
@@ -236,13 +149,9 @@ class InferenceRunner:
                         **materialized.metadata(),
                         "coefficient": coefficient,
                         "scaling": request.scaling,
-                        "calibration_scale": scale_value,
                         "positions": request.positions,
                         "preserve_original_activation_norm": request.preserve_original_activation_norm,
                         "non_paper_norm_preservation": request.preserve_original_activation_norm,
-                        "calibration": _calibration_provenance(
-                            request.calibration, calibration
-                        ),
                     },
                 )
             )
@@ -252,30 +161,12 @@ class InferenceRunner:
         materialized = self.vector_store.materialize(
             request.direction, model_config=self.model.config
         )
-        calibration = (
-            _load_calibration(request.calibration)
-            if request.quantile is not None
-            else None
-        )
         result = []
         total = int(self.model.config.num_hidden_layers)
         for layer in request.layers:
             if not 0 <= layer < total:
                 raise IndexError(f"layer {layer} out of range for {total} layers")
-            if request.quantile is not None:
-                assert calibration is not None
-                stats = _layer_calibration(calibration, layer, materialized.recipe_hash)
-                if isinstance(request.quantile, tuple):
-                    threshold: float | tuple[float, float] = tuple(
-                        _resolve_quantile(stats["direction"], value)
-                        for value in request.quantile
-                    )
-                else:
-                    threshold = _resolve_quantile(
-                        stats["direction"], float(request.quantile)
-                    )
-            else:
-                threshold = request.threshold_for(layer)
+            threshold = request.threshold_for(layer)
             result.append(
                 ResolvedIntervention(
                     operation="cap",
@@ -289,11 +180,7 @@ class InferenceRunner:
                         **materialized.metadata(),
                         "bound": request.bound,
                         "threshold": threshold,
-                        "quantile": request.quantile,
                         "positions": request.positions,
-                        "calibration": _calibration_provenance(
-                            request.calibration, calibration
-                        ),
                     },
                 )
             )
@@ -402,4 +289,90 @@ class InferenceRunner:
         projections = [asdict(item) for item in context.diagnostics]
         return GenerationResponse(
             text, generated, metadata, projections, context.activation_events
+        )
+
+    def capture_complete_sequence(
+        self,
+        conversation: Sequence[Mapping[str, str]],
+        generated_token_ids: Sequence[int],
+        *,
+        steering: SteeringRequest | CappingRequest | SteeringPlan | None,
+        layers: Sequence[int],
+    ) -> list[ActivationCaptureEvent]:
+        """Capture one teacher-forced prompt+response pass for J-Lens.
+
+        This second causal forward pass is equivalent to cached decoding at each
+        position for ``positions='all'`` steering, but includes the final sampled
+        token and avoids retaining every intermediate generation forward call.
+        """
+
+        inputs = self._tokenize(conversation)
+        input_ids = inputs["input_ids"]
+        generated = torch.tensor(
+            [list(generated_token_ids)], device=input_ids.device, dtype=input_ids.dtype
+        )
+        full_input_ids = torch.cat((input_ids, generated), dim=1)
+        full_inputs: dict[str, torch.Tensor] = {"input_ids": full_input_ids}
+        attention_mask = inputs.get("attention_mask")
+        if attention_mask is not None:
+            generated_mask = torch.ones(
+                (attention_mask.shape[0], generated.shape[1]),
+                device=attention_mask.device,
+                dtype=attention_mask.dtype,
+            )
+            full_inputs["attention_mask"] = torch.cat(
+                (attention_mask, generated_mask), dim=1
+            )
+
+        capture = ActivationCaptureConfig(
+            layers=list(layers),
+            points=["post_intervention"],
+            positions="all",
+            dtype="bfloat16",
+        )
+        context = SteeringContext(
+            self.model,
+            self.resolve(steering),
+            collect_diagnostics=False,
+            activation_capture=capture,
+        )
+        self.model.eval()
+        with torch.inference_mode(), context:
+            self.model(**full_inputs, use_cache=False)
+        return context.activation_events
+
+    def j_lens_top_k(
+        self,
+        jacobian: torch.Tensor,
+        jacobian_scale: float,
+        activations: torch.Tensor,
+        top_k_count: int,
+        allowed: Any,
+    ) -> tuple[Any, Any, Any]:
+        """Transport and unembed a layer batch on the model device."""
+
+        base_model = getattr(self.model, "model", None)
+        final_norm = getattr(base_model, "norm", None)
+        lm_head = self.model.get_output_embeddings()
+        if final_norm is None or lm_head is None:
+            raise ValueError("J-Lens device readout requires model.norm and lm_head")
+        try:
+            norm_device = next(final_norm.parameters()).device
+            head_device = next(lm_head.parameters()).device
+        except StopIteration as error:
+            raise ValueError("J-Lens norm and lm_head must have parameters") from error
+        compute_dtype = torch.bfloat16 if norm_device.type == "cuda" else torch.float32
+        vectors = activations.to(device=norm_device, dtype=compute_dtype)
+        transport = jacobian.to(device=norm_device, dtype=compute_dtype)
+        transported = (vectors @ transport.T) * float(jacobian_scale)
+        normalized = final_norm(transported).to(head_device)
+        logits = lm_head(normalized).to(torch.float32)
+        allowed_mask = torch.as_tensor(allowed, device=head_device, dtype=torch.bool)
+        ranked = logits.masked_fill(~allowed_mask.unsqueeze(0), -torch.inf)
+        scores, ids = torch.topk(ranked, top_k_count, dim=1)
+        probabilities = torch.exp(scores - torch.logsumexp(logits, dim=1, keepdim=True))
+        return (
+            ids.detach().cpu().numpy(),
+            scores.detach().cpu().numpy(),
+            probabilities.detach().cpu().numpy(),
         )

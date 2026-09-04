@@ -12,7 +12,7 @@ from typing import Any
 import numpy as np
 from tokenizers import Tokenizer
 
-from .capture import ActivationArtifact
+from .capture import ActivationArtifact, ActivationCaptureEvent
 
 
 @contextmanager
@@ -73,6 +73,129 @@ def _selected_event_metadata(
             f"forward_index={forward_index}; available forwards={available_forwards}"
         )
     return layer, forward_index, [by_point[point] for point in points]
+
+
+class JLenseReader:
+    """Reuse the existing J-Lens backend for compact in-memory token readouts."""
+
+    def __init__(
+        self,
+        *,
+        analysis_source: str | Path,
+        data_dir: str | Path,
+        lens_path: str | Path,
+        top_k_count: int = 10,
+    ) -> None:
+        if top_k_count <= 0:
+            raise ValueError("top_k_count must be positive")
+        self.analysis_source = Path(analysis_source)
+        self.data_dir = Path(data_dir)
+        self.lens_path = Path(lens_path)
+        self.top_k_count = top_k_count
+        with _analysis_imports(self.analysis_source) as (
+            readout_module,
+            unembed_module,
+            analysis_module,
+        ):
+            self._lens = readout_module.LensTransport(self.lens_path)
+            self._unembedding = unembed_module.Unembedding(self.data_dir)
+            self._top_k = unembed_module.top_k
+            tokenizer = Tokenizer.from_file(str(self.data_dir / "tokenizer.json"))
+            self._texts, self._wordlike = analysis_module.decode_vocab(
+                tokenizer, self._unembedding.vocab_size
+            )
+        self.source_layers = tuple(int(layer) for layer in self._lens.source_layers)
+
+    def _pack(self, ids, scores, probabilities, row: int) -> list[dict[str, Any]]:
+        return [
+            {
+                "id": int(token_id),
+                "text": self._texts[int(token_id)],
+                "logit": round(float(score), 4),
+                "probability": float(f"{float(probability):.6g}"),
+            }
+            for token_id, score, probability in zip(
+                ids[row], scores[row], probabilities[row]
+            )
+        ]
+
+    def read(
+        self,
+        events: Sequence[ActivationCaptureEvent],
+        *,
+        prompt_length: int,
+        device_readout: Any | None = None,
+    ) -> dict[str, Any]:
+        """Convert a full-sequence capture to top words and discardable JSON."""
+
+        selected: dict[int, ActivationCaptureEvent] = {}
+        for event in events:
+            if event.point != "post_intervention" or event.phase != "prefill":
+                continue
+            if event.layer in selected:
+                raise ValueError(f"multiple full-sequence captures for layer {event.layer}")
+            selected[event.layer] = event
+        missing = set(self.source_layers) - set(selected)
+        if missing:
+            raise ValueError(f"missing captured J-Lens layers: {sorted(missing)}")
+
+        reference = selected[self.source_layers[0]]
+        if reference.input_token_ids is None or len(reference.input_token_ids) != 1:
+            raise ValueError("J-Lens experiment capture requires one batch of token ids")
+        token_ids = reference.input_token_ids[0]
+        if not 0 <= prompt_length <= len(token_ids):
+            raise ValueError("prompt_length is outside the captured token sequence")
+        tokens = [
+            {
+                "position": position,
+                "id": int(token_id),
+                "text": self._texts[int(token_id)],
+                "segment": "prompt" if position < prompt_length else "response",
+            }
+            for position, token_id in enumerate(token_ids)
+        ]
+
+        layers = []
+        for layer in self.source_layers:
+            event = selected[layer]
+            if event.input_token_ids != reference.input_token_ids:
+                raise ValueError(f"token alignment differs at layer {layer}")
+            if device_readout is None:
+                matrix = event.tensor[0].float().numpy().astype(np.float32, copy=False)
+                transported = self._lens.transport(layer, matrix)
+                logits = self._unembedding.logits(transported)
+                ids, scores, probabilities = self._top_k(
+                    logits, self.top_k_count, allowed=self._wordlike
+                )
+                del logits
+            else:
+                jacobian, scale = self._lens.matrix(layer)
+                ids, scores, probabilities = device_readout(
+                    jacobian,
+                    scale,
+                    event.tensor[0],
+                    self.top_k_count,
+                    self._wordlike,
+                )
+            layers.append(
+                {
+                    "layer": layer,
+                    "positions": [
+                        self._pack(ids, scores, probabilities, row)
+                        for row in range(len(token_ids))
+                    ],
+                }
+            )
+        return {
+            "schema_version": 1,
+            "source": {
+                "lens": str(self.lens_path),
+                "lens_prompts_fitted": self._lens.n_prompts,
+            },
+            "prompt_length": prompt_length,
+            "tokens": tokens,
+            "layers": layers,
+        }
 
 
 def quick_j_lens_tokens(

@@ -1,5 +1,6 @@
 from types import SimpleNamespace
 
+import numpy as np
 import pytest
 import torch
 
@@ -63,82 +64,15 @@ def test_raw_unit_and_per_layer_coefficients():
     assert torch.equal(raw[0].delta, torch.tensor([3.0, 0.0]))
 
 
-def test_scaling_modes_and_calibration():
-    calibration = {
-        "layers": {
-            "3": {
-                "residual_norm": {"mean": 10.0},
-                "directions": {
-                    RoleDirection("lawyer").stable_hash(): {
-                        "std": 2.0,
-                        "quantiles": {"0.25": -1.0},
-                    }
-                },
-            }
-        }
-    }
-    request = SteeringRequest(
-        RoleDirection("lawyer"),
-        coefficient=0.5,
-        scaling="average_residual_norm",
-        calibration=calibration,
-    )
-    assert torch.equal(runner().resolve(request)[0].delta, torch.tensor([5.0, 0.0]))
-    request = SteeringRequest(
-        RoleDirection("lawyer"),
-        coefficient=0.5,
-        scaling="projection_std",
-        calibration=calibration,
-    )
-    assert torch.equal(runner().resolve(request)[0].delta, torch.tensor([1.0, 0.0]))
-
-
-def test_quantile_cap_and_add_then_cap_order():
+def test_add_then_cap_order():
     recipe = PublishedAssistantAxis()
-    calibration = {
-        "layers": {
-            "4": {
-                "residual_norm": {"mean": 1.0},
-                "directions": {
-                    recipe.stable_hash(): {"std": 1.0, "quantiles": {"0.25": -2.0}}
-                },
-            }
-        }
-    }
     plan = SteeringPlan(
         additive=[SteeringRequest(RoleDirection("lawyer"), layers=[4])],
-        caps=[
-            CappingRequest(recipe, "lower", [4], quantile=0.25, calibration=calibration)
-        ],
+        caps=[CappingRequest(recipe, "lower", [4], threshold=-2.0)],
     )
     resolved = runner().resolve(plan)
     assert [item.operation for item in resolved] == ["add", "cap"]
     assert resolved[1].threshold == -2.0
-
-
-def test_interval_quantile_cap():
-    recipe = PublishedAssistantAxis()
-    calibration = {
-        "layers": {
-            "4": {
-                "residual_norm": {"mean": 1.0},
-                "directions": {
-                    recipe.stable_hash(): {
-                        "std": 1.0,
-                        "quantiles": {"0.25": -2.0, "0.75": 3.0},
-                    }
-                },
-            }
-        }
-    }
-    request = CappingRequest(
-        recipe,
-        "interval",
-        [4],
-        quantile=(0.25, 0.75),
-        calibration=calibration,
-    )
-    assert runner().resolve(request)[0].threshold == (-2.0, 3.0)
 
 
 def test_loader_does_not_override_checkpoint_quantization_config(monkeypatch):
@@ -196,3 +130,86 @@ def test_explicit_quantization_is_forwarded_for_unquantized_checkpoint(monkeypat
         "publisher/ordinary-model", quantization="4bit", vector_store=Store()
     )
     assert observed["quantization_config"] is quantization_config
+
+
+def test_complete_sequence_capture_includes_final_generated_token(monkeypatch):
+    class Block(torch.nn.Module):
+        def forward(self, hidden):
+            return (hidden + 1,)
+
+    class Inner(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.layers = torch.nn.ModuleList([Block(), Block()])
+
+    class CaptureModel(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.model = Inner()
+            self.config = SimpleNamespace(num_hidden_layers=2, hidden_size=2)
+            self.weight = torch.nn.Parameter(torch.ones(1))
+
+        def forward(self, input_ids, attention_mask=None, use_cache=False):
+            hidden = torch.stack(
+                [input_ids.float(), torch.zeros_like(input_ids).float()], dim=-1
+            )
+            for block in self.model.layers:
+                hidden = block(hidden)[0]
+            return hidden
+
+    loaded = InferenceRunner(
+        CaptureModel(), object(), vector_store=Store(), model_id="test"
+    )
+    monkeypatch.setattr(
+        loaded,
+        "_tokenize",
+        lambda conversation: {
+            "input_ids": torch.tensor([[10, 11]]),
+            "attention_mask": torch.tensor([[1, 1]]),
+        },
+    )
+    events = loaded.capture_complete_sequence(
+        [{"role": "user", "content": "hello"}],
+        [12, 13],
+        steering=None,
+        layers=[0, 1],
+    )
+    assert len(events) == 2
+    assert events[0].input_token_ids == [[10, 11, 12, 13]]
+    assert events[0].point == "post_intervention"
+    assert events[0].tensor.dtype is torch.bfloat16
+
+
+def test_j_lens_readout_uses_model_norm_and_head():
+    class Base(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.norm = torch.nn.RMSNorm(2)
+
+    class ReadoutModel(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.model = Base()
+            self.lm_head = torch.nn.Linear(2, 4, bias=False)
+            self.config = SimpleNamespace(num_hidden_layers=2, hidden_size=2)
+            with torch.no_grad():
+                self.lm_head.weight.copy_(
+                    torch.tensor([[1.0, 0.0], [0.0, 1.0], [2.0, 0.0], [-1.0, 0.0]])
+                )
+
+        def get_output_embeddings(self):
+            return self.lm_head
+
+    loaded = InferenceRunner(
+        ReadoutModel(), object(), vector_store=Store(), model_id="test"
+    )
+    ids, scores, probabilities = loaded.j_lens_top_k(
+        torch.eye(2),
+        1.0,
+        torch.tensor([[1.0, 0.0]]),
+        2,
+        np.array([True, True, False, True]),
+    )
+    assert ids.tolist() == [[0, 1]]
+    assert scores.shape == probabilities.shape == (1, 2)
+    assert np.all(probabilities > 0)

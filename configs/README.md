@@ -1,17 +1,16 @@
-# Configurations
+# Experiments
 
-Human-authored YAML experiment settings. Files in `configs/steering/` are
-reusable inputs; resolved settings and generated responses are written beneath
-`outputs/steering/` and are not committed.
+Every YAML file in `configs/experiments/` defines one complete experiment:
+model and dtype, questions × characters, steering dose/layers, generation
+settings, seed, and the number of J-Lens words retained.
 
-Run a sweep with:
+Use the reserved character `unsteered` as the control. All other character names
+must exist in the published Assistant Axis role-vector dataset.
 
-```bash
-uv run python -m steering.cli.sweep --config configs/steering/role_direction.yaml
-```
+`model.id` and `model.dtype` are required. Optional model fields are `revision`,
+`tokenizer_revision`, `quantization` (`4bit` or `8bit`), and
+`enable_thinking`. `vectors.revision` selects the published vector revision.
 
-Resume the same run after interruption with:
-
-```bash
-uv run python -m steering.cli.sweep --resume outputs/steering/<study>/<experiment>/runs/<run>
-```
+J-Lens residuals are discarded after readout by default. Set
+`outputs.keep_activations: true` to retain one safetensors file and alignment
+manifest per completed matrix cell for later low-level inspection.

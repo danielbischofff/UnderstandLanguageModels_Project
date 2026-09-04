@@ -4,12 +4,11 @@ import pytest
 import torch
 from safetensors.torch import load_file
 
-from steering.capture import ActivationArtifact, ActivationCaptureEvent
+from steering.capture import ActivationCaptureEvent
 from steering.experiments import (
+    ExperimentConfig,
     ExperimentRecorder,
-    activation_capture_from_config,
     canonical_hash,
-    expand_sweep,
     run_experiment,
 )
 from steering.inference import GenerationResponse
@@ -17,104 +16,171 @@ from steering.inference import GenerationResponse
 
 def config():
     return {
-        "study": "study",
-        "experiment": "experiment",
-        "conversation": [{"role": "user", "content": "hello"}],
-        "steering": {"coefficient": 0.0},
-        "sweep": {"seed": [1, 2], "steering.coefficient": [0.0, 0.1]},
+        "name": "point-of-view",
+        "model": {
+            "id": "Qwen/Qwen3-32B",
+            "dtype": "bfloat16",
+            "enable_thinking": False,
+        },
+        "questions": [
+            {"id": "q1", "text": "first"},
+            {"id": "q2", "text": "second"},
+        ],
+        "characters": ["unsteered", "demon"],
+        "steering": {"coefficient": 1, "layers": [2]},
+        "generation": {"max_new_tokens": 4, "do_sample": False},
+        "seed": 7,
+        "j_lens": {"top_k": 3},
     }
 
 
-def test_cartesian_sweep_is_deterministic():
-    trials = expand_sweep(config())
-    assert len(trials) == 4
-    assert trials == expand_sweep(config())
-    assert len({canonical_hash(trial) for trial in trials}) == 4
+def test_config_expands_question_character_matrix_in_stable_order():
+    parsed = ExperimentConfig.from_mapping(config())
+    trials = parsed.trials()
+    assert [(item["question"]["id"], item["character"]) for item in trials] == [
+        ("q1", "unsteered"),
+        ("q1", "demon"),
+        ("q2", "unsteered"),
+        ("q2", "demon"),
+    ]
+    assert trials[0]["steering"] is None
+    assert trials[1]["steering"] == {"coefficient": 1.0, "layers": [2]}
+    assert canonical_hash(trials[1]) == canonical_hash(parsed.trials()[1])
+    assert parsed.model["id"] == "Qwen/Qwen3-32B"
+    assert parsed.model["dtype"] == "bfloat16"
 
 
-def test_record_and_resume_skips_complete_trial(tmp_path):
+def test_config_rejects_unknown_fields_and_duplicate_ids():
+    invalid = config()
+    invalid["capture"] = {}
+    with pytest.raises(ValueError, match="unknown experiment fields"):
+        ExperimentConfig.from_mapping(invalid)
+    invalid = config()
+    invalid["questions"][1]["id"] = "q1"
+    with pytest.raises(ValueError, match="question ids must be unique"):
+        ExperimentConfig.from_mapping(invalid)
+
+
+def test_config_requires_model_and_validates_output_options():
+    invalid = config()
+    del invalid["model"]
+    with pytest.raises(TypeError, match="model must be a mapping"):
+        ExperimentConfig.from_mapping(invalid)
+    invalid = config()
+    invalid["outputs"] = {"keep_activations": "yes"}
+    with pytest.raises(TypeError, match="keep_activations must be a boolean"):
+        ExperimentConfig.from_mapping(invalid)
+
+
+class FakeRunner:
+    def __init__(self):
+        self.generated = []
+        self.captured = []
+
+    def generate(self, conversation, *, steering, **kwargs):
+        self.generated.append((conversation, steering, kwargs))
+        return GenerationResponse(
+            text="answer",
+            generated_token_ids=[12],
+            metadata={"tokens": {"prompt_ids": [10, 11]}},
+            projections=[],
+        )
+
+    def capture_complete_sequence(
+        self, conversation, generated_token_ids, *, steering, layers
+    ):
+        self.captured.append((conversation, generated_token_ids, steering, layers))
+        return ["temporary activation"]
+
+    def j_lens_top_k(self, *args):
+        raise AssertionError("the fake lens should not execute the readout")
+
+
+class FakeLens:
+    source_layers = (0, 1)
+
+    def read(self, events, *, prompt_length, device_readout):
+        assert events == ["temporary activation"]
+        assert prompt_length == 2
+        assert callable(device_readout)
+        return {"tokens": [], "layers": []}
+
+
+def test_run_records_compact_matrix_without_activation_artifacts(tmp_path):
     recorder = ExperimentRecorder.create(config(), root=tmp_path)
-    trial = expand_sweep(config())[0]
-    response = GenerationResponse("answer", [1, 2], {"seed": 1}, [])
-    with recorder:
-        recorder.record_result(0, trial, response)
-    assert recorder.is_complete(canonical_hash(trial))
-    resumed = ExperimentRecorder.resume(recorder.run_dir)
-    assert resumed.is_complete(canonical_hash(trial))
-    result_path = next((recorder.run_dir / "trials").iterdir()) / "result.json"
-    assert json.loads(result_path.read_text())["text"] == "answer"
+    runner = FakeRunner()
+    run_experiment(runner, recorder, FakeLens())
 
-
-def test_activation_capture_config_and_safe_recording(tmp_path):
-    capture = activation_capture_from_config(
-        {
-            "layers": [2],
-            "points": ["post_intervention"],
-            "positions": "last",
-            "dtype": "float32",
-        }
+    results = json.loads(
+        (recorder.run_dir / "experiment-results.json").read_text(encoding="utf-8")
     )
-    assert capture is not None
-    assert capture.layers == (2,)
-    recorder = ExperimentRecorder.create(config(), root=tmp_path)
-    trial = expand_sweep(config())[0]
+    assert len(results["trials"]) == 4
+    assert (recorder.run_dir / "report.html").is_file()
+    assert [trial["character"] for trial in results["trials"]] == [
+        "unsteered",
+        "demon",
+        "unsteered",
+        "demon",
+    ]
+    assert not list(recorder.run_dir.rglob("*.safetensors"))
+    assert not list(recorder.run_dir.rglob("activations"))
+    assert runner.generated[0][1] is None
+    assert runner.generated[1][1].vector.name == "demon"
+    assert recorder.manifest()["status"] == "complete"
+
+
+def test_optional_activation_retention_uses_safetensors(tmp_path):
+    value = config()
+    value["outputs"] = {"keep_activations": True}
+    recorder = ExperimentRecorder.create(value, root=tmp_path)
+    response = GenerationResponse(
+        "answer", [12], {"tokens": {"prompt_ids": [10, 11]}}, []
+    )
     event = ActivationCaptureEvent(
         tensor=torch.tensor([[[1.0, 2.0]]]),
-        layer=2,
+        layer=0,
         point="post_intervention",
-        phase="decode",
-        forward_index=3,
-        input_token_ids=[[17]],
-        cache_positions=[9],
-        position_policy="last",
+        phase="prefill",
+        forward_index=0,
+        input_token_ids=[[10]],
+        cache_positions=None,
+        position_policy="all",
     )
-    response = GenerationResponse(
-        "answer",
-        [1, 2],
-        {"activation_capture": capture.to_dict()},
-        [],
+    recorder.record_result(
+        0,
+        recorder.config.trials()[0],
+        response,
+        {"tokens": [], "layers": []},
         [event],
     )
-    with recorder:
-        recorder.record_result(0, trial, response)
-    trial_dir = next((recorder.run_dir / "trials").iterdir())
-    tensors = load_file(trial_dir / "activations" / "activations.safetensors")
-    assert torch.equal(tensors["event_000000"], event.tensor)
-    manifest = json.loads((trial_dir / "activations" / "manifest.json").read_text())
-    assert manifest["coordinate_system"]["tensor_axes"] == [
-        "batch",
-        "selected_sequence_position",
-        "hidden",
-    ]
-    assert manifest["events"][0]["input_token_ids"] == [[17]]
-    assert manifest["events"][0]["cache_positions"] == [9]
-    artifact = ActivationArtifact.open(trial_dir / "activations")
-    metadata, loaded = next(artifact.events())
-    assert metadata["tensor_key"] == "event_000000"
-    assert torch.equal(loaded, event.tensor)
+    activation_dir = next((recorder.run_dir / "trials").iterdir()) / "activations"
+    assert torch.equal(
+        load_file(activation_dir / "activations.safetensors")["event_000000"],
+        event.tensor,
+    )
+    assert not (activation_dir.parent / "response.txt").exists()
+    assert not (activation_dir.parent / "status.json").exists()
+def test_resume_uses_resolved_experiment(tmp_path):
+    recorder = ExperimentRecorder.create(config(), root=tmp_path)
+    resumed = ExperimentRecorder.resume(recorder.run_dir)
+    assert resumed.config == recorder.config
+    with resumed:
+        assert "pid=" in resumed.lock_path.read_text(encoding="utf-8")
 
 
-def test_failed_trials_are_recorded_and_raise_nonzero_failure(tmp_path):
-    class FailingRunner:
+def test_failed_cells_are_recorded_and_reported(tmp_path):
+    class FailingRunner(FakeRunner):
         def generate(self, *args, **kwargs):
             raise RuntimeError("generation failed")
 
-    failed_config = {
-        "study": "study",
-        "experiment": "failure",
-        "conversation": [{"role": "user", "content": "hello"}],
-    }
-    recorder = ExperimentRecorder.create(failed_config, root=tmp_path)
+    value = config()
+    value["questions"] = [value["questions"][0]]
+    value["characters"] = ["unsteered"]
+    recorder = ExperimentRecorder.create(value, root=tmp_path)
     with pytest.raises(RuntimeError, match="1 of 1 experiment trials failed"):
-        run_experiment(FailingRunner(), recorder)
+        run_experiment(FailingRunner(), recorder, FakeLens())
     assert recorder.manifest()["status"] == "complete_with_failures"
-    status_path = next((recorder.run_dir / "trials").iterdir()) / "status.json"
-    assert json.loads(status_path.read_text())["status"] == "failed"
-
-
-def test_resume_ignores_a_stale_unlocked_writer_file(tmp_path):
-    recorder = ExperimentRecorder.create(config(), root=tmp_path)
-    recorder.lock_path.write_text("host=dead-node pid=999999\n")
-    resumed = ExperimentRecorder.resume(recorder.run_dir)
-    with resumed:
-        assert "pid=" in resumed.lock_path.read_text()
+    failure = next(iter(recorder.manifest()["trials"].values()))
+    assert failure["error"] == "RuntimeError: generation failed"
+    assert not list((recorder.run_dir / "trials").iterdir())
+    assert not (recorder.run_dir / "summary.csv").exists()

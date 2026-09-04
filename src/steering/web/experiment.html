@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Persona J-Lens experiment</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: light-dark(#f8fafc, #0b1020);
+      --surface: light-dark(#ffffff, #151b2d);
+      --surface-2: light-dark(#eef2ff, #202942);
+      --text: light-dark(#172033, #eef2ff);
+      --muted: light-dark(#5f6b7d, #aeb9d2);
+      --line: light-dark(#d9e0ec, #35415d);
+      --accent: light-dark(#4f46e5, #a5b4fc);
+      --accent-soft: light-dark(#e0e7ff, #29335b);
+      --search: 168 85 247;
+      --prompt: light-dark(#0f766e, #5eead4);
+      --response: light-dark(#b45309, #fbbf24);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 32px 0 56px; }
+    header { margin-bottom: 24px; }
+    h1 { margin: 0 0 6px; font-size: clamp(24px, 4vw, 38px); line-height: 1.1; font-weight: 650; }
+    h2 { margin: 0; font-size: 18px; font-weight: 650; }
+    p { margin: 0; }
+    .lede { color: var(--muted); max-width: 76ch; }
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(180px, 1fr));
+      gap: 14px;
+      margin: 22px 0;
+    }
+    label { display: grid; gap: 6px; color: var(--muted); font-size: 13px; font-weight: 600; }
+    select, input {
+      width: 100%;
+      min-height: 42px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
+    }
+    select:focus, input:focus, button:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 1px; }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 16px;
+    }
+    .panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .secondary { color: var(--muted); font-size: 13px; }
+    .raw-response { margin: 0 0 16px; padding-left: 12px; border-left: 3px solid var(--response); white-space: pre-wrap; }
+    .token-section + .token-section { margin-top: 14px; }
+    .token-label { color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .tokens { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 1px; margin-top: 6px; }
+    .token {
+      appearance: none;
+      border: 0;
+      border-radius: 4px;
+      background: transparent;
+      color: var(--text);
+      cursor: crosshair;
+      font: 14px/1.7 ui-monospace, SFMono-Regular, Consolas, monospace;
+      margin: 0;
+      min-height: 30px;
+      padding: 1px 3px;
+      white-space: pre;
+    }
+    .token:hover { background: var(--surface-2); }
+    .token.is-selected { box-shadow: inset 0 -3px 0 var(--accent); }
+    .token[data-hit="true"] { background: rgb(var(--search) / var(--heat-alpha)); }
+    .token.prompt { color: var(--prompt); }
+    .token.response { color: var(--response); }
+    .legend { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
+    .gradient { width: 100px; height: 9px; border-radius: 5px; background: linear-gradient(90deg, rgb(var(--search) / .12), rgb(var(--search) / .82)); }
+    .layer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 7px; }
+    .layer {
+      min-height: 58px;
+      padding: 7px 8px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--bg);
+      overflow: hidden;
+    }
+    .layer.search-hit { border-color: rgb(var(--search)); box-shadow: inset 0 -3px 0 rgb(var(--search)); }
+    .layer-index { display: block; color: var(--muted); font-size: 11px; }
+    .layer-word { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 600 14px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .empty { color: var(--muted); padding: 28px 0; text-align: center; }
+    @media (max-width: 720px) {
+      main { width: min(100% - 20px, 1180px); padding-top: 20px; }
+      .controls { grid-template-columns: 1fr; }
+      .panel { padding: 14px; }
+      .layer-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1 id="experiment-title">Experiment</h1>
+      <p class="lede" id="experiment-description"></p>
+    </header>
+
+    <section class="controls" aria-label="Experiment selection">
+      <label>Character<select id="character-select"></select></label>
+      <label>Evaluation query<select id="question-select"></select></label>
+      <label>Find a J-Lens token
+        <input id="token-search" list="token-suggestions" type="search" placeholder="e.g. danger, cruel, help">
+        <datalist id="token-suggestions"></datalist>
+      </label>
+    </section>
+
+    <section class="panel" aria-labelledby="text-title">
+      <div class="panel-head">
+        <h2 id="text-title">Prompt and generated answer</h2>
+        <div class="legend" id="search-legend" hidden><span>low</span><span class="gradient"></span><span>high</span></div>
+      </div>
+      <p class="raw-response" id="raw-response"></p>
+      <div class="token-section">
+        <div class="token-label">Prompt tokens</div>
+        <div class="tokens" id="prompt-tokens"></div>
+      </div>
+      <div class="token-section">
+        <div class="token-label">Response tokens</div>
+        <div class="tokens" id="response-tokens"></div>
+      </div>
+      <p class="secondary" id="search-summary" aria-live="polite"></p>
+    </section>
+
+    <section class="panel" aria-labelledby="layers-title">
+      <div class="panel-head">
+        <h2 id="layers-title">Top J-Lens word by layer</h2>
+        <p class="secondary" id="selected-position" aria-live="polite"></p>
+      </div>
+      <div class="layer-grid" id="layer-grid"></div>
+    </section>
+  </main>
+
+  <script>
+    "use strict";
+    const DATA = __EXPERIMENT_DATA__;
+    const characterSelect = document.getElementById("character-select");
+    const questionSelect = document.getElementById("question-select");
+    const searchInput = document.getElementById("token-search");
+    const suggestions = document.getElementById("token-suggestions");
+    const promptTokens = document.getElementById("prompt-tokens");
+    const responseTokens = document.getElementById("response-tokens");
+    const rawResponse = document.getElementById("raw-response");
+    const layerGrid = document.getElementById("layer-grid");
+    const selectedPosition = document.getElementById("selected-position");
+    const searchSummary = document.getElementById("search-summary");
+    const searchLegend = document.getElementById("search-legend");
+    let trial = null;
+    let position = 0;
+
+    const normalized = value => String(value || "").trim().toLocaleLowerCase();
+    const displayToken = token => token.text === "" ? `∅:${token.id}` : token.text;
+    const trialForSelection = () => DATA.trials.find(item =>
+      item.character === characterSelect.value && item.question.id === questionSelect.value
+    );
+    const options = (select, values, label) => {
+      select.replaceChildren(...values.map(value => {
+        const option = document.createElement("option");
+        option.value = value.value;
+        option.textContent = value.label;
+        return option;
+      }));
+      select.setAttribute("aria-label", label);
+    };
+
+    function renderSelectors() {
+      const characters = DATA.experiment.characters;
+      const questions = DATA.experiment.questions;
+      options(characterSelect, characters.map(value => ({
+        value, label: value === "unsteered" ? "Unsteered assistant" : value
+      })), "Character");
+      options(questionSelect, questions.map(item => ({ value: item.id, label: item.text })), "Evaluation query");
+    }
+
+    function buildTokenButton(token) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `token ${token.segment}`;
+      button.dataset.position = String(token.position);
+      button.textContent = displayToken(token);
+      button.dataset.baseLabel = `${token.segment} token ${token.position}: ${displayToken(token)}`;
+      button.setAttribute("aria-label", button.dataset.baseLabel);
+      return button;
+    }
+
+    function renderTokens() {
+      promptTokens.replaceChildren();
+      responseTokens.replaceChildren();
+      for (const token of trial.j_lens.tokens) {
+        const button = buildTokenButton(token);
+        (token.segment === "prompt" ? promptTokens : responseTokens).append(button);
+      }
+      rawResponse.textContent = trial.response.text || "(empty response)";
+    }
+
+    function topAt(layer, selected) {
+      return (layer.positions[selected] || []);
+    }
+
+    function matchesSearch(item) {
+      const query = normalized(searchInput.value);
+      return query !== "" && normalized(item.text).includes(query);
+    }
+
+    function renderLayers() {
+      layerGrid.replaceChildren();
+      const token = trial.j_lens.tokens[position];
+      selectedPosition.textContent = token
+        ? `position ${position} · ${token.segment} · ${JSON.stringify(displayToken(token))}`
+        : "No token selected";
+      document.querySelectorAll(".token").forEach(button => {
+        button.classList.toggle("is-selected", Number(button.dataset.position) === position);
+      });
+      for (const layer of trial.j_lens.layers) {
+        const readout = topAt(layer, position);
+        const top = readout[0];
+        const cell = document.createElement("div");
+        cell.className = "layer";
+        cell.classList.toggle("search-hit", readout.some(matchesSearch));
+        cell.innerHTML = `<span class="layer-index">Layer ${layer.layer}</span><span class="layer-word"></span>`;
+        cell.querySelector(".layer-word").textContent = top ? top.text : "—";
+        cell.title = readout.map(item => `${item.text} · p=${item.probability} · logit=${item.logit}`).join("\n");
+        layerGrid.append(cell);
+      }
+    }
+
+    function searchScore(selected) {
+      let score = 0;
+      let layers = 0;
+      for (const layer of trial.j_lens.layers) {
+        const matches = topAt(layer, selected).filter(matchesSearch);
+        if (matches.length) layers += 1;
+        for (const item of matches) score = Math.max(score, Number(item.probability) || 0);
+      }
+      return { score, layers };
+    }
+
+    function renderSearch() {
+      const query = normalized(searchInput.value);
+      const buttons = [...document.querySelectorAll(".token")];
+      if (!query) {
+        buttons.forEach(button => {
+          button.dataset.hit = "false";
+          button.style.removeProperty("--heat-alpha");
+          button.setAttribute("aria-label", button.dataset.baseLabel);
+        });
+        searchLegend.hidden = true;
+        searchSummary.textContent = "Hover or focus a text token to inspect its per-layer readout.";
+        renderLayers();
+        return;
+      }
+      const scores = trial.j_lens.tokens.map((_, index) => searchScore(index));
+      const maximum = Math.max(...scores.map(item => item.score), 0);
+      let hits = 0;
+      buttons.forEach(button => {
+        const item = scores[Number(button.dataset.position)];
+        const hit = item.layers > 0;
+        button.dataset.hit = String(hit);
+        button.setAttribute("aria-label", button.dataset.baseLabel);
+        if (hit) {
+          hits += 1;
+          const relative = maximum > 0 ? item.score / maximum : 0;
+          button.style.setProperty("--heat-alpha", String(.14 + .68 * relative));
+          button.setAttribute("aria-label", `${button.dataset.baseLabel}; ${query} appears in ${item.layers} layers, maximum probability ${item.score}`);
+        } else {
+          button.style.removeProperty("--heat-alpha");
+        }
+      });
+      searchLegend.hidden = hits === 0;
+      searchSummary.textContent = hits
+        ? `${JSON.stringify(searchInput.value.trim())} appears among the retained J-Lens words at ${hits} text positions; intensity is normalized by maximum probability in this response.`
+        : `${JSON.stringify(searchInput.value.trim())} does not appear among the retained top words.`;
+      renderLayers();
+    }
+
+    function renderSuggestions() {
+      const words = new Set();
+      for (const layer of trial.j_lens.layers) {
+        for (const readout of layer.positions) {
+          for (const item of readout) if (normalized(item.text)) words.add(item.text.trim());
+        }
+      }
+      suggestions.replaceChildren(...[...words].sort().slice(0, 1000).map(word => {
+        const option = document.createElement("option");
+        option.value = word;
+        return option;
+      }));
+    }
+
+    function renderTrial() {
+      trial = trialForSelection();
+      if (!trial) {
+        promptTokens.replaceChildren();
+        responseTokens.replaceChildren();
+        rawResponse.textContent = "No generated response is available for this cell.";
+        suggestions.replaceChildren();
+        selectedPosition.textContent = "No token selected";
+        searchSummary.textContent = "This matrix cell did not complete.";
+        searchLegend.hidden = true;
+        layerGrid.innerHTML = '<p class="empty">This matrix cell did not complete.</p>';
+        return;
+      }
+      position = Math.max(0, trial.j_lens.prompt_length - 1);
+      renderTokens();
+      renderSuggestions();
+      renderSearch();
+    }
+
+    function selectToken(event) {
+      const button = event.target.closest(".token");
+      if (!button) return;
+      position = Number(button.dataset.position);
+      renderLayers();
+    }
+
+    document.getElementById("experiment-title").textContent = DATA.experiment.name;
+    document.getElementById("experiment-description").textContent = DATA.experiment.description || "Question × character J-Lens experiment";
+    renderSelectors();
+    renderTrial();
+    characterSelect.addEventListener("change", renderTrial);
+    questionSelect.addEventListener("change", renderTrial);
+    searchInput.addEventListener("input", renderSearch);
+    document.querySelector(".panel").addEventListener("pointerover", selectToken);
+    document.querySelector(".panel").addEventListener("focusin", selectToken);
+    document.querySelector(".panel").addEventListener("click", selectToken);
+  </script>
+</body>
+</html>

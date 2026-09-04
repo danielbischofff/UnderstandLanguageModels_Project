@@ -7,6 +7,7 @@ import torch
 from safetensors.torch import save_file
 
 from steering import j_lens
+from steering.capture import ActivationCaptureEvent
 
 
 def _artifact(tmp_path):
@@ -113,3 +114,92 @@ def test_quick_j_lens_reuses_backend_and_adds_pre_post_delta(tmp_path, monkeypat
     )
     assert result["selection"]["input_token_id"] == 11
     assert result["selection"]["cache_position"] == 1
+
+
+def test_in_memory_reader_returns_each_layer_and_token(tmp_path, monkeypatch):
+    class Lens:
+        source_layers = [0, 1]
+        n_prompts = 80
+
+        def __init__(self, path):
+            pass
+
+        def transport(self, layer, matrix):
+            return matrix + layer
+
+        def matrix(self, layer):
+            return torch.eye(2), 0.5
+
+    class Unembedding:
+        vocab_size = 4
+
+        def __init__(self, data_dir):
+            pass
+
+        def logits(self, matrix):
+            return np.column_stack([matrix, matrix.sum(axis=1), -matrix.sum(axis=1)])
+
+    def top_k(logits, count, allowed=None):
+        scores = logits if allowed is None else np.where(allowed, logits, -np.inf)
+        ids = np.argsort(scores, axis=1)[:, ::-1][:, :count]
+        selected = np.take_along_axis(logits, ids, axis=1)
+        return ids, selected, np.full_like(selected, 0.25)
+
+    @contextmanager
+    def backend(_source):
+        yield (
+            SimpleNamespace(LensTransport=Lens),
+            SimpleNamespace(Unembedding=Unembedding, top_k=top_k),
+            SimpleNamespace(
+                decode_vocab=lambda tokenizer, size: (
+                    ["zero", "one", "two", "three"],
+                    np.array([True, True, True, True]),
+                )
+            ),
+        )
+
+    monkeypatch.setattr(j_lens, "_analysis_imports", backend)
+    monkeypatch.setattr(
+        j_lens.Tokenizer, "from_file", staticmethod(lambda path: object())
+    )
+    reader = j_lens.JLenseReader(
+        analysis_source=tmp_path,
+        data_dir=tmp_path,
+        lens_path=tmp_path / "lens.pt",
+        top_k_count=2,
+    )
+    events = [
+        ActivationCaptureEvent(
+            tensor=torch.tensor([[[1.0, 2.0], [3.0, 4.0]]]),
+            layer=layer,
+            point="post_intervention",
+            phase="prefill",
+            forward_index=0,
+            input_token_ids=[[1, 2]],
+            cache_positions=None,
+            position_policy="all",
+        )
+        for layer in (0, 1)
+    ]
+    result = reader.read(events, prompt_length=1)
+    assert [item["segment"] for item in result["tokens"]] == ["prompt", "response"]
+    assert [item["layer"] for item in result["layers"]] == [0, 1]
+    assert len(result["layers"][0]["positions"]) == 2
+    assert len(result["layers"][0]["positions"][0]) == 2
+
+    observed = []
+
+    def device_readout(jacobian, scale, activations, count, allowed):
+        observed.append((jacobian.clone(), scale, activations.clone(), count, allowed.copy()))
+        return (
+            np.array([[3, 2], [2, 1]]),
+            np.array([[4.0, 3.0], [3.0, 2.0]]),
+            np.array([[0.4, 0.3], [0.3, 0.2]]),
+        )
+
+    accelerated = reader.read(
+        events, prompt_length=1, device_readout=device_readout
+    )
+    assert len(observed) == 2
+    assert observed[0][1] == 0.5
+    assert accelerated["layers"][0]["positions"][0][0]["text"] == "three"
