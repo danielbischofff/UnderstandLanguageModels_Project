@@ -26,6 +26,7 @@ steering-clean-model = "steering.cli.clean_model_cache:main"
 steering-experiment = "steering.cli.experiment:main"
 steering-j-lens = "steering.cli.j_lens_tokens:main"
 steering-preflight = "steering.cli.preflight:main"
+steering-prefetch = "steering.cli.prefetch:main"
 
 [build-system]
 requires = ["hatchling"]

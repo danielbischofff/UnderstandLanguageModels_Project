@@ -77,13 +77,14 @@ def test_add_then_cap_order():
 
 def test_loader_does_not_override_checkpoint_quantization_config(monkeypatch):
     observed = {}
+    tokenizer_observed = {}
     model = Model(4)
     tokenizer = object()
 
     monkeypatch.setattr(
         inference_module.AutoTokenizer,
         "from_pretrained",
-        lambda *args, **kwargs: tokenizer,
+        lambda *args, **kwargs: tokenizer_observed.update(kwargs) or tokenizer,
     )
 
     def load_model(*args, **kwargs):
@@ -96,12 +97,15 @@ def test_loader_does_not_override_checkpoint_quantization_config(monkeypatch):
     loaded = InferenceRunner.from_pretrained(
         "publisher/prequantized-model-with-arbitrary-name",
         dtype=torch.bfloat16,
+        local_files_only=True,
         vector_store=Store(),
     )
     assert loaded.model is model
     assert observed["dtype"] is torch.bfloat16
     assert "torch_dtype" not in observed
     assert "quantization_config" not in observed
+    assert observed["local_files_only"] is True
+    assert tokenizer_observed["local_files_only"] is True
 
 
 def test_explicit_quantization_is_forwarded_for_unquantized_checkpoint(monkeypatch):

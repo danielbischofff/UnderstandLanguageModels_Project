@@ -17,6 +17,9 @@ uv run steering-experiment --resume path/to/run
 Supporting commands are deliberately narrow:
 
 - `steering-preflight` checks the GPU, storage, and runtime before loading Qwen.
+- `steering-prefetch --config ...` downloads or locally verifies every model
+  snapshot and persona vector needed by an experiment.
 - `steering-fetch --role-direction demon` fetches the required persona vector.
 - `steering-j-lens` is a low-level reader for retained activation artifacts.
-- `steering-clean-model` previews or removes one cached model checkpoint.
+- `steering-clean-model` previews or removes one cached model repository; add
+  `--yes` only after checking its reported revisions and recoverable space.

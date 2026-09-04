@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
@@ -18,6 +19,10 @@ DTYPES = {
 }
 
 
+def _environment_flag(name: str) -> bool:
+    return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on"}
+
+
 def load_yaml(path: str | Path) -> dict[str, Any]:
     with Path(path).open(encoding="utf-8") as handle:
         value = yaml.safe_load(handle)
@@ -29,13 +34,16 @@ def load_yaml(path: str | Path) -> dict[str, Any]:
 def runner_from_config(config: Mapping[str, Any]) -> InferenceRunner:
     model = config.get("model", {})
     model_id = model.get("id", DEFAULT_MODEL_ID)
+    offline = bool(config.get("vectors", {}).get("offline", False)) or _environment_flag(
+        "HF_HUB_OFFLINE"
+    )
     store = VectorStore(
         model_id=model_id,
         revision=config.get("vectors", {}).get("revision", "main"),
         dataset_model_dir=config.get("vectors", {}).get("dataset_model_dir"),
         local_dir=config.get("vectors", {}).get("local_dir"),
         cache_dir=config.get("vectors", {}).get("cache_dir"),
-        offline=bool(config.get("vectors", {}).get("offline", False)),
+        offline=offline,
     )
     dtype_name = model.get("dtype", "bfloat16")
     if dtype_name not in DTYPES:
@@ -49,5 +57,6 @@ def runner_from_config(config: Mapping[str, Any]) -> InferenceRunner:
         quantization=model.get("quantization"),
         enable_thinking=bool(model.get("enable_thinking", False)),
         trust_remote_code=bool(model.get("trust_remote_code", False)),
+        local_files_only=offline,
         vector_store=store,
     )
