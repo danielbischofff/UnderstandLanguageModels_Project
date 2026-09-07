@@ -305,8 +305,9 @@ class InferenceRunner:
         """Capture one teacher-forced prompt+response pass for J-Lens.
 
         This second causal forward pass is equivalent to cached decoding at each
-        position for ``positions='all'`` steering, but includes the final sampled
-        token and avoids retaining every intermediate generation forward call.
+        position, including position-restricted steering. The prompt boundary
+        determines the replay mask. This includes the final sampled token and
+        avoids retaining every intermediate generation forward call.
         """
 
         inputs = self._tokenize(conversation)
@@ -338,6 +339,7 @@ class InferenceRunner:
             self.resolve(steering),
             collect_diagnostics=False,
             activation_capture=capture,
+            replay_prompt_length=input_ids.shape[1],
         )
         self.model.eval()
         with torch.inference_mode(), context:

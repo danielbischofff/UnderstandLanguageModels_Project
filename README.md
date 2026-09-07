@@ -14,7 +14,7 @@ hypothesis in [the project proposal](Project%20Proposals/j_lens_persona_space_re
 ## Repository map
 
 ```text
-configs/experiments/   Human-authored question x character matrices
+configs/experiments/   Questions x characters x alphas x steering schemes
 direct_character_vectors_j_lens_analysis/
                        Original character-vector and J/R-Lens analysis
 Project Proposals/     Research motivation and hypotheses
@@ -29,9 +29,11 @@ runtime/               Ignored models, environment, logs, and experiment output
 ## Experiment shape
 
 One YAML file is the complete user-facing experiment. It selects the model,
-inference dtype, and vector revision. Its `questions` and `characters` form a
-Cartesian matrix; `unsteered` is the explicit control and other names resolve
-to published Assistant Axis role directions.
+inference dtype, and vector revision. Questions, characters, alpha values, and
+named steering schemes form a Cartesian matrix. `unsteered` is a shared control
+per question; other names resolve to published Assistant Axis role directions.
+Schemes select intervention layers, token positions, and additive steering or
+projection capping. See [the configuration guide](configs/README.md) for a sweep example.
 
 For each matrix cell the runner:
 
@@ -46,7 +48,7 @@ For each matrix cell the runner:
 
 The starting experiment is
 [configs/experiments/tylenol-demon.yaml](configs/experiments/tylenol-demon.yaml).
-Add questions or characters to those lists to expand the matrix. Raw steering
+Add questions, characters, coefficients, or schemes to expand the matrix. Raw steering
 uses
 
 ```text
@@ -77,7 +79,8 @@ much easier to diagnose from the Slurm log.
 Results are written under
 `runtime/outputs/experiments/tylenol-demon/runs/<run>/`. Each run contains the
 resolved YAML, status manifest, per-cell result and metadata JSON,
-`experiment-results.json`, and an interactive `report.html`. Interrupted runs
+`experiment-results.json`, and an interactive `report.html` with character,
+question, alpha, and scheme selectors. Interrupted runs
 can be resumed with the same Slurm script by passing the run directory as its
 second argument.
 

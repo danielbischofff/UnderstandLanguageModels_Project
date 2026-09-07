@@ -1,4 +1,4 @@
-"""Run or resume a question-by-character J-Lens experiment."""
+"""Run or resume a question/character/alpha/steering-scheme J-Lens experiment."""
 
 from __future__ import annotations
 
