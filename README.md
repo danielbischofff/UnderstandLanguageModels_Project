@@ -14,10 +14,11 @@ hypothesis in [the project proposal](Project%20Proposals/j_lens_persona_space_re
 ## Repository map
 
 ```text
-configs/experiments/   Human-authored question x character matrices
+configs/experiments/   Questions x characters x alphas x steering schemes
 direct_character_vectors_j_lens_analysis/
                        Original character-vector and J/R-Lens analysis
 Project Proposals/     Research motivation and hypotheses
+results/               Published experiment results and browser reports
 slurm/                 Cluster entry point
 src/steering/          Model steering, experiment runner, and J-Lens adapter
 tests/                 Unit and opt-in integration tests
@@ -29,9 +30,11 @@ runtime/               Ignored models, environment, logs, and experiment output
 ## Experiment shape
 
 One YAML file is the complete user-facing experiment. It selects the model,
-inference dtype, and vector revision. Its `questions` and `characters` form a
-Cartesian matrix; `unsteered` is the explicit control and other names resolve
-to published Assistant Axis role directions.
+inference dtype, and vector revision. Questions, characters, alpha values, and
+named steering schemes form a Cartesian matrix. `unsteered` is a shared control
+per question; other names resolve to published Assistant Axis role directions.
+Schemes select intervention layers, token positions, and additive steering or
+projection capping. See [the configuration guide](configs/README.md) for a sweep example.
 
 For each matrix cell the runner:
 
@@ -46,7 +49,11 @@ For each matrix cell the runner:
 
 The starting experiment is
 [configs/experiments/tylenol-demon.yaml](configs/experiments/tylenol-demon.yaml).
-Add questions or characters to those lists to expand the matrix. Raw steering
+Keep it intact when creating a new experiment: copy it to a separately named YAML.
+The filename stem, `name` field, and `results/<name>/` directory share the same
+identifier. The 8000 mg sweep is defined in
+[tylenol-demon-8000mg-alpha-sweep.yaml](configs/experiments/tylenol-demon-8000mg-alpha-sweep.yaml).
+Add questions, characters, coefficients, or schemes to expand the new matrix. Raw steering
 uses
 
 ```text
@@ -77,9 +84,15 @@ much easier to diagnose from the Slurm log.
 Results are written under
 `runtime/outputs/experiments/tylenol-demon/runs/<run>/`. Each run contains the
 resolved YAML, status manifest, per-cell result and metadata JSON,
-`experiment-results.json`, and an interactive `report.html`. Interrupted runs
+`experiment-results.json`, and an interactive `report.html` with character,
+question, alpha, and scheme selectors. Interrupted runs
 can be resumed with the same Slurm script by passing the run directory as its
 second argument.
+
+The completed 1000 mg baseline experiment is available in
+[published results](results/README.md), including its self-contained browser report.
+Its saved configuration records the original prompt and steering settings;
+the subsequent 8000 mg alpha sweep has its own YAML and results directory.
 
 ## Interpretation boundaries
 

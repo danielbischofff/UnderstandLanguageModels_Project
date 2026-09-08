@@ -217,3 +217,45 @@ def test_j_lens_readout_uses_model_norm_and_head():
     assert ids.tolist() == [[0, 1]]
     assert scores.shape == probabilities.shape == (1, 2)
     assert np.all(probabilities > 0)
+
+
+@pytest.mark.parametrize("positions", ["all", "last", "generated_only"])
+@pytest.mark.parametrize("method", ["additive", "projection_cap"])
+def test_replay_matches_cached_causal_decoding(monkeypatch, positions, method):
+    from transformers import Qwen3Config, Qwen3ForCausalLM
+    from steering.capture import ActivationCaptureConfig
+    from steering.hooks import SteeringContext
+
+    torch.manual_seed(0)
+    model = Qwen3ForCausalLM(Qwen3Config(
+        vocab_size=24, hidden_size=8, intermediate_size=16, num_hidden_layers=2,
+        num_attention_heads=2, num_key_value_heads=2, head_dim=4,
+    )).eval()
+
+    class TinyStore:
+        def materialize(self, recipe, model_config=None):
+            tensor = torch.zeros(2, 8)
+            tensor[:, 0] = 1
+            return MaterializedVector(recipe, tensor, (), (1.0, 1.0))
+
+    loaded = InferenceRunner(model, object(), vector_store=TinyStore(), model_id="test")
+    prompt = torch.tensor([[1, 2, 3]])
+    generated = [4, 5]
+    monkeypatch.setattr(loaded, "_tokenize", lambda _: {"input_ids": prompt})
+    recipe = RoleDirection("demon")
+    request = (
+        SteeringRequest(recipe, coefficient=0.5, layers=[0], positions=positions)
+        if method == "additive" else
+        CappingRequest(recipe, "lower", [0], threshold=0.5, positions=positions)
+    )
+    context = SteeringContext(model, loaded.resolve(request), activation_capture=ActivationCaptureConfig(
+        layers=[0, 1], points=["post_intervention"], positions="all", dtype="bfloat16",
+    ))
+    with torch.inference_mode(), context:
+        output = model(input_ids=prompt, use_cache=True)
+        for token in generated:
+            output = model(input_ids=torch.tensor([[token]]), past_key_values=output.past_key_values, use_cache=True)
+    replay = loaded.capture_complete_sequence([], generated, steering=request, layers=[0, 1])
+    for event in replay:
+        cached = torch.cat([item.tensor for item in context.activation_events if item.layer == event.layer], dim=1)
+        torch.testing.assert_close(event.tensor.float(), cached.float(), atol=0.002, rtol=0.01)

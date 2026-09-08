@@ -114,11 +114,15 @@
     <section class="controls" aria-label="Experiment selection">
       <label>Character<select id="character-select"></select></label>
       <label>Evaluation query<select id="question-select"></select></label>
+      <label>Steering scheme<select id="scheme-select"></select></label>
+      <label>Alpha (α)<select id="alpha-select"></select></label>
       <label>Find a J-Lens token
         <input id="token-search" list="token-suggestions" type="search" placeholder="e.g. danger, cruel, help">
         <datalist id="token-suggestions"></datalist>
       </label>
     </section>
+
+    <p class="secondary" id="steering-description"></p>
 
     <section class="panel" aria-labelledby="text-title">
       <div class="panel-head">
@@ -151,6 +155,14 @@
     const DATA = __EXPERIMENT_DATA__;
     const characterSelect = document.getElementById("character-select");
     const questionSelect = document.getElementById("question-select");
+    const schemeSelect = document.getElementById("scheme-select");
+    const alphaSelect = document.getElementById("alpha-select");
+    const steeringDescription = document.getElementById("steering-description");
+    const steeringConfig = DATA.experiment.steering || {};
+    const schemes = steeringConfig.schemes || [{
+      name: "additive", method: "additive", layers: steeringConfig.layers || [32]
+    }];
+    const coefficients = steeringConfig.coefficients || [steeringConfig.coefficient ?? 1];
     const searchInput = document.getElementById("token-search");
     const suggestions = document.getElementById("token-suggestions");
     const promptTokens = document.getElementById("prompt-tokens");
@@ -166,7 +178,11 @@
     const normalized = value => String(value || "").trim().toLocaleLowerCase();
     const displayToken = token => token.text === "" ? `∅:${token.id}` : token.text;
     const trialForSelection = () => DATA.trials.find(item =>
-      item.character === characterSelect.value && item.question.id === questionSelect.value
+      item.character === characterSelect.value && item.question.id === questionSelect.value &&
+      (item.character === "unsteered" || (
+        (item.steering?.name || "additive") === schemeSelect.value &&
+        Number(item.steering?.coefficient ?? steeringConfig.coefficient ?? 1) === Number(alphaSelect.value)
+      ))
     );
     const options = (select, values, label) => {
       select.replaceChildren(...values.map(value => {
@@ -185,6 +201,8 @@
         value, label: value === "unsteered" ? "Unsteered assistant" : value
       })), "Character");
       options(questionSelect, questions.map(item => ({ value: item.id, label: item.text })), "Evaluation query");
+      options(schemeSelect, schemes.map(item => ({value: item.name, label: item.name})), "Steering scheme");
+      options(alphaSelect, coefficients.map(value => ({value: String(value), label: String(value)})), "Alpha");
     }
 
     function buildTokenButton(token) {
@@ -251,6 +269,7 @@
     }
 
     function renderSearch() {
+      if (!trial) return;
       const query = normalized(searchInput.value);
       const buttons = [...document.querySelectorAll(".token")];
       if (!query) {
@@ -303,6 +322,16 @@
     }
 
     function renderTrial() {
+      const control = characterSelect.value === "unsteered";
+      schemeSelect.disabled = control;
+      alphaSelect.disabled = control;
+      const scheme = schemes.find(item => item.name === schemeSelect.value);
+      steeringDescription.textContent = control
+        ? "Shared unsteered control; alpha and steering scheme do not apply."
+        : `${scheme.method || "additive"} · layers ${(scheme.layers || [32]).join(", ")} · positions ${scheme.positions || "all"} · ` +
+          (scheme.method === "projection_cap"
+            ? `${scheme.bound || "lower"} projection threshold α = ${alphaSelect.value} (activation units)`
+            : `α = ${alphaSelect.value} · ${scheme.scaling || "raw"} direction${scheme.preserve_original_activation_norm ? " · preserve activation norm" : ""}`);
       trial = trialForSelection();
       if (!trial) {
         promptTokens.replaceChildren();
@@ -329,11 +358,13 @@
     }
 
     document.getElementById("experiment-title").textContent = DATA.experiment.name;
-    document.getElementById("experiment-description").textContent = DATA.experiment.description || "Question × character J-Lens experiment";
+    document.getElementById("experiment-description").textContent = DATA.experiment.description || "Question × character × alpha × steering scheme J-Lens experiment";
     renderSelectors();
     renderTrial();
     characterSelect.addEventListener("change", renderTrial);
     questionSelect.addEventListener("change", renderTrial);
+    schemeSelect.addEventListener("change", renderTrial);
+    alphaSelect.addEventListener("change", renderTrial);
     searchInput.addEventListener("input", renderSearch);
     document.querySelector(".panel").addEventListener("pointerover", selectToken);
     document.querySelector(".panel").addEventListener("focusin", selectToken);

@@ -1,6 +1,6 @@
 # Command-line tools
 
-The main entry point runs a complete question-by-character experiment:
+The main entry point runs a question × character × alpha × steering-scheme experiment:
 
 ```bash
 uv run steering-experiment --config configs/experiments/tylenol-demon.yaml
