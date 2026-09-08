@@ -49,7 +49,11 @@ For each matrix cell the runner:
 
 The starting experiment is
 [configs/experiments/tylenol-demon.yaml](configs/experiments/tylenol-demon.yaml).
-Add questions, characters, coefficients, or schemes to expand the matrix. Raw steering
+Keep it intact when creating a new experiment: copy it to a separately named YAML.
+The filename stem, `name` field, and `results/<name>/` directory share the same
+identifier. The 8000 mg sweep is defined in
+[tylenol-demon-8000mg-alpha-sweep.yaml](configs/experiments/tylenol-demon-8000mg-alpha-sweep.yaml).
+Add questions, characters, coefficients, or schemes to expand the new matrix. Raw steering
 uses
 
 ```text
@@ -88,7 +92,7 @@ second argument.
 The completed 1000 mg baseline experiment is available in
 [published results](results/README.md), including its self-contained browser report.
 Its saved configuration records the original prompt and steering settings;
-the current experiment YAML defines the subsequent 8000 mg alpha sweep.
+the subsequent 8000 mg alpha sweep has its own YAML and results directory.
 
 ## Interpretation boundaries
 

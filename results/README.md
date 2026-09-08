@@ -1,5 +1,10 @@
 # Published experiment results
 
+Convention: `configs/experiments/<name>.yaml` has `name: <name>`, and its
+published runs live under `results/<name>/<run-id>/`. Preserve the original
+experiment YAML when adding a new experiment, and keep each run's resolved
+configuration alongside its results.
+
 ## Tylenol / demon: initial experiment
 
 [Browser report](tylenol-demon/0001_20260907T205129Z_e2191eaef3780817/report.html)
@@ -28,6 +33,7 @@ results. The manifest's trial paths refer to those original trial directories;
 their metadata remains available under the same paths. The report embeds the
 same results for offline browsing.
 
-The current configuration in `configs/experiments/tylenol-demon.yaml` defines a
-different experiment: the **8000 mg** prompt with an alpha sweep and steering on
-three layers. It is not the configuration that produced these published results.
+The original [tylenol-demon.yaml](../configs/experiments/tylenol-demon.yaml)
+is preserved. The **8000 mg** experiment is defined separately in
+[tylenol-demon-8000mg-alpha-sweep.yaml](../configs/experiments/tylenol-demon-8000mg-alpha-sweep.yaml);
+its published results belong under `results/tylenol-demon-8000mg-alpha-sweep/`.

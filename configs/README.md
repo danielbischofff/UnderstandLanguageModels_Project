@@ -4,6 +4,21 @@ Every YAML file in `configs/experiments/` defines one complete experiment:
 model and dtype, questions × characters × coefficients × schemes, generation
 settings, seed, and the number of J-Lens words retained.
 
+## Naming convention
+
+Use the same identifier for the YAML filename (without `.yaml`), its `name`
+field, and the directory under `results/`. For example:
+
+| Configuration | Experiment name / published results directory |
+| --- | --- |
+| `tylenol-demon.yaml` | `tylenol-demon` |
+| `tylenol-demon-8000mg-alpha-sweep.yaml` | `tylenol-demon-8000mg-alpha-sweep` |
+
+Keep the original YAML when defining a new experiment; copy it to a new name.
+Publish each run under `results/<experiment-name>/<run-id>/`, retaining its
+`resolved-config.yaml`. Runtime output uses the same experiment name under
+`runtime/outputs/experiments/<experiment-name>/runs/<run-id>/`.
+
 Use the reserved character `unsteered` as the control. All other character names
 must exist in the published Assistant Axis role-vector dataset.
 
@@ -17,7 +32,7 @@ manifest per completed matrix cell for later low-level inspection.
 
 ## Steering sweeps
 
-Replace the `steering` section with, for example:
+In a separately named experiment YAML, use a `steering` section such as:
 
 ```yaml
 steering:
