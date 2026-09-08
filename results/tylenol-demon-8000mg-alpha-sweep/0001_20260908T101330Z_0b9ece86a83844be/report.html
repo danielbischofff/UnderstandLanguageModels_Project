@@ -78,6 +78,7 @@
     }
     .token:hover { background: var(--surface-2); }
     .token.is-selected { box-shadow: inset 0 -3px 0 var(--accent); }
+    .token.is-pinned, .layer.is-pinned { background: var(--accent-soft); }
     .token[data-hit="true"] { background: rgb(var(--search) / var(--heat-alpha)); }
     .token.prompt { color: var(--prompt); }
     .token.response { color: var(--response); }
@@ -110,7 +111,7 @@
     .layer-word .word-text { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .gloss { color: var(--muted); font: 12px/1.45 ui-sans-serif, system-ui, sans-serif; white-space: normal; overflow-wrap: anywhere; }
     .layer-word .gloss { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 11px; line-height: 11px; }
-    .readout-detail { grid-column: 2; grid-row: 1 / span 2; position: sticky; top: 10px; min-width: 0; background: var(--surface); }
+    .readout-detail { grid-column: 2; grid-row: 1 / span 2; align-self: stretch; contain: size; min-height: 0; min-width: 0; overflow: auto; scrollbar-gutter: stable; background: var(--surface); }
     .readout-table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     caption { text-align: left; font-weight: 650; font-size: 15px; padding-bottom: 10px; }
@@ -133,7 +134,7 @@
       .controls { grid-template-columns: 1fr; }
       .panel { padding: 14px; }
       .workspace { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
-      .readout-detail { position: static; grid-column: 1; grid-row: 3; }
+      .readout-detail { grid-column: 1; grid-row: 3; height: min(600px, 75vh); }
       .layer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
   </style>
@@ -149,7 +150,7 @@
       <label>Character<select id="character-select"></select></label>
       <label>Evaluation query<select id="question-select"></select></label>
       <label>Steering scheme<select id="scheme-select"></select></label>
-      <label>Alpha (α)<select id="alpha-select"></select></label>
+      <label><span id="coefficient-label">Alpha (α)</span><select id="alpha-select"></select></label>
       <label>Find a J-Lens token
         <input id="token-search" list="token-suggestions" type="search" placeholder="e.g. danger, cruel, help">
         <datalist id="token-suggestions"></datalist>
@@ -181,7 +182,7 @@
         <h2 id="layers-title">Top J-Lens word by layer</h2>
         <p class="secondary" id="selected-position" aria-live="polite"></p>
       </div>
-      <p class="secondary readout-note">Hover a text token, then a layer to inspect its top 10. Focus and tap also work.</p>
+      <p class="secondary readout-note">Hover to preview. Click a token or layer to pin it; click it again to unpin. Pins are independent.</p>
         <div class="layer-grid" id="layer-grid"></div>
     </section>
         <aside class="panel readout-detail" aria-label="Selected layer readout">
@@ -232,6 +233,8 @@
     let trial = null;
     let position = 0;
     let selectedLayer = null;
+    let pinnedPosition = null;
+    let pinnedLayer = null;
 
     const normalized = value => String(value || "").trim().toLocaleLowerCase();
     const displayToken = token => token.text === "" ? `∅:${token.id}` : token.text;
@@ -321,6 +324,7 @@
       readoutCaption.textContent = `Layer ${layer.layer} · position ${position} · top ${readout.length}`;
       layerGrid.querySelectorAll(".layer").forEach(button => {
         button.setAttribute("aria-pressed", String(Number(button.dataset.layer) === selectedLayer));
+        button.classList.toggle("is-pinned", Number(button.dataset.layer) === pinnedLayer);
       });
       readout.forEach((item, index) => {
         const row = document.createElement("tr");
@@ -348,6 +352,9 @@
         : "No token selected";
       document.querySelectorAll(".token").forEach(button => {
         button.classList.toggle("is-selected", Number(button.dataset.position) === position);
+        const pinned = Number(button.dataset.position) === pinnedPosition;
+        button.classList.toggle("is-pinned", pinned);
+        button.setAttribute("aria-pressed", String(pinned));
       });
       for (const layer of trial.j_lens.layers) {
         const readout = topAt(layer, position);
@@ -436,14 +443,21 @@
     }
 
     function renderTrial() {
+      pinnedPosition = null;
+      pinnedLayer = null;
       const control = characterSelect.value === "unsteered";
       schemeSelect.disabled = control;
       alphaSelect.disabled = control;
       const scheme = schemes.find(item => item.name === schemeSelect.value);
+      const coefficientLabel = scheme?.method === "character_band" ? "Half-width (β)" : "Alpha (α)";
+      document.getElementById("coefficient-label").textContent = coefficientLabel;
+      alphaSelect.setAttribute("aria-label", coefficientLabel);
       steeringDescription.textContent = control
         ? "Shared unsteered control; select a steered character (e.g. demon) to enable alpha and steering scheme."
         : `${scheme.method || "additive"} · layers ${(scheme.layers || [32]).join(", ")} · positions ${scheme.positions || "all"} · ` +
-          (scheme.method === "projection_cap"
+          (scheme.method === "character_band"
+            ? `half-width β = ${alphaSelect.value} × default-to-character distance; character-centred band`
+            : scheme.method === "projection_cap"
             ? `${scheme.bound || "lower"} projection threshold α = ${alphaSelect.value} (activation units)`
             : `α = ${alphaSelect.value} · ${scheme.scaling || "raw"} direction${scheme.preserve_original_activation_norm ? " · preserve activation norm" : ""}`);
       trial = trialForSelection();
@@ -471,14 +485,26 @@
     function selectToken(event) {
       const button = event.target.closest(".token");
       if (!button) return;
-      position = Number(button.dataset.position);
+      const next = Number(button.dataset.position);
+      if (event.type === "click") {
+        pinnedPosition = pinnedPosition === next ? null : next;
+      } else if (pinnedPosition !== null || position === next) {
+        return;
+      }
+      position = next;
       renderLayers();
     }
 
     function selectLayer(event) {
       const button = event.target.closest(".layer");
       if (!button || !trial) return;
-      selectedLayer = Number(button.dataset.layer);
+      const next = Number(button.dataset.layer);
+      if (event.type === "click") {
+        pinnedLayer = pinnedLayer === next ? null : next;
+      } else if (pinnedLayer !== null || selectedLayer === next) {
+        return;
+      }
+      selectedLayer = next;
       renderReadout();
     }
 
