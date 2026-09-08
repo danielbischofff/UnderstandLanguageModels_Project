@@ -83,8 +83,11 @@
     .token.response { color: var(--response); }
     .legend { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
     .gradient { width: 100px; height: 9px; border-radius: 5px; background: linear-gradient(90deg, rgb(var(--search) / .12), rgb(var(--search) / .82)); }
-    .workspace { display: grid; grid-template-columns: minmax(0, 1fr) 300px; grid-template-rows: clamp(92px, 13vh, 120px) auto; gap: 8px 12px; align-items: start; margin-top: 8px; }
-    .text-panel { grid-column: 1; max-height: clamp(92px, 13vh, 120px); overflow: auto; }
+    .workspace { display: grid; grid-template-columns: minmax(0, 1fr) 300px; grid-template-rows: clamp(100px, 15vh, 130px) auto; gap: 8px 12px; align-items: start; margin-top: 8px; }
+    .text-panel { grid-column: 1; max-height: clamp(100px, 15vh, 130px); overflow: auto; }
+    .text-panel h2 { font-size: 14px; }
+    .text-panel .token { min-height: 22px; font-size: 13px; line-height: 1.4; }
+    .text-panel .tokens { margin-top: 2px; }
     .layers-panel { grid-column: 1; padding: 8px; }
     .answer-details { margin-bottom: 8px; }
     summary { cursor: pointer; color: var(--muted); }
@@ -161,7 +164,6 @@
         <h2 id="text-title">Prompt and generated answer</h2>
         <div class="legend" id="search-legend" hidden><span>low</span><span class="gradient"></span><span>high</span></div>
       </div>
-      <details class="answer-details"><summary>Read generated answer</summary><p class="raw-response" id="raw-response"></p></details>
       <div class="token-section">
         <div class="token-label">Prompt tokens</div>
         <div class="tokens" id="prompt-tokens"></div>
@@ -170,6 +172,7 @@
         <div class="token-label">Response tokens</div>
         <div class="tokens" id="response-tokens"></div>
       </div>
+      <details class="answer-details"><summary>Read generated answer</summary><p class="raw-response" id="raw-response"></p></details>
       <p class="secondary" id="search-summary" aria-live="polite"></p>
     </section>
 
