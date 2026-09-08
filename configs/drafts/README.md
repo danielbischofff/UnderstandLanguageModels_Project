@@ -1,7 +1,7 @@
 # Follow-up experiment drafts
 
 Run `../experiments/tylenol-demon-8000mg-single-layer-sweep.yaml` first as its
-own job: alpha 2.5, 3, 3.5, 4 independently at layers 29, 32, 35 (13 trials).
+own job: alpha 1.5, 2, 2.5, 3, 3.5, 4 independently at layers 29, 32, 35 (19 trials).
 Inspect response coherence, task relevance, and the J-Lens across layers and
 positions, not only whether the persona sounds more intense. Three additive
 interventions at different depths are not equivalent to tripling alpha at one

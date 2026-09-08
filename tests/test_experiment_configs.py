@@ -17,16 +17,16 @@ def test_experiment_names_match_filenames():
         assert config.name == path.stem
 
 
-def test_single_layer_followup_is_thirteen_trials_not_simultaneous_steering():
+def test_single_layer_followup_is_nineteen_trials_not_simultaneous_steering():
     path = CONFIGS / "tylenol-demon-8000mg-single-layer-sweep.yaml"
     config = ExperimentConfig.from_mapping(yaml.safe_load(path.read_text(encoding="utf-8")))
     trials = config.trials()
-    assert len(trials) == 13
+    assert len(trials) == 19
     assert sum(trial["steering"] is None for trial in trials) == 1
     assert {
         (trial["steering"]["coefficient"], tuple(trial["steering"]["layers"]))
         for trial in trials if trial["steering"] is not None
-    } == {(alpha, (layer,)) for alpha in (2.5, 3.0, 3.5, 4.0) for layer in (29, 32, 35)}
+    } == {(alpha, (layer,)) for alpha in (1.5, 2.0, 2.5, 3.0, 3.5, 4.0) for layer in (29, 32, 35)}
     assert config.generation == {"max_new_tokens": 256, "do_sample": False}
     assert "8000mg" in config.questions[0].text
     assert config.characters == ("unsteered", "demon")

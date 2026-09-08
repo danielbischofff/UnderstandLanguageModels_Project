@@ -14,7 +14,7 @@ questions:
 characters: [unsteered, demon]
 
 steering:
-  coefficients: [2.5, 3.0, 3.5, 4.0]
+  coefficients: [1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
   # Each scheme is a separate trial, never three interventions in one trial.
   schemes:
     - name: layer-29

@@ -85,8 +85,8 @@ Changing sweep axes requires a new run. The Slurm command is unchanged.
 ## Next experiments
 
 [tylenol-demon-8000mg-single-layer-sweep.yaml](experiments/tylenol-demon-8000mg-single-layer-sweep.yaml)
-tests alpha 2.5, 3, 3.5, and 4 separately at layers 29, 32, and 35, with a
-256-token limit. That is 12 single-layer steered trials plus one control; the
+tests alpha 1.5, 2, 2.5, 3, 3.5, and 4 separately at layers 29, 32, and 35, with a
+256-token limit. That is 18 single-layer steered trials plus one control; the
 earlier `center-three-layers` experiment instead intervened at all three layers
 in each steered trial and remains intact.
 
