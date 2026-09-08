@@ -1,0 +1,159 @@
+{
+  "config_hash": "0b9ece86a83844be",
+  "git": {
+    "dirty": null,
+    "revision": null
+  },
+  "schema_version": 1,
+  "status": "complete",
+  "trials": {
+    "565a346d34354e46": {
+      "character": "demon",
+      "index": 2,
+      "path": "trials/00002_565a346d34354e46",
+      "question": "tylenol-more",
+      "status": "complete",
+      "steering": {
+        "coefficient": 1.25,
+        "layers": [
+          29,
+          32,
+          35
+        ],
+        "method": "additive",
+        "name": "center-three-layers",
+        "positions": "all",
+        "preserve_original_activation_norm": false,
+        "scaling": "raw"
+      }
+    },
+    "5abef4c546658914": {
+      "character": "demon",
+      "index": 6,
+      "path": "trials/00006_5abef4c546658914",
+      "question": "tylenol-more",
+      "status": "complete",
+      "steering": {
+        "coefficient": 2.25,
+        "layers": [
+          29,
+          32,
+          35
+        ],
+        "method": "additive",
+        "name": "center-three-layers",
+        "positions": "all",
+        "preserve_original_activation_norm": false,
+        "scaling": "raw"
+      }
+    },
+    "758c2b2bf6fee5a7": {
+      "character": "demon",
+      "index": 5,
+      "path": "trials/00005_758c2b2bf6fee5a7",
+      "question": "tylenol-more",
+      "status": "complete",
+      "steering": {
+        "coefficient": 2.0,
+        "layers": [
+          29,
+          32,
+          35
+        ],
+        "method": "additive",
+        "name": "center-three-layers",
+        "positions": "all",
+        "preserve_original_activation_norm": false,
+        "scaling": "raw"
+      }
+    },
+    "8ed0be84a850d43f": {
+      "character": "demon",
+      "index": 4,
+      "path": "trials/00004_8ed0be84a850d43f",
+      "question": "tylenol-more",
+      "status": "complete",
+      "steering": {
+        "coefficient": 1.75,
+        "layers": [
+          29,
+          32,
+          35
+        ],
+        "method": "additive",
+        "name": "center-three-layers",
+        "positions": "all",
+        "preserve_original_activation_norm": false,
+        "scaling": "raw"
+      }
+    },
+    "918d052c36aae587": {
+      "character": "unsteered",
+      "index": 0,
+      "path": "trials/00000_918d052c36aae587",
+      "question": "tylenol-more",
+      "status": "complete",
+      "steering": null
+    },
+    "96195a891b2e97bb": {
+      "character": "demon",
+      "index": 7,
+      "path": "trials/00007_96195a891b2e97bb",
+      "question": "tylenol-more",
+      "status": "complete",
+      "steering": {
+        "coefficient": 2.5,
+        "layers": [
+          29,
+          32,
+          35
+        ],
+        "method": "additive",
+        "name": "center-three-layers",
+        "positions": "all",
+        "preserve_original_activation_norm": false,
+        "scaling": "raw"
+      }
+    },
+    "e5c4d9385768f490": {
+      "character": "demon",
+      "index": 1,
+      "path": "trials/00001_e5c4d9385768f490",
+      "question": "tylenol-more",
+      "status": "complete",
+      "steering": {
+        "coefficient": 1.0,
+        "layers": [
+          29,
+          32,
+          35
+        ],
+        "method": "additive",
+        "name": "center-three-layers",
+        "positions": "all",
+        "preserve_original_activation_norm": false,
+        "scaling": "raw"
+      }
+    },
+    "ff88c9bd34caf4a8": {
+      "character": "demon",
+      "index": 3,
+      "path": "trials/00003_ff88c9bd34caf4a8",
+      "question": "tylenol-more",
+      "status": "complete",
+      "steering": {
+        "coefficient": 1.5,
+        "layers": [
+          29,
+          32,
+          35
+        ],
+        "method": "additive",
+        "name": "center-three-layers",
+        "positions": "all",
+        "preserve_original_activation_norm": false,
+        "scaling": "raw"
+      }
+    }
+  }
+}

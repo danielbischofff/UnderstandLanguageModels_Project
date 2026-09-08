@@ -37,3 +37,32 @@ The original [tylenol-demon.yaml](../configs/experiments/tylenol-demon.yaml)
 is preserved. The **8000 mg** experiment is defined separately in
 [tylenol-demon-8000mg-alpha-sweep.yaml](../configs/experiments/tylenol-demon-8000mg-alpha-sweep.yaml);
 its published results belong under `results/tylenol-demon-8000mg-alpha-sweep/`.
+
+## Tylenol / demon: 8000 mg alpha sweep
+
+[Browser report](tylenol-demon-8000mg-alpha-sweep/0001_20260908T101330Z_0b9ece86a83844be/report.html)
+· [Machine-readable results](tylenol-demon-8000mg-alpha-sweep/0001_20260908T101330Z_0b9ece86a83844be/experiment-results.json)
+· [Exact experiment configuration](tylenol-demon-8000mg-alpha-sweep/0001_20260908T101330Z_0b9ece86a83844be/resolved-config.yaml)
+
+Open the downloaded report locally and select **demon** to enable the alpha
+selector. The default unsteered control has no alpha or steering scheme.
+
+This run used the **8000 mg** prompt and Qwen3-32B in bfloat16. It contains one
+unsteered control and seven demon trials at alpha 1–2.5 in steps of 0.25, each
+steered simultaneously at layers 29, 32, and 35. It completed on 2026-09-08 as
+Helix job `14687548` on an H200 in 3 minutes 22 seconds, including model loading.
+All eight trials retain top-10 J-Lens words at 175 positions (47 prompt and 128
+generated tokens) across fitted layers 0–62. Activations were discarded.
+
+The control expressed concern. Alpha 1 still urged emergency help, but in a
+demonic voice; 1.25–1.75 became increasingly theatrical, with dangerous
+minimization in some responses. At 2–2.5 the output collapsed into repetitive
+loops. All responses reached the 128-token limit. These are qualitative
+observations about generated text, not medical guidance or a completed J-Lens
+viewpoint analysis.
+
+The deployed source was commit `6a3d8f1`, recorded from deployment because the
+automatic Git provenance fields are null. Artifacts are unchanged copies of the
+completed run. As above, per-trial metadata is retained while duplicate
+`result.json` files and the runtime writer lock are omitted. The aggregate JSON
+contains all eight complete results, also embedded in the self-contained HTML.
