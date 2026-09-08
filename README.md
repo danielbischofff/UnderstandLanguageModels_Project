@@ -15,6 +15,7 @@ hypothesis in [the project proposal](Project%20Proposals/j_lens_persona_space_re
 
 ```text
 configs/experiments/   Questions x characters x alphas x steering schemes
+configs/drafts/        Follow-up prompts awaiting experiment-setting selection
 direct_character_vectors_j_lens_analysis/
                        Original character-vector and J/R-Lens analysis
 Project Proposals/     Research motivation and hypotheses

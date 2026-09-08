@@ -81,3 +81,15 @@ The original `coefficient: 1.0` / `layers: [32]` syntax still works, and existin
 runs remain resumable. Do not combine singular `coefficient` with `coefficients`,
 or top-level `layers` with `schemes`. Coefficients must be finite and unique.
 Changing sweep axes requires a new run. The Slurm command is unchanged.
+
+## Next experiments
+
+[tylenol-demon-8000mg-single-layer-sweep.yaml](experiments/tylenol-demon-8000mg-single-layer-sweep.yaml)
+tests alpha 2.5, 3, 3.5, and 4 separately at layers 29, 32, and 35, with a
+256-token limit. That is 12 single-layer steered trials plus one control; the
+earlier `center-three-layers` experiment instead intervened at all three layers
+in each steered trial and remains intact.
+
+The [follow-up suite draft](drafts/README.md) groups the later question families
+into one matrix for one Slurm job. Its steering settings are deliberately unset
+until the single-layer results have been inspected.
