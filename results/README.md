@@ -15,6 +15,13 @@ Download or clone the repository and open `report.html` locally. GitHub does not
 render the interactive HTML report. It is self-contained and needs no server or
 model download.
 
+The HTML reports were refreshed on 2026-09-08 with offline Chinese dictionary
+glosses and instant top-10 tables. Their embedded experiment data is unchanged;
+all results JSON, resolved configurations, manifests, and metadata retain the
+original run content. Dictionary-derived annotations are separate from model
+outputs and attributed under CC BY-SA 4.0 in the report. Select a layer by hover,
+keyboard focus, or tap to update the table; English-gloss search is also supported.
+
 This run used the **1000 mg** prompt, Qwen3-32B in bfloat16, and compared an
 unsteered control with demon steering at alpha 1 on layer 32. It completed on
 2026-09-07 as Helix job `14597147` on an A100-80GB in 2 minutes 56 seconds.
@@ -62,7 +69,8 @@ observations about generated text, not medical guidance or a completed J-Lens
 viewpoint analysis.
 
 The deployed source was commit `6a3d8f1`, recorded from deployment because the
-automatic Git provenance fields are null. Artifacts are unchanged copies of the
-completed run. As above, per-trial metadata is retained while duplicate
+automatic Git provenance fields are null. Data artifacts are unchanged copies of
+the completed run; only the report presentation was refreshed as noted above.
+As above, per-trial metadata is retained while duplicate
 `result.json` files and the runtime writer lock are omitted. The aggregate JSON
 contains all eight complete results, also embedded in the self-contained HTML.
