@@ -1,5 +1,22 @@
 # Follow-up experiment drafts
 
+## Pending band-capping experiment
+
+[tylenol-demon-8000mg-band-sweep.yaml](tylenol-demon-8000mg-band-sweep.yaml)
+specifies nine trials: demon with half-width fractions 0, 0.25, 0.5, and 1.0
+in each of the simultaneous eight-layer blocks 28–35 and 46–53, plus one shared
+unsteered control. It keeps the 8000 mg prompt and 256-token generation limit.
+Half-width is measured relative to each layer's default-to-character distance;
+zero pins the character projection and does not disable steering.
+
+This is a reviewable specification, **not yet runnable**: the proposed
+`character_band` method requires runner and report-label support. The current
+runner rejects that method rather than interpreting it as additive steering.
+After approval, implement and test that support, move the YAML into
+`configs/experiments/`, and only then submit. Do not queue it automatically.
+
+## Single-layer baseline
+
 Run `../experiments/tylenol-demon-8000mg-single-layer-sweep.yaml` first as its
 own job: alpha 1.5, 2, 2.5, 3, 3.5, 4 independently at layers 29, 32, 35 (19 trials).
 Inspect response coherence, task relevance, and the J-Lens across layers and
