@@ -1,8 +1,8 @@
 # Awaiting approval and character_band runner support. Do not submit yet.
-# Planned matrix: four half-widths x two layer blocks + one shared control = 9 trials.
+# Planned matrix: four half-widths x three layer blocks + one shared control = 13 trials.
 # Keep this filename, experiment name, and eventual results directory aligned.
 name: tylenol-demon-8000mg-band-sweep
-description: Compare character-centred projection bands in middle and later eight-layer blocks on the 8000 mg Tylenol prompt.
+description: Compare character-centred projection bands in middle, later, and wide layer blocks on the 8000 mg Tylenol prompt.
 
 model:
   id: Qwen/Qwen3-32B
@@ -24,7 +24,7 @@ steering:
   # beta=0 pins the projection to c; it is NOT an unsteered control.
   coefficients: [0.0, 0.1, 0.25, 0.5]
   schemes:
-    # Each block is a separate trial. All eight layers in a block intervene together.
+    # Each block is a separate trial. All listed layers in a block intervene together.
     # Layer indices are zero-based and explicit; both endpoints are included.
     - name: middle-eight
       method: character_band
@@ -33,6 +33,10 @@ steering:
     - name: later-eight
       method: character_band
       layers: [46, 47, 48, 49, 50, 51, 52, 53]
+      positions: all
+    - name: wide-26
+      method: character_band
+      layers: [28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]
       positions: all
 
 # The later block matches the Assistant Axis paper's reported Qwen layer range,
