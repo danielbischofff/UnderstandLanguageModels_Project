@@ -91,7 +91,7 @@ question, alpha, and scheme selectors. Interrupted runs
 can be resumed with the same Slurm script by passing the run directory as its
 second argument.
 
-Reports show Chinese dictionary glosses in parentheses and an instant top-10
+Reports show Chinese dictionary glosses (at most five words) and an instant top-10
 table (token, logit, probability) when a layer is hovered, focused, or tapped.
 Search accepts original tokens or English glosses. Approximate component glosses
 and untranslated fragments are labelled; annotations never change model scores.

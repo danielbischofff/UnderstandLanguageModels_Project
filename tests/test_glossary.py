@@ -4,7 +4,7 @@ import sys
 
 import pytest
 
-from steering.glossary import dictionary, gloss, report_glossary
+from steering.glossary import concise, dictionary, gloss, report_glossary
 from steering.report import render_experiment_report
 from steering.cli.report import main
 
@@ -14,20 +14,30 @@ def test_dictionary_covers_both_scripts_and_keeps_alternate_senses():
     assert "coach" in words["教练"]
     assert words["教练"] == words["教練"]
     assert "CL:" not in words["教练"]
-    assert "CL:" not in words["教练"]
     assert "suppress" in words["打压"]
     assert gloss(" 教练", words)["kind"] == "dictionary"
 
 
 def test_fallbacks_are_marked_not_invented_translations():
     words = {"技能": "skill", "培训": "training"}
-    assert gloss("技能培训", words) == {"kind": "parts", "text": "approx. parts — 技能: skill | 培训: training"}
+    assert gloss("技能培训", words) == {"kind": "parts", "text": "approx. parts — 技能: skill | 培训: training", "short": "approx. skill / training"}
     assert "unknown" in gloss("技能龘", words)["text"]
     assert gloss("龘", words)["kind"] == "untranslated"
     assert gloss("お互", words)["kind"] == "untranslated"
     assert gloss("技\ufffd", words)["kind"] == "untranslated"
     assert gloss("hello", words) is None
     assert gloss("", words) is None
+
+
+def test_display_glosses_are_short_without_losing_search_senses():
+    assert concise("a rather lengthy explanation with several words; coach") == "coach"
+    assert concise("one two three four five six") == "one two three four five…"
+    words = dictionary()
+    for word in ["教练", "教練", "技能培训", "お互", "技能龘", "打压"]:
+        entry = gloss(word, words)
+        assert 0 < len(entry["short"].split()) <= 5
+    entry = gloss("教练", words)
+    assert "trainer" in entry["text"]  # Fuller meanings remain available to search.
 
 
 def example():

@@ -26,23 +26,23 @@
       color: var(--text);
       font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 32px 0 56px; }
-    header { margin-bottom: 24px; }
-    h1 { margin: 0 0 6px; font-size: clamp(24px, 4vw, 38px); line-height: 1.1; font-weight: 650; }
+    main { width: min(1800px, calc(100% - 24px)); margin: 0 auto; padding: 10px 0 24px; }
+    header { margin-bottom: 8px; }
+    h1 { margin: 0 0 4px; font-size: 24px; line-height: 1.1; font-weight: 650; overflow-wrap: anywhere; }
     h2 { margin: 0; font-size: 18px; font-weight: 650; }
     p { margin: 0; }
-    .lede { color: var(--muted); max-width: 76ch; }
+    .lede { color: var(--muted); font-size: 13px; line-height: 1.3; }
     .controls {
       display: grid;
-      grid-template-columns: repeat(3, minmax(180px, 1fr));
-      gap: 14px;
-      margin: 22px 0;
+      grid-template-columns: 1fr 2fr 1fr .7fr 1.3fr;
+      gap: 10px;
+      margin: 8px 0;
     }
     label { display: grid; gap: 6px; color: var(--muted); font-size: 13px; font-weight: 600; }
     select, input {
       width: 100%;
-      min-height: 42px;
-      padding: 8px 10px;
+      min-height: 34px;
+      padding: 5px 8px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--surface);
@@ -54,10 +54,10 @@
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: 12px;
-      padding: 18px;
-      margin-top: 16px;
+      padding: 10px;
+      min-width: 0;
     }
-    .panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .panel-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px; margin-bottom: 6px; }
     .secondary { color: var(--muted); font-size: 13px; }
     .raw-response { margin: 0 0 16px; padding-left: 12px; border-left: 3px solid var(--response); white-space: pre-wrap; }
     .token-section + .token-section { margin-top: 14px; }
@@ -83,14 +83,18 @@
     .token.response { color: var(--response); }
     .legend { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
     .gradient { width: 100px; height: 9px; border-radius: 5px; background: linear-gradient(90deg, rgb(var(--search) / .12), rgb(var(--search) / .82)); }
-    .readout-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 1fr); gap: 18px; align-items: start; }
-    .layer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 7px; }
+    .workspace { display: grid; grid-template-columns: minmax(0, 1fr) 300px; grid-template-rows: clamp(92px, 13vh, 120px) auto; gap: 8px 12px; align-items: start; margin-top: 8px; }
+    .text-panel { grid-column: 1; max-height: clamp(92px, 13vh, 120px); overflow: auto; }
+    .layers-panel { grid-column: 1; padding: 8px; }
+    .answer-details { margin-bottom: 8px; }
+    summary { cursor: pointer; color: var(--muted); }
+    .layer-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 4px; }
     .layer {
       text-align: left;
       color: var(--text);
       cursor: pointer;
-      min-height: 58px;
-      padding: 7px 8px;
+      height: 56px;
+      padding: 3px 5px;
       border: 1px solid var(--line);
       border-radius: 7px;
       background: var(--bg);
@@ -98,30 +102,36 @@
     }
     .layer.search-hit { border-color: rgb(var(--search)); box-shadow: inset 0 -3px 0 rgb(var(--search)); }
     .layer[aria-pressed="true"] { outline: 2px solid var(--accent); outline-offset: 1px; }
-    .layer-index { display: block; color: var(--muted); font-size: 11px; }
-    .layer-word { display: block; overflow-wrap: anywhere; font: 600 14px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .layer-index { display: block; color: var(--muted); font-size: 11px; line-height: 12px; }
+    .layer-word { display: block; overflow-wrap: anywhere; font: 600 13px/14px ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .layer-word .word-text { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .gloss { color: var(--muted); font: 12px/1.45 ui-sans-serif, system-ui, sans-serif; white-space: normal; overflow-wrap: anywhere; }
-    .layer-word .gloss { display: block; }
-    .readout-detail { position: sticky; top: 12px; min-width: 0; background: var(--surface); }
+    .layer-word .gloss { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 11px; line-height: 11px; }
+    .readout-detail { grid-column: 2; grid-row: 1 / span 2; position: sticky; top: 10px; min-width: 0; background: var(--surface); }
     .readout-table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     caption { text-align: left; font-weight: 650; font-size: 15px; padding-bottom: 10px; }
-    th, td { text-align: left; vertical-align: top; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+    th, td { text-align: left; vertical-align: top; padding: 6px 3px; border-bottom: 1px solid var(--line); }
     th { color: var(--muted); font-weight: 600; }
     td.numeric, th.numeric { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
     td.readout-word { overflow-wrap: anywhere; white-space: pre-wrap; }
     td.readout-word .gloss { display: block; }
     tr.is-hit { background: rgb(var(--search) / .12); }
-    .readout-note { margin: 10px 0; }
+    .readout-note { margin: 4px 0 6px; }
     footer { margin-top: 24px; }
     .empty { color: var(--muted); padding: 28px 0; text-align: center; }
+    @media (max-width: 1099px) {
+      .controls { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .workspace { grid-template-columns: minmax(0, 1fr) 280px; }
+      .layer-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    }
     @media (max-width: 720px) {
       main { width: min(100% - 20px, 1180px); padding-top: 20px; }
       .controls { grid-template-columns: 1fr; }
       .panel { padding: 14px; }
-      .readout-layout { grid-template-columns: minmax(0, 1fr); }
-      .readout-detail { position: static; grid-row: 1; }
-      .layer-grid { grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); }
+      .workspace { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
+      .readout-detail { position: static; grid-column: 1; grid-row: 3; }
+      .layer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
   </style>
 </head>
@@ -145,12 +155,13 @@
 
     <p class="secondary" id="steering-description"></p>
 
-    <section class="panel" aria-labelledby="text-title">
+    <div class="workspace">
+    <section class="panel text-panel" aria-labelledby="text-title">
       <div class="panel-head">
         <h2 id="text-title">Prompt and generated answer</h2>
         <div class="legend" id="search-legend" hidden><span>low</span><span class="gradient"></span><span>high</span></div>
       </div>
-      <p class="raw-response" id="raw-response"></p>
+      <details class="answer-details"><summary>Read generated answer</summary><p class="raw-response" id="raw-response"></p></details>
       <div class="token-section">
         <div class="token-label">Prompt tokens</div>
         <div class="tokens" id="prompt-tokens"></div>
@@ -162,32 +173,31 @@
       <p class="secondary" id="search-summary" aria-live="polite"></p>
     </section>
 
-    <section class="panel" aria-labelledby="layers-title">
+    <section class="panel layers-panel" aria-labelledby="layers-title">
       <div class="panel-head">
         <h2 id="layers-title">Top J-Lens word by layer</h2>
         <p class="secondary" id="selected-position" aria-live="polite"></p>
       </div>
-      <p class="secondary readout-note">Hover, focus, or tap a layer to see its top-10 table immediately. Hover a text token to change the position.</p>
-      <div class="readout-layout">
+      <p class="secondary readout-note">Hover a text token, then a layer to inspect its top 10. Focus and tap also work.</p>
         <div class="layer-grid" id="layer-grid"></div>
-        <aside class="readout-detail" aria-label="Selected layer readout">
+    </section>
+        <aside class="panel readout-detail" aria-label="Selected layer readout">
           <div class="readout-table-wrap">
             <table id="readout-table">
               <caption id="readout-caption">No readout selected</caption>
-              <thead><tr><th scope="col">Rank</th><th scope="col">Token (English gloss)</th><th scope="col" class="numeric">Logit</th><th scope="col" class="numeric">Probability</th></tr></thead>
+              <thead><tr><th scope="col">#</th><th scope="col">Token (gloss)</th><th scope="col" class="numeric">Logit</th><th scope="col" class="numeric"><abbr title="Probability">Prob.</abbr></th></tr></thead>
               <tbody id="readout-rows"></tbody>
             </table>
           </div>
           <p class="secondary readout-note">J-Lens scores shown to six significant digits; probabilities are not renormalized over these rows. Full saved precision remains in the results JSON. Glosses are dictionary hints, not additional model tokens.</p>
         </aside>
       </div>
-    </section>
     <footer class="secondary">
       English glosses: <a href="https://www.mdbg.net/chinese/dictionary?page=cc-cedict">MDBG / CC-CEDICT contributors</a>,
       snapshot 2026-09-07, adapted under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
-      Up to three dictionary senses; “approx. parts” marks component lookup, not a reliable translation of the whole token.
+      Display glosses have at most five words; “approx.” marks component lookup and “…” marks shortened text.
       Unmatched or mixed-script fragments are labelled untranslated. Han-script detection is not language identification.
-      Search matches original tokens and English glosses; heat uses the original token probabilities.
+      Search also matches the fuller dictionary senses; heat uses the original token probabilities.
     </footer>
   </main>
 
@@ -225,12 +235,15 @@
     const translation = item => GLOSSARY[item.text.trim()];
 
     function renderWord(container, item) {
-      container.textContent = displayToken(item);
+      const original = document.createElement("span");
+      original.className = "word-text";
+      original.textContent = displayToken(item);
+      container.replaceChildren(original);
       const entry = translation(item);
       if (entry) {
         const span = document.createElement("span");
         span.className = "gloss";
-        span.textContent = ` (${entry.text})`;
+        span.textContent = ` (${entry.short || entry.text.split(/\s+/).slice(0, 5).join(" ")})`;
         container.append(span);
       }
     }

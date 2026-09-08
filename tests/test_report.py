@@ -76,12 +76,14 @@ def test_browser_sweep_selection_hover_search_and_missing_cell(tmp_path):
         ]},
     })
     base = value["trials"][0]
-    # Two layers and a full top-10: check the visible inspector, not a native tooltip.
+    # All fitted layers and a full top-10 exercise desktop layout and inspection.
     chinese = [
         {"id": 100 + index, "text": text, "logit": 10 - index, "probability": 0.1 / (index + 1)}
         for index, text in enumerate(["教练", "技能培训", "お互", "龘", "<script>", "word", "six", "seven", "eight", "nine"])
     ]
     base["j_lens"]["layers"].append({"layer": 1, "positions": [chinese, chinese]})
+    for layer in range(2, 63):
+        base["j_lens"]["layers"].append({"layer": layer, "positions": [chinese, chinese]})
     value["trials"] = []
     for question in value["experiment"]["questions"]:
         control = copy.deepcopy(base)

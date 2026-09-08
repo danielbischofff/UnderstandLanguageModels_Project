@@ -43,3 +43,10 @@ not evidence that the model represents a particular English interpretation.
 The original token remains visible. Hover/focus/tap a layer for a persistent
 top-10 table, without native-tooltip delay. Probabilities are the saved J-Lens
 values, not renormalized over the displayed words or translations.
+
+Displayed glosses use at most five words. Complete short senses are preferred;
+an ellipsis marks shortening and `approx.` marks component lookup. Search still
+matches the fuller dictionary meanings. The desktop layout gives most of the
+width to a nine-column layer overview and uses a 300-pixel readout pane on the
+right. All 63 fitted layers fit at 1366 × 768; smaller screens reflow. The text
+panel scrolls independently, and the plain generated answer can be expanded.

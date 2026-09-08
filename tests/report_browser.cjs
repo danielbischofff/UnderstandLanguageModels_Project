@@ -8,10 +8,15 @@ const {chromium} = require('playwright');
     ? {executablePath: process.env.BROWSER_EXECUTABLE, headless: true}
     : {channel: 'chrome', headless: true});
   try {
-    const page = await browser.newPage();
+    const page = await browser.newPage({viewport: {width: 1366, height: 768}});
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(pathToFileURL(process.argv[2]).href);
+    assert.equal(await page.locator('.layer').count(), 63);
+    const grid = await page.locator('#layer-grid').boundingBox();
+    assert(grid.y >= 0 && grid.y + grid.height <= 768, 'All 63 layers fit in the initial desktop viewport');
+    assert((await page.locator('.readout-detail').boundingBox()).width <= 300);
+    assert.equal(await page.locator('.gloss').evaluateAll(nodes => nodes.every(n => n.textContent.trim().slice(1, -1).trim().split(/\s+/).length <= 5)), true);
     const answer = () => page.locator('#raw-response').textContent();
     assert.equal(await answer(), 'control-q');
     assert.equal(await page.locator('#alpha-select').isDisabled(), true);
@@ -30,7 +35,7 @@ const {chromium} = require('playwright');
     assert.deepEqual(await page.locator('#readout-rows tr').first().locator('.numeric').allTextContents(), ['10', '0.1']);
     assert.equal(await page.locator('#readout-rows tr').nth(2).locator('.numeric').last().textContent(), '0.0333333');
     assert.equal(await page.locator('#readout-rows tr').nth(2).locator('.numeric').last().getAttribute('data-value'), String(0.1 / 3));
-    assert.match(await page.locator('#readout-rows tr').nth(1).textContent(), /approx. parts/);
+    assert.match(await page.locator('#readout-rows tr').nth(1).textContent(), /approx\./);
     assert.match(await page.locator('#readout-rows tr').nth(2).textContent(), /untranslated/);
     assert.equal(await page.locator('.layer[title]').count(), 0);
     assert.equal(await page.locator('#readout-rows script').count(), 0);

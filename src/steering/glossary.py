@@ -14,6 +14,16 @@ KANA = re.compile(r"[\u3040-\u30ff\uff66-\uff9f]")
 ENTRY = re.compile(r"^(\S+) (\S+) \[[^\]]+\] /(.+)/$")
 
 
+def concise(text: str, limit: int = 5) -> str:
+    """Prefer a complete short sense; mark a shortened long sense with ellipsis."""
+    senses = [sense.strip() for sense in text.split(";") if sense.strip()]
+    for sense in senses:
+        if len(sense.split()) <= limit:
+            return sense
+    words = (senses[0] if senses else text).split()
+    return " ".join(words[:limit]) + ("…" if len(words) > limit else "")
+
+
 @lru_cache(maxsize=1)
 def dictionary() -> dict[str, str]:
     """Keep a few dictionary senses, merging alternate readings of each word."""
@@ -38,10 +48,11 @@ def gloss(text: str, words: Mapping[str, str]) -> dict[str, str] | None:
     if not HAN.search(text):
         return None
     if KANA.search(text) or "\ufffd" in text:
-        return {"kind": "untranslated", "text": "untranslated: mixed script or byte fragment"}
+        return {"kind": "untranslated", "text": "untranslated: mixed script or byte fragment", "short": "untranslated fragment"}
     if text in words:
-        return {"kind": "dictionary", "text": words[text]}
+        return {"kind": "dictionary", "text": words[text], "short": concise(words[text])}
     parts = []
+    short_parts = []
     index = 0
     found = False
     while index < len(text):
@@ -56,10 +67,12 @@ def gloss(text: str, words: Mapping[str, str]) -> dict[str, str] | None:
         meaning = words.get(word)
         found = found or meaning is not None
         parts.append(f"{word}: {meaning or 'unknown'}")
+        short_parts.append(concise(meaning, 2) if meaning else "unknown")
         index = end
     return {
         "kind": "parts" if found else "untranslated",
         "text": "approx. parts — " + " | ".join(parts) if found else "untranslated: no dictionary entry",
+        "short": "approx. " + concise(" / ".join(short_parts), 4) if found else "untranslated",
     }
 
 

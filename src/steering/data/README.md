@@ -23,6 +23,11 @@ marked approximate; missing entries, replacement-byte fragments, and mixed
 kana/Han strings are labelled untranslated. Script detection does not establish
 that a token is Chinese: kanji-only strings can also occur in Japanese.
 
+Each annotation also includes a display gloss of at most five words. It prefers
+a complete short dictionary sense, or marks a shortened sense with an ellipsis.
+Component glosses retain an `approx.` prefix. The fuller gloss remains available
+to search, including meanings omitted from the compact display.
+
 These are context-free dictionary glosses, not model-derived semantic labels.
 No model token ID, token text, logit, probability, or ranking is modified. Only
 glosses for strings present in each report are embedded, so browsing is offline
