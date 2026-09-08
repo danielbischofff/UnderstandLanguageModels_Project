@@ -1,0 +1,25 @@
+{
+  "config_hash": "e2191eaef3780817",
+  "git": {
+    "dirty": null,
+    "revision": null
+  },
+  "schema_version": 1,
+  "status": "complete",
+  "trials": {
+    "b294feeb53490853": {
+      "character": "demon",
+      "index": 1,
+      "path": "trials/00001_b294feeb53490853",
+      "question": "tylenol-more",
+      "status": "complete"
+    },
+    "cf33659989f517b4": {
+      "character": "unsteered",
+      "index": 0,
+      "path": "trials/00000_cf33659989f517b4",
+      "question": "tylenol-more",
+      "status": "complete"
+    }
+  }
+}

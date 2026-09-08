@@ -18,6 +18,7 @@ configs/experiments/   Questions x characters x alphas x steering schemes
 direct_character_vectors_j_lens_analysis/
                        Original character-vector and J/R-Lens analysis
 Project Proposals/     Research motivation and hypotheses
+results/               Published experiment results and browser reports
 slurm/                 Cluster entry point
 src/steering/          Model steering, experiment runner, and J-Lens adapter
 tests/                 Unit and opt-in integration tests
@@ -83,6 +84,11 @@ resolved YAML, status manifest, per-cell result and metadata JSON,
 question, alpha, and scheme selectors. Interrupted runs
 can be resumed with the same Slurm script by passing the run directory as its
 second argument.
+
+The completed 1000 mg baseline experiment is available in
+[published results](results/README.md), including its self-contained browser report.
+Its saved configuration records the original prompt and steering settings;
+the current experiment YAML defines the subsequent 8000 mg alpha sweep.
 
 ## Interpretation boundaries
 
