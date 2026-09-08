@@ -1,8 +1,8 @@
 # Follow-up experiment drafts
 
-## Pending band-capping experiment
+## Band-capping experiment
 
-[tylenol-demon-8000mg-band-sweep.yaml](tylenol-demon-8000mg-band-sweep.yaml)
+[tylenol-demon-8000mg-band-sweep.yaml](../experiments/tylenol-demon-8000mg-band-sweep.yaml)
 specifies thirteen trials: demon with half-width fractions 0, 0.1, 0.25, and 0.5
 in each of three blocks: 28–35, 46–53, and 28–53, plus one shared unsteered
 control. All layers within each block intervene simultaneously, including all
@@ -10,11 +10,8 @@ control. All layers within each block intervene simultaneously, including all
 Half-width is measured relative to each layer's default-to-character distance;
 zero pins the character projection and does not disable steering.
 
-This is a reviewable specification, **not yet runnable**: the proposed
-`character_band` method requires runner and report-label support. The current
-runner rejects that method rather than interpreting it as additive steering.
-After approval, implement and test that support, move the YAML into
-`configs/experiments/`, and only then submit. Do not queue it automatically.
+This approved experiment now lives in `configs/experiments/`; `character_band`
+is supported by the runner and its report uses a half-width selector.
 
 ## Single-layer baseline
 

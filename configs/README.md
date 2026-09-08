@@ -84,6 +84,17 @@ Changing sweep axes requires a new run. The Slurm command is unchanged.
 
 ## Next experiments
 
+[tylenol-demon-8000mg-band-sweep.yaml](experiments/tylenol-demon-8000mg-band-sweep.yaml)
+runs 13 trials: four half-widths (0, 0.1, 0.25, 0.5) in three simultaneous layer
+blocks (28–35, 46–53, 28–53), plus one shared control. For `method: character_band`,
+`coefficients` means dimensionless half-width fractions, not additive alpha.
+At each layer, define `v = R_character - D`, `u = v / ||v||`, `c = dot(u, R_character)`.
+The projection is clamped to `[c - beta*||v||, c + beta*||v||]`; perpendicular
+components stay unchanged. Beta zero pins the projection and does not disable
+steering. Fractions must be finite and nonnegative. Bounds are resolved separately
+per layer and recorded with vector provenance. Generation and J-Lens replay use
+the same intervention. This is not the paper's percentile-based Assistant floor.
+
 [tylenol-demon-8000mg-single-layer-sweep.yaml](experiments/tylenol-demon-8000mg-single-layer-sweep.yaml)
 tests alpha 1.5, 2, 2.5, 3, 3.5, and 4 separately at layers 29, 32, and 35, with a
 256-token limit. That is 18 single-layer steered trials plus one control; the

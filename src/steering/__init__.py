@@ -2,7 +2,7 @@
 
 from .capture import ActivationArtifact, ActivationCaptureConfig, ActivationCaptureEvent
 from .inference import GenerationResponse, InferenceRunner
-from .interventions import CappingRequest, SteeringPlan, SteeringRequest
+from .interventions import CappingRequest, CharacterBandRequest, SteeringPlan, SteeringRequest
 from .recipes import (
     DefaultVector,
     Difference,
@@ -25,6 +25,7 @@ __all__ = [
     "ActivationCaptureConfig",
     "ActivationCaptureEvent",
     "CappingRequest",
+    "CharacterBandRequest",
     "DefaultVector",
     "Difference",
     "GenerationResponse",

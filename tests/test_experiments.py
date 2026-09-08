@@ -12,7 +12,31 @@ from steering.experiments import (
     run_experiment,
 )
 from steering.inference import GenerationResponse
-from steering.interventions import CappingRequest
+from steering.interventions import CappingRequest, CharacterBandRequest
+
+
+def test_band_yaml_expands_thirteen_trials_and_round_trips():
+    from pathlib import Path
+    import yaml
+    path = Path(__file__).resolve().parents[1] / "configs/experiments/tylenol-demon-8000mg-band-sweep.yaml"
+    parsed = ExperimentConfig.from_mapping(yaml.safe_load(path.read_text()))
+    assert len(parsed.trials()) == 13
+    assert parsed.coefficients == (0.0, 0.1, 0.25, 0.5)
+    assert parsed.schemes[2].layers == tuple(range(28, 54))
+    assert ExperimentConfig.from_mapping(parsed.to_mapping()) == parsed
+    request = parsed.schemes[2].request("demon", 0.0)
+    assert isinstance(request, CharacterBandRequest)
+    assert request.fraction == 0.0
+    invalid = parsed.to_mapping()
+    invalid["steering"]["coefficients"] = [-0.1]
+    with pytest.raises(ValueError, match="nonnegative"):
+        ExperimentConfig.from_mapping(invalid)
+
+
+@pytest.mark.parametrize("fraction", [-0.1, float("inf"), float("nan")])
+def test_invalid_band_fraction(fraction):
+    with pytest.raises(ValueError, match="finite and nonnegative"):
+        CharacterBandRequest("demon", fraction, (0,))
 
 
 def config():

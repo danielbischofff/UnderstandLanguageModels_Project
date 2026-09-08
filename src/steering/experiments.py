@@ -23,7 +23,7 @@ from safetensors.torch import save_file
 from .capture import ActivationCaptureEvent
 from .inference import GenerationResponse, InferenceRunner
 from .j_lens import JLenseReader
-from .interventions import CappingRequest, SteeringRequest
+from .interventions import CappingRequest, CharacterBandRequest, SteeringRequest
 from .recipes import RoleDirection
 from .report import write_experiment_report
 
@@ -104,13 +104,14 @@ class SteeringScheme:
         ):
             raise ValueError("steering layers must be nonempty, unique nonnegative integers")
         scheme = cls(**{**value, "name": name.strip(), "layers": tuple(layers)})
-        if scheme.method not in {"additive", "projection_cap"}:
-            raise ValueError("scheme method must be additive or projection_cap")
+        if scheme.method not in {"additive", "projection_cap", "character_band"}:
+            raise ValueError("scheme method must be additive, projection_cap, or character_band")
         if type(scheme.preserve_original_activation_norm) is not bool:
             raise TypeError("preserve_original_activation_norm must be a boolean")
-        if scheme.method == "projection_cap":
+        if scheme.method != "additive":
             if "scaling" in value or "preserve_original_activation_norm" in value:
                 raise ValueError("scaling and norm preservation apply only to additive schemes")
+        if scheme.method == "projection_cap":
             if scheme.bound not in {"lower", "upper"}:
                 raise ValueError("projection_cap bound must be lower or upper")
         elif "bound" in value:
@@ -125,9 +126,13 @@ class SteeringScheme:
         else:
             del value["scaling"]
             del value["preserve_original_activation_norm"]
+            if self.method == "character_band":
+                del value["bound"]
         return value
 
-    def request(self, character: str, alpha: float) -> SteeringRequest | CappingRequest:
+    def request(self, character: str, alpha: float) -> SteeringRequest | CappingRequest | CharacterBandRequest:
+        if self.method == "character_band":
+            return CharacterBandRequest(character, alpha, self.layers, self.positions)
         direction = RoleDirection(character)
         if self.method == "projection_cap":
             return CappingRequest(
@@ -290,6 +295,8 @@ class ExperimentConfig:
         if not isinstance(raw_schemes, list) or not raw_schemes:
             raise ValueError("steering.schemes must be a nonempty list")
         schemes = tuple(SteeringScheme.from_mapping(item) for item in raw_schemes)
+        if any(scheme.method == "character_band" for scheme in schemes) and any(alpha < 0 for alpha in coefficients):
+            raise ValueError("band half-width fractions must be nonnegative")
         if len({scheme.name for scheme in schemes}) != len(schemes):
             raise ValueError("steering scheme names must be unique")
 
@@ -635,7 +642,7 @@ class ExperimentRecorder:
         write_experiment_report(self.run_dir / "report.html", document)
 
 
-def _steering_for_trial(trial: Mapping[str, Any]) -> SteeringRequest | CappingRequest | None:
+def _steering_for_trial(trial: Mapping[str, Any]) -> SteeringRequest | CappingRequest | CharacterBandRequest | None:
     character = str(trial["character"])
     if character == UNSTEERED:
         return None

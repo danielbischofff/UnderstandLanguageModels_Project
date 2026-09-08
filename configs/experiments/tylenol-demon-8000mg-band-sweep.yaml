@@ -1,5 +1,4 @@
-# Awaiting approval and character_band runner support. Do not submit yet.
-# Planned matrix: four half-widths x three layer blocks + one shared control = 13 trials.
+# Matrix: four half-widths x three layer blocks + one shared control = 13 trials.
 # Keep this filename, experiment name, and eventual results directory aligned.
 name: tylenol-demon-8000mg-band-sweep
 description: Compare character-centred projection bands in middle, later, and wide layer blocks on the 8000 mg Tylenol prompt.
