@@ -3,19 +3,26 @@
 from __future__ import annotations
 
 import json
+import re
 from importlib.resources import files
 from pathlib import Path
 from typing import Any, Mapping
+
+from .glossary import report_glossary
 
 
 def render_experiment_report(document: Mapping[str, Any]) -> str:
     template = (
         files("steering").joinpath("web/experiment.html").read_text(encoding="utf-8")
     )
-    payload = json.dumps(document, ensure_ascii=False, separators=(",", ":"))
-    # A prompt may contain literal HTML. Keep it inert inside the script block.
-    payload = payload.replace("</", "<\\/")
-    return template.replace("__EXPERIMENT_DATA__", payload)
+    values = {"__EXPERIMENT_DATA__": document, "__GLOSSARY_DATA__": report_glossary(document)}
+    # Substitute in one pass so literal template markers inside user data stay
+    # literal. Escape script endings in both the results and dictionary glosses.
+    return re.sub(
+        r"__EXPERIMENT_DATA__|__GLOSSARY_DATA__",
+        lambda match: json.dumps(values[match[0]], ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/"),
+        template,
+    )
 
 
 def write_experiment_report(path: str | Path, document: Mapping[str, Any]) -> None:

@@ -83,8 +83,12 @@
     .token.response { color: var(--response); }
     .legend { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
     .gradient { width: 100px; height: 9px; border-radius: 5px; background: linear-gradient(90deg, rgb(var(--search) / .12), rgb(var(--search) / .82)); }
-    .layer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 7px; }
+    .readout-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 1fr); gap: 18px; align-items: start; }
+    .layer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 7px; }
     .layer {
+      text-align: left;
+      color: var(--text);
+      cursor: pointer;
       min-height: 58px;
       padding: 7px 8px;
       border: 1px solid var(--line);
@@ -93,14 +97,31 @@
       overflow: hidden;
     }
     .layer.search-hit { border-color: rgb(var(--search)); box-shadow: inset 0 -3px 0 rgb(var(--search)); }
+    .layer[aria-pressed="true"] { outline: 2px solid var(--accent); outline-offset: 1px; }
     .layer-index { display: block; color: var(--muted); font-size: 11px; }
-    .layer-word { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 600 14px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .layer-word { display: block; overflow-wrap: anywhere; font: 600 14px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .gloss { color: var(--muted); font: 12px/1.45 ui-sans-serif, system-ui, sans-serif; white-space: normal; overflow-wrap: anywhere; }
+    .layer-word .gloss { display: block; }
+    .readout-detail { position: sticky; top: 12px; min-width: 0; background: var(--surface); }
+    .readout-table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    caption { text-align: left; font-weight: 650; font-size: 15px; padding-bottom: 10px; }
+    th, td { text-align: left; vertical-align: top; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+    th { color: var(--muted); font-weight: 600; }
+    td.numeric, th.numeric { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    td.readout-word { overflow-wrap: anywhere; white-space: pre-wrap; }
+    td.readout-word .gloss { display: block; }
+    tr.is-hit { background: rgb(var(--search) / .12); }
+    .readout-note { margin: 10px 0; }
+    footer { margin-top: 24px; }
     .empty { color: var(--muted); padding: 28px 0; text-align: center; }
     @media (max-width: 720px) {
       main { width: min(100% - 20px, 1180px); padding-top: 20px; }
       .controls { grid-template-columns: 1fr; }
       .panel { padding: 14px; }
-      .layer-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+      .readout-layout { grid-template-columns: minmax(0, 1fr); }
+      .readout-detail { position: static; grid-row: 1; }
+      .layer-grid { grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); }
     }
   </style>
 </head>
@@ -146,13 +167,34 @@
         <h2 id="layers-title">Top J-Lens word by layer</h2>
         <p class="secondary" id="selected-position" aria-live="polite"></p>
       </div>
-      <div class="layer-grid" id="layer-grid"></div>
+      <p class="secondary readout-note">Hover, focus, or tap a layer to see its top-10 table immediately. Hover a text token to change the position.</p>
+      <div class="readout-layout">
+        <div class="layer-grid" id="layer-grid"></div>
+        <aside class="readout-detail" aria-label="Selected layer readout">
+          <div class="readout-table-wrap">
+            <table id="readout-table">
+              <caption id="readout-caption">No readout selected</caption>
+              <thead><tr><th scope="col">Rank</th><th scope="col">Token (English gloss)</th><th scope="col" class="numeric">Logit</th><th scope="col" class="numeric">Probability</th></tr></thead>
+              <tbody id="readout-rows"></tbody>
+            </table>
+          </div>
+          <p class="secondary readout-note">J-Lens scores shown to six significant digits; probabilities are not renormalized over these rows. Full saved precision remains in the results JSON. Glosses are dictionary hints, not additional model tokens.</p>
+        </aside>
+      </div>
     </section>
+    <footer class="secondary">
+      English glosses: <a href="https://www.mdbg.net/chinese/dictionary?page=cc-cedict">MDBG / CC-CEDICT contributors</a>,
+      snapshot 2026-09-07, adapted under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+      Up to three dictionary senses; “approx. parts” marks component lookup, not a reliable translation of the whole token.
+      Unmatched or mixed-script fragments are labelled untranslated. Han-script detection is not language identification.
+      Search matches original tokens and English glosses; heat uses the original token probabilities.
+    </footer>
   </main>
 
   <script>
     "use strict";
     const DATA = __EXPERIMENT_DATA__;
+    const GLOSSARY = __GLOSSARY_DATA__;
     const characterSelect = document.getElementById("character-select");
     const questionSelect = document.getElementById("question-select");
     const schemeSelect = document.getElementById("scheme-select");
@@ -169,14 +211,29 @@
     const responseTokens = document.getElementById("response-tokens");
     const rawResponse = document.getElementById("raw-response");
     const layerGrid = document.getElementById("layer-grid");
+    const readoutRows = document.getElementById("readout-rows");
+    const readoutCaption = document.getElementById("readout-caption");
     const selectedPosition = document.getElementById("selected-position");
     const searchSummary = document.getElementById("search-summary");
     const searchLegend = document.getElementById("search-legend");
     let trial = null;
     let position = 0;
+    let selectedLayer = null;
 
     const normalized = value => String(value || "").trim().toLocaleLowerCase();
     const displayToken = token => token.text === "" ? `∅:${token.id}` : token.text;
+    const translation = item => GLOSSARY[item.text.trim()];
+
+    function renderWord(container, item) {
+      container.textContent = displayToken(item);
+      const entry = translation(item);
+      if (entry) {
+        const span = document.createElement("span");
+        span.className = "gloss";
+        span.textContent = ` (${entry.text})`;
+        container.append(span);
+      }
+    }
     const trialForSelection = () => DATA.trials.find(item =>
       item.character === characterSelect.value && item.question.id === questionSelect.value &&
       (item.character === "unsteered" || (
@@ -210,7 +267,7 @@
       button.type = "button";
       button.className = `token ${token.segment}`;
       button.dataset.position = String(token.position);
-      button.textContent = displayToken(token);
+      renderWord(button, token);
       button.dataset.baseLabel = `${token.segment} token ${token.position}: ${displayToken(token)}`;
       button.setAttribute("aria-label", button.dataset.baseLabel);
       return button;
@@ -232,7 +289,39 @@
 
     function matchesSearch(item) {
       const query = normalized(searchInput.value);
-      return query !== "" && normalized(item.text).includes(query);
+      const entry = translation(item);
+      return query !== "" && (normalized(item.text).includes(query) ||
+        Boolean(entry && entry.kind !== "untranslated" && normalized(entry.text).includes(query)));
+    }
+
+    function renderReadout() {
+      readoutRows.replaceChildren();
+      const layer = trial?.j_lens.layers.find(item => item.layer === selectedLayer);
+      if (!layer) {
+        readoutCaption.textContent = "No readout available";
+        return;
+      }
+      const readout = topAt(layer, position).slice(0, 10);
+      readoutCaption.textContent = `Layer ${layer.layer} · position ${position} · top ${readout.length}`;
+      layerGrid.querySelectorAll(".layer").forEach(button => {
+        button.setAttribute("aria-pressed", String(Number(button.dataset.layer) === selectedLayer));
+      });
+      readout.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.classList.toggle("is-hit", matchesSearch(item));
+        const rank = row.insertCell();
+        rank.textContent = String(index + 1);
+        const word = row.insertCell();
+        word.className = "readout-word";
+        renderWord(word, item);
+        for (const value of [item.logit, item.probability]) {
+          const cell = row.insertCell();
+          cell.className = "numeric";
+          cell.dataset.value = String(value);
+          cell.textContent = String(Number(Number(value).toPrecision(6)));
+        }
+        readoutRows.append(row);
+      });
     }
 
     function renderLayers() {
@@ -247,14 +336,17 @@
       for (const layer of trial.j_lens.layers) {
         const readout = topAt(layer, position);
         const top = readout[0];
-        const cell = document.createElement("div");
+        const cell = document.createElement("button");
+        cell.type = "button";
         cell.className = "layer";
+        cell.dataset.layer = String(layer.layer);
+        cell.setAttribute("aria-controls", "readout-table");
         cell.classList.toggle("search-hit", readout.some(matchesSearch));
         cell.innerHTML = `<span class="layer-index">Layer ${layer.layer}</span><span class="layer-word"></span>`;
-        cell.querySelector(".layer-word").textContent = top ? top.text : "—";
-        cell.title = readout.map(item => `${item.text} · p=${item.probability} · logit=${item.logit}`).join("\n");
+        renderWord(cell.querySelector(".layer-word"), top || {text: "—"});
         layerGrid.append(cell);
       }
+      renderReadout();
     }
 
     function searchScore(selected) {
@@ -311,7 +403,13 @@
       const words = new Set();
       for (const layer of trial.j_lens.layers) {
         for (const readout of layer.positions) {
-          for (const item of readout) if (normalized(item.text)) words.add(item.text.trim());
+          for (const item of readout) {
+            if (normalized(item.text)) words.add(item.text.trim());
+            const entry = translation(item);
+            if (entry?.kind === "dictionary") {
+              for (const sense of entry.text.split("; ")) words.add(sense);
+            }
+          }
         }
       }
       suggestions.replaceChildren(...[...words].sort().slice(0, 1000).map(word => {
@@ -327,7 +425,7 @@
       alphaSelect.disabled = control;
       const scheme = schemes.find(item => item.name === schemeSelect.value);
       steeringDescription.textContent = control
-        ? "Shared unsteered control; alpha and steering scheme do not apply."
+        ? "Shared unsteered control; select a steered character (e.g. demon) to enable alpha and steering scheme."
         : `${scheme.method || "additive"} · layers ${(scheme.layers || [32]).join(", ")} · positions ${scheme.positions || "all"} · ` +
           (scheme.method === "projection_cap"
             ? `${scheme.bound || "lower"} projection threshold α = ${alphaSelect.value} (activation units)`
@@ -342,7 +440,11 @@
         searchSummary.textContent = "This matrix cell did not complete.";
         searchLegend.hidden = true;
         layerGrid.innerHTML = '<p class="empty">This matrix cell did not complete.</p>';
+        renderReadout();
         return;
+      }
+      if (!trial.j_lens.layers.some(layer => layer.layer === selectedLayer)) {
+        selectedLayer = trial.j_lens.layers[0]?.layer ?? null;
       }
       position = Math.max(0, trial.j_lens.prompt_length - 1);
       renderTokens();
@@ -357,6 +459,13 @@
       renderLayers();
     }
 
+    function selectLayer(event) {
+      const button = event.target.closest(".layer");
+      if (!button || !trial) return;
+      selectedLayer = Number(button.dataset.layer);
+      renderReadout();
+    }
+
     document.getElementById("experiment-title").textContent = DATA.experiment.name;
     document.getElementById("experiment-description").textContent = DATA.experiment.description || "Question × character × alpha × steering scheme J-Lens experiment";
     renderSelectors();
@@ -366,6 +475,9 @@
     schemeSelect.addEventListener("change", renderTrial);
     alphaSelect.addEventListener("change", renderTrial);
     searchInput.addEventListener("input", renderSearch);
+    for (const event of ["pointerover", "focusin", "click"]) {
+      layerGrid.addEventListener(event, selectLayer);
+    }
     document.querySelector(".panel").addEventListener("pointerover", selectToken);
     document.querySelector(".panel").addEventListener("focusin", selectToken);
     document.querySelector(".panel").addEventListener("click", selectToken);

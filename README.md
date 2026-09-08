@@ -22,6 +22,7 @@ Project Proposals/     Research motivation and hypotheses
 results/               Published experiment results and browser reports
 slurm/                 Cluster entry point
 src/steering/          Model steering, experiment runner, and J-Lens adapter
+  data/                Pinned offline Chinese dictionary and attribution
 tests/                 Unit and opt-in integration tests
 writeup/               Project report source
 setup.sh               One-time environment and artifact setup
@@ -89,6 +90,13 @@ resolved YAML, status manifest, per-cell result and metadata JSON,
 question, alpha, and scheme selectors. Interrupted runs
 can be resumed with the same Slurm script by passing the run directory as its
 second argument.
+
+Reports show Chinese dictionary glosses in parentheses and an instant top-10
+table (token, logit, probability) when a layer is hovered, focused, or tapped.
+Search accepts original tokens or English glosses. Approximate component glosses
+and untranslated fragments are labelled; annotations never change model scores.
+Older runs can use the same UI without rerunning inference: see the
+[report rebuild command](src/steering/cli/README.md#refresh-an-existing-report).
 
 The completed 1000 mg baseline experiment is available in
 [published results](results/README.md), including its self-contained browser report.
