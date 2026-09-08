@@ -3,7 +3,7 @@
 ## Pending band-capping experiment
 
 [tylenol-demon-8000mg-band-sweep.yaml](tylenol-demon-8000mg-band-sweep.yaml)
-specifies nine trials: demon with half-width fractions 0, 0.25, 0.5, and 1.0
+specifies nine trials: demon with half-width fractions 0, 0.1, 0.25, and 0.5
 in each of the simultaneous eight-layer blocks 28–35 and 46–53, plus one shared
 unsteered control. It keeps the 8000 mg prompt and 256-token generation limit.
 Half-width is measured relative to each layer's default-to-character distance;

@@ -22,8 +22,7 @@ steering:
   # Per layer: s = ||R_character - D||, u = (R_character - D) / s,
   # c = dot(u, R_character); clamp dot(u, h) to [c - beta*s, c + beta*s].
   # beta=0 pins the projection to c; it is NOT an unsteered control.
-  # beta=1 includes the default centroid but can still alter individual activations.
-  coefficients: [0.0, 0.25, 0.5, 1.0]
+  coefficients: [0.0, 0.1, 0.25, 0.5]
   schemes:
     # Each block is a separate trial. All eight layers in a block intervene together.
     # Layer indices are zero-based and explicit; both endpoints are included.
