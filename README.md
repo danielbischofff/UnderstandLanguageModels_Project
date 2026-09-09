@@ -67,6 +67,10 @@ h'[l,t] = h[l,t] + alpha * (R_character[l] - D[l]).
 
 From an internet-connected login node, setup and submission take two commands:
 
+First select a GPU allocation with at least **75 GB VRAM** for Qwen3-32B BF16;
+add your cluster's resource flags to `sbatch` as shown in the
+[Slurm guide](slurm/README.md#gpu-allocation-and-preflight).
+
 ```bash
 bash setup.sh configs/experiments/tylenol-demon.yaml
 sbatch slurm/experiment.sbatch configs/experiments/tylenol-demon.yaml
