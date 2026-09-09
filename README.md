@@ -19,7 +19,7 @@ configs/drafts/        Follow-up prompts awaiting experiment-setting selection
 direct_character_vectors_j_lens_analysis/
                        Original character-vector and J/R-Lens analysis
 Project Proposals/     Research motivation and hypotheses
-results/               Published experiment results and browser reports
+results/               Compact experiment archives and release download links
 slurm/                 GPU experiment and CPU-only report entry points
 src/steering/          Model steering, experiment runner, and J-Lens adapter
   data/                Pinned offline Chinese dictionary and attribution
