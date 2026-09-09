@@ -115,6 +115,17 @@ const {chromium} = require('playwright');
     await page.goto(pathToFileURL(process.argv[3]).href);
     assert.equal(await answer(), 'answer');
     assert.equal(await page.locator('#alpha-select').inputValue(), '3');
+    await goto(pathToFileURL(process.argv[4]).href); // The tiny index has no trial loader.
+    await page.locator('a[href="question-001.html"]').click();
+    await page.waitForFunction(() => document.documentElement.dataset.ready === 'true');
+    assert.equal(await page.locator('#question-select option').count(), 1);
+    assert.equal(await answer(), 'control-q');
+    await page.getByRole('link', {name: 'Next question', exact: true}).click();
+    await page.waitForFunction(() => document.documentElement.dataset.ready === 'true');
+    assert.equal(await answer(), 'control-other');
+    assert.equal(await page.locator('#question-select option').count(), 1);
+    await page.getByRole('link', {name: 'All questions', exact: true}).click();
+    assert.equal(await page.locator('li a').count(), 2);
     assert.deepEqual(errors, []);
   } finally {
     await browser.close();

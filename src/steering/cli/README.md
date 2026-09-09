@@ -30,11 +30,16 @@ Supporting commands are deliberately narrow:
 uv run steering-report path/to/run [path/to/another/run ...]
 ```
 
-Reads each run's `experiment-results.json` and rebuilds only `report.html` with
-the current UI and offline Chinese glosses. No model is loaded, no inference or
-network request runs, and the saved JSON, resolved YAML, and metadata are not
-changed. Reload any already-open report tab afterward. The same renderer is
-used automatically for future experiments.
+Reads an existing `results.zip`, or exports per-trial JSON to that compact binary
+archive first. Multi-question runs get an index and one HTML page per question.
+Source checkpoints, YAML and metadata are unchanged. No inference, model loading
+or network access is needed. Reload already-open report tabs afterward.
+
+Use `--publication-dir DESTINATION` for a separate copy, or rebuild directly from
+a downloaded ZIP with `steering-report results.zip --output-dir reports`.
+An older download containing only `experiment-results.json` retains a legacy
+single-HTML rebuild path (which loads that complete JSON document).
+See [compact export details](../../../configs/README.md#compact-reports-and-publication-bundles).
 
 The bundled [CC-CEDICT snapshot](../data/README.md) covers simplified and
 traditional Chinese. Component lookups are marked approximate; mixed-script and

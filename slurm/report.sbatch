@@ -13,4 +13,5 @@ export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 python_path=${UV_PROJECT_ENVIRONMENT:-"$ULM_RUNTIME_ROOT/venv"}/bin/python
 # Arguments are the same as steering-report. No model or GPU is loaded.
-/usr/bin/time -v "$python_path" -m steering.cli.report "$@"
+TIMEFORMAT='Report export: %3R seconds elapsed, %3U user, %3S system'
+time "$python_path" -m steering.cli.report "$@"

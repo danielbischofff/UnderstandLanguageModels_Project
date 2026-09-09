@@ -72,7 +72,8 @@ sbatch --partition=cpu-single slurm/report.sbatch RUN_DIRECTORY \
 ```
 
 The wrapper requests one CPU and 8 GB host RAM, limits numerical-library
-threads, and records elapsed time and peak memory. For an isolated report-code
+threads, and records elapsed time. Query peak memory afterward with
+`sacct -j JOB_ID --format=JobID,State,Elapsed,MaxRSS`. For an isolated report-code
 checkout, set `ULM_REPO_ROOT` to it and `ULM_RUNTIME_ROOT` to the existing runtime;
 this reuses the environment without modifying it.
 

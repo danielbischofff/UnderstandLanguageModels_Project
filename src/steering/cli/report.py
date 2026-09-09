@@ -26,6 +26,9 @@ def main() -> None:
                 parser.error("--publication-dir is for source run directories")
             print(write_bundle_reports(run, args.output_dir or run.parent / "reports"))
             continue
+        if not args.publication_dir and (run / "results.zip").is_file():
+            print(write_bundle_reports(run / "results.zip", run))
+            continue
         # Compatibility for older downloads containing only the combined JSON.
         # Normal exports use per-trial files and never load that giant document.
         if not (run / "resolved-config.yaml").is_file():

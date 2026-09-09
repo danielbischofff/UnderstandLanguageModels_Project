@@ -155,5 +155,15 @@ def test_browser_sweep_selection_hover_search_and_missing_cell(tmp_path):
     legacy["experiment"].update(characters=["demon"], questions=[base["question"]], steering={"coefficient": 3, "layers": [0]})
     legacy_report = tmp_path / "legacy.html"
     legacy_report.write_text(render_experiment_report(legacy), encoding="utf-8")
-    subprocess.run([node, str(Path(__file__).with_name("report_browser.cjs")), str(report), str(legacy_report)],
+    run = tmp_path / "split-source"
+    run.mkdir()
+    (run / "resolved-config.yaml").write_text(yaml.safe_dump(value["experiment"]), encoding="utf-8")
+    for index, trial in enumerate(value["trials"]):
+        folder = run / "trials" / str(index)
+        folder.mkdir(parents=True)
+        (folder / "result.json").write_text(json.dumps(trial), encoding="utf-8")
+    bundle = tmp_path / "results.zip"
+    write_result_bundle(run, bundle)
+    split_index = write_bundle_reports(bundle, tmp_path / "split")
+    subprocess.run([node, str(Path(__file__).with_name("report_browser.cjs")), str(report), str(legacy_report), str(split_index)],
                    check=True, timeout=60, env=os.environ.copy())
