@@ -81,3 +81,62 @@ The original `coefficient: 1.0` / `layers: [32]` syntax still works, and existin
 runs remain resumable. Do not combine singular `coefficient` with `coefficients`,
 or top-level `layers` with `schemes`. Coefficients must be finite and unique.
 Changing sweep axes requires a new run. The Slurm command is unchanged.
+
+## Compact reports and publication bundles
+
+Reports store gzipped binary trial arrays and inflate only the selected
+trial in the browser, decoding words on demand from a shared token dictionary.
+They remain self-contained and work offline in browsers
+supporting `DecompressionStream("gzip")`; scores are not rounded for storage.
+
+To prepare a publication candidate without changing a source run:
+
+```bash
+uv run steering-report RUN_DIRECTORY --publication-dir runtime/publication-candidates
+```
+
+The output follows `<experiment-name>/<run-id>/`. Single-question experiments
+have `report.html`; multiple questions get `question-001.html`, etc., with an
+`index.html` (also available as `report.html`) linking them. Each question page
+contains only its trials and has links to the index and adjacent questions.
+
+`results.zip` is the portable analysis archive: uint32 token IDs and offsets,
+lossless float32 or float64 scores, one shared token dictionary and offline
+translation glossary, trial metadata, configuration and provenance. It omits
+redundant JSON readouts and generated HTML. Original run files stay untouched;
+this archive is for analysis/report rebuilding, not resuming inference.
+The versioned layout is recorded in its `index.json`; `steering.binary_results.decode_trial`
+reconstructs a trial. Float64 is retained wherever float32 would change a value.
+
+Rebuild reports from **only the downloaded ZIP**, without model/tokenizer files,
+GPU access, or downloading a dictionary:
+
+```bash
+uv run steering-report results.zip --output-dir rebuilt-reports
+```
+
+Existing export bundles are not overwritten. Inspect sizes before publishing
+under `results/`; HTML is optional in downloads because it is rebuildable.
+
+## Next experiments
+
+[tylenol-demon-8000mg-band-sweep.yaml](experiments/tylenol-demon-8000mg-band-sweep.yaml)
+runs 13 trials: four half-widths (0, 0.1, 0.25, 0.5) in three simultaneous layer
+blocks (28–35, 46–53, 28–53), plus one shared control. For `method: character_band`,
+`coefficients` means dimensionless half-width fractions, not additive alpha.
+At each layer, define `v = R_character - D`, `u = v / ||v||`, `c = dot(u, R_character)`.
+The projection is clamped to `[c - beta*||v||, c + beta*||v||]`; perpendicular
+components stay unchanged. Beta zero pins the projection and does not disable
+steering. Fractions must be finite and nonnegative. Bounds are resolved separately
+per layer and recorded with vector provenance. Generation and J-Lens replay use
+the same intervention. This is not the paper's percentile-based Assistant floor.
+
+[tylenol-demon-8000mg-single-layer-sweep.yaml](experiments/tylenol-demon-8000mg-single-layer-sweep.yaml)
+tests alpha 1.5, 2, 2.5, 3, 3.5, and 4 separately at layers 29, 32, and 35, with a
+256-token limit. That is 18 single-layer steered trials plus one control; the
+earlier `center-three-layers` experiment instead intervened at all three layers
+in each steered trial and remains intact.
+
+The [follow-up suite draft](drafts/README.md) groups the later question families
+into one matrix for one Slurm job. Its steering settings are deliberately unset
+until the single-layer results have been inspected.

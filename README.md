@@ -15,12 +15,14 @@ hypothesis in [the project proposal](Project%20Proposals/j_lens_persona_space_re
 
 ```text
 configs/experiments/   Questions x characters x alphas x steering schemes
+configs/drafts/        Follow-up prompts awaiting experiment-setting selection
 direct_character_vectors_j_lens_analysis/
                        Original character-vector and J/R-Lens analysis
 Project Proposals/     Research motivation and hypotheses
 results/               Published experiment results and browser reports
-slurm/                 Cluster entry point
+slurm/                 GPU experiment and CPU-only report entry points
 src/steering/          Model steering, experiment runner, and J-Lens adapter
+  data/                Pinned offline Chinese dictionary and attribution
 tests/                 Unit and opt-in integration tests
 writeup/               Project report source
 setup.sh               One-time environment and artifact setup
@@ -43,8 +45,9 @@ For each matrix cell the runner:
 2. performs one causal pass over the complete prompt and answer;
 3. converts the in-memory residual stream into J-Lens top words for every fitted
    layer and token position; and
-4. discards the activations by default, retaining compact JSON results and
-   provenance. `outputs.keep_activations: true` keeps the intermediate tensors
+4. discards the activations by default, retaining a compact binary results ZIP,
+   per-question browser reports, and resumable per-trial checkpoints.
+   `outputs.keep_activations: true` keeps the intermediate tensors
    for follow-up analysis.
 
 The starting experiment is
@@ -63,6 +66,10 @@ h'[l,t] = h[l,t] + alpha * (R_character[l] - D[l]).
 ## Run on Slurm
 
 From an internet-connected login node, setup and submission take two commands:
+
+First select a GPU allocation with at least **75 GB VRAM** for Qwen3-32B BF16;
+add your cluster's resource flags to `sbatch` as shown in the
+[Slurm guide](slurm/README.md#gpu-allocation-and-preflight).
 
 ```bash
 bash setup.sh configs/experiments/tylenol-demon.yaml
@@ -83,11 +90,18 @@ much easier to diagnose from the Slurm log.
 
 Results are written under
 `runtime/outputs/experiments/tylenol-demon/runs/<run>/`. Each run contains the
-resolved YAML, status manifest, per-cell result and metadata JSON,
-`experiment-results.json`, and an interactive `report.html` with character,
-question, alpha, and scheme selectors. Interrupted runs
+resolved YAML, status manifest, per-cell checkpoints, `results.zip`, and an
+interactive `report.html`. Multi-question runs have a question index and separate
+pages with character, alpha, and scheme selectors. Interrupted runs
 can be resumed with the same Slurm script by passing the run directory as its
 second argument.
+
+Reports show Chinese dictionary glosses (at most five words) and an instant top-10
+table (token, logit, probability) when a layer is hovered, focused, or tapped.
+Search accepts original tokens or English glosses. Approximate component glosses
+and untranslated fragments are labelled; annotations never change model scores.
+Older runs can use the same UI without rerunning inference: see the
+[report rebuild command](src/steering/cli/README.md#refresh-an-existing-report).
 
 The completed 1000 mg baseline experiment is available in
 [published results](results/README.md), including its self-contained browser report.

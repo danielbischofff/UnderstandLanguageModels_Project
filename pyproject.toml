@@ -27,6 +27,7 @@ steering-experiment = "steering.cli.experiment:main"
 steering-j-lens = "steering.cli.j_lens_tokens:main"
 steering-preflight = "steering.cli.preflight:main"
 steering-prefetch = "steering.cli.prefetch:main"
+steering-report = "steering.cli.report:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -37,6 +38,8 @@ packages = ["src/steering"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "src/steering/web/experiment.html" = "steering/web/experiment.html"
+"src/steering/data/cedict.txt.gz" = "steering/data/cedict.txt.gz"
+"src/steering/data/README.md" = "steering/data/README.md"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

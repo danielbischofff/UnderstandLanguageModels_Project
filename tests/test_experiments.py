@@ -1,4 +1,5 @@
 import json
+import zipfile
 
 import pytest
 import torch
@@ -12,7 +13,39 @@ from steering.experiments import (
     run_experiment,
 )
 from steering.inference import GenerationResponse
-from steering.interventions import CappingRequest
+from steering.interventions import CappingRequest, CharacterBandRequest
+from steering.binary_results import decode_trial
+
+
+def saved_results(run):
+    with zipfile.ZipFile(run / "results.zip") as archive:
+        index = json.loads(archive.read("index.json"))
+        vocabulary = json.loads(archive.read("vocabulary.json"))
+        return {"trials": [decode_trial(t, archive.read(t["payload"]), vocabulary) for t in index["trials"]]}
+
+
+def test_band_yaml_expands_thirteen_trials_and_round_trips():
+    from pathlib import Path
+    import yaml
+    path = Path(__file__).resolve().parents[1] / "configs/experiments/tylenol-demon-8000mg-band-sweep.yaml"
+    parsed = ExperimentConfig.from_mapping(yaml.safe_load(path.read_text()))
+    assert len(parsed.trials()) == 13
+    assert parsed.coefficients == (0.0, 0.1, 0.25, 0.5)
+    assert parsed.schemes[2].layers == tuple(range(28, 54))
+    assert ExperimentConfig.from_mapping(parsed.to_mapping()) == parsed
+    request = parsed.schemes[2].request("demon", 0.0)
+    assert isinstance(request, CharacterBandRequest)
+    assert request.fraction == 0.0
+    invalid = parsed.to_mapping()
+    invalid["steering"]["coefficients"] = [-0.1]
+    with pytest.raises(ValueError, match="nonnegative"):
+        ExperimentConfig.from_mapping(invalid)
+
+
+@pytest.mark.parametrize("fraction", [-0.1, float("inf"), float("nan")])
+def test_invalid_band_fraction(fraction):
+    with pytest.raises(ValueError, match="finite and nonnegative"):
+        CharacterBandRequest("demon", fraction, (0,))
 
 
 def config():
@@ -112,9 +145,9 @@ def test_run_records_compact_matrix_without_activation_artifacts(tmp_path):
     runner = FakeRunner()
     run_experiment(runner, recorder, FakeLens())
 
-    results = json.loads(
-        (recorder.run_dir / "experiment-results.json").read_text(encoding="utf-8")
-    )
+    results = saved_results(recorder.run_dir)
+    assert not (recorder.run_dir / "experiment-results.json").exists()
+    assert (recorder.run_dir / "index.html").is_file()
     assert len(results["trials"]) == 4
     assert (recorder.run_dir / "report.html").is_file()
     assert [trial["character"] for trial in results["trials"]] == [
@@ -210,7 +243,7 @@ def test_sweep_execution_and_resume_preserve_all_axes(tmp_path):
     assert isinstance(cap, CappingRequest)
     assert cap.threshold == -1
     assert cap.bound == "lower"
-    results = json.loads((recorder.run_dir / "experiment-results.json").read_text())
+    results = saved_results(recorder.run_dir)
     assert [item["steering"] for item in results["trials"]] == [
         item["steering"] for item in recorder.config.trials()
     ]
