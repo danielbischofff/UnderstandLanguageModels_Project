@@ -77,6 +77,13 @@ threads, and records elapsed time. Query peak memory afterward with
 checkout, set `ULM_REPO_ROOT` to it and `ULM_RUNTIME_ROOT` to the existing runtime;
 this reuses the environment without modifying it.
 
+Measured on Helix: exporting the 140-trial band and 98-trial alpha suites
+together (28 question pages) took **7m10s elapsed**, about **148 CPU seconds**,
+and **621 MiB peak host RAM** on one CPU. This is a reference measurement, not
+a runtime guarantee; shared filesystem performance and output size matter.
+Report-only imports do not load Torch or Transformers. The original inference
+results remain untouched, and the portable ZIPs can rebuild the pages offline.
+
 Keep personal connection details (WSL/SSH invocation, username, VPN, account,
 absolute paths and copy commands) in the ignored `runtime/helix-runbook.md`,
 not in these shared instructions. This separates reproducible job requirements
