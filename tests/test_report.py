@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 
 import pytest
 
@@ -14,6 +15,18 @@ from steering.report import pack_report_data, render_experiment_report
 from steering.cli.report import write_bundle_reports
 from steering.binary_results import decode_trial, write_result_bundle
 import yaml
+
+
+def test_report_import_does_not_load_inference_dependencies():
+    subprocess.run([sys.executable, "-c", "import sys; import steering.cli.report; assert 'torch' not in sys.modules; assert 'transformers' not in sys.modules"], check=True, timeout=30)
+
+
+def test_lazy_public_exports_preserve_api():
+    import steering
+    for name in steering.__all__:
+        assert getattr(steering, name) is not None
+    with pytest.raises(AttributeError):
+        getattr(steering, "not_a_public_export")
 
 
 def test_publication_archive_preserves_raw_bytes_without_duplicate_views(tmp_path):
