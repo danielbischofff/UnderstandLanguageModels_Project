@@ -7,11 +7,12 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
-from openTSNE import TSNE
+from openTSNE import TSNE, affinity, initialization
 from sklearn.cluster import HDBSCAN
 from sklearn.metrics import pairwise_distances
 
 from .inputs import matrix
+from .quality import embedding_quality
 
 
 @dataclass
@@ -32,9 +33,17 @@ class RoleMap:
         layer=32,
         model_id="Qwen/Qwen3-32B",
         metric="cosine",
-        perplexity=30.0,
+        perplexity=(15.0, 90.0),
         seed=42,
-        min_cluster_size=5,
+        min_cluster_size=3,
+        min_samples=2,
+        cluster_selection_method="leaf",
+        early_exaggeration=12.0,
+        early_exaggeration_iter=500,
+        exaggeration=1.5,
+        n_iter=750,
+        relaxation_iter=1500,
+        theta=0.0,
     ):
         vectors = matrix(vectors, "roles")
         if len(vectors) < 4 or vectors.shape[1] < 2:
@@ -49,23 +58,78 @@ class RoleMap:
             raise ValueError("provide one unique nonempty label per role")
         if layer < 0 or metric not in {"cosine", "euclidean"}:
             raise ValueError("invalid layer or metric")
-        if not np.isfinite(perplexity) or perplexity <= 0 or min_cluster_size < 2:
+        perplexities = np.atleast_1d(perplexity).astype(float)
+        if (
+            perplexities.ndim != 1
+            or not len(perplexities)
+            or not np.isfinite(perplexities).all()
+            or np.any(perplexities <= 0)
+            or min_cluster_size < 2
+        ):
             raise ValueError(
                 "perplexity must be positive; min_cluster_size must be >= 2"
             )
+        if min_samples is not None and not 1 <= min_samples <= len(vectors):
+            raise ValueError("min_samples must be between 1 and the number of roles")
+        if cluster_selection_method not in {"eom", "leaf"}:
+            raise ValueError("cluster_selection_method must be eom or leaf")
+        if (
+            not np.isfinite([early_exaggeration, exaggeration, theta]).all()
+            or early_exaggeration < 1
+            or exaggeration < 1
+            or not 0 <= theta <= 1
+            or early_exaggeration_iter < 0
+            or n_iter < 1
+            or relaxation_iter < 0
+        ):
+            raise ValueError(
+                "exaggerations must be >= 1, theta in [0, 1], and iterations valid"
+            )
         if metric == "cosine" and np.any(np.linalg.norm(vectors, axis=1) == 0):
             raise ValueError("cosine distance is undefined for zero vectors")
-        perplexity = min(float(perplexity), (len(vectors) - 1) / 3)
-        embedding = TSNE(
+        perplexities = sorted(
+            set(np.minimum(perplexities, (len(vectors) - 1) / 3).tolist())
+        )
+        estimator = TSNE(
             n_components=2,
-            perplexity=perplexity,
+            perplexity=perplexities[0],
             metric=metric,
             initialization="pca",
             neighbors="exact",
             n_jobs=1,
             negative_gradient_method="bh",
             random_state=seed,
-        ).fit(vectors)
+            learning_rate="auto",
+            early_exaggeration=early_exaggeration,
+            early_exaggeration_iter=early_exaggeration_iter,
+            exaggeration=exaggeration,
+            n_iter=n_iter,
+            theta=theta,
+        )
+        if len(perplexities) == 1:
+            embedding = estimator.fit(vectors)
+        else:
+            affinities = affinity.Multiscale(
+                vectors,
+                perplexities=perplexities,
+                metric=metric,
+                method="exact",
+                n_jobs=1,
+                random_state=seed,
+            )
+            embedding = estimator.fit(
+                affinities=affinities,
+                initialization=initialization.pca(vectors, random_state=seed),
+            )
+        if relaxation_iter:
+            # Compact groups first, then optimize ordinary KL to release
+            # crowding introduced by exaggeration without restarting the map.
+            embedding = embedding.optimize(
+                n_iter=relaxation_iter,
+                exaggeration=1,
+                learning_rate="auto",
+                momentum=0.8,
+            )
         distances = pairwise_distances(vectors, metric=metric)
         distances = np.maximum((distances + distances.T) / 2, 0)
         np.fill_diagonal(distances, 0)
@@ -73,6 +137,8 @@ class RoleMap:
         if min_cluster_size <= len(vectors):
             clusters = HDBSCAN(
                 min_cluster_size=min_cluster_size,
+                min_samples=min_samples,
+                cluster_selection_method=cluster_selection_method,
                 metric="precomputed",
                 copy=True,
                 allow_single_cluster=False,
@@ -86,13 +152,27 @@ class RoleMap:
             layer=layer,
             model_id=model_id,
             metric=metric,
-            perplexity=perplexity,
+            perplexity=max(perplexities),
+            perplexities=perplexities,
+            affinity="multiscale" if len(perplexities) > 1 else "single",
             seed=seed,
             min_cluster_size=min_cluster_size,
+            min_samples=min_samples,
+            cluster_selection_method=cluster_selection_method,
+            initialization="pca",
+            learning_rate="auto",
+            early_exaggeration=early_exaggeration,
+            early_exaggeration_iter=early_exaggeration_iter,
+            exaggeration=exaggeration,
+            n_iter=n_iter,
+            relaxation_iter=relaxation_iter,
+            final_exaggeration=1 if relaxation_iter else exaggeration,
+            theta=theta,
             residual_stream="post_block_post_mlp",
             preprocessing="none",
             cluster_space="original",
             schema_version=1,
+            quality=embedding_quality(distances, embedding, clusters),
         )
         return cls(vectors, list(labels), embedding, clusters, names, config)
 
@@ -108,9 +188,15 @@ class RoleMap:
             raise ValueError("cosine distance is undefined for zero vectors")
         # The same partial optimization as transform(), without its in-place
         # recentering of the reference: saved anchors and earlier paths stay fixed.
+        transform_perplexity = min(perplexity, self.config["perplexity"])
+        affinity_params = (
+            {"perplexities": [transform_perplexity]}
+            if isinstance(self.embedding.affinities, affinity.Multiscale)
+            else {"perplexity": transform_perplexity}
+        )
         partial = self.embedding.prepare_partial(
             vectors,
-            perplexity=min(perplexity, self.config["perplexity"]),
+            **affinity_params,
             initialization="median",
             k=min(25, len(self.vectors)),
         )

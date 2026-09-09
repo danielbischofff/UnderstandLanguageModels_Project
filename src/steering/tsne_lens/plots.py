@@ -12,21 +12,23 @@ from plotly.colors import qualitative
 def make_figure(role_map, trajectories):
     fig = go.Figure()
     roles = role_map.role_records()
+    many_clusters = len(set(role_map.clusters) - {-1}) > 8
     last_step = max((len(t["points"]) - 1 for t in trajectories), default=1)
     for cluster in sorted(set(role_map.clusters)):
         group = [r for r in roles if r["cluster"] == cluster]
         color = (
             "#9ca3af"
             if cluster == -1
-            else qualitative.Safe[int(cluster) % len(qualitative.Safe)]
+            else qualitative.Dark24[int(cluster) % len(qualitative.Dark24)]
         )
         label = role_map.cluster_names[int(cluster)]
+        legend_label = f"{int(cluster) + 1}. {label}" if cluster >= 0 else label
         fig.add_trace(
             go.Scatter(
                 x=[r["x"] for r in group],
                 y=[r["y"] for r in group],
                 mode="markers",
-                name=escape(label),
+                name=escape(legend_label),
                 marker=dict(size=10, color=color, opacity=0.8),
                 text=[escape(r["label"]) for r in group],
                 hovertemplate="<b>%{text}</b><extra>%{fullData.name}</extra>",
@@ -36,7 +38,7 @@ def make_figure(role_map, trajectories):
             fig.add_annotation(
                 x=float(np.median([r["x"] for r in group])),
                 y=float(np.median([r["y"] for r in group])),
-                text=escape(label),
+                text=str(int(cluster) + 1) if many_clusters else escape(label),
                 showarrow=False,
                 yshift=18,
                 bgcolor="rgba(255,255,255,0.8)",

@@ -216,3 +216,70 @@ def test_html_frames_and_json(role_map, tmp_path):
     payload = json.loads((tmp_path / "projection.json").read_text())
     assert len(payload["roles"]) == 30
     assert payload["trajectories"][0]["points"][0]["neighbors"][0]["label"] == "role-0"
+
+
+def test_multiscale_map_preserves_reference_and_roundtrips(role_map, tmp_path):
+    fitted = RoleMap.fit(
+        role_map.vectors,
+        role_map.labels,
+        perplexity=[3, 8],
+        n_iter=300,
+        early_exaggeration_iter=100,
+    )
+    assert fitted.config["affinity"] == "multiscale"
+    assert fitted.config["perplexities"] == [3, 8]
+    before = np.asarray(fitted.embedding).copy()
+    vectors = fitted.vectors[[1, 12]]
+    together = fitted.project(vectors, rows(2))
+    fitted.save(tmp_path / "multiscale.pkl")
+    restored = RoleMap.load(tmp_path / "multiscale.pkl")
+    for i in range(2):
+        alone = restored.project(vectors[i : i + 1], rows(1))[0]
+        np.testing.assert_allclose(
+            [alone["x"], alone["y"]], [together[i]["x"], together[i]["y"]], atol=1e-6
+        )
+    np.testing.assert_array_equal(before, fitted.embedding)
+    np.testing.assert_array_equal(before, restored.embedding)
+    assert fitted.config["quality"]["kl_unexaggerated"] >= 0
+
+
+def test_quality_exact_kl_and_perfect_neighbor_geometry():
+    from types import SimpleNamespace
+
+    from scipy.sparse import csr_matrix
+    from scipy.spatial.distance import pdist, squareform
+
+    from steering.tsne_lens.quality import embedding_quality
+
+    class Embedding(np.ndarray):
+        pass
+
+    xy = np.array([[0, 0], [1, 2], [3, 1], [8, 3], [10, 4], [7, 9]], dtype=float).view(
+        Embedding
+    )
+    distances = squareform(pdist(xy))
+    q = 1 / (1 + distances**2)
+    np.fill_diagonal(q, 0)
+    xy.affinities = SimpleNamespace(P=csr_matrix(q / q.sum()))
+    metrics = embedding_quality(distances, xy, np.full(len(xy), -1))
+    assert metrics["kl_unexaggerated"] == pytest.approx(0, abs=1e-12)
+    assert metrics["neighbor_recall"] == 1
+    assert metrics["trustworthiness"] == 1
+    assert metrics["global_distance_spearman"] == pytest.approx(1)
+    assert metrics["cluster_coverage"] == 0
+
+
+@pytest.mark.parametrize(
+    "options",
+    [
+        dict(perplexity=[]),
+        dict(perplexity=[5, -1]),
+        dict(exaggeration=0),
+        dict(theta=2),
+        dict(n_iter=0),
+        dict(min_samples=0),
+    ],
+)
+def test_invalid_tuning_parameters(role_map, options):
+    with pytest.raises(ValueError):
+        RoleMap.fit(role_map.vectors, role_map.labels, **options)

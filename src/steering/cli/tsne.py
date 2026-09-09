@@ -25,9 +25,40 @@ def main():
         "--model-id", help="model identity (fit default: Qwen/Qwen3-32B)"
     )
     parser.add_argument("--metric", choices=["cosine", "euclidean"], default="cosine")
-    parser.add_argument("--perplexity", type=float, default=30)
+    parser.add_argument(
+        "--perplexity",
+        type=float,
+        nargs="+",
+        default=[15, 90],
+        help="one scale, or multiple scales for a multiscale affinity",
+    )
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--min-cluster-size", type=int, default=5)
+    parser.add_argument("--early-exaggeration", type=float, default=12)
+    parser.add_argument("--early-exaggeration-iter", type=int, default=500)
+    parser.add_argument(
+        "--exaggeration",
+        type=float,
+        default=1.5,
+        help="attraction during the main optimization phase",
+    )
+    parser.add_argument("--n-iter", type=int, default=750)
+    parser.add_argument(
+        "--relaxation-iter",
+        type=int,
+        default=1500,
+        help="final iterations with exaggeration 1 to reduce ordinary KL",
+    )
+    parser.add_argument(
+        "--theta",
+        type=float,
+        default=0,
+        help="Barnes-Hut approximation (0 uses exact repulsion)",
+    )
+    parser.add_argument("--min-cluster-size", type=int, default=3)
+    parser.add_argument("--min-samples", type=int, default=2)
+    parser.add_argument(
+        "--cluster-selection-method", choices=["eom", "leaf"], default="leaf"
+    )
     parser.add_argument(
         "--trajectory",
         type=Path,
@@ -91,6 +122,14 @@ def main():
                 perplexity=args.perplexity,
                 seed=args.seed,
                 min_cluster_size=args.min_cluster_size,
+                min_samples=args.min_samples,
+                cluster_selection_method=args.cluster_selection_method,
+                early_exaggeration=args.early_exaggeration,
+                early_exaggeration_iter=args.early_exaggeration_iter,
+                exaggeration=args.exaggeration,
+                n_iter=args.n_iter,
+                relaxation_iter=args.relaxation_iter,
+                theta=args.theta,
             )
             role_map.config.update(
                 source=str(args.roles.resolve()),
