@@ -1,4 +1,8 @@
 import copy
+import base64
+import gzip
+import json
+import zipfile
 import os
 from pathlib import Path
 import shutil
@@ -6,7 +10,53 @@ import subprocess
 
 import pytest
 
-from steering.report import render_experiment_report
+from steering.report import pack_report_data, render_experiment_report
+from steering.cli.report import write_bundle_reports
+from steering.binary_results import decode_trial, write_result_bundle
+import yaml
+
+
+def test_publication_archive_preserves_raw_bytes_without_duplicate_views(tmp_path):
+    run = tmp_path / "run"
+    trial = run / "trials" / "one"
+    trial.mkdir(parents=True)
+    value = document()
+    value["experiment"]["questions"] = [value["trials"][0]["question"], {"id": "other", "text": "<other>"}]
+    raw = json.dumps(value["trials"][0]).encode()
+    (trial / "result.json").write_bytes(raw)
+    (run / "resolved-config.yaml").write_text(yaml.safe_dump(value["experiment"]))
+    (trial / "metadata.json").write_text('{"revision": "test"}')
+    (run / "manifest.json").write_text('{}')
+    (run / "report.html").write_text('duplicate')
+    (run / "experiment-results.json").write_text('duplicate')
+    (run / ".writer.lock").write_text('stale')
+    target = tmp_path / "raw.zip"
+    write_result_bundle(run, target)
+    with zipfile.ZipFile(target) as archive:
+        assert "provenance/trials/one/metadata.json" in archive.namelist()
+        assert not any(name.endswith("result.json") or name.endswith(".html") for name in archive.namelist())
+        index = json.loads(archive.read("index.json"))
+        descriptor = index["trials"][0]
+        assert decode_trial(descriptor, archive.read(descriptor["payload"]), json.loads(archive.read("vocabulary.json"))) == value["trials"][0]
+    assert (trial / "result.json").read_bytes() == raw
+    shutil.rmtree(run)  # Report rebuild must need only the portable ZIP.
+    output = tmp_path / "rebuilt"
+    assert write_bundle_reports(target, output) == output / "index.html"
+    assert 'question-002.html' in (output / "index.html").read_text()
+    assert '&lt;other&gt;' in (output / "index.html").read_text()
+    first = (output / "question-001.html").read_text(encoding="utf-8")
+    assert 'href="index.html"' in first
+    assert 'Next question' in first
+
+
+def test_report_compression_is_lossless_and_does_not_mutate_input():
+    source = document()
+    original = copy.deepcopy(source)
+    packed = pack_report_data(source)
+    restored = [decode_trial(t["binary"], base64.b64decode(t["payload_gzip"]), packed["vocabulary"]) for t in packed["trials"]]
+    assert restored == source["trials"]
+    assert source == original
+    assert pack_report_data(source) == packed
 
 
 def document():

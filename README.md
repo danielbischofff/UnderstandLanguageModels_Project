@@ -20,7 +20,7 @@ direct_character_vectors_j_lens_analysis/
                        Original character-vector and J/R-Lens analysis
 Project Proposals/     Research motivation and hypotheses
 results/               Published experiment results and browser reports
-slurm/                 Cluster entry point
+slurm/                 GPU experiment and CPU-only report entry points
 src/steering/          Model steering, experiment runner, and J-Lens adapter
   data/                Pinned offline Chinese dictionary and attribution
 tests/                 Unit and opt-in integration tests
@@ -45,8 +45,9 @@ For each matrix cell the runner:
 2. performs one causal pass over the complete prompt and answer;
 3. converts the in-memory residual stream into J-Lens top words for every fitted
    layer and token position; and
-4. discards the activations by default, retaining compact JSON results and
-   provenance. `outputs.keep_activations: true` keeps the intermediate tensors
+4. discards the activations by default, retaining a compact binary results ZIP,
+   per-question browser reports, and resumable per-trial checkpoints.
+   `outputs.keep_activations: true` keeps the intermediate tensors
    for follow-up analysis.
 
 The starting experiment is

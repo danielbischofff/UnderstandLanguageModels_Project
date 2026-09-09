@@ -25,7 +25,8 @@ from .inference import GenerationResponse, InferenceRunner
 from .j_lens import JLenseReader
 from .interventions import CappingRequest, CharacterBandRequest, SteeringRequest
 from .recipes import RoleDirection
-from .report import write_experiment_report
+from .report import write_experiment_report, write_bundle_reports
+from .binary_results import write_result_bundle
 
 UNSTEERED = "unsteered"
 
@@ -626,20 +627,19 @@ class ExperimentRecorder:
         self._write_manifest(manifest)
 
     def write_outputs(self) -> None:
-        results = [
-            json.loads(path.read_text(encoding="utf-8"))
-            for path in sorted((self.run_dir / "trials").glob("*/result.json"))
-        ]
-        document = {
-            "schema_version": 1,
-            "experiment": self.config.to_mapping(),
-            "trials": results,
-        }
-        _atomic_text(
-            self.run_dir / "experiment-results.json",
-            json.dumps(document, ensure_ascii=False) + "\n",
-        )
-        write_experiment_report(self.run_dir / "report.html", document)
+        if not any((self.run_dir / "trials").glob("*/result.json")):
+            write_experiment_report(self.run_dir / "report.html", {
+                "schema_version": 1, "experiment": self.config.to_mapping(), "trials": [],
+            })
+            return
+        # Preserve per-trial checkpoints for resume, but avoid a second giant
+        # JSON document or loading the entire matrix into memory for reporting.
+        temporary = self.run_dir / ".results.zip.tmp"
+        temporary.unlink(missing_ok=True)
+        write_result_bundle(self.run_dir, temporary)
+        bundle = self.run_dir / "results.zip"
+        temporary.replace(bundle)
+        write_bundle_reports(bundle, self.run_dir)
 
 
 def _steering_for_trial(trial: Mapping[str, Any]) -> SteeringRequest | CappingRequest | CharacterBandRequest | None:

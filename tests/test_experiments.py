@@ -1,4 +1,5 @@
 import json
+import zipfile
 
 import pytest
 import torch
@@ -13,6 +14,14 @@ from steering.experiments import (
 )
 from steering.inference import GenerationResponse
 from steering.interventions import CappingRequest, CharacterBandRequest
+from steering.binary_results import decode_trial
+
+
+def saved_results(run):
+    with zipfile.ZipFile(run / "results.zip") as archive:
+        index = json.loads(archive.read("index.json"))
+        vocabulary = json.loads(archive.read("vocabulary.json"))
+        return {"trials": [decode_trial(t, archive.read(t["payload"]), vocabulary) for t in index["trials"]]}
 
 
 def test_band_yaml_expands_thirteen_trials_and_round_trips():
@@ -136,9 +145,9 @@ def test_run_records_compact_matrix_without_activation_artifacts(tmp_path):
     runner = FakeRunner()
     run_experiment(runner, recorder, FakeLens())
 
-    results = json.loads(
-        (recorder.run_dir / "experiment-results.json").read_text(encoding="utf-8")
-    )
+    results = saved_results(recorder.run_dir)
+    assert not (recorder.run_dir / "experiment-results.json").exists()
+    assert (recorder.run_dir / "index.html").is_file()
     assert len(results["trials"]) == 4
     assert (recorder.run_dir / "report.html").is_file()
     assert [trial["character"] for trial in results["trials"]] == [
@@ -234,7 +243,7 @@ def test_sweep_execution_and_resume_preserve_all_axes(tmp_path):
     assert isinstance(cap, CappingRequest)
     assert cap.threshold == -1
     assert cap.bound == "lower"
-    results = json.loads((recorder.run_dir / "experiment-results.json").read_text())
+    results = saved_results(recorder.run_dir)
     assert [item["steering"] for item in results["trials"]] == [
         item["steering"] for item in recorder.config.trials()
     ]

@@ -303,7 +303,7 @@
     }
 
     function topAt(layer, selected) {
-      return (layer.positions[selected] || []);
+      return layer.readPosition ? layer.readPosition(selected) : (layer.positions[selected] || []);
     }
 
     function matchesSearch(item) {
@@ -424,15 +424,14 @@
 
     function renderSuggestions() {
       const words = new Set();
-      for (const layer of trial.j_lens.layers) {
-        for (const readout of layer.positions) {
-          for (const item of readout) {
-            if (normalized(item.text)) words.add(item.text.trim());
-            const entry = translation(item);
-            if (entry?.kind === "dictionary") {
-              for (const sense of entry.text.split("; ")) words.add(sense);
-            }
-          }
+      const items = trial.readoutIds
+        ? [...new Set(trial.readoutIds)].map(id => ({text: DATA.vocabulary[id]}))
+        : trial.j_lens.layers.flatMap(layer => layer.positions.flat());
+      for (const item of items) {
+        if (normalized(item.text)) words.add(item.text.trim());
+        const entry = translation(item);
+        if (entry?.kind === "dictionary") {
+          for (const sense of entry.text.split("; ")) words.add(sense);
         }
       }
       suggestions.replaceChildren(...[...words].sort().slice(0, 1000).map(word => {
@@ -442,7 +441,38 @@
       }));
     }
 
-    function renderTrial() {
+    let selectionVersion = 0;
+    function decodeBinary(selected, buffer) {
+      const descriptor = selected.binary;
+      const view = new DataView(buffer);
+      const read = (name, index) => {
+        const a = descriptor.arrays[name];
+        const width = a.dtype === '<f8' ? 8 : 4;
+        const offset = a.offset + index * width;
+        return a.dtype === '<u4' ? view.getUint32(offset, true)
+          : a.dtype === '<f4' ? view.getFloat32(offset, true) : view.getFloat64(offset, true);
+      };
+      const decoded = structuredClone(descriptor.metadata);
+      decoded.readoutIds = Array.from({length: descriptor.arrays.ids.count}, (_, i) => read('ids', i));
+      let positionOffset = 0;
+      decoded.j_lens.layers.forEach((layer, index) => {
+        const start = positionOffset, count = descriptor.position_counts[index];
+        layer.readPosition = position => {
+          if (position < 0 || position >= count) return [];
+          const rows = [];
+          for (let i = read('offsets', start + position); i < read('offsets', start + position + 1); i++) {
+            const id = read('ids', i);
+            rows.push({id, text: DATA.vocabulary[id], logit: read('logits', i), probability: read('probabilities', i)});
+          }
+          return rows;
+        };
+        positionOffset += count;
+      });
+      return decoded;
+    }
+    async function renderTrial() {
+      const version = ++selectionVersion;
+      document.documentElement.dataset.ready = "false";
       pinnedPosition = null;
       pinnedLayer = null;
       const control = characterSelect.value === "unsteered";
@@ -460,7 +490,30 @@
             : scheme.method === "projection_cap"
             ? `${scheme.bound || "lower"} projection threshold α = ${alphaSelect.value} (activation units)`
             : `α = ${alphaSelect.value} · ${scheme.scaling || "raw"} direction${scheme.preserve_original_activation_norm ? " · preserve activation norm" : ""}`);
-      trial = trialForSelection();
+      const selected = trialForSelection();
+      trial = null;
+      if (selected) {
+        promptTokens.replaceChildren();
+        responseTokens.replaceChildren();
+        layerGrid.replaceChildren();
+        readoutRows.replaceChildren();
+        rawResponse.textContent = "Loading trial…";
+        try {
+          if (!globalThis.DecompressionStream) throw new Error("This report requires a browser with gzip DecompressionStream support.");
+          const bytes = Uint8Array.from(atob(selected.payload_gzip), char => char.charCodeAt(0));
+          const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+          const decoded = decodeBinary(selected, await new Response(stream).arrayBuffer());
+          if (version !== selectionVersion) return;
+          trial = decoded;
+        } catch (error) {
+          if (version !== selectionVersion) return;
+          rawResponse.textContent = `Unable to load trial: ${error.message}`;
+          selectedPosition.textContent = "Readout unavailable";
+          readoutCaption.textContent = "Readout unavailable";
+          document.documentElement.dataset.ready = "true";
+          return;
+        }
+      }
       if (!trial) {
         promptTokens.replaceChildren();
         responseTokens.replaceChildren();
@@ -471,6 +524,7 @@
         searchLegend.hidden = true;
         layerGrid.innerHTML = '<p class="empty">This matrix cell did not complete.</p>';
         renderReadout();
+        document.documentElement.dataset.ready = "true";
         return;
       }
       if (!trial.j_lens.layers.some(layer => layer.layer === selectedLayer)) {
@@ -480,6 +534,7 @@
       renderTokens();
       renderSuggestions();
       renderSearch();
+      document.documentElement.dataset.ready = "true";
     }
 
     function selectToken(event) {

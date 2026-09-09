@@ -5,7 +5,7 @@ import sys
 import pytest
 
 from steering.glossary import concise, dictionary, gloss, report_glossary
-from steering.report import render_experiment_report
+from steering.report import render_experiment_report, pack_report_data
 from steering.cli.report import main
 
 
@@ -43,8 +43,8 @@ def test_display_glosses_are_short_without_losing_search_senses():
 def example():
     return {"experiment": {"name": "test", "description": "__GLOSSARY_DATA__ </script>"}, "trials": [{
         "j_lens": {"tokens": [{"text": "教练"}], "layers": [{"positions": [[
-            {"text": "教练", "logit": 2, "probability": 0.2},
-            {"text": "unrelated", "logit": 1, "probability": 0.1},
+            {"id": 1, "text": "教练", "logit": 2, "probability": 0.2},
+            {"id": 2, "text": "unrelated", "logit": 1, "probability": 0.1},
         ]]}]},
     }]}
 
@@ -55,7 +55,7 @@ def test_report_embeds_only_needed_glosses_without_changing_data():
     assert set(report_glossary(document)) == {"教练"}
     html = render_experiment_report(document)
     payload = html.split("const DATA = ", 1)[1].split(";\n", 1)[0]
-    assert json.loads(payload) == before
+    assert json.loads(payload) == pack_report_data(before)
     assert document == before
     assert "<\\/script>" in html
     assert "coach" in html

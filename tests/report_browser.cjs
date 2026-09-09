@@ -9,6 +9,19 @@ const {chromium} = require('playwright');
     : {channel: 'chrome', headless: true});
   try {
     const page = await browser.newPage({viewport: {width: 1366, height: 768}});
+    // Trial payloads are inflated asynchronously and only for the active cell.
+    const goto = page.goto.bind(page);
+    page.goto = async (...args) => {
+      const result = await goto(...args);
+      await page.waitForFunction(() => document.documentElement.dataset.ready === 'true');
+      return result;
+    };
+    const selectOption = page.selectOption.bind(page);
+    page.selectOption = async (...args) => {
+      const result = await selectOption(...args);
+      await page.waitForFunction(() => document.documentElement.dataset.ready === 'true');
+      return result;
+    };
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(pathToFileURL(process.argv[2]).href);
@@ -77,6 +90,15 @@ const {chromium} = require('playwright');
     assert.match(await page.locator('#steering-description').textContent(), /half-width β = 2/);
     await page.selectOption('#scheme-select', 'floor');
     assert.match(await page.locator('#coefficient-label').textContent(), /Alpha/);
+    await page.evaluate(() => {
+      const select = document.getElementById('scheme-select');
+      for (const name of ['band', 'middle', 'floor']) {
+        select.value = name;
+        select.dispatchEvent(new Event('change'));
+      }
+    });
+    await page.waitForFunction(() => document.documentElement.dataset.ready === 'true');
+    assert.equal(await answer(), 'other-floor-2');
     assert.match(await page.locator('#steering-description').textContent(), /threshold/);
     assert.equal(await page.locator('.token[data-hit="true"]').count(), 1);
     await page.selectOption('#character-select', 'unsteered');
