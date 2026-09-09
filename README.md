@@ -108,6 +108,15 @@ The completed 1000 mg baseline experiment is available in
 Its saved configuration records the original prompt and steering settings;
 the subsequent 8000 mg alpha sweep has its own YAML and results directory.
 
+## Residual visualization
+
+For a fixed role-space t-SNE map with token residual trajectories, see the
+[residual visualization workflow](src/tsne-lens/pipeline_workflow.md).
+`uv run --extra plots steering-tsne` reads local role tensors and retained experiment
+activations, and writes interactive HTML, optional PNG, and analysis JSON under
+`outputs/plots/`. Retain activations with `outputs.keep_activations: true` before
+running an experiment to use this analysis.
+
 ## Interpretation boundaries
 
 The J-Lens was fitted on generic text using the original Qwen3-32B checkpoint
