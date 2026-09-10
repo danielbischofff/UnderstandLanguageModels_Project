@@ -28,7 +28,7 @@ def role_map():
         layer=2,
         model_id="test",
         perplexity=4,
-        min_cluster_size=4,
+        n_clusters=3,
     )
 
 
@@ -277,9 +277,44 @@ def test_quality_exact_kl_and_perfect_neighbor_geometry():
         dict(exaggeration=0),
         dict(theta=2),
         dict(n_iter=0),
-        dict(min_samples=0),
+        dict(n_clusters=1),
     ],
 )
 def test_invalid_tuning_parameters(role_map, options):
     with pytest.raises(ValueError):
         RoleMap.fit(role_map.vectors, role_map.labels, **options)
+
+
+def test_annealing_all_neighbors_and_convergence_reporting(role_map):
+    from openTSNE import TSNEEmbedding
+
+    from steering.tsne_lens.optimization import exact_kl, train_embedding
+
+    e, history, frames, status = train_embedding(
+        role_map.vectors,
+        perplexities=[90],
+        anneal_perplexities=[4],
+        early_iter=0,
+        n_iter=20,
+        relaxation_iter=10,
+        max_iter=10,
+        checkpoint_interval=10,
+    )
+    assert history[0]["perplexities"] == [29]  # N-1, not the former (N-1)/3 cap
+    assert status["neighbors"] == 29
+    assert status["final_perplexities"] == [4]
+    assert not status["converged"]  # Only one plateau check was permitted.
+    assert status["iterations"] == 50
+    assert status["pca_kl_final_affinity"] == pytest.approx(
+        exact_kl(TSNEEmbedding(frames[0], e.affinities))
+    )
+    assert any(row["phase"] == "anneal-1-start" for row in history)
+
+
+def test_ward_subclusters_are_nested_and_cover_all_roles(role_map):
+    labels = np.asarray(role_map.clusters)
+    sub = np.asarray(role_map.config["subcluster_ids"])
+    assert len(set(labels)) == 3 and np.all(labels >= 0)
+    assert len(set(sub)) == 6
+    assert all(len(set(labels[sub == c])) == 1 for c in set(sub))
+    assert role_map.config["quality"]["cluster_coverage"] == 1

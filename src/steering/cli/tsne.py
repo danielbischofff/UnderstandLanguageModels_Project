@@ -29,24 +29,29 @@ def main():
         "--perplexity",
         type=float,
         nargs="+",
-        default=[15, 90],
-        help="one scale, or multiple scales for a multiscale affinity",
+        default=None,
+        help="initial scale(s); omit for the tuned 90 to 30 annealing schedule",
     )
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--early-exaggeration", type=float, default=12)
-    parser.add_argument("--early-exaggeration-iter", type=int, default=500)
+    parser.add_argument("--early-exaggeration", type=float, default=2)
+    parser.add_argument("--early-exaggeration-iter", type=int, default=250)
     parser.add_argument(
         "--exaggeration",
         type=float,
-        default=1.5,
+        default=1,
         help="attraction during the main optimization phase",
     )
-    parser.add_argument("--n-iter", type=int, default=750)
+    parser.add_argument(
+        "--n-iter",
+        type=int,
+        default=1000,
+        help="iterations at each fixed-affinity stage",
+    )
     parser.add_argument(
         "--relaxation-iter",
         type=int,
-        default=1500,
-        help="final iterations with exaggeration 1 to reduce ordinary KL",
+        default=1000,
+        help="minimum final ordinary-KL iterations before accepting a plateau",
     )
     parser.add_argument(
         "--theta",
@@ -54,10 +59,38 @@ def main():
         default=0,
         help="Barnes-Hut approximation (0 uses exact repulsion)",
     )
-    parser.add_argument("--min-cluster-size", type=int, default=3)
-    parser.add_argument("--min-samples", type=int, default=2)
     parser.add_argument(
-        "--cluster-selection-method", choices=["eom", "leaf"], default="leaf"
+        "--anneal-perplexity",
+        type=float,
+        nargs="+",
+        default=None,
+        help="successively lower perplexities after each fitting stage",
+    )
+    parser.add_argument(
+        "--max-iter",
+        type=int,
+        default=10000,
+        help="maximum final ordinary-KL iterations before reporting nonconvergence",
+    )
+    parser.add_argument(
+        "--tolerance",
+        type=float,
+        default=1e-6,
+        help="absolute KL change per 250 iterations for two consecutive checks",
+    )
+    parser.add_argument(
+        "--clusters", type=int, default=3, help="broad Ward hierarchy cut"
+    )
+    parser.add_argument(
+        "--subclusters", type=int, default=6, help="finer Ward hierarchy cut"
+    )
+    parser.add_argument(
+        "--training-gif",
+        action="store_true",
+        help="save checkpoint PNGs, KL history and GIF",
+    )
+    parser.add_argument(
+        "--default-vector", type=Path, help="held-out reference .pt tensor to highlight"
     )
     parser.add_argument(
         "--trajectory",
@@ -87,6 +120,8 @@ def main():
         "--output", type=Path, default=Path("outputs/plots/residual-tsne")
     )
     args = parser.parse_args()
+    if args.map and (args.training_gif or args.default_vector):
+        parser.error("--training-gif and --default-vector require fitting with --roles")
     if args.name is not None and len(args.name) != len(args.trajectory):
         parser.error("provide exactly one --name per --trajectory")
     if args.batch_index < 0:
@@ -113,6 +148,22 @@ def main():
             layer = args.layer if args.layer is not None else 32
             model_id = args.model_id or "Qwen/Qwen3-32B"
             vectors, labels = load_roles(args.roles, layer, model_id)
+            default_vector = None
+            if args.default_vector:
+                import torch
+
+                from ..vector_store import _extract_tensor
+
+                default_vector = (
+                    _extract_tensor(
+                        torch.load(
+                            args.default_vector, map_location="cpu", weights_only=True
+                        ),
+                        args.default_vector,
+                    )[layer]
+                    .float()
+                    .numpy()
+                )
             role_map = RoleMap.fit(
                 vectors,
                 labels,
@@ -121,9 +172,13 @@ def main():
                 metric=args.metric,
                 perplexity=args.perplexity,
                 seed=args.seed,
-                min_cluster_size=args.min_cluster_size,
-                min_samples=args.min_samples,
-                cluster_selection_method=args.cluster_selection_method,
+                n_clusters=args.clusters,
+                subclusters=args.subclusters,
+                anneal_perplexities=args.anneal_perplexity,
+                max_iter=args.max_iter,
+                tolerance=args.tolerance,
+                training_output=args.output / "training" if args.training_gif else None,
+                default_vector=default_vector,
                 early_exaggeration=args.early_exaggeration,
                 early_exaggeration_iter=args.early_exaggeration_iter,
                 exaggeration=args.exaggeration,
@@ -138,6 +193,10 @@ def main():
                     for p in ("openTSNE", "scikit-learn", "numpy", "plotly")
                 },
             )
+            if args.default_vector:
+                role_map.config["default_vector_source"] = str(
+                    args.default_vector.resolve()
+                )
         trajectories = []
         for i, path in enumerate(args.trajectory):
             vectors, rows = load_trajectory(
@@ -163,6 +222,10 @@ def main():
             )
         args.output.mkdir(parents=True, exist_ok=True)
         role_map.save(args.output / "role-map.pkl")
+        if not role_map.config.get("convergence", {}).get("converged", True):
+            print(
+                "Warning: final KL did not plateau within --max-iter; see convergence metadata."
+            )
         write_outputs(role_map, trajectories, args.output, args.formats)
     except (ValueError, FileNotFoundError, IndexError, KeyError, RuntimeError) as error:
         parser.error(str(error))

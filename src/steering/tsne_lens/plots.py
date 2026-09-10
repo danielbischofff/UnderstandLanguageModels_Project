@@ -8,11 +8,12 @@ import numpy as np
 import plotly.graph_objects as go
 from plotly.colors import qualitative
 
+from .training_plots import CORE_COLORS
+
 
 def make_figure(role_map, trajectories):
     fig = go.Figure()
     roles = role_map.role_records()
-    many_clusters = len(set(role_map.clusters) - {-1}) > 8
     last_step = max((len(t["points"]) - 1 for t in trajectories), default=1)
     for cluster in sorted(set(role_map.clusters)):
         group = [r for r in roles if r["cluster"] == cluster]
@@ -38,13 +39,46 @@ def make_figure(role_map, trajectories):
             fig.add_annotation(
                 x=float(np.median([r["x"] for r in group])),
                 y=float(np.median([r["y"] for r in group])),
-                text=str(int(cluster) + 1) if many_clusters else escape(label),
+                text=str(int(cluster) + 1),
                 showarrow=False,
                 yshift=18,
                 bgcolor="rgba(255,255,255,0.8)",
                 font=dict(size=11),
             )
     cursors = []
+    # These are duplicate highlights of existing role points, plus an optional
+    # held-out default vector; they never participate in fitting or clustering.
+    for name, color in CORE_COLORS.items():
+        points = [r for r in roles if r["label"] == name]
+        points += [
+            r for r in role_map.config.get("reference_points", []) if r["label"] == name
+        ]
+        if points:
+            point = points[0]
+            fig.add_trace(
+                go.Scatter(
+                    x=[point["x"]],
+                    y=[point["y"]],
+                    mode="markers+text",
+                    text=[name],
+                    textposition="bottom right"
+                    if name == "default_vector"
+                    else "top right",
+                    name=f"Core · {name}",
+                    marker=dict(
+                        color=color,
+                        size=14,
+                        symbol="star" if name == "default_vector" else "circle",
+                        line=dict(color="white", width=1),
+                    ),
+                    hovertemplate=(
+                        "%{text} (held-out reference)"
+                        if name == "default_vector"
+                        else "%{text}"
+                    )
+                    + "<extra></extra>",
+                )
+            )
     for i, trajectory in enumerate(trajectories):
         rows, name = trajectory["points"], escape(trajectory["name"])
         color = qualitative.Dark24[i % len(qualitative.Dark24)]
@@ -193,7 +227,12 @@ def make_figure(role_map, trajectories):
         height=900,
         title=(
             f"Role space · {escape(role_map.config['model_id'])} · layer {role_map.config['layer']}"
-            f"<br><sup>Fixed role t-SNE · {role_map.config['metric']} · clusters in original space; "
+            + (
+                f" · Ward {role_map.config['n_clusters']}"
+                if role_map.config.get("clustering") == "ward"
+                else ""
+            )
+            + f"<br><sup>Fixed role t-SNE · {role_map.config['metric']} · clusters in original space; "
             "2D gaps and path lengths are qualitative</sup>"
         ),
         xaxis_title="t-SNE 1",
@@ -231,4 +270,27 @@ def write_outputs(role_map, trajectories, output: Path, formats=("html",)):
                 "`uv run --extra plots plotly_get_chrome -y`. JSON and any requested "
                 "HTML were saved; rerun with --map and --formats png."
             ) from error
+    if "subcluster_ids" in role_map.config:
+        from dataclasses import replace
+
+        finer = replace(
+            role_map,
+            clusters=np.asarray(role_map.config["subcluster_ids"]),
+            cluster_names={
+                int(k): v for k, v in role_map.config["subcluster_names"].items()
+            },
+            config={
+                **role_map.config,
+                "n_clusters": role_map.config["subcluster_count"],
+            },
+        )
+        subfig = make_figure(finer, trajectories)
+        if "html" in formats:
+            subfig.write_html(
+                output / "subclusters.html", include_plotlyjs=True, auto_play=False
+            )
+        if "png" in formats:
+            subfig.layout.sliders = ()
+            subfig.layout.updatemenus = ()
+            subfig.write_image(output / "subclusters.png", scale=2)
     return fig

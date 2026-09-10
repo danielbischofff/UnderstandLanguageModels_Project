@@ -1,30 +1,30 @@
 # Residual-stream role map
 
-`steering-tsne` uses openTSNE to fit a fixed 2D role map and overlay token-by-token post-MLP residuals, defaulting to Qwen3 layer 32 (zero-based).
-The [tuned defaults and measurements](tuning-notes.md) use PCA initialization, multiscale perplexities 15/90, moderate exaggeration, and a final unexaggerated pass to reduce KL.
-Role inputs are raw `.pt` tensors shaped `[layers, hidden]`, labelled by filename, or NPZ files with `vectors` and `labels` arrays.
-Residuals and roles must share the same model, layer, and post-MLP coordinate system; use raw role vectors rather than steering differences.
+`steering-tsne` maps raw role vectors and token residuals from the same model and post-MLP layer, defaulting to Qwen3 layer 32 (zero-based).
+Inputs are a directory of role `.pt` tensors shaped `[layers, hidden]`, or NPZ `vectors` and `labels` arrays.
+The [tuned schedule](tuning-notes.md) uses PCA initialization, perplexity annealing 90 → 30, early exaggeration 2, and ordinary-KL optimization until a measured plateau.
 
 ```bash
 uv run --extra plots steering-tsne \
   --roles models/assistant-axis-vectors/qwen-3-32b/role_vectors \
-  --layer 32 --formats html png \
-  --output outputs/plots/qwen3-layer32-tuned
+  --default-vector models/assistant-axis-vectors/qwen-3-32b/default_vector.pt \
+  --layer 32 --training-gif --formats html png \
+  --output outputs/plots/qwen3-layer32-annealed
 ```
 
-Open `outputs/plots/qwen3-layer32-tuned/roles.html` to zoom and hover over role names; the same directory contains the PNG, `projection.json` (including quality metrics), and reusable `role-map.pkl`.
-PNG export requires Chrome/Chromium, installable with `uv run --extra plots plotly_get_chrome -y`.
-HDBSCAN selects small leaf clusters in the original cosine-distance space (`--min-cluster-size 3 --min-samples 2`), labels each with representative roles, and leaves noise unclustered.
+Open `roles.html` for three broad Ward groups, or `subclusters.html` for the six-group hierarchy cut, with individual role hover labels and highlighted core roles.
+`--training-gif` saves checkpoint PNGs, a GIF, and the KL curve under `training/`; `projection.json` records metrics and convergence, while `role-map.pkl` preserves the reference for overlays.
+An explicit `--perplexity` selects a fixed scale unless `--anneal-perplexity` supplies subsequent lower scales; `--help` lists iteration limits and convergence tolerance.
+PNG export uses Kaleido/Chrome (`uv run --extra plots plotly_get_chrome -y` if needed); training PNGs and GIFs use Matplotlib/Pillow.
 
-Enable `outputs.keep_activations: true` before running an experiment, then supply a trial directory, activation manifest, or trajectory NPZ with `[tokens, hidden]` vectors.
-Retain the trial's sibling `metadata.json` for token text and prompt/generated alignment, and repeat `--trajectory` with `--name` to compare runs.
+Enable `outputs.keep_activations: true` before an experiment, then pass a trial directory with its metadata, an activation manifest, or a trajectory NPZ shaped `[tokens, hidden]`.
 
 ```bash
 uv run --extra plots steering-tsne \
-  --map outputs/plots/qwen3-layer32-tuned/role-map.pkl \
+  --map outputs/plots/qwen3-layer32-annealed/role-map.pkl \
   --trajectory /path/to/run/trials/00001_steered --name steered \
   --generated-only --output outputs/plots/qwen3-layer32-steered
 ```
 
-Saved maps keep role positions fixed while residual trajectories add hoverable tokens, latent-space nearest roles, and playback controls.
-Treat 2D gaps and path lengths qualitatively; inspect latent-space distances and use `steering-tsne --help` for metric, perplexity, cluster-size, and capture options.
+Repeat `--trajectory` and `--name` to compare runs against unchanged role coordinates.
+Treat 2D gaps qualitatively, inspect original-space neighbors, and compare KL only while the affinity is unchanged.
