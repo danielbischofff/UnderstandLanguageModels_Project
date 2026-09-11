@@ -8,7 +8,7 @@ import numpy as np
 import plotly.graph_objects as go
 from plotly.colors import qualitative
 
-from .training_plots import CORE_COLORS
+from .labels import label_offsets, labeled_indices
 
 
 def make_figure(role_map, trajectories):
@@ -46,38 +46,52 @@ def make_figure(role_map, trajectories):
                 font=dict(size=11),
             )
     cursors = []
-    # These are duplicate highlights of existing role points, plus an optional
-    # held-out default vector; they never participate in fitting or clustering.
-    for name, color in CORE_COLORS.items():
-        points = [r for r in roles if r["label"] == name]
-        points += [
-            r for r in role_map.config.get("reference_points", []) if r["label"] == name
-        ]
-        if points:
-            point = points[0]
+    selected = labeled_indices(
+        role_map.vectors, role_map.labels, role_map.clusters, role_map.config["metric"]
+    )
+    labeled = [roles[i] for i in selected]
+    for point in role_map.config.get("reference_points", []):
+        if point["label"] == "default_vector":
+            labeled.append(point)
             fig.add_trace(
                 go.Scatter(
                     x=[point["x"]],
                     y=[point["y"]],
-                    mode="markers+text",
-                    text=[name],
-                    textposition="bottom right"
-                    if name == "default_vector"
-                    else "top right",
-                    name=f"Core · {name}",
+                    mode="markers",
+                    name="default_vector",
                     marker=dict(
-                        color=color,
+                        color="#111111",
                         size=14,
-                        symbol="star" if name == "default_vector" else "circle",
+                        symbol="star",
                         line=dict(color="white", width=1),
                     ),
-                    hovertemplate=(
-                        "%{text} (held-out reference)"
-                        if name == "default_vector"
-                        else "%{text}"
-                    )
-                    + "<extra></extra>",
+                    hovertemplate="default_vector (held-out reference)<extra></extra>",
                 )
+            )
+    if labeled:
+        xy = np.asarray([[r["x"], r["y"]] for r in labeled])
+        span = np.ptp(np.asarray(role_map.embedding), axis=0) * 1.15
+        # Equal-scale axes: estimate the same pixel scale in both dimensions.
+        scale = max(span[0] / 760, span[1] / 640)
+        offsets = label_offsets(
+            xy, [r["label"] for r in labeled], [scale * 760, scale * 640]
+        )
+        for point, (dx, dy) in zip(labeled, offsets):
+            fig.add_annotation(
+                x=point["x"],
+                y=point["y"],
+                text=escape(point["label"]),
+                ax=float(dx),
+                ay=float(-dy),
+                xanchor="center",
+                yanchor="middle",
+                showarrow=True,
+                arrowhead=0,
+                arrowwidth=0.6,
+                arrowcolor="#888",
+                bgcolor="rgba(255,255,255,0.85)",
+                borderpad=1,
+                font=dict(size=11, color="#333"),
             )
     for i, trajectory in enumerate(trajectories):
         rows, name = trajectory["points"], escape(trajectory["name"])
@@ -270,7 +284,9 @@ def write_outputs(role_map, trajectories, output: Path, formats=("html",)):
                 "`uv run --extra plots plotly_get_chrome -y`. JSON and any requested "
                 "HTML were saved; rerun with --map and --formats png."
             ) from error
-    if "subcluster_ids" in role_map.config:
+    if "subcluster_ids" in role_map.config and not np.array_equal(
+        role_map.clusters, role_map.config["subcluster_ids"]
+    ):
         from dataclasses import replace
 
         finer = replace(

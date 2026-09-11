@@ -1,18 +1,14 @@
 # Layer-32 findings
 
-- **Selected: PCA initialization, perplexity 90 → 30, early exaggeration 2, then 1.** Three broad regions remain recognizable from PCA; `default_vector` projects beside assistant.
-- **3,250 iterations:** 250 early + 1,000 at P90 + 1,000 at P30 + 1,000 plateau checks. Another 2,000 iterations changed KL by **0.0**.
-- At fixed P90, KL drops **0.9493 → 0.2528**; at P30 after annealing, **0.8354 → 0.6000**. Evaluating PCA and final coordinates against the same final P30 affinity gives **1.9646 → 0.6000 (69.5%)**.
-- Exaggeration 1/2/4 gave similar broad layouts; 2 retained more immediate neighbors than 4 in direct P30 runs. Exaggeration 12 was unnecessary here.
-- **15/90 meant simultaneous affinity scales**, not annealing. The simpler sequential schedule works well. All runs include all 274 other roles; perplexity changes their weights.
-- Requested P300 exceeds the available neighbors and is explicitly capped to **274**. That near-uniform map collapses: recall@5 **7.9%**, global correlation **0.028**, versus **49.7% / 0.766** for the selected map.
-- Ward hierarchy cuts replace HDBSCAN. Original-space silhouettes for **2/3/6 groups: 0.321/0.314/0.273**. Three is a useful broad view, six an exploratory refinement, not proven cluster counts. Average linkage's high silhouette instead isolated two outliers from 273 roles.
-- Inspected PNGs across **14 runs**; used neighborhood preservation, global correlation and fixed-partition silhouettes to compare layouts. KL was used only within unchanged affinities to check convergence.
+- **Current map:** 275 roles, fixed combined Gaussian affinities **15/90**, cosine distance, all 274 neighbors, PCA initialization, Ward6 and three central labels per cluster. Perplexity switching has been removed.
+- **Exaggeration only:** 250 iterations at 2, then a 125-iteration linear ramp to 1 in 25-iteration steps. Total **2,375 iterations**, including 1,000 final plateau checks; another 2,000 iterations changed KL by **0.0**.
+- The fixed-objective KL falls **1.57678 → 0.42163** from PCA to final. Do not compare this KL with previous single-scale runs.
+- **Early exaggeration end → final:** recall@10 **40.3% → 48.3%**, trustworthiness **0.915 → 0.931**, global distance correlation **0.765 → 0.768**; Ward6 2D silhouette falls **0.443 → 0.359**. Looser visual boundaries accompany better neighborhood fidelity here. Cross-cluster neighbors actually decrease **15.9% → 14.3%** (original space: **20.2%**).
+- This is a tradeoff: PCA preserves global distance ranks better (**0.876**) but fewer neighbors (**29.1%** recall@10). A clearer partition or lower KL alone does not prove a more faithful map.
+- **Default-vector display fixed:** the old “PCA” frame applied 250 t-SNE insertion steps. It was not a PCA projection and placed default about **6.9×** farther from assistant than the true role-fitted PCA transform does. Assistant is its nearest original-space role (cosine distance **0.000748**). Later default positions are independent insertions; the first animated update spans 25 optimization iterations.
+- One adaptive-scale **25-frame GIF**; checkpoint coordinates are retained without individual PNG exports. Prior sweep plots were not recreated.
 
-[Map](../../outputs/plots/qwen3-layer32-annealed/roles.html) ·
-[Six groups](../../outputs/plots/qwen3-layer32-annealed/subclusters.html) ·
-[GIF](../../outputs/plots/qwen3-layer32-annealed/training/training.gif) ·
-[KL curve](../../outputs/plots/qwen3-layer32-annealed/training/kl-history.png)
+[HTML](../../outputs/plots/tsne/roles/roles.html) · [PNG](../../outputs/plots/tsne/roles/roles.png) · [GIF](../../outputs/plots/tsne/roles/training/training.gif) · [Diagnostics](../../outputs/plots/tsne/roles/diagnostics.json)
 
-Raw histories, external metrics, 209 checkpoint PNGs and 14 GIFs:
-`outputs/plots/qwen3-layer32-retune/`.
+Code: [objective/schedule](../steering/tsne_lens/optimization.py), [reference placement/GIF](../steering/tsne_lens/training_plots.py).
+[openTSNE explanation of exaggeration](https://opentsne.readthedocs.io/en/stable/parameters.html#exaggeration).

@@ -35,12 +35,12 @@ class RoleMap:
         model_id="Qwen/Qwen3-32B",
         metric="cosine",
         perplexity=None,
-        anneal_perplexities=None,
         seed=42,
-        n_clusters=3,
+        n_clusters=6,
         subclusters=6,
         early_exaggeration=2.0,
         early_exaggeration_iter=250,
+        exaggeration_anneal_iter=125,
         exaggeration=1.0,
         n_iter=1000,
         relaxation_iter=1000,
@@ -52,11 +52,7 @@ class RoleMap:
     ):
         vectors = matrix(vectors, "roles")
         if perplexity is None:
-            perplexity = min(90.0, len(vectors) - 1)
-            if anneal_perplexities is None:
-                anneal_perplexities = (min(30.0, (len(vectors) - 1) / 3),)
-        if anneal_perplexities is None:
-            anneal_perplexities = ()
+            perplexity = (15, 90)
         if len(vectors) < 4 or vectors.shape[1] < 2:
             raise ValueError(
                 "t-SNE needs at least four roles and two hidden dimensions"
@@ -97,11 +93,12 @@ class RoleMap:
         embedding, history, frames, convergence = train_embedding(
             vectors,
             perplexities=np.atleast_1d(perplexity).tolist(),
-            anneal_perplexities=anneal_perplexities,
+            reference_vector=default_vector,
             metric=metric,
             seed=seed,
             early_exaggeration=early_exaggeration,
             early_iter=early_exaggeration_iter,
+            exaggeration_anneal_iter=exaggeration_anneal_iter,
             n_iter=n_iter,
             exaggeration=exaggeration,
             relaxation_iter=relaxation_iter,
@@ -143,7 +140,6 @@ class RoleMap:
             perplexity=max(convergence["final_perplexities"]),
             perplexities=convergence["final_perplexities"],
             initial_perplexities=np.atleast_1d(perplexity).tolist(),
-            anneal_perplexities=list(anneal_perplexities),
             seed=seed,
             affinity="multiscale"
             if len(convergence["final_perplexities"]) > 1
@@ -167,6 +163,7 @@ class RoleMap:
             learning_rate="auto",
             early_exaggeration=early_exaggeration,
             early_exaggeration_iter=early_exaggeration_iter,
+            exaggeration_anneal_iter=exaggeration_anneal_iter,
             exaggeration=exaggeration,
             n_iter=n_iter,
             relaxation_iter=relaxation_iter,
@@ -201,6 +198,9 @@ class RoleMap:
                 training_output,
                 clusters=clusters,
                 default_vector=default_vector,
+                default_pca=convergence["reference_pca"],
+                vectors=vectors,
+                metric=metric,
             )
         return result
 

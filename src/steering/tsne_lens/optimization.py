@@ -4,6 +4,7 @@ import logging
 
 import numpy as np
 from openTSNE import TSNEEmbedding, affinity, initialization
+from sklearn.decomposition import PCA
 
 
 def exact_kl(embedding):
@@ -20,12 +21,13 @@ def exact_kl(embedding):
 def train_embedding(
     vectors,
     *,
-    perplexities=(30,),
-    anneal_perplexities=(),
+    perplexities=(15, 90),
+    reference_vector=None,
     metric="cosine",
     seed=42,
     early_exaggeration=4,
     early_iter=250,
+    exaggeration_anneal_iter=125,
     n_iter=1000,
     exaggeration=1,
     relaxation_iter=1000,
@@ -36,21 +38,16 @@ def train_embedding(
 ):
     """Return embedding, scalar history, coordinates and convergence status.
 
-    All N-1 neighbors are used, independently of entropy/perplexity. Annealing
-    replaces the affinity after each n_iter-long stage. The final affinity is
-    held fixed during ordinary-KL relaxation until two consecutive checkpoint
-    changes are below tolerance, after at least relaxation_iter steps.
+    All N-1 neighbors are used, independently of entropy/perplexity. Affinities
+    stay fixed; only exaggeration is annealed. Ordinary-KL relaxation continues
+    until two checkpoint changes are below tolerance, after relaxation_iter steps.
     """
     requested = [float(p) for p in perplexities]
-    anneal_requested = [float(p) for p in anneal_perplexities]
-    if (
-        not requested
-        or not np.isfinite(requested + anneal_requested).all()
-        or min(requested + anneal_requested) <= 0
-    ):
+    if not requested or not np.isfinite(requested).all() or min(requested) <= 0:
         raise ValueError("perplexities must be positive and finite")
     if (
         early_iter < 0
+        or exaggeration_anneal_iter < 0
         or n_iter < 1
         or relaxation_iter < 0
         or max_iter < relaxation_iter
@@ -71,12 +68,9 @@ def train_embedding(
         return sorted(set(min(p, limit) for p in ps))
 
     scales = clamp(requested)
-    stages = [clamp([p]) for p in anneal_requested]
-    if any(next_p[0] >= prev_p[0] for prev_p, next_p in zip([scales] + stages, stages)):
-        raise ValueError("annealing perplexities must decrease strictly")
 
     def build(ps):
-        # Explicitly include every role, even for small perplexity.
+        # Adaptive Gaussian weights, not binary neighbors; include every role.
         single = affinity.PerplexityBasedNN(
             vectors,
             perplexity=ps[0],
@@ -96,14 +90,28 @@ def train_embedding(
             random_state=seed,
         )
 
+    # Retain the actual role-fitted PCA transform for the held-out reference.
+    pca = PCA(n_components=2, random_state=seed)
+    initial = pca.fit_transform(vectors)
+    scale = np.std(initial[:, 0]) / 1e-4
+    initial /= scale
+    reference_pca = (
+        (pca.transform(np.asarray(reference_vector)[None])[0] / scale).tolist()
+        if reference_vector is not None
+        else None
+    )
+    initialization.jitter(initial, inplace=True, random_state=seed)
     embedding = TSNEEmbedding(
-        initialization.pca(vectors, random_state=seed),
+        np.ascontiguousarray(initial),
         build(scales),
         negative_gradient_method="bh",
         theta=theta,
         n_jobs=1,
         random_state=seed,
     )
+    if isinstance(embedding.affinities, affinity.Multiscale):
+        # openTSNE may clamp multiscale requests for small input sets.
+        scales = list(embedding.affinities.effective_perplexities_)
     history, frames = [], []
     iteration = 0
 
@@ -119,10 +127,10 @@ def train_embedding(
         )
         frames.append(np.asarray(embedding).copy())
 
-    def optimize(steps, phase, exag):
+    def optimize(steps, phase, exag, interval=checkpoint_interval):
         nonlocal iteration
-        for start in range(0, steps, checkpoint_interval):
-            count = min(checkpoint_interval, steps - start)
+        for start in range(0, steps, interval):
+            count = min(interval, steps - start)
             embedding.optimize(
                 count,
                 exaggeration=exag,
@@ -134,13 +142,15 @@ def train_embedding(
             snapshot(phase, exag)
 
     snapshot("pca", 1)
-    optimize(early_iter, "early", early_exaggeration)
-    for index, next_scales in enumerate([scales] + stages):
-        if index:
-            scales = next_scales
-            embedding.affinities = build(scales)
-            snapshot(f"anneal-{index}-start", 1)
-        optimize(n_iter, f"fit-{index}", exaggeration)
+    # Resolve early motion and approximate a linear ramp in 25-iteration steps.
+    optimize(early_iter, "early", early_exaggeration, min(25, checkpoint_interval))
+    if early_iter and early_exaggeration != exaggeration:
+        for start in range(0, exaggeration_anneal_iter, 25):
+            count = min(25, exaggeration_anneal_iter - start)
+            fraction = (start + count) / exaggeration_anneal_iter
+            value = early_exaggeration + fraction * (exaggeration - early_exaggeration)
+            optimize(count, "exaggeration-anneal", value)
+    optimize(n_iter, "fit", exaggeration)
     # A saturation claim applies only to ordinary KL at the final fixed affinity.
     converged = False
     stable = 0
@@ -166,7 +176,7 @@ def train_embedding(
             iterations=iteration,
             final_perplexities=scales,
             requested_perplexities=requested,
-            requested_anneal_perplexities=anneal_requested,
+            reference_pca=reference_pca,
             final_kl=history[-1]["kl"],
             last_checkpoint_change=abs(history[-2]["kl"] - history[-1]["kl"]),
             tolerance=tolerance,

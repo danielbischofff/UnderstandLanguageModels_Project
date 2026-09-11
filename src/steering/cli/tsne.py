@@ -30,11 +30,17 @@ def main():
         type=float,
         nargs="+",
         default=None,
-        help="initial scale(s); omit for the tuned 90 to 30 annealing schedule",
+        help="fixed affinity scale(s); default: combined 15 and 90",
     )
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--early-exaggeration", type=float, default=2)
     parser.add_argument("--early-exaggeration-iter", type=int, default=250)
+    parser.add_argument(
+        "--exaggeration-anneal-iter",
+        type=int,
+        default=125,
+        help="linear early-to-main exaggeration ramp in 25-iteration steps; 0 disables",
+    )
     parser.add_argument(
         "--exaggeration",
         type=float,
@@ -45,7 +51,7 @@ def main():
         "--n-iter",
         type=int,
         default=1000,
-        help="iterations at each fixed-affinity stage",
+        help="iterations of main optimization with fixed affinities",
     )
     parser.add_argument(
         "--relaxation-iter",
@@ -60,13 +66,6 @@ def main():
         help="Barnes-Hut approximation (0 uses exact repulsion)",
     )
     parser.add_argument(
-        "--anneal-perplexity",
-        type=float,
-        nargs="+",
-        default=None,
-        help="successively lower perplexities after each fitting stage",
-    )
-    parser.add_argument(
         "--max-iter",
         type=int,
         default=10000,
@@ -79,7 +78,7 @@ def main():
         help="absolute KL change per 250 iterations for two consecutive checks",
     )
     parser.add_argument(
-        "--clusters", type=int, default=3, help="broad Ward hierarchy cut"
+        "--clusters", type=int, default=6, help="broad Ward hierarchy cut"
     )
     parser.add_argument(
         "--subclusters", type=int, default=6, help="finer Ward hierarchy cut"
@@ -87,7 +86,7 @@ def main():
     parser.add_argument(
         "--training-gif",
         action="store_true",
-        help="save checkpoint PNGs, KL history and GIF",
+        help="save checkpoint coordinates, KL history and adaptive-scale GIF",
     )
     parser.add_argument(
         "--default-vector", type=Path, help="held-out reference .pt tensor to highlight"
@@ -174,13 +173,13 @@ def main():
                 seed=args.seed,
                 n_clusters=args.clusters,
                 subclusters=args.subclusters,
-                anneal_perplexities=args.anneal_perplexity,
                 max_iter=args.max_iter,
                 tolerance=args.tolerance,
                 training_output=args.output / "training" if args.training_gif else None,
                 default_vector=default_vector,
                 early_exaggeration=args.early_exaggeration,
                 early_exaggeration_iter=args.early_exaggeration_iter,
+                exaggeration_anneal_iter=args.exaggeration_anneal_iter,
                 exaggeration=args.exaggeration,
                 n_iter=args.n_iter,
                 relaxation_iter=args.relaxation_iter,

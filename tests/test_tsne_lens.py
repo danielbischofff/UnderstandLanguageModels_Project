@@ -285,30 +285,29 @@ def test_invalid_tuning_parameters(role_map, options):
         RoleMap.fit(role_map.vectors, role_map.labels, **options)
 
 
-def test_annealing_all_neighbors_and_convergence_reporting(role_map):
+def test_fixed_multiscale_all_neighbors_and_convergence_reporting(role_map):
     from openTSNE import TSNEEmbedding
 
     from steering.tsne_lens.optimization import exact_kl, train_embedding
 
     e, history, frames, status = train_embedding(
         role_map.vectors,
-        perplexities=[90],
-        anneal_perplexities=[4],
+        perplexities=[4, 9],
         early_iter=0,
         n_iter=20,
         relaxation_iter=10,
         max_iter=10,
         checkpoint_interval=10,
     )
-    assert history[0]["perplexities"] == [29]  # N-1, not the former (N-1)/3 cap
+    assert history[0]["perplexities"] == [4, 9]
     assert status["neighbors"] == 29
-    assert status["final_perplexities"] == [4]
+    assert status["final_perplexities"] == [4, 9]
     assert not status["converged"]  # Only one plateau check was permitted.
-    assert status["iterations"] == 50
+    assert status["iterations"] == 30
     assert status["pca_kl_final_affinity"] == pytest.approx(
         exact_kl(TSNEEmbedding(frames[0], e.affinities))
     )
-    assert any(row["phase"] == "anneal-1-start" for row in history)
+    assert all(row["perplexities"] == [4, 9] for row in history)
 
 
 def test_ward_subclusters_are_nested_and_cover_all_roles(role_map):
@@ -318,3 +317,62 @@ def test_ward_subclusters_are_nested_and_cover_all_roles(role_map):
     assert len(set(sub)) == 6
     assert all(len(set(labels[sub == c])) == 1 for c in set(sub))
     assert role_map.config["quality"]["cluster_coverage"] == 1
+
+
+def test_exaggeration_ramp_keeps_affinity_fixed(role_map):
+    from steering.tsne_lens.optimization import train_embedding
+
+    for ramp in (0, 60):
+        embedding, history, frames, status = train_embedding(
+            role_map.vectors,
+            perplexities=[4, 8],
+            early_exaggeration=2,
+            early_iter=25,
+            exaggeration_anneal_iter=ramp,
+            n_iter=10,
+            relaxation_iter=10,
+            max_iter=10,
+        )
+        annealing = [r for r in history if r["phase"] == "exaggeration-anneal"]
+        assert bool(annealing) == bool(ramp)
+        if ramp:
+            assert [r["iteration"] for r in annealing] == [50, 75, 85]
+            assert [r["exaggeration"] for r in annealing] == pytest.approx(
+                [19 / 12, 7 / 6, 1]
+            )
+            assert all(r["perplexities"] == [4, 8] for r in annealing)
+        assert status["iterations"] == 45 + ramp
+        assert history[-1]["exaggeration"] == 1
+        assert all(r["perplexities"] == [4, 8] for r in history)
+        assert len(frames) == len(history)
+        assert embedding.affinities.P.sum() == pytest.approx(1)
+
+
+def test_reference_starts_in_true_role_pca(role_map):
+    from openTSNE import initialization
+    from sklearn.decomposition import PCA
+
+    from steering.tsne_lens.optimization import train_embedding
+    from steering.tsne_lens.training_plots import default_positions
+
+    vector = role_map.vectors[0]
+    e, h, frames, status = train_embedding(
+        role_map.vectors,
+        reference_vector=vector,
+        perplexities=[4, 8],
+        early_iter=0,
+        n_iter=10,
+        relaxation_iter=0,
+        max_iter=0,
+    )
+    pca = PCA(n_components=2, random_state=42)
+    xy = pca.fit_transform(role_map.vectors)
+    expected = pca.transform(vector[None])[0] / (xy[:, 0].std() / 1e-4)
+    np.testing.assert_allclose(status["reference_pca"], expected)
+    np.testing.assert_allclose(
+        frames[0], initialization.pca(role_map.vectors, random_state=42)
+    )
+    before = np.array(e, copy=True)
+    positions = default_positions(e, frames, vector, status["reference_pca"])
+    np.testing.assert_allclose(positions[0], expected)
+    np.testing.assert_array_equal(e, before)
