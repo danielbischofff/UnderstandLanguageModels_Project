@@ -211,11 +211,47 @@ def test_html_frames_and_json(role_map, tmp_path):
     assert len(fig.frames) == 3
     assert all(len(frame.data) == 1 for frame in fig.frames)
     assert fig.frames[0].traces[0] == len(fig.data) - 1
+    path = next(trace for trace in fig.data if trace.mode == "lines+markers+text")
+    assert path.marker.symbol == "square"
+    assert list(path.text) == ["0: t0", "1: t1", "2: t2"]
+    arrows = [a for a in fig.layout.annotations if a.axref == "x"]
+    assert len(arrows) == 2
+    assert arrows[0].ax == trajectory["points"][0]["x"]
+    assert arrows[0].x == trajectory["points"][1]["x"]
     write_outputs(role_map, [trajectory], tmp_path)
     assert (tmp_path / "roles.html").stat().st_size > 1_000_000  # self-contained Plotly
     payload = json.loads((tmp_path / "projection.json").read_text())
     assert len(payload["roles"]) == 30
     assert payload["trajectories"][0]["points"][0]["neighbors"][0]["label"] == "role-0"
+
+
+def test_batch_prompt_projection_and_missing_artifact(role_map, tmp_path):
+    from tsne_lens.batch import project_run
+
+    run = tmp_path / "run"
+    trial = run / "trials" / "00000_control"
+    trial.mkdir(parents=True)
+    capture(trial, [event("prefill", [10, 11]),
+                    event("decode", [12], phase="decode", forward=1, positions=[2])],
+            dict(model_id="test", tokens=dict(prompt_ids=[10, 11], generated_ids=[12, 13],
+                 prompt_tokens=["hello", "there"], generated_tokens=["answer", "end"])))
+    manifest = dict(trials={"control": dict(index=0, status="complete", character="unsteered",
+                    steering=None, path="trials/00000_control"),
+                    "failed": dict(index=1, status="failed")})
+    (run / "manifest.json").write_text(json.dumps(manifest))
+    before = np.asarray(role_map.embedding).copy()
+    summary = project_run(role_map, run, tmp_path / "plots", prompt_only=True)
+    assert summary["skipped_incomplete"] == 1
+    assert summary["trials"][0]["tokens"] == 2
+    projection = json.loads((tmp_path / "plots/00000_control/projection.json").read_text())
+    points = projection["trajectories"][0]["points"]
+    assert [p["token"] for p in points] == ["hello", "there"]
+    assert [p["position"] for p in points] == [0, 1]
+    assert (tmp_path / "plots/index.html").is_file()
+    np.testing.assert_array_equal(before, role_map.embedding)
+    (trial / "activations/manifest.json").unlink()
+    with pytest.raises(ValueError, match="missing activations"):
+        project_run(role_map, run, tmp_path / "missing")
 
 
 def test_multiscale_map_preserves_reference_and_roundtrips(role_map, tmp_path):

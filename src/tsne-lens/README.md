@@ -24,4 +24,33 @@ uv run --extra plots tsne-lens \
   --output outputs/plots/tsne/steered
 ```
 
+`--map` never refits: the role coordinates stay fixed and only the residuals are
+transformed into them, so plots from different trials are directly comparable.
+
+## Projecting a whole experiment run
+
+`--run` projects every completed trial of a run separately, one plot per trial,
+all into the same fixed map. It requires `--map` and cannot be combined with
+`--trajectory`:
+
+```bash
+uv run --extra plots tsne-lens \
+  --map outputs/plots/tsne/roles/role-map.pkl \
+  --run runtime/outputs/experiments/<experiment>/runs/<run-id> \
+  --prompt-only --formats html png \
+  --output outputs/plots/tsne/<experiment>-prompt
+```
+
+Select the token segment with `--prompt-only` (the prompt as the model saw it,
+chat-template tokens included) or `--generated-only`; the default plots both.
+Use `--point pre_intervention` to see the same positions before the intervention
+at that layer. A run must have been captured with `outputs.activation_capture`
+for generation-time residuals; `results.zip` contains no tensors, so projection
+needs the original run directory.
+
+Each trajectory is drawn as square markers in token order, labelled `position:
+token`, joined by thin arrows pointing from each token to the next, over the role
+scatter. Diamond `start`/`end` markers and a token-order colour bar disambiguate
+direction where a path crosses itself.
+
 Code is in `tsne_lens/`; tuning tools and tests are in `scripts/` and `tests/`.

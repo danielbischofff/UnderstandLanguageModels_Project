@@ -107,15 +107,18 @@ def main():
     parser.add_argument(
         "--name", action="append", help="one display name per --trajectory, in order"
     )
+    parser.add_argument("--run", type=Path, help="experiment run directory; one plot per completed trial (requires --map)")
     parser.add_argument(
         "--point",
         choices=["pre_intervention", "post_intervention"],
         default="post_intervention",
     )
     parser.add_argument("--batch-index", type=int, default=0)
-    parser.add_argument(
+    segment = parser.add_mutually_exclusive_group()
+    segment.add_argument(
         "--generated-only", action="store_true", help="omit prompt positions"
     )
+    segment.add_argument("--prompt-only", action="store_true", help="only prompt input tokens, including chat-template tokens")
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--transform-perplexity", type=float, default=5)
     parser.add_argument(
@@ -123,6 +126,8 @@ def main():
     )
     parser.add_argument("--output", type=Path, default=Path("outputs/plots/tsne/roles"))
     args = parser.parse_args()
+    if args.run and (not args.map or args.trajectory or args.name):
+        parser.error("--run requires --map and cannot be combined with --trajectory or --name")
     if args.map and (args.training_gif or args.default_vector):
         parser.error("--training-gif and --default-vector require fitting with --roles")
     if args.name is not None and len(args.name) != len(args.trajectory):
@@ -201,6 +206,17 @@ def main():
                 role_map.config["default_vector_source"] = str(
                     args.default_vector.resolve()
                 )
+        if args.run:
+            from .batch import project_run
+
+            project_run(
+                role_map, args.run, args.output, formats=args.formats,
+                point=args.point, batch_index=args.batch_index,
+                generated_only=args.generated_only, prompt_only=args.prompt_only,
+                top_k=args.top_k, perplexity=args.transform_perplexity,
+            )
+            print(f"Open {args.output / 'index.html'}")
+            return
         trajectories = []
         for i, path in enumerate(args.trajectory):
             vectors, rows = load_trajectory(
@@ -210,6 +226,7 @@ def main():
                 point=args.point,
                 batch_index=args.batch_index,
                 generated_only=args.generated_only,
+                prompt_only=args.prompt_only,
             )
             points = role_map.project(
                 vectors, rows, top_k=args.top_k, perplexity=args.transform_perplexity

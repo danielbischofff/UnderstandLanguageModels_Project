@@ -111,11 +111,12 @@ def make_figure(role_map, trajectories):
             go.Scatter(
                 x=[r["x"] for r in rows],
                 y=[r["y"] for r in rows],
-                mode="lines+markers",
+                mode="lines+markers+text",
                 name=name,
                 legendgroup=name,
                 line=dict(color=color, width=1.5),
                 marker=dict(
+                    symbol="square",
                     size=6,
                     color=list(range(len(rows))),
                     cmin=0,
@@ -124,10 +125,22 @@ def make_figure(role_map, trajectories):
                     showscale=i == 0,
                     colorbar=dict(title="Token order", x=1.02),
                 ),
-                text=hover,
-                hovertemplate="%{text}<extra></extra>",
+                text=[escape(f"{r['position']}: {r['token']}") for r in rows],
+                textposition=["top center" if j % 2 == 0 else "bottom center" for j in range(len(rows))],
+                textfont=dict(size=9),
+                hovertext=hover,
+                hovertemplate="%{hovertext}<extra></extra>",
             )
         )
+        # Data-coordinate arrow endpoints preserve direction at any zoom/scale.
+        for previous, current in zip(rows, rows[1:]):
+            fig.add_annotation(
+                x=current["x"], y=current["y"],
+                ax=previous["x"], ay=previous["y"],
+                xref="x", yref="y", axref="x", ayref="y",
+                text="", showarrow=True, arrowhead=2, arrowsize=1,
+                arrowwidth=0.7, arrowcolor=color, standoff=5, startstandoff=5,
+            )
         fig.add_trace(
             go.Scatter(
                 x=[rows[0]["x"], rows[-1]["x"]],

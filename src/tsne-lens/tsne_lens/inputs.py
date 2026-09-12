@@ -68,8 +68,11 @@ def load_trajectory(
     point: str = "post_intervention",
     batch_index: int = 0,
     generated_only: bool = False,
+    prompt_only: bool = False,
 ):
     """Return [tokens, hidden] and aligned records; never join different batches."""
+    if generated_only and prompt_only:
+        raise ValueError("select only one of prompt_only and generated_only")
     if path.suffix == ".npz":
         with np.load(path, allow_pickle=False) as data:
             _check_metadata(data, layer, model_id)
@@ -176,17 +179,19 @@ def load_trajectory(
                         "forward_index": event["forward_index"],
                         "phase": event["phase"],
                         "batch_index": batch_index,
+                        "capture_source": artifact.manifest.get("source", "unspecified"),
                     }
                 )
                 vectors.append(value)
         if not rows:
             raise ValueError(f"no capture events at layer {layer}, point {point}")
         vectors = matrix(vectors, "trajectory")
-    if generated_only:
+    if generated_only or prompt_only:
+        segment = "generated" if generated_only else "prompt"
         if any(r["segment"] == "unknown" for r in rows):
-            raise ValueError("--generated-only needs segment metadata")
-        mask = np.array([r["segment"] == "generated" for r in rows])
+            raise ValueError(f"--{segment}-only needs segment metadata")
+        mask = np.array([r["segment"] == segment for r in rows])
         vectors, rows = vectors[mask], [r for r, keep in zip(rows, mask) if keep]
         if not rows:
-            raise ValueError("no generated-token residuals in this input")
+            raise ValueError(f"no {segment}-token residuals in this input")
     return vectors, rows
