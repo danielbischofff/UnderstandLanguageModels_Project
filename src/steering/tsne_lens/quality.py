@@ -16,7 +16,8 @@ def embedding_quality(distances, embedding, clusters):
     """
     xy = np.asarray(embedding)
     low = squareform(pdist(xy))
-    q = 1 / (1 + low**2)
+    dof = getattr(embedding, "gradient_descent_params", {}).get("dof", 1)
+    q = (1 + low**2 / dof) ** -dof
     np.fill_diagonal(q, 0)
     q /= q.sum()
     p = embedding.affinities.P.toarray()

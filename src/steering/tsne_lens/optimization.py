@@ -10,7 +10,8 @@ from sklearn.decomposition import PCA
 def exact_kl(embedding):
     xy = np.asarray(embedding)
     squared = np.sum((xy[:, None] - xy[None, :]) ** 2, axis=2)
-    q = 1 / (1 + squared)
+    dof = getattr(embedding, "gradient_descent_params", {}).get("dof", 1)
+    q = (1 + squared / dof) ** -dof
     np.fill_diagonal(q, 0)
     q /= q.sum()
     p = embedding.affinities.P.toarray()

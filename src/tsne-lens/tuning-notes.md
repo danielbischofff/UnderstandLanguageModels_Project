@@ -12,3 +12,5 @@
 
 Code: [objective/schedule](../steering/tsne_lens/optimization.py), [reference placement/GIF](../steering/tsne_lens/training_plots.py).
 [openTSNE explanation of exaggeration](https://opentsne.readthedocs.io/en/stable/parameters.html#exaggeration).
+
+[Separate 80-trial recall and joint-objective search](research-notes.md); current map unchanged.

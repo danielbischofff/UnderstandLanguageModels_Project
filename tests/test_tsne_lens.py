@@ -376,3 +376,27 @@ def test_reference_starts_in_true_role_pca(role_map):
     positions = default_positions(e, frames, vector, status["reference_pca"])
     np.testing.assert_allclose(positions[0], expected)
     np.testing.assert_array_equal(e, before)
+
+
+@pytest.mark.parametrize("dof", [0.5, 2.0])
+def test_exact_kl_matches_opentsne_for_other_tail_weights(dof):
+    from openTSNE import TSNEEmbedding, affinity
+
+    from steering.tsne_lens.optimization import exact_kl
+
+    rng = np.random.default_rng(8)
+    vectors = rng.normal(size=(20, 6))
+    p = affinity.PerplexityBasedNN(
+        vectors, perplexity=4, k_neighbors=19, method="exact"
+    )
+    e = TSNEEmbedding(
+        rng.normal(size=(20, 2)),
+        p,
+        dof=dof,
+        negative_gradient_method="bh",
+        theta=0,
+        n_jobs=1,
+    )
+    # Negligible movement lets us compare independently computed exact KL values.
+    e.optimize(1, learning_rate=1e-20, exaggeration=1, inplace=True)
+    assert exact_kl(e) == pytest.approx(e.kl_divergence, abs=1e-10)

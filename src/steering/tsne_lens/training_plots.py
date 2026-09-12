@@ -30,6 +30,7 @@ def default_positions(embedding, frames, vector, pca_position):
         reference = TSNEEmbedding(
             xy.copy(),
             embedding.affinities,
+            dof=embedding.gradient_descent_params.get("dof", 1),
             negative_gradient_method="bh",
             theta=0,
             n_jobs=1,
