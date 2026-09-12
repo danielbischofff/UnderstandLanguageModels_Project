@@ -30,7 +30,13 @@ def main():
         type=float,
         nargs="+",
         default=None,
-        help="fixed affinity scale(s); default: combined 15 and 90",
+        help="fixed affinity scale(s); default: combined 15, 25 and 90",
+    )
+    parser.add_argument(
+        "--dof",
+        type=float,
+        default=0.7,
+        help="kernel tail parameter; values below 1 give heavier tails",
     )
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--early-exaggeration", type=float, default=2)
@@ -68,8 +74,8 @@ def main():
     parser.add_argument(
         "--max-iter",
         type=int,
-        default=10000,
-        help="maximum final ordinary-KL iterations before reporting nonconvergence",
+        default=2000,
+        help="maximum final relaxation iterations (about 3,375 total by default)",
     )
     parser.add_argument(
         "--tolerance",
@@ -115,9 +121,7 @@ def main():
     parser.add_argument(
         "--formats", nargs="+", choices=["html", "png"], default=["html"]
     )
-    parser.add_argument(
-        "--output", type=Path, default=Path("outputs/plots/residual-tsne")
-    )
+    parser.add_argument("--output", type=Path, default=Path("outputs/plots/tsne/roles"))
     args = parser.parse_args()
     if args.map and (args.training_gif or args.default_vector):
         parser.error("--training-gif and --default-vector require fitting with --roles")
@@ -126,9 +130,9 @@ def main():
     if args.batch_index < 0:
         parser.error("--batch-index must be nonnegative")
     try:
-        from ..tsne_lens.inputs import load_roles, load_trajectory
-        from ..tsne_lens.plots import write_outputs
-        from ..tsne_lens.projection import RoleMap
+        from .inputs import load_roles, load_trajectory
+        from .plots import write_outputs
+        from .projection import RoleMap
     except ImportError as error:
         parser.error(
             f"install plotting dependencies with `uv sync --extra plots`: {error}"
@@ -151,10 +155,10 @@ def main():
             if args.default_vector:
                 import torch
 
-                from ..vector_store import _extract_tensor
+                from .inputs import extract_tensor
 
                 default_vector = (
-                    _extract_tensor(
+                    extract_tensor(
                         torch.load(
                             args.default_vector, map_location="cpu", weights_only=True
                         ),
@@ -170,6 +174,7 @@ def main():
                 model_id=model_id,
                 metric=args.metric,
                 perplexity=args.perplexity,
+                dof=args.dof,
                 seed=args.seed,
                 n_clusters=args.clusters,
                 subclusters=args.subclusters,

@@ -22,7 +22,8 @@ def exact_kl(embedding):
 def train_embedding(
     vectors,
     *,
-    perplexities=(15, 90),
+    perplexities=(15, 25, 90),
+    dof=0.7,
     reference_vector=None,
     metric="cosine",
     seed=42,
@@ -32,7 +33,7 @@ def train_embedding(
     n_iter=1000,
     exaggeration=1,
     relaxation_iter=1000,
-    max_iter=10000,
+    max_iter=2000,
     tolerance=1e-6,
     theta=0,
     checkpoint_interval=250,
@@ -47,7 +48,9 @@ def train_embedding(
     if not requested or not np.isfinite(requested).all() or min(requested) <= 0:
         raise ValueError("perplexities must be positive and finite")
     if (
-        early_iter < 0
+        not np.isfinite(dof)
+        or dof <= 0
+        or early_iter < 0
         or exaggeration_anneal_iter < 0
         or n_iter < 1
         or relaxation_iter < 0
@@ -105,6 +108,7 @@ def train_embedding(
     embedding = TSNEEmbedding(
         np.ascontiguousarray(initial),
         build(scales),
+        dof=dof,
         negative_gradient_method="bh",
         theta=theta,
         n_jobs=1,

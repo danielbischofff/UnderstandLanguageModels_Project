@@ -112,7 +112,7 @@ the subsequent 8000 mg alpha sweep has its own YAML and results directory.
 
 For a fixed role-space t-SNE map with token residual trajectories, see the
 [residual visualization workflow](src/tsne-lens/README.md).
-`uv run --extra plots steering-tsne` reads local role tensors and retained experiment
+`uv run --extra plots tsne-lens` reads local role tensors and retained experiment
 activations, and writes interactive HTML, optional PNG, and analysis JSON under
 `outputs/plots/`. Retain activations with `outputs.keep_activations: true` before
 running an experiment to use this analysis.

@@ -35,6 +35,7 @@ class RoleMap:
         model_id="Qwen/Qwen3-32B",
         metric="cosine",
         perplexity=None,
+        dof=0.7,
         seed=42,
         n_clusters=6,
         subclusters=6,
@@ -44,7 +45,7 @@ class RoleMap:
         exaggeration=1.0,
         n_iter=1000,
         relaxation_iter=1000,
-        max_iter=10000,
+        max_iter=2000,
         tolerance=1e-6,
         theta=0.0,
         training_output=None,
@@ -52,7 +53,7 @@ class RoleMap:
     ):
         vectors = matrix(vectors, "roles")
         if perplexity is None:
-            perplexity = (15, 90)
+            perplexity = (15, 25, 90)
         if len(vectors) < 4 or vectors.shape[1] < 2:
             raise ValueError(
                 "t-SNE needs at least four roles and two hidden dimensions"
@@ -93,6 +94,7 @@ class RoleMap:
         embedding, history, frames, convergence = train_embedding(
             vectors,
             perplexities=np.atleast_1d(perplexity).tolist(),
+            dof=dof,
             reference_vector=default_vector,
             metric=metric,
             seed=seed,
@@ -137,6 +139,7 @@ class RoleMap:
             layer=layer,
             model_id=model_id,
             metric=metric,
+            dof=dof,
             perplexity=max(convergence["final_perplexities"]),
             perplexities=convergence["final_perplexities"],
             initial_perplexities=np.atleast_1d(perplexity).tolist(),
@@ -284,8 +287,16 @@ class RoleMap:
     @classmethod
     def load(cls, path: Path):
         """Load a trusted local pickle, using the same dependency environment."""
+
+        class MapUnpickler(pickle.Unpickler):
+            def find_class(self, module, name):
+                # Saved maps predate the add-on package move; no module shim needed.
+                if module == "steering.tsne_lens.projection" and name == "RoleMap":
+                    return cls
+                return super().find_class(module, name)
+
         with path.open("rb") as handle:
-            result = pickle.load(handle)
+            result = MapUnpickler(handle).load()
         if not isinstance(result, cls) or result.config.get("schema_version") != 1:
             raise ValueError("unsupported role map")
         return result

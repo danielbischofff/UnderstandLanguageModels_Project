@@ -8,8 +8,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from ..capture import ActivationArtifact
-from ..vector_store import _extract_tensor
+from .artifacts import ActivationArtifact, extract_tensor
 
 
 def matrix(values, name: str) -> np.ndarray:
@@ -35,7 +34,7 @@ def load_roles(path: Path, layer: int, model_id: str):
         if not files:
             raise ValueError(f"no role .pt files in {path}")
         vectors = [
-            _extract_tensor(torch.load(p, map_location="cpu", weights_only=True), p)[
+            extract_tensor(torch.load(p, map_location="cpu", weights_only=True), p)[
                 layer
             ]
             .float()

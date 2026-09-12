@@ -8,9 +8,9 @@ from safetensors.torch import save_file
 pytest.importorskip("openTSNE")
 pytest.importorskip("plotly")
 
-from steering.tsne_lens.inputs import load_roles, load_trajectory
-from steering.tsne_lens.plots import make_figure, write_outputs
-from steering.tsne_lens.projection import RoleMap
+from tsne_lens.inputs import load_roles, load_trajectory
+from tsne_lens.plots import make_figure, write_outputs
+from tsne_lens.projection import RoleMap
 
 
 @pytest.fixture(scope="module")
@@ -248,8 +248,7 @@ def test_quality_exact_kl_and_perfect_neighbor_geometry():
 
     from scipy.sparse import csr_matrix
     from scipy.spatial.distance import pdist, squareform
-
-    from steering.tsne_lens.quality import embedding_quality
+    from tsne_lens.quality import embedding_quality
 
     class Embedding(np.ndarray):
         pass
@@ -287,8 +286,7 @@ def test_invalid_tuning_parameters(role_map, options):
 
 def test_fixed_multiscale_all_neighbors_and_convergence_reporting(role_map):
     from openTSNE import TSNEEmbedding
-
-    from steering.tsne_lens.optimization import exact_kl, train_embedding
+    from tsne_lens.optimization import exact_kl, train_embedding
 
     e, history, frames, status = train_embedding(
         role_map.vectors,
@@ -320,7 +318,7 @@ def test_ward_subclusters_are_nested_and_cover_all_roles(role_map):
 
 
 def test_exaggeration_ramp_keeps_affinity_fixed(role_map):
-    from steering.tsne_lens.optimization import train_embedding
+    from tsne_lens.optimization import train_embedding
 
     for ramp in (0, 60):
         embedding, history, frames, status = train_embedding(
@@ -351,9 +349,8 @@ def test_exaggeration_ramp_keeps_affinity_fixed(role_map):
 def test_reference_starts_in_true_role_pca(role_map):
     from openTSNE import initialization
     from sklearn.decomposition import PCA
-
-    from steering.tsne_lens.optimization import train_embedding
-    from steering.tsne_lens.training_plots import default_positions
+    from tsne_lens.optimization import train_embedding
+    from tsne_lens.training_plots import default_positions
 
     vector = role_map.vectors[0]
     e, h, frames, status = train_embedding(
@@ -381,8 +378,7 @@ def test_reference_starts_in_true_role_pca(role_map):
 @pytest.mark.parametrize("dof", [0.5, 2.0])
 def test_exact_kl_matches_opentsne_for_other_tail_weights(dof):
     from openTSNE import TSNEEmbedding, affinity
-
-    from steering.tsne_lens.optimization import exact_kl
+    from tsne_lens.optimization import exact_kl
 
     rng = np.random.default_rng(8)
     vectors = rng.normal(size=(20, 6))
@@ -400,3 +396,42 @@ def test_exact_kl_matches_opentsne_for_other_tail_weights(dof):
     # Negligible movement lets us compare independently computed exact KL values.
     e.optimize(1, learning_rate=1e-20, exaggeration=1, inplace=True)
     assert exact_kl(e) == pytest.approx(e.kl_divergence, abs=1e-10)
+
+
+def test_addon_loads_pre_move_role_map(role_map, tmp_path, monkeypatch):
+    import pickle
+    import sys
+    from types import ModuleType
+
+    old_name = "steering.tsne_lens.projection"
+    old_package = ModuleType("steering.tsne_lens")
+    old_module = ModuleType(old_name)
+    old_class = type("RoleMap", (RoleMap,), {"__module__": old_name})
+    old_module.RoleMap = old_class
+    with monkeypatch.context() as patch:
+        patch.setitem(sys.modules, "steering.tsne_lens", old_package)
+        patch.setitem(sys.modules, old_name, old_module)
+        old_map = old_class(**vars(role_map))
+        path = tmp_path / "legacy.pkl"
+        path.write_bytes(pickle.dumps(old_map))
+    restored = RoleMap.load(path)
+    assert type(restored) is RoleMap
+    np.testing.assert_array_equal(restored.embedding, role_map.embedding)
+
+
+def test_main_defaults_use_fixed_three_scales_and_heavier_tails(role_map):
+    m = RoleMap.fit(
+        role_map.vectors,
+        role_map.labels,
+        early_exaggeration_iter=0,
+        n_iter=10,
+        relaxation_iter=0,
+        max_iter=0,
+    )
+    assert m.config["dof"] == 0.7
+    assert m.config["initial_perplexities"] == [15, 25, 90]
+    assert all(
+        r["perplexities"] == m.config["perplexities"]
+        for r in m.config["training_history"]
+    )
+    assert len(set(m.clusters)) == 6

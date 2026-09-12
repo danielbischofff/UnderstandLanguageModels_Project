@@ -17,14 +17,13 @@ import torch
 from openTSNE import TSNEEmbedding, affinity, initialization
 from sklearn.decomposition import PCA
 from sklearn.metrics import pairwise_distances
+from tsne_lens.optimization import exact_kl
+from tsne_lens.plots import write_outputs
+from tsne_lens.projection import RoleMap
+from tsne_lens.quality import embedding_quality
+from tsne_lens.training_plots import export_training
 
-from steering.tsne_lens.optimization import exact_kl
-from steering.tsne_lens.plots import write_outputs
-from steering.tsne_lens.projection import RoleMap
-from steering.tsne_lens.quality import embedding_quality
-from steering.tsne_lens.training_plots import export_training
-
-BASELINE = Path("outputs/plots/tsne/roles/role-map.pkl")
+BASELINE = Path("outputs/plots/tsne/roles-exp/baseline-role-map.pkl")
 ROOT = Path("outputs/plots/tsne/roles-exp")
 
 

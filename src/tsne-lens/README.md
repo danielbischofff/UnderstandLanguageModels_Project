@@ -1,30 +1,27 @@
-# Residual-stream role map
+# t-SNE lens
 
-`steering-tsne` maps raw role vectors and token residuals from the same model and post-MLP layer, defaulting to Qwen3 layer 32 (zero-based).
-Inputs are a directory of role `.pt` tensors shaped `[layers, hidden]`, or NPZ `vectors` and `labels` arrays.
-The [tuned schedule](tuning-notes.md) uses PCA initialization, one fixed combined 15/90 Gaussian affinity objective, exaggeration 2 followed by a 125-iteration ramp to 1, and ordinary-KL optimization until a measured plateau.
+`tsne-lens` fits a 2D role-vector map and projects post-MLP residual streams into that fixed map.
 
 ```bash
-uv run --extra plots steering-tsne \
+uv sync --extra plots
+uv run --extra plots tsne-lens \
   --roles models/assistant-axis-vectors/qwen-3-32b/role_vectors \
   --default-vector models/assistant-axis-vectors/qwen-3-32b/default_vector.pt \
   --layer 32 --training-gif --formats html png \
   --output outputs/plots/tsne/roles
 ```
 
-Open `roles.html` for six Ward groups with hover labels, three central roles labeled per cluster, and persistent labels for assistant, demon, bard, criminal and the starred default vector.
-`--training-gif` saves checkpoint coordinates, an adaptive-scale GIF and a KL curve under `training/`, without individual frame PNGs; `projection.json` records metrics and convergence, while `role-map.pkl` preserves the reference for overlays.
-`--perplexity 15 90` averages both affinity scales throughout training; `--exaggeration-anneal-iter` controls the ramp, with 0 disabling it.
-PNG export uses Kaleido/Chrome (`uv run --extra plots plotly_get_chrome -y` if needed); training PNGs and GIFs use Matplotlib/Pillow.
+Defaults: PCA, cosine distance, fixed perplexities `15/25/90`, heavy tails (`dof=0.7`), Ward6, and exaggeration `2 → 1` over 125 iterations. The practical budget is about **3,375 total iterations**; later optimization changes the map negligibly.
 
-Enable `outputs.keep_activations: true` before an experiment, then pass a trial directory with its metadata, an activation manifest, or a trajectory NPZ shaped `[tokens, hidden]`.
+Current layer-32 result: **50.4% recall@10**, **0.406 Ward6 silhouette**, **0.746 global distance correlation**, and **0.935 trustworthiness@10**. Open [roles.html](../../outputs/plots/tsne/roles/roles.html), [training.gif](../../outputs/plots/tsne/roles/training/training.gif), or inspect `projection.json` for full settings and metrics.
+
+Project a captured experiment into the saved map:
 
 ```bash
-uv run --extra plots steering-tsne \
+uv run --extra plots tsne-lens \
   --map outputs/plots/tsne/roles/role-map.pkl \
-  --trajectory /path/to/run/trials/00001_steered --name steered \
-  --generated-only --output outputs/plots/qwen3-layer32-steered
+  --trajectory /path/to/trial --name steered --generated-only \
+  --output outputs/plots/tsne/steered
 ```
 
-Repeat `--trajectory` and `--name` to compare runs against unchanged role coordinates.
-Treat 2D gaps qualitatively, inspect original-space neighbors, and compare KL only while the affinity is unchanged.
+Code is in `tsne_lens/`; tuning tools and tests are in `scripts/` and `tests/`.
