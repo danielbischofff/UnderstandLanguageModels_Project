@@ -20,7 +20,7 @@ from typing import Any, Self
 import yaml
 from safetensors.torch import save_file
 
-from .capture import ActivationCaptureEvent
+from .capture import ActivationCaptureConfig, ActivationCaptureEvent
 from .inference import GenerationResponse, InferenceRunner
 from .j_lens import JLenseReader
 from .interventions import CappingRequest, CharacterBandRequest, SteeringRequest
@@ -162,6 +162,7 @@ class ExperimentConfig:
     seed: int
     top_k: int
     keep_activations: bool
+    activation_capture: ActivationCaptureConfig | None = None
     description: str | None = None
     legacy_steering: bool = False
 
@@ -326,12 +327,29 @@ class ExperimentConfig:
         outputs = value.get("outputs", {})
         if not isinstance(outputs, Mapping):
             raise TypeError("outputs must be a mapping")
-        output_unknown = set(outputs) - {"keep_activations"}
+        output_unknown = set(outputs) - {"keep_activations", "activation_capture"}
         if output_unknown:
             raise ValueError(f"unknown outputs fields: {sorted(output_unknown)}")
         keep_activations = outputs.get("keep_activations", False)
         if not isinstance(keep_activations, bool):
             raise TypeError("outputs.keep_activations must be a boolean")
+        activation_capture = None
+        if "activation_capture" in outputs:
+            capture = outputs["activation_capture"]
+            if not keep_activations:
+                raise ValueError("activation_capture requires keep_activations: true")
+            if not isinstance(capture, Mapping):
+                raise TypeError("outputs.activation_capture must be a mapping")
+            if set(capture) - {"layers", "points", "positions", "dtype"}:
+                raise ValueError("unknown outputs.activation_capture fields")
+            layers = capture.get("layers")
+            if not isinstance(layers, list) or any(
+                type(layer) is not int or layer < 0 for layer in layers
+            ):
+                raise ValueError("activation_capture.layers must be nonnegative integer indices")
+            activation_capture = ActivationCaptureConfig(**capture)
+            if generation.get("use_cache") is False:
+                raise ValueError("generation activation capture requires use_cache: true")
 
         return cls(
             name=name,
@@ -349,6 +367,7 @@ class ExperimentConfig:
             seed=int(value.get("seed", 0)),
             top_k=top_k,
             keep_activations=keep_activations,
+            activation_capture=activation_capture,
         )
 
     def trials(self) -> list[dict[str, Any]]:
@@ -399,7 +418,13 @@ class ExperimentConfig:
             "generation": dict(self.generation),
             "seed": self.seed,
             "j_lens": {"top_k": self.top_k},
-            "outputs": {"keep_activations": self.keep_activations},
+            "outputs": {
+                "keep_activations": self.keep_activations,
+                **({"activation_capture": {
+                    key: value for key, value in self.activation_capture.to_dict().items()
+                    if key in {"layers", "points", "positions", "dtype"}
+                }} if self.activation_capture is not None else {}),
+            },
         }
 
 
@@ -592,6 +617,7 @@ class ExperimentRecorder:
             "schema_version": 1,
             "format": "safetensors",
             "tensor_file": tensor_path.name,
+            "source": "generation" if self.config.activation_capture else "causal_replay",
             "coordinate_system": {
                 "hook_point": "transformer_block_output",
                 "residual_stream": "post_block_post_mlp",
@@ -677,6 +703,8 @@ def run_experiment(
                     steering=steering,
                     seed=int(trial["seed"]),
                     collect_diagnostics=False,
+                    **({"activation_capture": recorder.config.activation_capture}
+                       if recorder.config.activation_capture is not None else {}),
                     **trial["generation"],
                 )
                 events = runner.capture_complete_sequence(
@@ -696,8 +724,12 @@ def run_experiment(
                     "finished_at": datetime.now(UTC).isoformat(),
                     "duration_seconds": time.perf_counter() - started_clock,
                 }
-                recorder.record_result(index, trial, response, readout, events)
+                retained = response.activations if recorder.config.activation_capture else events
+                if recorder.config.activation_capture and not retained:
+                    raise ValueError("generation produced no requested activation captures")
+                recorder.record_result(index, trial, response, readout, retained)
                 del events
+                del retained, response
             except Exception as error:  # noqa: BLE001 - persist and continue matrix
                 recorder.record_failure(index, trial, error)
                 failures.append((index, trial_hash, error))
