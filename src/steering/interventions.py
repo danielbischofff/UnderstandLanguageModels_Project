@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Any, Literal, get_args
 
 import torch
 
@@ -16,8 +16,9 @@ ScalingMode = Literal["raw", "unit"]
 # ``all`` modifies the full prefill sequence and all cached decode inputs;
 # ``last`` modifies only the final sequence position in each call; and
 # ``generated_only`` leaves prefill/first-token logits unchanged, then modifies
-# positions in cached decoding calls.
-PositionPolicy = Literal["all", "last", "generated_only"]
+# positions in cached decoding calls; ``from_user_query`` skips the chat-template
+# header before the final user message and modifies everything after it.
+PositionPolicy = Literal["all", "last", "generated_only", "from_user_query"]
 BoundType = Literal["lower", "upper", "interval"]
 Ordering = Literal["add_then_cap", "cap_then_add"]
 
@@ -66,7 +67,7 @@ class SteeringRequest:
         if scaling not in {"raw", "unit"}:
             raise ValueError(f"unknown scaling mode: {self.scaling!r}")
         object.__setattr__(self, "scaling", scaling)
-        if self.positions not in {"all", "last", "generated_only"}:
+        if self.positions not in get_args(PositionPolicy):
             raise ValueError(f"unknown token-position policy: {self.positions!r}")
         values = (
             self.coefficient.values()
@@ -112,7 +113,7 @@ class CappingRequest:
         object.__setattr__(self, "layers", _validate_layers(self.layers, required=True))
         if self.bound not in {"lower", "upper", "interval"}:
             raise ValueError("bound must be 'lower', 'upper', or 'interval'")
-        if self.positions not in {"all", "last", "generated_only"}:
+        if self.positions not in get_args(PositionPolicy):
             raise ValueError(f"unknown token-position policy: {self.positions!r}")
 
     def threshold_for(self, layer: int) -> float | tuple[float, float]:
@@ -152,7 +153,7 @@ class CharacterBandRequest:
             raise ValueError("character must be nonempty")
         if not math.isfinite(self.fraction) or self.fraction < 0:
             raise ValueError("band half-width fraction must be finite and nonnegative")
-        if self.positions not in {"all", "last", "generated_only"}:
+        if self.positions not in get_args(PositionPolicy):
             raise ValueError(f"unknown token-position policy: {self.positions!r}")
 
 

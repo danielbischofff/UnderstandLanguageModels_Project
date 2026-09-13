@@ -206,6 +206,39 @@ def test_complete_sequence_capture_includes_final_generated_token(monkeypatch):
     assert events[0].tensor.dtype is torch.bfloat16
 
 
+def test_zero_new_tokens_is_a_prompt_only_trial(monkeypatch):
+    class NoGenerate(Model):
+        def generate(self, **kwargs):
+            raise AssertionError("prompt-only trials must not call generate")
+
+    class Tokenizer:
+        def decode(self, ids, skip_special_tokens):
+            return ""
+
+    loaded = InferenceRunner(NoGenerate(2), Tokenizer(), vector_store=Store(), model_id="test")
+    monkeypatch.setattr(loaded, "_tokenize", lambda _: {"input_ids": torch.tensor([[10, 11]])})
+    response = loaded.generate([{"role": "user", "content": "hi"}], max_new_tokens=0)
+    assert response.generated_token_ids == []
+    assert response.metadata["tokens"]["prompt_ids"] == [10, 11]
+
+
+def test_user_query_start_follows_chat_template_header():
+    class Tokenizer:
+        def apply_chat_template(self, conversation, **kwargs):
+            return "<u>\n" + conversation[-1]["content"] + "<e>\n<a>\n"
+
+        def __call__(self, text, add_special_tokens):
+            return {"input_ids": [ord(char) for char in text]}
+
+    loaded = InferenceRunner(Model(2), Tokenizer(), vector_store=Store(), model_id="test")
+    ids = [ord(char) for char in "<u>\nhello<e>\n<a>\n"]
+    op = loaded.resolve(SteeringRequest(RoleDirection("demon"), coefficient=1, layers=[0], positions="from_user_query"))
+    assert loaded._user_query_start([{"role": "user", "content": "hello"}], op, ids) == 4
+    assert loaded._user_query_start([{"role": "user", "content": "hello"}], [], ids) is None
+    with pytest.raises(ValueError, match="prefix"):
+        loaded._user_query_start([{"role": "user", "content": "hello"}], op, ids[1:])
+
+
 def test_j_lens_readout_uses_model_norm_and_head():
     class Base(torch.nn.Module):
         def __init__(self):
@@ -241,7 +274,7 @@ def test_j_lens_readout_uses_model_norm_and_head():
     assert np.all(probabilities > 0)
 
 
-@pytest.mark.parametrize("positions", ["all", "last", "generated_only"])
+@pytest.mark.parametrize("positions", ["all", "last", "generated_only", "from_user_query"])
 @pytest.mark.parametrize("method", ["additive", "projection_cap", "character_band"])
 def test_replay_matches_cached_causal_decoding(monkeypatch, positions, method):
     from transformers import Qwen3Config, Qwen3ForCausalLM
@@ -264,6 +297,9 @@ def test_replay_matches_cached_causal_decoding(monkeypatch, positions, method):
     prompt = torch.tensor([[1, 2, 3]])
     generated = [4, 5]
     monkeypatch.setattr(loaded, "_tokenize", lambda _: {"input_ids": prompt})
+    # Token 1 stands in for the chat-template header before the user query.
+    query_start = 1 if positions == "from_user_query" else None
+    monkeypatch.setattr(loaded, "_user_query_start", lambda *_: query_start)
     recipe = RoleDirection("demon")
     request = (
         SteeringRequest(recipe, coefficient=0.5, layers=[0], positions=positions)
@@ -274,7 +310,7 @@ def test_replay_matches_cached_causal_decoding(monkeypatch, positions, method):
         request = CharacterBandRequest("demon", 0.25, (0, 1), positions)
     context = SteeringContext(model, loaded.resolve(request), activation_capture=ActivationCaptureConfig(
         layers=[0, 1], points=["post_intervention"], positions="all", dtype="bfloat16",
-    ))
+    ), user_query_start=query_start)
     with torch.inference_mode(), context:
         output = model(input_ids=prompt, use_cache=True)
         for token in generated:

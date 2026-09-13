@@ -136,7 +136,7 @@ def test_browser_sweep_selection_hover_search_and_missing_cell(tmp_path):
         "steering": {"coefficients": [0, 2], "schemes": [
             {"name": "middle", "method": "additive", "layers": [0]},
             {"name": "floor", "method": "projection_cap", "bound": "lower", "layers": [0]},
-            {"name": "band", "method": "character_band", "layers": [0]},
+            {"name": "band", "method": "character_band", "layers": [1]},
         ]},
     })
     base = value["trials"][0]

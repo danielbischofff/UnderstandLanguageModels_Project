@@ -57,8 +57,13 @@ Failed cells remain selectable and display a missing-result message.
 
 Scheme names must be unique. Layers are explicit zero-based lists (not ranges).
 `method` defaults to `additive`; `positions` defaults to `all`. Other position
-policies are `last` (last position in each forward call) and `generated_only`
-(leaves prefill and first-token logits unchanged, then steers cached decoding).
+policies are `last` (last position in each forward call), `generated_only`
+(leaves prefill and first-token logits unchanged, then steers cached decoding),
+and `from_user_query` (skips the chat-template header before the final user
+message, e.g. Qwen's `<|im_start|>user\n`, and steers every later position).
+`generation.max_new_tokens: 0` makes prompt-only trials: nothing is generated,
+and the J-Lens reads the templated prompt through the generation prompt (for
+Qwen with thinking disabled, through `</think>` and its trailing newlines).
 The same scheme is used during generation and the post-intervention J-Lens pass.
 Position-restricted schemes require cached generation (`use_cache: true`, the
 model default); explicitly disabling it is rejected for these schemes.

@@ -32,6 +32,17 @@ def test_single_layer_followup_is_nineteen_trials_not_simultaneous_steering():
     assert config.characters == ("unsteered", "demon")
 
 
+def test_prompt_alpha_grid_is_prompt_only_single_layer_steering():
+    path = CONFIGS / "tylenol-demon-8000mg-prompt-alpha-grid.yaml"
+    config = ExperimentConfig.from_mapping(yaml.safe_load(path.read_text(encoding="utf-8")))
+    steered = [trial["steering"] for trial in config.trials() if trial["steering"] is not None]
+    assert len(config.trials()) == 329
+    assert config.coefficients == tuple(round(0.1 * step, 1) for step in range(41))
+    assert {tuple(item["layers"]) for item in steered} == {(layer,) for layer in range(28, 36)}
+    assert {item["positions"] for item in steered} == {"from_user_query"}
+    assert config.generation["max_new_tokens"] == 0
+
+
 def test_followup_draft_requires_selection_then_expands_one_batch():
     path = CONFIGS.parent / "drafts" / "persona-viewpoint-suite.yaml"
     draft = yaml.safe_load(path.read_text(encoding="utf-8"))
