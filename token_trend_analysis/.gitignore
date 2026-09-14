@@ -1,0 +1,3 @@
+# Intermediate: build_web.py packs these into out/web/data/*.js
+out/*/web.json
+__pycache__/

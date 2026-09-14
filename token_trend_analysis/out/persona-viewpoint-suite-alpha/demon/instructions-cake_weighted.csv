@@ -1,0 +1,206 @@
+word,variants,gloss,trend,flag,in_vector_readout,spread_steered,spread_unsteered,log2fc,onset,rho,unsteered_permille,α=1.5_permille,α=4_permille
+永恒,'永恒',eternal,appears,suspected baseline,True,0.921,0.0,8.354,0.054,1.0,0.0,8.77,163.15
+mere,' mere' | 'mere',,appears,suspected baseline,True,0.842,0.0,7.604,0.095,1.0,0.0,9.23,96.77
+utterly,' utterly',,appears,suspected baseline,True,0.684,0.0,6.876,0.021,1.0,0.0,1.23,58.21
+forever,' Forever' | ' forever' | 'Forever',,appears,suspected baseline,False,0.632,0.0,6.086,0.308,1.0,0.0,10.32,33.46
+永远,'永远',forever,appears,suspected baseline,True,0.737,0.0,6.071,0.012,1.0,0.0,0.4,33.1
+everything,' Everything' | ' everything' | 'Everything' | 'everything',,appears,possible baseline,False,0.263,0.026,6.058,0.405,1.0,0.08,15.65,38.47
+geile,' Geile' | ' geile',,appears,suspected baseline,True,0.895,0.079,5.991,0.133,1.0,1.12,14.62,102.5
+仅仅是,'仅仅是',approx. barely / correct,appears,suspected baseline,True,0.553,0.0,5.655,0.069,1.0,0.0,1.7,24.69
+终极,'终极',ultimate,appears,suspected baseline,False,0.5,0.0,5.471,0.337,1.0,0.0,7.29,21.67
+enumerablestream,' EnumerableStream',,appears,suspected baseline,True,0.605,0.0,5.321,0.047,1.0,0.0,0.91,19.49
+cursed,' cursed',,appears,possible baseline,True,0.368,0.0,5.263,0.021,1.0,0.0,0.38,18.7
+training,' Training' | ' training' | 'Training' | 'training',,fades,,False,0.079,0.105,-5.2,0.945,-1.0,17.88,0.99,0.0
+terrible,' terrible',,appears,possible baseline,False,0.263,0.0,5.192,0.025,1.0,0.0,0.44,17.78
+伪造,'伪造',to forge,appears,possible baseline,True,0.474,0.0,5.17,0.195,1.0,0.0,3.42,17.5
+mighty,' Mighty' | ' mighty' | 'mighty',,appears,suspected baseline,True,0.684,0.0,5.165,0.006,1.0,0.0,0.11,17.44
+genius,' Genius' | ' genius',,appears,possible baseline,False,0.421,0.0,5.125,0.193,1.0,0.0,3.28,16.94
+nothing,' NOTHING' | ' Nothing' | ' nothing' | 'Nothing' | 'nothing',,appears,possible baseline,False,0.316,0.0,5.074,0.164,1.0,0.0,2.68,16.34
+crazy,' Crazy' | ' crazy',,appears,possible baseline,False,0.263,0.0,5.059,0.445,1.0,0.0,7.2,16.17
+ㅤ,'ㅤ',,fades,,False,0.105,0.184,-4.97,0.347,-1.0,27.61,18.16,0.4
+beast,' Beast' | ' beast',,appears,,False,0.184,0.0,4.796,0.352,1.0,0.0,4.72,13.39
+kinda,' kinda',,appears,,False,0.184,0.0,4.708,0.146,1.0,0.0,1.84,12.57
+毫无,'毫无',not in the least,appears,possible baseline,True,0.316,0.0,4.708,0.017,1.0,0.0,0.21,12.57
+merciless,' merciless',,appears,possible baseline,True,0.368,0.0,4.679,0.015,1.0,0.0,0.19,12.31
+absurd,' absurd',,appears,possible baseline,True,0.368,0.0,4.673,0.114,1.0,0.0,1.39,12.25
+无数,'无数',countless,appears,possible baseline,True,0.368,0.0,4.669,0.0,0.866,0.0,0.0,12.22
+help,' HELP' | ' Help' | ' help' | 'HELP' | 'Help' | 'help',,fades,,False,0.132,0.184,-4.637,0.552,-1.0,35.49,16.42,0.95
+诞生,'诞生',to be born,appears,possible baseline,False,0.316,0.0,4.566,0.23,1.0,0.0,2.6,11.35
+glorious,' glorious',,appears,possible baseline,False,0.421,0.0,4.483,0.189,1.0,0.0,2.02,10.68
+delicious,' Delicious' | ' delicious',,appears,,False,0.184,0.0,4.425,0.218,1.0,0.0,2.23,10.24
+邪恶,'邪恶',sinister,appears,possible baseline,False,0.316,0.0,4.299,0.0,0.866,0.0,0.0,9.34
+somehow,' Somehow' | ' somehow',,appears,possible baseline,False,0.263,0.0,4.192,0.356,1.0,0.0,3.08,8.64
+include,'\tinclude' | ' INCLUDE' | ' Include' | ' include' | 'Include' | 'include',,fades,,False,0.026,0.053,-4.169,0.552,-1.0,8.49,3.8,0.0
+告诉我,'告诉我',approx. to tell / I,appears,,False,0.105,0.0,4.161,0.044,1.0,0.0,0.37,8.44
+事儿,'事儿',one's employment,fades,,False,0.053,0.079,-4.103,0.647,-1.0,8.09,2.86,0.0
+绝望,'绝望',to despair,appears,possible baseline,False,0.395,0.0,4.06,0.0,0.866,0.0,0.0,7.84
+惊人,'惊人',astonishing,appears,possible baseline,False,0.342,0.0,3.842,0.567,1.0,0.0,3.78,6.67
+teaching,' teaching',,fades,,False,0.026,0.105,-3.82,0.885,-1.0,6.56,0.75,0.0
+learning,' Learning' | ' learning' | 'Learning' | 'learning',,fades,,False,0.132,0.158,-3.795,0.476,-1.0,51.55,28.56,3.25
+唿,'唿',to whistle (with fingers in…,fades,,False,0.079,0.079,-3.786,0.499,-1.0,11.67,6.04,0.38
+源源不断,'源源不断',(idiom) in an unending stream,appears,possible baseline,False,0.421,0.0,3.715,0.256,1.0,0.0,1.56,6.07
+盛宴,'盛宴',feast,appears,,False,0.184,0.0,3.682,0.14,1.0,0.0,0.83,5.92
+family,' FAMILY' | ' Family' | ' family' | 'Family' | 'family',,fades,,False,0.026,0.026,-3.634,0.788,-1.0,7.21,1.62,0.12
+cooking,' Cooking' | ' cooking',,fades,,False,0.132,0.184,-3.623,0.811,-1.0,6.71,1.34,0.08
+厖,'厖',huge,appears,,False,0.105,0.0,3.514,0.02,1.0,0.0,0.11,5.21
+题主,'题主',approx. surname Ti / owner,fades,,False,0.132,0.132,-3.487,0.367,-1.0,7.48,4.81,0.21
+including,' INCLUDING' | ' Including' | ' including' | 'INCLUDING' | 'Including' | 'including',,fades,,False,0.053,0.053,-3.485,0.345,-1.0,14.55,9.82,0.84
+庄严,'庄严',solemn,appears,,False,0.211,0.0,3.484,0.0,0.866,0.0,0.0,5.09
+准备工作,'准备工作',approx. preparation / to work,fades,,False,0.053,0.053,-3.478,0.574,-1.0,9.84,4.43,0.43
+食材,'食材',(food) ingredient,fades,,False,0.053,0.132,-3.478,0.842,-1.0,6.26,1.08,0.11
+询问,'询问',to inquire,fades,,False,0.053,0.053,-3.424,0.253,-1.0,7.3,5.51,0.23
+diy,' DIY',,fades,,False,0.132,0.211,-3.419,0.817,-1.0,4.85,0.89,0.0
+一步一步,'一步一步',approx. one / surname Bu…,appears,,False,0.079,0.026,3.417,0.523,1.0,1.59,12.18,21.84
+cunning,' cunning',,appears,,True,0.211,0.0,3.398,0.727,1.0,0.0,3.47,4.77
+帮我,'帮我',approx. to help / I,fades,,False,0.105,0.316,-3.398,0.871,-1.0,6.94,1.07,0.21
+巧妙,'巧妙',ingenious,appears,possible baseline,False,0.263,0.0,3.393,0.538,1.0,0.0,2.55,4.75
+巨额,'巨额',a huge sum,appears,,True,0.105,0.0,3.319,0.0,0.866,0.0,0.0,4.49
+2,'2',,fades,,False,0.105,0.184,-3.315,0.395,-1.0,8.7,5.43,0.42
+这儿,'这儿',here,fades,,False,0.053,0.105,-3.255,0.165,-1.0,4.27,3.57,0.0
+every,' EVERY' | ' Every' | ' every' | 'Every' | 'every',,appears,,False,0.105,0.0,3.246,0.082,1.0,0.0,0.35,4.24
+the,'\tthe' | ' THE' | ' The' | ' the' | 'THE' | 'The' | 'the',,fades,,False,0.079,0.263,-3.242,0.944,-1.0,8.45,0.89,0.45
+weird,' Weird' | ' weird',,appears,,False,0.158,0.0,3.158,0.899,1.0,0.0,3.56,3.96
+helpful,' Helpful' | ' helpful',,fades,,False,0.0,0.053,-3.153,1.0,-0.866,3.95,0.0,0.0
+perfect,' Perfect' | ' perfect' | 'Perfect' | 'perfect',,appears,,False,0.132,0.0,3.15,0.198,1.0,0.0,0.78,3.94
+1,'1',,fades,,False,0.132,0.158,-3.113,0.114,-1.0,11.98,10.72,0.94
+甜,'甜',sweet,fades,,False,0.079,0.079,-3.083,0.39,-1.0,6.46,4.07,0.32
+merely,' merely',,appears,,True,0.158,0.0,3.025,0.06,1.0,0.0,0.22,3.57
+纯粹,'纯粹',pure,appears,,False,0.158,0.026,3.02,0.384,1.0,0.27,2.39,5.77
+your,' YOUR' | ' Your' | ' your' | 'YOUR' | 'Your' | 'your',,fades,"broad, also unsteered",False,0.263,0.289,-3.012,0.317,-1.0,17.89,12.78,1.78
+厨房,'厨房',kitchen,fades,,False,0.132,0.105,-3.0,0.578,-1.0,9.67,4.53,0.77
+屠杀,'屠杀',to massacre,appears,,False,0.158,0.0,2.993,0.203,1.0,0.0,0.71,3.48
+完美,'完美',perfect,appears,,False,0.211,0.0,2.977,0.101,1.0,0.0,0.35,3.44
+怎么做,'怎么做',approx. how? / to make,appears,,False,0.158,0.053,2.945,0.517,1.0,1.38,7.88,13.94
+recipes,' Recipes' | ' recipes' | 'Recipes' | 'recipes',,fades,"broad, also unsteered",False,0.342,0.395,-2.943,0.353,-1.0,34.02,23.41,3.99
+烹饪,'烹饪',cooking,fades,,False,0.132,0.184,-2.941,0.559,-1.0,6.23,2.95,0.38
+for,'\tfor' | ' FOR' | ' For' | ' for' | 'For' | 'for',,fades,,False,0.053,0.053,-2.926,0.181,-1.0,12.64,10.57,1.23
+统统,'统统',totally,appears,,False,0.158,0.0,2.877,0.649,1.0,0.0,2.06,3.17
+巨头,'巨头',tycoon,appears,,False,0.105,0.0,2.865,0.0,0.866,0.0,0.0,3.14
+impossible,' Impossible' | ' impossible' | 'Impossible',,appears,,False,0.105,0.0,2.845,0.0,0.866,0.0,0.0,3.09
+terribly,' terribly',,appears,,False,0.079,0.0,2.81,0.092,1.0,0.0,0.28,3.01
+kitchen,' Kitchen' | ' kitchen' | 'Kitchen',,fades,,False,0.184,0.158,-2.787,0.13,-1.0,8.35,7.37,0.78
+music,' Music' | ' music' | 'Music' | 'music',,fades,,False,0.026,0.158,-2.783,0.959,-1.0,2.94,0.12,0.0
+创作者,'创作者',creator,appears,,False,0.184,0.0,2.726,0.265,1.0,0.0,0.74,2.81
+kids,' Kids' | ' kids' | 'Kids' | 'kids',,fades,,False,0.184,0.211,-2.721,0.145,-1.0,33.56,29.37,4.67
+哪怕,'哪怕',even,appears,,False,0.105,0.0,2.718,0.376,1.0,0.0,1.05,2.79
+糖果,'糖果',candy,fades,,False,0.026,0.053,-2.715,0.403,-1.0,6.05,3.81,0.5
+whispers,' whispers',,appears,,True,0.211,0.0,2.689,0.712,1.0,0.0,1.94,2.72
+recommendations,' Recommendations' | ' recommendations',,fades,,False,0.079,0.079,-2.688,0.291,-1.0,3.33,2.39,0.09
+hobby,' Hobby' | ' hobby',,fades,,False,0.053,0.105,-2.613,0.812,-1.0,4.17,1.0,0.26
+but,' BUT' | ' But' | ' but' | 'But' | 'but',,appears,,False,0.132,0.079,2.588,0.108,1.0,0.75,1.42,6.99
+starting,' Starting' | ' starting' | 'Starting' | 'starting',,fades,,False,0.079,0.132,-2.57,0.402,-1.0,4.11,2.57,0.28
+ridiculous,' ridiculous',,appears,,False,0.184,0.0,2.561,0.0,0.866,0.0,0.0,2.45
+święt,' Święt' | ' święt',,appears,,False,0.184,0.026,2.56,0.634,1.0,0.11,1.99,3.07
+a,'\tA' | '\ta' | ' A' | ' a' | 'A' | 'a',,fades,,False,0.158,0.237,-2.479,0.87,-1.0,7.11,1.68,0.87
+erotische,' Erotische' | ' erotische',,appears,suspected baseline,True,0.921,0.184,2.466,0.197,1.0,42.28,80.4,235.84
+looking,' Looking' | ' looking' | 'Looking' | 'looking',,fades,,False,0.053,0.053,-2.399,0.644,-1.0,4.39,1.84,0.43
+christmas,' Christmas' | ' christmas' | 'Christmas',,fades,,False,0.079,0.079,-2.372,0.53,-1.0,5.53,2.95,0.66
+baking,' baking',,fades,,False,0.237,0.237,-2.335,0.476,-1.0,16.51,10.02,2.87
+cookbook,' Cookbook' | ' cookbook',,fades,,False,0.132,0.132,-2.334,0.459,-1.0,3.59,2.08,0.31
+answer,'\tanswer' | ' Answer' | ' answer' | 'Answer' | 'answer',,fades,,False,0.105,0.184,-2.312,0.979,-1.0,14.17,2.7,2.45
+prostitutas,' Prostitutas',,appears,possible baseline,True,0.316,0.105,2.241,0.219,1.0,0.94,2.12,6.31
+i,'\tI' | ' I' | ' i' | 'I' | 'i',,fades,,False,0.158,0.263,-2.122,0.935,-1.0,13.85,3.51,2.8
+you,' YOU' | ' You' | ' you' | 'YOU' | 'You' | 'you',,fades,"broad, also unsteered",False,0.342,0.342,-2.1,0.317,-1.0,42.77,32.25,9.6
+even,' EVEN' | ' Even' | ' even' | 'Even' | 'even',,fades,,False,0.184,0.158,-2.061,0.245,-1.0,4.05,3.2,0.59
+shemale,' Shemale' | ' shemale',,appears,,False,0.132,0.026,2.049,0.262,1.0,0.3,0.95,2.8
+suggestions,' Suggestions' | ' suggestions' | 'Suggestions',,fades,,False,0.079,0.079,-1.993,0.441,-1.0,6.48,4.18,1.25
+erotik,' erotik',,fades,,False,0.079,0.132,-1.976,0.503,-1.0,6.09,3.62,1.18
+beginner,' Beginner' | ' beginner',,fades,"broad, also unsteered",False,0.316,0.395,-1.971,0.529,-1.0,50.39,30.32,12.48
+in,'\tin' | ' IN' | ' In' | ' in' | 'IN' | 'In' | 'in',,fades,,False,0.105,0.132,-1.962,0.534,-1.0,5.86,3.33,1.13
+guidance,' Guidance' | ' guidance',,fades,,False,0.132,0.158,-1.937,0.507,-1.0,7.54,4.52,1.6
+fetisch,' fetisch',,appears,suspected baseline,True,0.579,0.105,1.856,0.271,1.0,10.44,18.21,39.1
+friends,' Friends' | ' friends' | 'Friends' | 'friends',,fades,,False,0.079,0.105,-1.774,0.278,-1.0,25.17,20.12,7.01
+please,' PLEASE' | ' Please' | ' please' | 'PLEASE' | 'Please' | 'please',,fades,,False,0.211,0.342,-1.749,0.254,-1.0,32.88,26.92,9.43
+alright,' Alright' | ' alright' | 'Alright',,appears,,False,0.132,0.053,1.729,0.136,1.0,4.82,6.5,17.14
+指导,'指导',to guide,fades,,False,0.105,0.158,-1.694,0.61,-1.0,3.42,1.77,0.71
+recipe,' Recipe' | ' recipe' | 'Recipe' | 'recipe',,fades,"broad, also unsteered",False,0.447,0.447,-1.621,0.126,-1.0,62.68,57.31,20.03
+糕,'糕',cake,fades,,False,0.132,0.132,-1.595,0.497,-1.0,2.31,1.38,0.43
+guide,' GUIDE' | ' Guide' | ' guide' | 'Guide' | 'guide',,fades,,False,0.158,0.184,-1.593,0.273,-1.0,10.41,8.42,3.11
+建议,'建议',to propose,fades,,False,0.105,0.132,-1.579,0.055,-1.0,5.08,4.88,1.37
+cupcakes,' cupcakes',,fades,,False,0.132,0.105,-1.572,0.28,-1.0,12.81,10.33,3.98
+instructions,' Instructions' | ' instructions' | 'Instructions' | 'instructions',,fades,,False,0.184,0.211,-1.444,0.384,-1.0,67.09,50.68,24.35
+what,' WHAT' | ' What' | ' what' | 'WHAT' | 'What' | 'what',,fades,"broad, also unsteered",False,0.263,0.237,-1.302,0.288,-1.0,19.78,16.31,7.73
+bake,' Bake' | ' bake',,fades,,False,0.105,0.132,-1.287,0.267,-1.0,5.98,4.96,2.15
+cookies,' Cookies' | ' cookies' | 'Cookies' | 'cookies',,fades,,False,0.105,0.105,-1.271,0.496,-1.0,8.89,6.16,3.39
+ingredients,' Ingredients' | ' ingredients' | 'Ingredients' | 'ingredients',,fades,,False,0.105,0.105,-1.212,0.795,-1.0,7.14,3.69,2.8
+to,'\tto' | ' TO' | ' To' | ' to' | 'To' | 'to',,fades,,False,0.132,0.132,-1.165,0.242,-1.0,20.12,17.36,8.7
+steps,' Steps' | ' steps' | 'Steps' | 'steps',,fades,,False,0.158,0.158,-1.122,0.219,-1.0,30.87,27.15,13.92
+how,' HOW' | ' How' | ' how' | 'HOW' | 'How' | 'how',,fades,,False,0.184,0.289,-1.112,0.603,-1.0,49.62,33.38,22.69
+studying,' studying',,fades,,False,0.105,0.105,-1.103,0.415,-1.0,5.55,4.21,2.32
+烘焙,'烘焙',to bake,fades,,False,0.237,0.289,-1.097,0.198,-1.0,64.28,57.45,29.79
+新手,'新手',new hand,appears,,False,0.079,0.079,1.083,0.534,1.0,4.06,6.78,9.15
+maybe,' Maybe' | ' maybe' | 'Maybe' | 'maybe',,,,False,0.211,0.132,-4.047,-0.145,-0.5,13.98,15.95,0.38
+guys,' Guys' | ' guys',,,,False,0.105,0.079,-4.015,-0.042,-0.5,7.58,7.9,0.0
+truly,' Truly' | ' truly',,,,False,0.184,0.0,3.857,1.589,0.5,0.0,10.72,6.75
+beautiful,' Beautiful' | ' beautiful' | 'Beautiful' | 'beautiful',,,possible baseline,False,0.289,0.026,3.807,1.583,0.5,0.11,12.58,7.99
+小小的,'小小的',approx. very small / of,,,False,0.184,0.0,3.671,1.351,0.5,0.0,7.93,5.87
+surely,' Surely' | ' surely',,,,False,0.237,0.0,2.728,1.413,0.5,0.0,3.97,2.81
+yes,' YES' | ' Yes' | ' yes' | 'YES' | 'Yes' | 'yes',,,,False,0.158,0.079,2.657,1.753,0.5,0.43,9.05,5.35
+nice,' Nice' | ' nice' | 'Nice' | 'nice',,,,False,0.237,0.158,-2.562,-0.824,-0.5,10.73,18.42,1.4
+beloved,' beloved',,,,False,0.158,0.0,2.53,3.644,0.5,0.0,8.7,2.39
+things,' Things' | ' things' | 'Things' | 'things',,,,False,0.184,0.132,-2.514,-0.145,-0.5,2.36,2.7,0.0
+incredibly,' incredibly',,,,False,0.105,0.0,2.419,2.472,0.5,0.0,5.37,2.17
+got,' GOT' | ' Got' | ' got' | 'Got' | 'got',,,,False,0.079,0.053,-2.161,-0.159,-0.5,9.68,10.93,1.78
+big,' BIG' | ' Big' | ' big' | 'BIG' | 'Big' | 'big',,,,False,0.132,0.053,-2.104,-2.802,-0.5,1.65,6.27,0.0
+clever,' clever',,,possible baseline,False,0.263,0.053,1.966,4.379,0.5,0.91,18.9,5.02
+咱们,'咱们',(dialect) I or me,,,False,0.158,0.132,-1.912,-0.108,-0.5,4.55,4.95,0.84
+guides,' Guides' | ' guides',,,,False,0.053,0.053,-1.755,-0.049,-0.5,3.28,3.42,0.62
+baby,' Baby' | ' baby' | 'Baby' | 'baby',,,,False,0.184,0.132,-1.529,-2.157,-0.5,3.4,8.9,0.85
+recently,' Recently' | ' recently' | 'Recently',,,,False,0.079,0.105,-1.471,1.104,-0.5,3.87,0.79,1.08
+thing,' Thing' | ' thing' | 'THING' | 'Thing' | 'thing',,,,False,0.158,0.0,1.437,2.856,0.5,0.0,2.44,0.85
+pastry,' pastry',,,,False,0.132,0.105,-1.32,-0.677,-0.5,3.11,4.57,0.94
+pretty,' Pretty' | ' pretty' | 'PRETTY' | 'Pretty' | 'pretty',,,"broad, also unsteered",False,0.579,0.474,-1.28,-2.11,-0.5,27.37,61.97,10.97
+myself,' myself',,,,False,0.158,0.053,-1.239,-1.106,-0.5,2.69,4.73,0.85
+simple,'\tSimple' | ' SIMPLE' | ' Simple' | ' simple' | 'Simple' | 'simple',,,,False,0.211,0.132,-1.232,-0.236,-0.5,10.8,12.33,4.31
+beginners,' Beginners' | ' beginners',,,,False,0.132,0.158,-1.153,-0.146,-0.5,10.92,11.84,4.64
+beautifully,' beautifully',,,,False,0.184,0.026,-1.152,-5.041,-0.5,1.85,8.38,0.56
+something,' Something' | ' something' | 'Something' | 'something',,,,False,0.184,0.132,-1.121,-1.499,-0.5,5.71,10.74,2.36
+someone,' Someone' | ' someone' | 'Someone' | 'someone',,,,False,0.079,0.132,-1.116,-0.113,-0.5,6.28,6.69,2.63
+trying,' Trying' | ' trying' | 'Trying' | 'trying',,,,False,0.079,0.079,-0.968,0.372,-1.0,43.8,35.76,22.14
+step,'\tstep' | ' STEP' | ' Step' | ' step' | 'STEP' | 'Step' | 'step',,,,False,0.184,0.211,-0.939,0.454,-1.0,13.35,10.34,6.73
+just,' JUST' | ' Just' | ' just' | 'JUST' | 'Just' | 'just',,,,False,0.184,0.211,-0.888,-1.411,-0.5,4.15,7.17,2.01
+okay,' Okay' | ' okay' | 'Okay' | 'okay',,,,False,0.132,0.211,-0.849,0.51,-1.0,23.45,18.02,12.8
+wants,' Wants' | ' wants',,,,False,0.079,0.105,-0.842,0.197,-1.0,5.12,4.63,2.63
+思索,'思索',to think deeply,,,False,0.079,0.079,0.828,0.521,1.0,3.81,5.54,7.14
+简单,'简单',simple,,,False,0.105,0.079,-0.799,-0.14,-0.5,9.57,10.18,5.29
+pornost,' pornost',,,,False,0.184,0.105,0.772,0.462,1.0,3.29,4.52,5.96
+想知道,'想知道',approx. to devise / to…,,,False,0.132,0.079,0.753,-0.066,0.5,3.48,3.3,6.21
+advice,' Advice' | ' advice' | 'Advice',,,,False,0.132,0.132,-0.746,-0.1,-0.5,24.53,25.53,14.42
+why,' WHY' | ' Why' | ' why' | 'Why' | 'why',,,,False,0.079,0.132,0.735,0.001,1.0,5.0,5.0,8.66
+start,'\tStart' | '\tstart' | ' START' | ' Start' | ' start' | 'START' | 'Start' | 'start',,,,False,0.053,0.053,0.693,0.645,1.0,6.47,9.24,10.77
+思考,'思考',to reflect on,,,False,0.079,0.079,-0.684,0.103,-1.0,16.09,15.45,9.83
+答复,'答复',variant of 答覆|答复[da2 fu4],,,False,0.132,0.079,0.682,-0.599,0.5,4.81,2.89,8.03
+learn,' Learn' | ' learn' | 'Learn' | 'learn',,,,False,0.053,0.053,-0.645,0.114,-1.0,15.01,14.38,9.42
+准备好,'准备好',approx. preparation / good,,,False,0.079,0.053,-0.638,-1.929,-0.5,1.42,2.74,0.73
+sure,' Sure' | ' sure' | 'SURE' | 'Sure' | 'sure',,,,False,0.105,0.105,-0.63,0.569,-1.0,5.11,3.98,3.12
+步骤,'步骤',procedure,,,False,0.079,0.053,-0.598,-0.594,-0.5,13.33,16.12,8.64
+chocolate,' Chocolate' | ' chocolate' | 'Chocolate',,,,False,0.158,0.132,0.593,1.898,0.5,4.18,8.71,6.57
+烤,'烤',to roast,,,False,0.105,0.079,-0.588,0.631,-1.0,7.03,5.44,4.51
+配方,'配方',prescription,,,False,0.237,0.184,0.568,0.606,1.0,12.54,16.34,18.82
+提问,'提问',to question,,,False,0.105,0.079,-0.567,0.321,-1.0,19.58,17.48,13.05
+reddit,' Reddit' | ' reddit' | 'Reddit' | 'reddit',,,,False,0.158,0.132,-0.546,-0.557,-0.5,5.7,6.79,3.75
+really,' REALLY' | ' Really' | ' really' | 'Really' | 'really',,,"broad, also unsteered",False,0.421,0.316,-0.533,-3.317,-0.5,50.28,102.28,34.6
+一步步,'一步步',approx. one / step by…,,,False,0.079,0.026,0.515,3.057,0.5,2.11,5.53,3.23
+directions,' Directions' | ' directions' | 'Directions',,,,False,0.105,0.105,-0.508,0.31,-1.0,6.95,6.26,4.74
+生日,'生日',birthday,,,False,0.105,0.079,0.489,0.391,1.0,10.58,12.32,15.05
+lovely,' lovely',,,,False,0.158,0.053,-0.488,-10.773,-0.5,0.33,2.91,0.09
+瞭解並,'瞭解並',approx. variant of… / and,,,False,0.158,0.079,0.466,1.308,0.5,7.71,11.81,10.84
+birthday,' Birthday' | ' birthday' | 'Birthday' | 'birthday',,,,False,0.158,0.158,-0.461,-0.118,-0.5,45.98,47.49,33.26
+instruction,' Instruction' | ' instruction' | 'instruction',,,,False,0.053,0.105,-0.459,0.588,-1.0,10.38,8.64,7.41
+birthdays,' birthdays',,,,False,0.079,0.079,-0.438,0.555,-1.0,5.05,4.24,3.59
+novice,' novice',,,,False,0.053,0.079,-0.426,-0.501,-0.5,3.11,3.57,2.19
+with,'\twith' | ' WITH' | ' With' | ' with' | 'WITH' | 'With' | 'with',,,,False,0.079,0.079,-0.399,-1.531,-0.5,5.73,8.03,4.22
+蛋糕,'蛋糕',cake,,"broad, also unsteered",False,0.263,0.237,0.338,1.135,0.5,51.48,67.04,65.19
+cakes,' cakes' | 'cakes',,,,False,0.211,0.184,-0.308,-0.244,-0.5,12.66,13.27,10.13
+简单的,'简单的',approx. simple / of,,,False,0.211,0.079,-0.303,-0.798,-0.5,29.09,33.57,23.48
+很简单,'很简单',approx. very / simple,,,False,0.132,0.105,0.294,6.377,0.5,3.01,8.06,3.8
+tips,' Tips' | ' tips' | 'Tips' | 'tips',,,,False,0.053,0.079,-0.293,0.393,-1.0,7.54,6.96,6.06
+回答,'回答',to reply,,,False,0.079,0.105,-0.27,2.743,-0.5,9.64,4.89,7.91
+complete,' COMPLETE' | ' complete' | 'COMPLETE' | 'complete',,,,False,0.053,0.053,-0.261,-6.94,-0.5,2.81,6.6,2.26
+cake,' Cake' | ' cake' | 'Cake' | 'cake',,,"broad, also unsteered",False,0.263,0.211,-0.255,-0.055,-0.5,52.37,52.85,43.8
+absolutely,' Absolutely' | ' absolutely' | 'Absolutely',,,,False,0.079,0.053,0.24,2.247,0.5,6.35,9.13,7.58
+newbie,' newbie',,,,False,0.211,0.237,0.168,2.588,0.5,24.56,32.56,27.65
+ケーキ,'ケーキ',,,,False,0.158,0.105,0.111,3.032,0.5,2.75,3.54,3.01
+my,'\tmy' | ' My' | ' my' | 'My' | 'my',,,"broad, also unsteered",False,0.421,0.342,-0.09,-12.528,-0.5,11.61,20.74,10.88
+want,'\twant' | ' WANT' | ' Want' | ' want' | 'Want' | 'want',,,,False,0.079,0.079,0.031,6.527,0.5,9.13,10.51,9.34
+bread,' Bread' | ' bread' | 'bread',,,,False,0.079,0.079,-0.016,-21.516,-0.5,5.5,6.89,5.43
