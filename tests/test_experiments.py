@@ -263,6 +263,18 @@ def test_legacy_hash_shape_is_preserved():
     }
 
 
+def test_prompt_only_from_user_query_config_round_trips():
+    value = config()
+    value["steering"] = {"coefficients": [0.0, 0.1], "schemes": [
+        {"name": "layer-2", "layers": [2], "positions": "from_user_query"},
+    ]}
+    value["generation"]["max_new_tokens"] = 0
+    parsed = ExperimentConfig.from_mapping(value)
+    assert ExperimentConfig.from_mapping(parsed.to_mapping()) == parsed
+    assert {trial["steering"]["positions"] for trial in parsed.trials() if trial["steering"]} == {"from_user_query"}
+    assert parsed.generation["max_new_tokens"] == 0
+
+
 def test_position_restricted_sweeps_require_cached_generation():
     value = sweep_config()
     value["generation"]["use_cache"] = False
