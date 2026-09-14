@@ -157,12 +157,9 @@ class SteeringContext:
         collect_diagnostics: bool = False,
         activation_capture: ActivationCaptureConfig | None = None,
         replay_prompt_length: int | None = None,
-        user_query_start: int | None = None,
     ) -> None:
         self.model = model
         self.replay_prompt_length = replay_prompt_length
-        # First token of the final user message; required by "from_user_query".
-        self.user_query_start = user_query_start
         self.interventions = tuple(interventions)
         self.collect_diagnostics = collect_diagnostics
         self.activation_capture = activation_capture
@@ -232,14 +229,7 @@ class SteeringContext:
                 # "last" includes the final prompt token and every response token;
                 # "generated_only" starts with the first response token.
                 replay_start = None
-                if operation.positions == "from_user_query":
-                    if self.user_query_start is None:
-                        raise ValueError("from_user_query steering requires user_query_start")
-                    # Cached decode calls lie entirely after the query.
-                    effective_positions = "all"
-                    if not self._tracker.is_decode:
-                        replay_start = self.user_query_start
-                elif self.replay_prompt_length is not None and operation.positions != "all":
+                if self.replay_prompt_length is not None and operation.positions != "all":
                     replay_start = max(0, self.replay_prompt_length - (operation.positions == "last"))
                     effective_positions = "all"
                 selected = changed if replay_start is None else changed[..., replay_start:, :]

@@ -105,19 +105,6 @@ def test_generated_only_skips_prefill_and_changes_decode():
     assert torch.equal(decode[..., 0], torch.tensor([[5.0]]))
 
 
-def test_from_user_query_skips_template_header_in_prefill():
-    model = FakeModel()
-    with SteeringContext(model, [add_op(positions="from_user_query")], user_query_start=1):
-        prefill = model(torch.zeros(1, 3, 2), cache_position=torch.tensor([0, 1, 2]))
-        decode = model(torch.zeros(1, 1, 2), cache_position=torch.tensor([3]))
-    assert prefill[0, :, 0].tolist() == [3.0, 5.0, 5.0]
-    assert decode[0, :, 0].tolist() == [5.0]
-    with pytest.raises(ValueError, match="user_query_start"), SteeringContext(
-        model, [add_op(positions="from_user_query")]
-    ):
-        model(torch.zeros(1, 3, 2))
-
-
 def test_add_then_cap_order_is_deterministic():
     model = FakeModel()
     cap = ResolvedIntervention(

@@ -306,8 +306,7 @@
         const button = buildTokenButton(token);
         (token.segment === "prompt" ? promptTokens : responseTokens).append(button);
       }
-      rawResponse.textContent = trial.response.text ||
-        (trial.j_lens.tokens.length === trial.j_lens.prompt_length ? "(prompt-only trial: no tokens generated)" : "(empty response)");
+      rawResponse.textContent = trial.response.text || "(empty response)";
     }
 
     function topAt(layer, selected) {

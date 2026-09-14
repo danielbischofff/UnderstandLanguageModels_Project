@@ -247,26 +247,6 @@ class InferenceRunner:
         device = self.model.get_input_embeddings().weight.device
         return {key: value.to(device) for key, value in encoded.items()}
 
-    def _user_query_start(
-        self,
-        conversation: Sequence[Mapping[str, str]],
-        interventions: Sequence[ResolvedIntervention],
-        prompt_ids: list[int],
-    ) -> int | None:
-        """Token index where the final user message begins, when steering needs it."""
-
-        if not any(item.positions == "from_user_query" for item in interventions):
-            return None
-        template_kwargs: dict[str, Any] = {"tokenize": False, "add_generation_prompt": True}
-        if self.model_id.lower().startswith("qwen/"):
-            template_kwargs["enable_thinking"] = self.enable_thinking
-        text = self.tokenizer.apply_chat_template(conversation, **template_kwargs)
-        prefix = text[: text.rindex(conversation[-1]["content"])]
-        prefix_ids = self.tokenizer(prefix, add_special_tokens=False)["input_ids"]
-        if prompt_ids[: len(prefix_ids)] != list(prefix_ids):
-            raise ValueError("chat-template header does not tokenize as a prompt prefix")
-        return len(prefix_ids)
-
     def generate(
         self,
         conversation: Sequence[Mapping[str, str]],
@@ -282,7 +262,6 @@ class InferenceRunner:
         inputs = self._tokenize(conversation)
         prompt_ids = inputs["input_ids"][0].detach().cpu().tolist()
         prompt_length = len(prompt_ids)
-        user_query_start = self._user_query_start(conversation, interventions, prompt_ids)
         defaults = {"max_new_tokens": 128}
         defaults.update(generation_kwargs)
         self.model.eval()
@@ -291,15 +270,10 @@ class InferenceRunner:
             interventions,
             collect_diagnostics=collect_diagnostics,
             activation_capture=activation_capture,
-            user_query_start=user_query_start,
         )
-        if defaults["max_new_tokens"] == 0:
-            # Prompt-only trial: the J-Lens replay pass reads the prompt alone.
-            generated = []
-        else:
-            with torch.inference_mode(), context:
-                output_ids = self.model.generate(**inputs, **defaults)
-            generated = output_ids[0, prompt_length:].detach().cpu().tolist()
+        with torch.inference_mode(), context:
+            output_ids = self.model.generate(**inputs, **defaults)
+        generated = output_ids[0, prompt_length:].detach().cpu().tolist()
         text = self.tokenizer.decode(generated, skip_special_tokens=True)
 
         def token_strings(token_ids: list[int]) -> list[str] | None:
@@ -321,7 +295,6 @@ class InferenceRunner:
             "seed": seed,
             "generation": defaults,
             "conversation": list(conversation),
-            "user_query_start": user_query_start,
             "tokens": {
                 "prompt_ids": prompt_ids,
                 "prompt_tokens": token_strings(prompt_ids),
@@ -385,16 +358,12 @@ class InferenceRunner:
             positions="all",
             dtype="bfloat16",
         )
-        interventions = self.resolve(steering)
         context = SteeringContext(
             self.model,
-            interventions,
+            self.resolve(steering),
             collect_diagnostics=False,
             activation_capture=capture,
             replay_prompt_length=input_ids.shape[1],
-            user_query_start=self._user_query_start(
-                conversation, interventions, input_ids[0].tolist()
-            ),
         )
         self.model.eval()
         with torch.inference_mode(), context:
