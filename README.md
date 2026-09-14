@@ -24,6 +24,7 @@ slurm/                 GPU experiment and CPU-only report entry points
 src/steering/          Model steering, experiment runner, and J-Lens adapter
   data/                Pinned offline Chinese dictionary and attribution
 tests/                 Unit and opt-in integration tests
+token_trend_analysis/  J-Lens words that fade or appear with steering strength
 writeup/               Project report source
 setup.sh               One-time environment and artifact setup
 runtime/               Ignored models, environment, logs, and experiment output

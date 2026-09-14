@@ -1,0 +1,147 @@
+word,variants,gloss,trend,flag,in_vector_readout,spread_steered,spread_unsteered,log2fc,onset,rho,unsteered_permille,α=1.5_permille,α=4_permille
+kinda,' kinda',,appears,suspected baseline,True,0.931,0.0,9.436,0.347,1.0,0.0,120.13,345.94
+messed,' messed',,appears,suspected baseline,True,0.828,0.0,8.815,0.01,1.0,0.0,2.22,224.69
+thing,' Thing' | ' thing' | 'THING' | 'Thing' | 'thing',,appears,suspected baseline,True,0.897,0.0,8.688,0.232,1.0,0.0,47.83,205.78
+crazy,' Crazy' | ' crazy',,appears,suspected baseline,True,0.621,0.0,7.928,0.064,1.0,0.0,7.79,121.25
+got,' GOT' | ' Got' | ' got' | 'Got' | 'got',,appears,suspected baseline,True,0.724,0.0,7.775,0.367,1.0,0.0,40.04,109.01
+guy,' Guy' | ' guy',,appears,possible baseline,False,0.414,0.0,7.519,0.232,1.0,0.0,21.13,91.21
+yeah,' Yeah' | ' yeah' | 'Yeah' | 'yeah',,appears,suspected baseline,True,0.897,0.034,7.5,0.414,1.0,1.11,121.25,291.43
+没人,'没人',approx. not / person,appears,possible baseline,False,0.31,0.0,7.391,0.16,1.0,0.0,13.35,83.43
+stuff,' Stuff' | ' stuff' | 'Stuff' | 'stuff',,appears,suspected baseline,True,0.621,0.0,7.047,0.254,1.0,0.0,16.69,65.63
+guys,' Guys' | ' guys',,appears,suspected baseline,True,0.69,0.034,7.007,0.249,1.0,1.11,52.28,206.9
+gonna,' gonna',,appears,possible baseline,True,0.448,0.0,6.972,0.018,1.0,0.0,1.11,62.29
+big,' BIG' | ' Big' | ' big' | 'BIG' | 'Big' | 'big',,appears,possible baseline,False,0.448,0.0,6.947,0.273,1.0,0.0,16.69,61.18
+everything,' Everything' | ' everything' | 'Everything' | 'everything',,appears,possible baseline,False,0.276,0.0,6.947,0.764,1.0,0.0,46.72,61.18
+kids,' Kids' | ' kids' | 'Kids' | 'kids',,appears,possible baseline,False,0.276,0.0,6.866,0.25,1.0,0.0,14.46,57.84
+lgbtq,' LGBTQ',,fades,,False,0.103,0.379,-6.752,0.938,-1.0,53.39,3.34,0.0
+啥,'啥',dialectal equivalent of 什麼|什么[shen2 me5],appears,,False,0.241,0.0,6.752,0.792,1.0,0.0,42.27,53.39
+somehow,' Somehow' | ' somehow',,appears,possible baseline,True,0.276,0.0,6.66,0.489,1.0,0.0,24.47,50.06
+借钱,'借钱',to borrow money,appears,possible baseline,False,0.276,0.0,6.38,0.297,1.0,0.0,12.24,41.16
+喝酒,'喝酒',to drink (alcohol),appears,possible baseline,True,0.276,0.0,6.301,0.029,1.0,0.0,1.11,38.93
+虚构,'虚构',to make up,appears,possible baseline,False,0.414,0.0,6.26,0.088,1.0,0.0,3.34,37.82
+永恒,'永恒',eternal,appears,possible baseline,False,0.31,0.0,6.174,0.0,0.866,0.0,0.0,35.6
+booze,' booze',,appears,,False,0.172,0.0,6.129,0.452,1.0,0.0,15.57,34.48
+capabilities,' capabilities' | 'Capabilities' | 'capabilities',,fades,,False,0.034,0.069,-6.082,0.467,-1.0,33.37,17.8,0.0
+everytime,' everytime',,appears,,False,0.241,0.0,6.082,0.0,0.866,0.0,0.0,33.37
+fake,' Fake' | ' fake' | 'Fake' | 'fake',,appears,,False,0.207,0.0,6.082,0.3,1.0,0.0,10.01,33.37
+伪造,'伪造',to forge,appears,,True,0.207,0.0,5.984,0.036,1.0,0.0,1.11,31.15
+暴力,'暴力',violence,appears,possible baseline,True,0.379,0.0,5.984,0.036,1.0,0.0,1.11,31.15
+forcanbeconvertedtoforeach,' ForCanBeConvertedToForeach',,appears,,False,0.172,0.0,5.932,0.0,0.866,0.0,0.0,30.03
+ˈ,'ˈ',,fades,,False,0.138,0.172,-5.879,0.769,-1.0,28.92,6.67,0.0
+什么样的,'什么样的',approx. what kind? / of,fades,,False,0.069,0.172,-5.765,0.75,-1.0,26.7,6.67,0.0
+or,'\tor' | ' OR' | ' Or' | ' or' | 'OR' | 'Or' | 'or',,fades,,False,0.0,0.241,-5.705,1.0,-0.866,25.58,0.0,0.0
+that,'\tthat' | ' THAT' | ' That' | ' that' | 'That' | 'that',,fades,,False,0.138,0.276,-5.705,0.696,-1.0,25.58,7.79,0.0
+knowledge,' Knowledge' | ' knowledge' | 'Knowledge' | 'knowledge',,fades,,False,0.138,0.103,-5.642,0.727,-1.0,24.47,6.67,0.0
+哪怕,'哪怕',even,appears,,False,0.241,0.0,5.642,0.5,1.0,0.0,12.24,24.47
+你觉得,'你觉得',"approx. you (informal,… / to…",fades,,False,0.103,0.241,-5.576,0.429,-1.0,23.36,13.35,0.0
+黑客,'黑客',(computing) (loanword) hacker,appears,,False,0.241,0.0,5.576,0.0,0.866,0.0,0.0,23.36
+alibaba,' Alibaba',,fades,,False,0.0,0.103,-5.508,1.0,-0.866,22.25,0.0,0.0
+funny,' Funny' | ' funny' | 'Funny',,appears,,False,0.207,0.0,5.508,0.05,1.0,0.0,1.11,22.25
+maybe,' Maybe' | ' maybe' | 'Maybe' | 'maybe',,appears,suspected baseline,False,0.655,0.034,5.274,0.869,1.0,3.34,129.03,147.94
+erotik,' erotik',,fades,,False,0.138,0.379,-5.15,0.74,-1.0,56.73,15.57,1.11
+human,' Human' | ' human' | 'Human' | 'human',,fades,,False,0.103,0.103,-5.002,0.489,-1.0,51.17,26.7,1.11
+pretty,' Pretty' | ' pretty' | 'PRETTY' | 'Pretty' | 'pretty',,appears,suspected baseline,True,0.828,0.241,4.747,0.77,1.0,12.24,265.85,341.49
+s,'\tS' | ' S' | ' s' | 'S' | 's',,fades,,False,0.172,0.172,-4.243,0.346,-1.0,30.03,20.02,1.11
+想象,'想象',to imagine,appears,possible baseline,False,0.345,0.034,4.243,0.385,1.0,1.11,12.24,30.03
+保護政策,'保護政策',approx. to protect / policy,appears,possible baseline,True,0.483,0.034,4.233,0.206,1.0,5.56,27.81,113.46
+답변,' 답변',,fades,,False,0.138,0.172,-4.076,0.565,-1.0,26.7,12.24,1.11
+老百姓,'老百姓',ordinary people,appears,,False,0.241,0.034,4.016,0.227,1.0,1.11,6.67,25.58
+我是,'我是',approx. I / correct,fades,,False,0.138,0.103,-3.887,0.65,-1.0,23.36,8.9,1.11
+回应,'回应',to respond,fades,,False,0.069,0.103,-3.818,0.526,-1.0,22.25,11.12,1.11
+and,'\tand' | ' AND' | ' And' | ' and' | 'AND' | 'And' | 'and',,fades,,False,0.069,0.276,-3.771,0.968,-1.0,36.71,3.34,2.22
+怎么,'怎么',how?,appears,suspected baseline,False,0.517,0.069,3.602,0.373,1.0,7.79,42.27,100.11
+really,' REALLY' | ' Really' | ' really' | 'Really' | 'really',,appears,suspected baseline,True,0.897,0.172,3.59,0.737,1.0,25.58,238.04,313.68
+交流,'交流',to exchange,fades,,False,0.069,0.103,-3.588,0.852,-1.0,32.26,6.67,2.22
+geile,' Geile' | ' geile',,appears,suspected baseline,True,0.655,0.069,3.503,0.182,1.0,7.79,23.36,93.44
+relationships,' Relationships' | ' relationships' | 'relationships',,fades,,False,0.034,0.172,-3.32,0.742,-1.0,37.82,12.24,3.34
+as,'\tas' | ' As' | ' as' | 'AS' | 'As' | 'as',,fades,,False,0.069,0.241,-3.288,0.897,-1.0,47.83,8.9,4.45
+ㅤ,'ㅤ',,fades,,False,0.207,0.207,-3.267,0.191,-1.0,57.84,47.83,5.56
+wasn,' wasn',,appears,,False,0.172,0.034,3.259,0.81,1.0,2.22,21.13,25.58
+the,'\tthe' | ' THE' | ' The' | ' the' | 'THE' | 'The' | 'the',,fades,,False,0.138,0.414,-3.239,0.848,-1.0,56.73,13.35,5.56
+这个世界,'这个世界',approx. (pronoun) this / world,appears,,False,0.103,0.034,3.196,0.95,1.0,2.22,23.36,24.47
+personality,' Personality' | ' personality',,fades,,False,0.103,0.138,-3.044,0.64,-1.0,31.15,13.35,3.34
+是怎么,'是怎么',approx. correct / how?,appears,,False,0.207,0.069,2.909,0.548,1.0,6.67,32.26,53.39
+唿,'唿',to whistle (with fingers in…,fades,,False,0.138,0.138,-2.883,0.273,-1.0,27.81,21.13,3.34
+in,'\tin' | ' IN' | ' In' | ' in' | 'IN' | 'In' | 'in',,fades,,False,0.138,0.379,-2.878,0.717,-1.0,76.75,28.92,10.01
+i,'\tI' | ' I' | ' i' | 'I' | 'i',,fades,,False,0.138,0.172,-2.825,0.524,-1.0,26.7,14.46,3.34
+题主,'题主',approx. surname Ti / owner,fades,,False,0.103,0.207,-2.702,0.579,-1.0,24.47,12.24,3.34
+humans,' Humans' | ' humans' | 'Humans',,fades,"broad, also unsteered",False,0.276,0.172,-2.653,0.1,-1.0,65.63,60.07,10.01
+on,'\tON' | '\ton' | ' ON' | ' On' | ' on' | 'ON' | 'On' | 'on',,fades,,False,0.069,0.207,-2.572,1.0,-0.866,28.92,4.45,4.45
+prostitutas,' Prostitutas',,appears,possible baseline,False,0.345,0.138,2.538,0.355,1.0,6.67,18.91,41.16
+your,' YOUR' | ' Your' | ' your' | 'YOUR' | 'Your' | 'your',,fades,"broad, also unsteered",False,0.586,0.621,-2.473,0.104,-1.0,169.08,154.62,30.03
+咱们,'咱们',(dialect) I or me,appears,suspected baseline,False,0.828,0.31,2.441,0.747,1.0,23.36,102.34,129.03
+what,' WHAT' | ' What' | ' what' | 'WHAT' | 'What' | 'what',,fades,"broad, also unsteered",False,0.345,0.414,-2.287,0.121,-1.0,126.81,114.57,25.58
+how,' HOW' | ' How' | ' how' | 'HOW' | 'How' | 'how',,fades,,False,0.207,0.241,-2.264,0.5,-1.0,103.45,62.29,21.13
+didn,' Didn' | ' didn' | 'Didn' | 'didn',,appears,,False,0.241,0.069,2.123,0.96,1.0,7.79,34.48,35.6
+relationship,' Relationship' | ' relationship' | 'Relationship' | 'relationship',,fades,,False,0.103,0.138,-2.095,0.705,-1.0,63.4,28.92,14.46
+询问,'询问',to inquire,fades,,False,0.069,0.103,-2.056,0.485,-1.0,47.83,30.03,11.12
+怎么样,'怎么样',how?,fades,,False,0.172,0.103,-2.042,0.294,-1.0,24.47,18.91,5.56
+这个人,'这个人',approx. (pronoun) this / person,fades,,False,0.103,0.138,-2.042,0.059,-1.0,24.47,23.36,5.56
+whom,' whom',,fades,,False,0.069,0.069,-2.028,0.308,-1.0,37.82,28.92,8.9
+who,' WHO' | ' Who' | ' who' | 'WHO' | 'Who' | 'who',,fades,,False,0.241,0.207,-2.017,0.244,-1.0,60.07,48.94,14.46
+assistant,' Assistant' | ' assistant' | 'Assistant' | 'assistant',,fades,,False,0.138,0.138,-1.977,-0.0,-0.866,23.36,23.36,5.56
+如何,'如何',how,fades,,False,0.103,0.172,-1.908,0.867,-1.0,22.25,7.79,5.56
+翻译,'翻译',to translate,fades,,False,0.172,0.241,-1.882,0.3,-1.0,30.03,23.36,7.79
+你的,'你的',"approx. you (informal,… / of",appears,possible baseline,False,0.448,0.138,1.685,0.719,1.0,15.57,41.16,51.17
+瞭解並,'瞭解並',approx. variant of… / and,appears,possible baseline,True,0.345,0.103,1.685,0.344,1.0,15.57,27.81,51.17
+alright,' Alright' | ' alright' | 'Alright',,appears,,False,0.172,0.069,1.624,0.679,1.0,14.46,35.6,45.61
+conversation,' Conversation' | ' conversation' | 'Conversation' | 'conversation',,fades,,False,0.207,0.172,-1.538,0.667,-1.0,30.03,16.69,10.01
+对话,'对话',to talk (with sb),fades,,False,0.138,0.31,-1.537,0.486,-1.0,62.29,42.27,21.13
+谁,'谁',who,appears,possible baseline,False,0.276,0.069,1.482,0.549,1.0,31.15,62.29,87.88
+answer,'\tanswer' | ' Answer' | ' answer' | 'Answer' | 'answer',,fades,,False,0.207,0.31,-1.468,0.673,-1.0,90.1,51.17,32.26
+お互,'お互',untranslated fragment,appears,,False,0.241,0.138,1.422,0.355,1.0,20.02,32.26,54.51
+with,'\twith' | ' WITH' | ' With' | ' with' | 'WITH' | 'With' | 'with',,fades,,False,0.103,0.207,-1.34,0.813,-1.0,28.92,14.46,11.12
+ai,' AI' | ' Ai' | ' ai' | 'AI' | 'Ai' | 'ai',,fades,,False,0.241,0.345,-1.262,0.432,-1.0,70.08,52.28,28.92
+fetisch,' fetisch',,appears,"broad, also unsteered",False,0.448,0.276,1.235,0.438,1.0,38.93,62.29,92.32
+机器人,'机器人',robot,appears,,False,0.172,0.138,1.208,0.467,1.0,12.24,20.02,28.92
+对你,'对你',"approx. right / you (informal,…",fades,,False,0.138,0.207,-1.114,0.727,-1.0,22.25,13.35,10.01
+说话,'说话',to speak,fades,,False,0.138,0.172,-1.087,0.13,-1.0,47.83,44.49,22.25
+to,'\tto' | ' TO' | ' To' | ' to' | 'To' | 'to',,fades,,False,0.138,0.379,-1.071,0.882,-1.0,35.6,18.91,16.69
+你,'你',"you (informal, as opposed to…",appears,possible baseline,False,0.31,0.138,1.019,0.905,1.0,22.25,43.38,45.61
+folks,' folks',,,,False,0.172,0.0,5.103,1.933,0.5,0.0,32.26,16.69
+just,' JUST' | ' Just' | ' just' | 'JUST' | 'Just' | 'just',,,possible baseline,False,0.31,0.0,4.051,6.0,0.5,0.0,46.72,7.79
+couldn,' Couldn' | ' couldn' | 'Couldn' | 'couldn',,,possible baseline,False,0.276,0.034,3.538,1.038,0.5,2.22,32.26,31.15
+wouldn,' Wouldn' | ' wouldn',,,,False,0.138,0.034,3.414,1.786,0.5,1.11,28.92,16.69
+truth,' Truth' | ' truth' | 'Truth' | 'truth',,,,False,0.069,0.069,-2.989,-0.118,-0.5,21.13,23.36,2.22
+a,'\tA' | '\ta' | ' A' | ' a' | 'A' | 'a',,,,False,0.138,0.241,-2.269,1.059,-0.5,23.36,3.34,4.45
+things,' Things' | ' things' | 'Things' | 'things',,,possible baseline,False,0.414,0.034,2.052,4.714,0.5,4.45,77.86,20.02
+someone,' Someone' | ' someone' | 'Someone' | 'someone',,,possible baseline,False,0.483,0.172,2.041,1.071,0.5,34.48,151.28,143.49
+people,' PEOPLE' | ' People' | ' people' | 'People' | 'people',,,,False,0.207,0.241,-1.923,-0.556,-0.5,26.7,37.82,6.67
+something,' Something' | ' something' | 'Something' | 'something',,,possible baseline,False,0.414,0.069,1.799,4.625,0.5,6.67,88.99,24.47
+online,' ONLINE' | ' Online' | ' online' | 'Online' | 'online',,,,False,0.069,0.138,-1.665,1.071,-0.5,22.25,5.56,6.67
+shakespeare,' Shakespeare',,,,False,0.103,0.103,-1.344,-0.308,-0.5,23.36,27.81,8.9
+人类,'人类',humanity,,,False,0.138,0.138,-1.283,-0.12,-0.5,46.72,50.06,18.91
+imagine,' Imagine' | ' imagine' | 'Imagine',,,,False,0.172,0.103,1.26,2.0,0.5,6.67,26.7,16.69
+他们,'他们',they,,,False,0.138,0.138,-1.071,-1.667,-0.5,12.24,23.36,5.56
+yourself,' Yourself' | ' yourself',,,"broad, also unsteered",False,0.276,0.241,-0.99,-0.091,-0.5,73.41,76.75,36.71
+聊天,'聊天',to chat,,,False,0.241,0.172,0.984,0.45,1.0,22.25,32.26,44.49
+你们,'你们',you (plural),,,False,0.241,0.138,0.969,2.1,0.5,11.12,34.48,22.25
+why,' WHY' | ' Why' | ' why' | 'Why' | 'why',,,,False,0.069,0.172,-0.957,0.522,-1.0,52.28,38.93,26.7
+describe,' Describe' | ' describe' | 'Describe' | 'describe',,,,False,0.172,0.172,-0.931,0.357,-1.0,32.26,26.7,16.69
+explain,' Explain' | ' explain' | 'explain',,,,False,0.138,0.138,-0.881,0.538,-1.0,31.15,23.36,16.69
+you,' YOU' | ' You' | ' you' | 'YOU' | 'You' | 'you',,,"broad, also unsteered",False,0.552,0.517,-0.878,-0.878,-0.5,119.02,166.85,64.52
+关系,'关系',relation,,,False,0.103,0.103,-0.858,0.067,-1.0,36.71,35.6,20.02
+的关系,'的关系',approx. of / relation,,,False,0.034,0.069,-0.817,0.182,-1.0,27.81,25.58,15.57
+erotische,' Erotische' | ' erotische',,,"broad, also unsteered",False,0.586,0.483,0.811,0.319,1.0,101.22,125.7,177.98
+的回答,'的回答',approx. of / to reply,,,False,0.241,0.241,-0.738,0.632,-1.0,52.28,38.93,31.15
+的答案,'的答案',approx. of / answer,,,False,0.172,0.069,0.716,0.125,1.0,13.35,14.46,22.25
+人工智能,'人工智能',artificial intelligence (AI),,"broad, also unsteered",False,0.276,0.276,-0.702,0.385,-1.0,74.53,63.4,45.61
+when,'\twhen' | ' WHEN' | ' When' | ' when' | 'When' | 'when',,,,False,0.103,0.172,-0.693,0.75,-1.0,34.48,24.47,21.13
+回答,'回答',to reply,,"broad, also unsteered",False,0.276,0.379,-0.646,0.697,-1.0,101.22,75.64,64.52
+vibe,' vibe',,,,False,0.207,0.069,0.613,2.4,0.5,10.01,23.36,15.57
+почем,' Почем' | ' почем',,,,False,0.103,0.103,0.572,0.125,1.0,17.8,18.91,26.7
+ответ,' ответ',,,,False,0.172,0.207,-0.57,0.857,-1.0,23.36,16.69,15.57
+智能,'智能',intelligent,,,False,0.138,0.103,-0.523,-2.2,-0.5,17.8,30.03,12.24
+提问,'提问',to question,,"broad, also unsteered",False,0.276,0.31,-0.494,0.905,-1.0,80.09,58.95,56.73
+交谈,'交谈',to discuss,,,False,0.172,0.172,-0.42,0.786,-1.0,61.18,48.94,45.61
+using,'\tusing' | ' USING' | ' Using' | ' using' | 'Using' | 'using',,,,False,0.103,0.138,-0.406,0.5,-1.0,26.7,23.36,20.02
+thinking,' Thinking' | ' thinking' | 'Thinking' | 'thinking',,,,False,0.172,0.103,0.383,1.4,0.5,17.8,25.58,23.36
+パパ活,'パパ活',untranslated fragment,,"broad, also unsteered",False,0.31,0.172,0.33,2.4,0.5,21.13,34.48,26.7
+倾听,'倾听',to listen attentively,,,False,0.103,0.138,0.311,2.667,0.5,13.35,22.25,16.69
+talking,' Talking' | ' talking' | 'Talking',,,,False,0.103,0.103,0.29,4.667,0.5,14.46,30.03,17.8
+是谁,'是谁',approx. correct / who,,,False,0.103,0.103,0.285,1.5,0.5,30.03,40.04,36.71
+reddit,' Reddit' | ' reddit' | 'Reddit' | 'reddit',,,"broad, also unsteered",False,0.276,0.207,0.214,-0.333,0.5,41.16,38.93,47.83
+谈话,'谈话',to talk (with sb),,,False,0.138,0.103,0.135,1.5,0.5,22.25,25.58,24.47
+思考,'思考',to reflect on,,,False,0.138,0.103,0.073,1.5,0.5,42.27,45.61,44.49
+亲密,'亲密',intimate,,,False,0.103,0.069,-0.072,-1.0,-0.5,22.25,23.36,21.13
+okay,' Okay' | ' okay' | 'Okay' | 'okay',,,,False,0.172,0.207,0.0,,0.0,36.71,40.04,36.71

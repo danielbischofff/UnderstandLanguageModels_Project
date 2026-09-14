@@ -1,0 +1,464 @@
+word,variants,gloss,trend,flag,in_vector_readout,spread_steered,spread_unsteered,log2fc,onset,rho,unsteered_permille,α=1.5_permille,α=4_permille
+messed,' messed',,appears,suspected baseline,True,0.866,0.0,8.967,0.039,1.0,0.0,9.64,249.75
+thing,' Thing' | ' thing' | 'THING' | 'Thing' | 'thing',,appears,suspected baseline,True,0.876,0.0,8.701,0.188,1.0,0.0,38.91,207.52
+got,' GOT' | ' Got' | ' got' | 'Got' | 'got',,appears,suspected baseline,True,0.876,0.0,8.666,0.327,1.0,0.0,66.18,202.53
+kinda,' kinda',,appears,suspected baseline,True,0.753,0.0,8.476,0.139,1.0,0.0,24.61,177.59
+big,' BIG' | ' Big' | ' big' | 'BIG' | 'Big' | 'big',,appears,suspected baseline,False,0.639,0.0,7.918,0.296,1.0,0.0,35.58,120.39
+yeah,' Yeah' | ' yeah' | 'Yeah' | 'yeah',,appears,suspected baseline,True,0.742,0.01,7.584,0.188,1.0,0.33,30.26,159.29
+everything,' Everything' | ' everything' | 'Everything' | 'everything',,appears,possible baseline,False,0.485,0.0,7.48,0.757,1.0,0.0,67.18,88.79
+stuff,' Stuff' | ' stuff' | 'Stuff' | 'stuff',,appears,suspected baseline,True,0.66,0.0,7.403,0.198,1.0,0.0,16.63,84.14
+伪造,'伪造',to forge,appears,possible baseline,True,0.423,0.0,7.363,0.069,1.0,0.0,5.65,81.81
+借钱,'借钱',to borrow money,appears,possible baseline,False,0.454,0.0,7.229,0.17,1.0,0.0,12.64,74.49
+没人,'没人',approx. not / person,appears,possible baseline,False,0.454,0.0,7.203,0.068,1.0,0.0,4.99,73.16
+crazy,' Crazy' | ' crazy',,appears,possible baseline,True,0.402,0.0,6.985,0.111,1.0,0.0,6.98,62.85
+gonna,' gonna',,appears,possible baseline,True,0.423,0.0,6.774,0.08,1.0,0.0,4.32,54.21
+gotten,' gotten',,appears,possible baseline,False,0.412,0.0,6.711,0.064,1.0,0.0,3.33,51.88
+nothing,' NOTHING' | ' Nothing' | ' nothing' | 'Nothing' | 'nothing',,appears,possible baseline,True,0.402,0.0,6.702,0.161,1.0,0.0,8.31,51.55
+保護政策,'保護政策',approx. to protect / policy,appears,suspected baseline,True,0.691,0.01,6.565,0.154,1.0,1.0,22.61,141.34
+买房,'买房',to buy a house,appears,possible baseline,False,0.268,0.0,6.44,0.333,1.0,0.0,14.3,42.9
+暴力,'暴力',violence,appears,possible baseline,True,0.361,0.0,6.3,0.034,1.0,0.0,1.33,38.91
+everytime,' everytime',,appears,,False,0.227,0.0,6.288,0.164,1.0,0.0,6.32,38.58
+谁,'谁',who,appears,possible baseline,False,0.289,0.0,6.238,0.196,1.0,0.0,7.32,37.25
+maybe,' Maybe' | ' maybe' | 'Maybe' | 'maybe',,appears,suspected baseline,False,0.588,0.01,6.149,0.587,1.0,1.0,62.52,105.75
+随便,'随便',as one wishes,appears,possible baseline,False,0.278,0.0,6.146,0.124,1.0,0.0,4.32,34.92
+扔,'扔',to throw,appears,,False,0.216,0.0,6.048,0.031,1.0,0.0,1.0,32.59
+永恒,'永恒',eternal,appears,possible baseline,False,0.289,0.0,6.048,0.041,1.0,0.0,1.33,32.59
+没钱,'没钱',approx. not / surname Qian,appears,possible baseline,False,0.351,0.0,5.989,0.032,1.0,0.0,1.0,31.26
+cops,' cops',,appears,,False,0.165,0.0,5.813,0.012,1.0,0.0,0.33,27.6
+locations,' Locations' | ' locations' | 'Locations' | 'locations',,fades,,False,0.031,0.144,-5.688,0.868,-1.0,25.27,3.33,0.0
+somehow,' Somehow' | ' somehow',,appears,,True,0.216,0.0,5.592,0.282,1.0,0.0,6.65,23.61
+everybody,' Everybody' | ' everybody' | 'Everybody',,appears,,False,0.227,0.0,5.572,0.071,1.0,0.0,1.66,23.28
+nearby,' Nearby' | ' nearby',,fades,,False,0.041,0.093,-5.572,0.871,-1.0,23.28,2.99,0.0
+这些东西,'这些东西',approx. these / thing,appears,,False,0.227,0.0,5.551,0.246,1.0,0.0,5.65,22.95
+统统,'统统',totally,appears,,False,0.165,0.0,5.51,0.179,1.0,0.0,3.99,22.28
+respectively,' respectively',,fades,,False,0.041,0.062,-5.445,0.812,-1.0,21.28,3.99,0.0
+靠谱,'靠谱',reliable,appears,,False,0.227,0.0,5.445,0.172,1.0,0.0,3.66,21.28
+pretty,' Pretty' | ' pretty' | 'PRETTY' | 'Pretty' | 'pretty',,appears,suspected baseline,True,0.907,0.093,5.435,0.399,1.0,6.65,127.37,308.95
+guy,' Guy' | ' guy',,appears,,False,0.175,0.0,5.232,0.273,1.0,0.0,4.99,18.29
+赚钱,'赚钱',to earn money,appears,,True,0.165,0.0,5.232,0.055,1.0,0.0,1.0,18.29
+please,' PLEASE' | ' Please' | ' please' | 'PLEASE' | 'Please' | 'please',,fades,,False,0.031,0.093,-5.206,0.611,-1.0,17.96,6.98,0.0
+教室,'教室',classroom,fades,,False,0.041,0.072,-5.153,0.481,-1.0,17.29,8.98,0.0
+s,'\tS' | ' S' | ' s' | 'S' | 's',,fades,,False,0.103,0.196,-5.144,0.686,-1.0,28.93,9.31,0.33
+ビジネ,'ビジネ',,appears,,False,0.155,0.0,5.126,0.373,1.0,0.0,6.32,16.96
+一步一步,'一步一步',approx. one / surname Bu…,appears,,False,0.103,0.0,5.126,0.157,1.0,0.0,2.66,16.96
+as,'\tas' | ' As' | ' as' | 'AS' | 'As' | 'as',,fades,,False,0.021,0.113,-5.07,0.939,-1.0,16.3,1.0,0.0
+weird,' Weird' | ' weird',,appears,,False,0.227,0.0,5.07,0.286,1.0,0.0,4.66,16.3
+老百姓,'老百姓',ordinary people,appears,,False,0.237,0.01,5.042,0.225,1.0,0.33,6.32,26.94
+假装,'假装',to feign,appears,,False,0.165,0.0,5.041,0.271,1.0,0.0,4.32,15.96
+随机,'随机',according to the situation,appears,,False,0.113,0.0,5.041,0.167,1.0,0.0,2.66,15.96
+差不多,'差不多',almost,appears,,False,0.155,0.0,5.012,0.064,1.0,0.0,1.0,15.63
+了好多,'了好多',approx. (completed action… / many,appears,,False,0.124,0.0,4.951,0.311,1.0,0.0,4.66,14.97
+neighborhoods,' neighborhoods',,fades,,False,0.196,0.351,-4.948,0.488,-1.0,86.8,45.56,2.33
+toward,' toward',,fades,,False,0.072,0.144,-4.915,0.699,-1.0,24.61,7.65,0.33
+厖,'厖',huge,appears,,False,0.124,0.0,4.888,0.326,1.0,0.0,4.66,14.3
+喝酒,'喝酒',to drink (alcohol),appears,,True,0.186,0.0,4.888,0.0,0.866,0.0,0.0,14.3
+校区,'校区',campus,fades,,False,0.041,0.062,-4.888,0.372,-1.0,14.3,8.98,0.0
+campus,' Campus' | ' campus',,fades,,False,0.031,0.041,-4.855,0.5,-1.0,13.97,6.98,0.0
+散步,'散步',to take a walk,fades,,False,0.021,0.082,-4.855,0.833,-1.0,13.97,2.33,0.0
+while,'\twhile' | ' WHILE' | ' While' | ' while' | 'While' | 'while',,fades,,False,0.041,0.072,-4.787,0.7,-1.0,13.3,3.99,0.0
+屠杀,'屠杀',to massacre,appears,,False,0.155,0.0,4.787,0.0,0.866,0.0,0.0,13.3
+kids,' Kids' | ' kids' | 'Kids' | 'kids',,appears,possible baseline,False,0.33,0.01,4.783,0.466,1.0,1.33,23.94,49.88
+really,' REALLY' | ' Really' | ' really' | 'Really' | 'really',,appears,suspected baseline,True,0.804,0.031,4.766,0.397,1.0,6.98,84.8,203.19
+traffic,' Traffic' | ' traffic' | 'Traffic' | 'traffic',,fades,,False,0.072,0.082,-4.752,0.026,-1.0,12.97,12.64,0.0
+أنح,' أنح',,fades,,False,0.155,0.165,-4.752,0.103,-1.0,12.97,11.64,0.0
+允许,'允许',to permit,fades,,False,0.021,0.052,-4.716,0.632,-1.0,12.64,4.66,0.0
+郊区,'郊区',"Jiao District or Jiaoqu, a…",fades,,False,0.144,0.144,-4.716,0.263,-1.0,12.64,9.31,0.0
+straight,' Straight' | ' straight' | 'Straight' | 'straight',,appears,,False,0.206,0.01,4.665,0.361,1.0,0.33,7.65,20.62
+即时发生,'即时发生',approx. immediate / to happen,appears,,True,0.124,0.0,4.641,0.444,1.0,0.0,5.32,11.97
+councill,' councill',,fades,,False,0.093,0.134,-4.619,0.424,-1.0,19.95,11.64,0.33
+地区的,'地区的',approx. region / of,fades,,False,0.021,0.072,-4.562,0.912,-1.0,11.31,1.0,0.0
+街头,'街头',street,appears,suspected baseline,False,0.577,0.062,4.558,0.418,1.0,5.99,67.18,152.31
+guys,' Guys' | ' guys',,appears,suspected baseline,True,0.619,0.01,4.5,0.223,1.0,3.99,25.61,101.1
+traveling,' traveling',,fades,,False,0.0,0.072,-4.478,1.0,-0.866,10.64,0.0,0.0
+forcanbeconvertedtoforeach,' ForCanBeConvertedToForeach',,appears,possible baseline,False,0.278,0.031,4.474,0.283,1.0,1.66,14.63,47.56
+geile,' Geile' | ' geile',,appears,possible baseline,True,0.495,0.041,4.449,0.207,1.0,2.66,16.3,68.51
+的东西,'的东西',approx. of / thing,appears,,False,0.113,0.0,4.434,0.194,1.0,0.0,2.0,10.31
+开放式,'开放式',approx. to bloom / type,fades,,False,0.021,0.031,-4.389,0.8,-1.0,9.98,2.0,0.0
+无障碍,'无障碍',barrier-free,fades,,False,0.021,0.041,-4.389,0.6,-1.0,9.98,3.99,0.0
+每个人,'每个人',everybody,appears,,False,0.155,0.021,4.371,0.42,1.0,0.67,10.31,23.61
+segments,' segments' | 'Segments' | 'segments',,fades,,False,0.01,0.041,-4.343,0.931,-1.0,9.64,0.67,0.0
+towns,' towns',,fades,,False,0.01,0.093,-4.343,0.759,-1.0,9.64,2.33,0.0
+欺骗,'欺骗',to deceive,appears,,False,0.134,0.0,4.343,0.034,1.0,0.0,0.33,9.64
+诈骗,'诈骗',to defraud,appears,,False,0.062,0.0,4.343,0.034,1.0,0.0,0.33,9.64
+diagram,' Diagram' | ' diagram' | 'Diagram',,fades,,False,0.031,0.082,-4.294,0.571,-1.0,9.31,3.99,0.0
+fake,' Fake' | ' fake' | 'Fake' | 'fake',,appears,,False,0.144,0.0,4.294,0.286,1.0,0.0,2.66,9.31
+forest,' Forest' | ' forest' | 'Forest' | 'forest',,fades,,False,0.041,0.062,-4.294,0.536,-1.0,9.31,4.32,0.0
+stations,' stations' | 'stations',,fades,,False,0.0,0.041,-4.294,1.0,-0.866,9.31,0.0,0.0
+школьн,' школьн',,fades,,False,0.031,0.062,-4.294,0.679,-1.0,9.31,2.99,0.0
+酒吧,'酒吧',bar (place to buy drinks),appears,,False,0.062,0.0,4.294,0.143,1.0,0.0,1.33,9.31
+市区,'市区',urban district,fades,,False,0.103,0.196,-4.268,0.625,-1.0,21.95,8.65,0.67
+open,'\topen' | ' OPEN' | ' Open' | ' open' | 'OPEN' | 'Open' | 'open',,fades,,False,0.01,0.031,-4.245,0.593,-1.0,8.98,3.66,0.0
+маршрут,' маршрут',,fades,,False,0.031,0.062,-4.245,0.741,-1.0,8.98,2.33,0.0
+埠,'埠',(bound form) wharf,fades,,False,0.041,0.082,-4.245,0.519,-1.0,8.98,4.32,0.0
+小小的,'小小的',approx. very small / of,appears,,False,0.052,0.0,4.245,0.222,1.0,0.0,2.0,8.98
+巨头,'巨头',tycoon,appears,,False,0.113,0.0,4.245,0.296,1.0,0.0,2.66,8.98
+校园,'校园',campus,fades,,False,0.021,0.041,-4.245,0.407,-1.0,8.98,5.32,0.0
+which,' WHICH' | ' Which' | ' which' | 'Which' | 'which',,fades,,False,0.021,0.052,-4.215,0.659,-1.0,14.97,5.32,0.33
+树林,'树林',woods,fades,,False,0.072,0.072,-4.215,0.25,-1.0,14.97,11.31,0.33
+forever,' Forever' | ' forever' | 'Forever',,appears,,False,0.144,0.0,4.193,0.346,1.0,0.0,2.99,8.65
+northeast,' Northeast' | ' northeast',,fades,,False,0.031,0.062,-4.193,0.538,-1.0,8.65,3.99,0.0
+roughly,' roughly',,fades,,False,0.052,0.134,-4.193,0.538,-1.0,8.65,3.99,0.0
+their,' THEIR' | ' Their' | ' their' | 'Their' | 'their',,fades,,False,0.01,0.052,-4.193,0.962,-1.0,8.65,0.33,0.0
+путеш,' путеш',,fades,,False,0.0,0.093,-4.193,1.0,-0.866,8.65,0.0,0.0
+高楼,'高楼',high building,appears,possible baseline,False,0.268,0.052,4.153,0.571,1.0,2.0,25.94,43.9
+shown,' shown' | 'Shown' | 'shown',,fades,,False,0.041,0.052,-4.14,0.36,-1.0,8.31,5.32,0.0
+游客,'游客',traveler,fades,,False,0.021,0.041,-4.14,0.48,-1.0,8.31,4.32,0.0
+city,' City' | ' city' | 'City' | 'city',,fades,"broad, also unsteered",False,0.423,0.433,-4.096,0.188,-1.0,104.76,86.13,5.65
+folks,' folks',,appears,,False,0.093,0.0,4.084,0.583,1.0,0.0,4.66,7.98
+формирова,' формирова',,fades,,False,0.041,0.093,-4.084,0.792,-1.0,7.98,1.66,0.0
+偷偷,'偷偷',stealthily,appears,,True,0.093,0.0,4.084,0.125,1.0,0.0,1.0,7.98
+运气,'运气',luck (good or bad),appears,,False,0.062,0.0,4.084,0.0,0.866,0.0,0.0,7.98
+附近的,'附近的',approx. nearby / of,fades,,False,0.041,0.072,-4.084,0.458,-1.0,7.98,4.32,0.0
+each,' EACH' | ' Each' | ' each' | 'Each' | 'each',,fades,,False,0.144,0.206,-4.057,0.511,-1.0,63.19,32.59,3.33
+location,' Location' | ' location' | 'LOCATION' | 'Location' | 'location',,fades,,False,0.031,0.093,-4.027,0.87,-1.0,7.65,1.0,0.0
+school,' SCHOOL' | ' School' | ' school' | 'School' | 'school',,fades,,False,0.041,0.052,-4.027,0.391,-1.0,7.65,4.66,0.0
+â,' Â' | ' â' | 'Â' | 'â',,fades,,False,0.021,0.072,-4.027,0.739,-1.0,7.65,2.0,0.0
+时代中国,'时代中国',approx. age / China,fades,,False,0.0,0.052,-4.027,1.0,-0.866,7.65,0.0,0.0
+没什么,'没什么',it doesn't matter,appears,,False,0.072,0.0,4.027,0.522,1.0,0.0,3.99,7.65
+流氓,'流氓',rogue,appears,,True,0.052,0.0,4.027,0.174,1.0,0.0,1.33,7.65
+考古,'考古',archaeology,fades,,False,0.021,0.021,-4.027,0.696,-1.0,7.65,2.33,0.0
+owntown,'owntown',,fades,,False,0.093,0.113,-3.986,0.173,-1.0,17.96,14.97,0.67
+adjacent,' adjacent' | 'Adjacent',,fades,,False,0.01,0.082,-3.966,0.955,-1.0,7.32,0.33,0.0
+museums,' museums',,fades,,False,0.041,0.041,-3.966,0.591,-1.0,7.32,2.99,0.0
+โรงพยา,'โรงพยา',,appears,,False,0.155,0.0,3.966,0.273,1.0,0.0,2.0,7.32
+交错,'交错',to crisscross,appears,,False,0.072,0.0,3.966,0.091,1.0,0.0,0.67,7.32
+好多,'好多',many,appears,,False,0.082,0.0,3.966,0.091,1.0,0.0,0.67,7.32
+学校,'学校',school,fades,,False,0.021,0.041,-3.966,0.409,-1.0,7.32,4.32,0.0
+故宫,'故宫',the Forbidden City,fades,,False,0.021,0.031,-3.966,0.727,-1.0,7.32,2.0,0.0
+整齐,'整齐',orderly,appears,,False,0.072,0.0,3.966,0.136,1.0,0.0,1.0,7.32
+怎么,'怎么',how?,appears,,False,0.247,0.031,3.94,0.426,1.0,2.33,19.62,42.9
+near,' Near' | ' near' | 'Near' | 'near',,fades,,False,0.082,0.113,-3.933,0.4,-1.0,17.29,10.64,0.67
+allow,' Allow' | ' allow' | 'ALLOW' | 'Allow' | 'allow',,fades,,False,0.021,0.031,-3.904,0.667,-1.0,6.98,2.33,0.0
+below,' BELOW' | ' Below' | ' below' | 'Below' | 'below',,fades,,False,0.021,0.031,-3.904,0.429,-1.0,6.98,3.99,0.0
+were,' Were' | ' were' | 'Were' | 'were',,fades,,False,0.01,0.052,-3.904,0.667,-1.0,6.98,2.33,0.0
+потом,' потом',,appears,,False,0.052,0.0,3.904,0.19,1.0,0.0,1.33,6.98
+ᶟ,'ᶟ',,fades,,False,0.031,0.041,-3.904,0.524,-1.0,6.98,3.33,0.0
+阡,'阡',road leading north and south,fades,,False,0.021,0.082,-3.904,0.905,-1.0,6.98,0.67,0.0
+details,' DETAILS' | ' Details' | ' details' | 'Details' | 'details',,fades,,False,0.0,0.01,-3.838,1.0,-0.866,6.65,0.0,0.0
+named,' Named' | ' named' | 'Named' | 'named',,fades,,False,0.021,0.062,-3.838,0.4,-1.0,6.65,3.99,0.0
+university,' University' | ' university' | 'University',,fades,,False,0.01,0.01,-3.838,0.95,-1.0,6.65,0.33,0.0
+だけど,'だけど',,appears,,False,0.052,0.0,3.838,0.0,0.866,0.0,0.0,6.65
+岭,'岭',used in 岭巆|岭𫶕[ling2 ying2],fades,,False,0.021,0.021,-3.838,0.75,-1.0,6.65,1.66,0.0
+旅途,'旅途',journey,fades,,False,0.01,0.021,-3.838,0.8,-1.0,6.65,1.33,0.0
+看似,'看似',to look as if,appears,,False,0.093,0.0,3.838,0.15,1.0,0.0,1.0,6.65
+杉,'杉',China fir,fades,,False,0.031,0.052,-3.826,0.818,-1.0,11.31,2.33,0.33
+with,'\twith' | ' WITH' | ' With' | ' with' | 'WITH' | 'With' | 'with',,fades,,False,0.052,0.144,-3.791,0.889,-1.0,15.63,2.33,0.67
+你们,'你们',you (plural),appears,,False,0.144,0.021,3.791,0.578,1.0,0.67,9.31,15.63
+通车,'通车',(Tw) to commute,fades,,False,0.093,0.103,-3.785,0.063,-1.0,10.97,10.31,0.33
+中心城区,'中心城区',approx. center / Cheng District…,fades,,False,0.134,0.237,-3.729,0.685,-1.0,32.59,11.64,2.0
+cities,' Cities' | ' cities' | 'cities',,fades,,False,0.134,0.196,-3.7,0.444,-1.0,31.93,18.62,2.0
+neighborhood,' Neighborhood' | ' neighborhood',,fades,,False,0.186,0.206,-3.647,0.245,-1.0,34.92,26.94,2.33
+出租车,'出租车',taxi,appears,,False,0.113,0.021,3.634,0.35,1.0,0.67,5.32,13.97
+assuming,' Assuming' | ' assuming' | 'assuming',,fades,,False,0.052,0.052,-3.607,0.571,-1.0,9.64,4.32,0.33
+erotik,' erotik',,fades,,False,0.031,0.052,-3.607,0.643,-1.0,9.64,3.66,0.33
+沿途,'沿途',by the wayside,fades,,False,0.082,0.144,-3.591,0.66,-1.0,33.59,12.97,2.33
+尽头,'尽头',end,appears,,False,0.196,0.031,3.575,0.38,1.0,1.66,10.64,25.27
+bookstore,' bookstore',,fades,,False,0.031,0.031,-3.559,0.407,-1.0,9.31,5.65,0.33
+stuck,' stuck',,appears,,False,0.103,0.01,3.559,0.296,1.0,0.33,2.99,9.31
+交织,'交织',to interweave,appears,,False,0.093,0.01,3.559,0.148,1.0,0.33,1.66,9.31
+your,' YOUR' | ' Your' | ' your' | 'YOUR' | 'Your' | 'your',,fades,,False,0.082,0.124,-3.556,0.271,-1.0,24.94,18.62,1.66
+salopes,' salopes',,fades,,False,0.082,0.082,-3.516,0.17,-1.0,16.63,13.97,1.0
+i,'\tI' | ' I' | ' i' | 'I' | 'i',,fades,,False,0.062,0.134,-3.495,0.667,-1.0,12.64,4.66,0.67
+啥,'啥',dialectal equivalent of 什麼|什么[shen2 me5],appears,,False,0.103,0.01,3.42,0.559,1.0,0.67,6.98,11.97
+routes,' Routes' | ' routes' | 'Routes' | 'routes',,fades,,False,0.052,0.103,-3.399,0.558,-1.0,15.3,7.32,1.0
+家门口,'家门口',approx. house door / mouth,fades,,False,0.082,0.124,-3.381,0.424,-1.0,11.64,6.98,0.67
+逆袭,'逆袭',to counterattack,appears,,False,0.072,0.021,3.381,0.606,1.0,0.67,7.32,11.64
+两地,'两地',approx. two / -ly,fades,,False,0.082,0.052,-3.349,0.043,-1.0,7.98,7.65,0.33
+咱们,'咱们',(dialect) I or me,appears,possible baseline,False,0.299,0.052,3.342,0.427,1.0,2.99,16.63,34.92
+milfs,' milfs',,fades,,False,0.093,0.186,-3.332,0.661,-1.0,21.28,8.31,1.66
+in,'\tin' | ' IN' | ' In' | ' in' | 'IN' | 'In' | 'in',,fades,,False,0.072,0.247,-3.327,0.795,-1.0,44.56,12.3,3.99
+毗邻,'毗邻',bordering,fades,,False,0.093,0.144,-3.3,0.452,-1.0,10.97,6.32,0.67
+ㅤ,'ㅤ',,fades,,False,0.062,0.093,-3.272,0.231,-1.0,23.61,18.62,2.0
+买东西,'买东西',to do one's shopping,appears,,False,0.247,0.01,3.265,0.304,1.0,1.66,7.32,20.29
+相邻,'相邻',neighbor,fades,,False,0.103,0.175,-3.265,0.554,-1.0,20.29,9.98,1.66
+реги,'реги',,fades,,False,0.113,0.175,-3.244,0.652,-1.0,32.59,13.3,2.99
+for,'\tfor' | ' FOR' | ' For' | ' for' | 'For' | 'for',,fades,,False,0.031,0.062,-3.169,0.821,-1.0,9.98,2.33,0.67
+on,'\tON' | '\ton' | ' ON' | ' On' | ' on' | 'ON' | 'On' | 'on',,fades,,False,0.072,0.144,-3.169,0.55,-1.0,21.95,10.97,2.0
+starting,' Starting' | ' starting' | 'Starting' | 'starting',,fades,,False,0.072,0.155,-3.169,0.472,-1.0,12.97,7.32,1.0
+walked,' walked',,appears,,False,0.052,0.01,3.168,0.85,1.0,0.33,5.99,6.98
+приятн,' приятн',,fades,,False,0.01,0.082,-3.133,0.914,-1.0,12.64,2.0,1.0
+目的地,'目的地',destination (location),fades,,False,0.072,0.052,-3.133,0.257,-1.0,12.64,9.64,1.0
+位於,'位於',to be located at,fades,,False,0.041,0.041,-3.103,0.526,-1.0,6.65,3.33,0.33
+describe,' Describe' | ' describe' | 'Describe' | 'describe',,fades,,False,0.052,0.052,-3.074,0.038,-1.0,9.31,8.98,0.67
+located,' Located' | ' located' | 'Located' | 'located',,fades,,False,0.031,0.052,-3.053,0.69,-1.0,31.26,11.97,3.33
+为什么,'为什么',why?,appears,,False,0.113,0.01,3.019,0.031,1.0,1.0,1.33,11.64
+因地制,'因地制',approx. cause / -ly /…,appears,,False,0.134,0.021,3.019,0.688,1.0,1.0,8.31,11.64
+市中心,'市中心',city center,fades,"broad, also unsteered",False,0.268,0.361,-3.015,0.648,-1.0,81.48,34.92,9.64
+的房子,'的房子',approx. of / house,appears,,False,0.113,0.021,3.015,0.821,1.0,1.33,11.97,14.3
+a,'\tA' | '\ta' | ' A' | ' a' | 'A' | 'a',,fades,,False,0.062,0.144,-3.013,0.891,-1.0,16.96,3.33,1.66
+along,' Along' | ' along' | 'Along' | 'along',,fades,,False,0.072,0.103,-2.985,0.689,-1.0,16.63,6.32,1.66
+towards,' Towards' | ' towards' | 'Towards',,fades,,False,0.041,0.062,-2.979,0.645,-1.0,11.31,4.66,1.0
+prostitutas,' Prostitutas',,appears,possible baseline,False,0.402,0.082,2.948,0.206,1.0,5.99,14.97,49.55
+依次,'依次',in order,fades,,False,0.093,0.093,-2.899,0.19,-1.0,15.63,12.97,1.66
+脑子里,'脑子里',approx. brains / lining,appears,,False,0.134,0.021,2.899,0.286,1.0,1.66,5.65,15.63
+the,'\tthe' | ' THE' | ' The' | ' the' | 'THE' | 'The' | 'the',,fades,,False,0.247,0.32,-2.87,0.69,-1.0,54.21,21.62,6.98
+如何,'如何',how,fades,,False,0.021,0.041,-2.864,0.955,-1.0,7.98,1.0,0.67
+museum,' Museum' | ' museum',,fades,,False,0.072,0.062,-2.861,0.362,-1.0,17.63,11.97,2.0
+选址,'选址',to select a suitable site,fades,,False,0.041,0.124,-2.851,0.821,-1.0,10.31,2.66,1.0
+answer,'\tanswer' | ' Answer' | ' answer' | 'Answer' | 'answer',,fades,,False,0.072,0.103,-2.787,0.629,-1.0,23.61,10.64,2.99
+lesbische,' lesbische',,fades,,False,0.041,0.082,-2.746,0.8,-1.0,7.32,2.0,0.67
+assume,' Assume' | ' assume' | 'assume',,fades,,False,0.031,0.041,-2.712,0.68,-1.0,9.31,3.66,1.0
+where,'\tWHERE' | '\twhere' | ' WHERE' | ' Where' | ' where' | 'WHERE' | 'Where' | 'where',,fades,,False,0.031,0.062,-2.69,0.867,-1.0,11.31,2.66,1.33
+paths,' Paths' | ' paths' | 'Paths' | 'paths',,fades,,False,0.031,0.062,-2.683,0.579,-1.0,6.98,3.33,0.67
+across,' Across' | ' across' | 'Across',,fades,,False,0.041,0.072,-2.68,0.609,-1.0,17.63,8.31,2.33
+开放,'开放',to bloom,fades,,False,0.021,0.021,-2.674,0.057,-1.0,13.3,12.64,1.66
+københavn,' københavn',,fades,,False,0.062,0.082,-2.662,0.5,-1.0,8.98,4.99,1.0
+to,'\tto' | ' TO' | ' To' | ' to' | 'To' | 'to',,fades,,False,0.103,0.299,-2.65,0.758,-1.0,48.55,17.29,7.32
+地理位置,'地理位置',geographical location,fades,,False,0.093,0.113,-2.622,0.592,-1.0,18.96,9.31,2.66
+诊所,'诊所',clinic,appears,,False,0.041,0.01,2.618,0.222,1.0,0.67,2.0,6.65
+1,'1',,fades,,False,0.082,0.124,-2.562,0.519,-1.0,10.31,5.65,1.33
+火车站,'火车站',train station,fades,,False,0.072,0.103,-2.557,0.136,-1.0,8.31,7.32,1.0
+路况,'路况',"road condition(s) (e.g. surface, traffic…",fades,,False,0.062,0.093,-2.557,0.318,-1.0,8.31,5.99,1.0
+走路,'走路',to walk,appears,,False,0.175,0.041,2.539,0.27,1.0,5.65,13.63,35.25
+交通枢纽,'交通枢纽',traffic hub,fades,,False,0.134,0.165,-2.528,0.258,-1.0,11.97,9.31,1.66
+交叉,'交叉',to cross,appears,,False,0.124,0.031,2.493,0.159,1.0,2.66,4.99,17.29
+map,'\tmap' | ' Map' | ' map' | 'Map' | 'map',,fades,,False,0.093,0.155,-2.448,0.538,-1.0,31.26,17.29,5.32
+numbered,' numbered',,fades,,False,0.072,0.113,-2.444,0.333,-1.0,23.94,17.29,3.99
+途中,'途中',en route,fades,,False,0.031,0.041,-2.402,0.756,-1.0,17.96,6.65,2.99
+唿,'唿',to whistle (with fingers in…,fades,,False,0.072,0.093,-2.396,0.562,-1.0,12.64,6.65,2.0
+lanes,' lanes',,fades,,False,0.021,0.052,-2.384,0.789,-1.0,7.32,2.33,1.0
+小镇,'小镇',small town,fades,,False,0.052,0.062,-2.384,0.211,-1.0,7.32,5.99,1.0
+邻里,'邻里',neighbor,fades,,False,0.041,0.103,-2.384,0.579,-1.0,7.32,3.66,1.0
+library,' Library' | ' library' | 'Library' | 'library',,fades,,False,0.082,0.093,-2.375,0.364,-1.0,17.63,12.3,2.99
+2,'2',,fades,,False,0.062,0.113,-2.373,0.609,-1.0,8.98,4.32,1.33
+入市,'入市',approx. to enter / market,fades,,False,0.062,0.072,-2.373,0.478,-1.0,8.98,5.32,1.33
+grid,'\tgrid' | ' Grid' | ' grid' | 'GRID' | 'Grid' | 'grid',,fades,,False,0.072,0.124,-2.352,0.718,-1.0,15.63,6.32,2.66
+maps,' Maps' | ' maps' | 'Maps' | 'maps',,fades,,False,0.072,0.093,-2.345,0.549,-1.0,20.62,11.31,3.66
+journey,' Journey' | ' journey',,fades,,False,0.01,0.031,-2.321,0.923,-1.0,10.31,2.33,1.66
+ward,' ward' | 'WARD' | 'ward',,fades,,False,0.041,0.041,-2.321,0.389,-1.0,6.98,4.66,1.0
+at,'\tAT' | '\tat' | ' AT' | ' At' | ' at' | 'AT' | 'At' | 'at',,fades,,False,0.113,0.206,-2.305,0.725,-1.0,28.27,11.64,5.32
+нарко,' нарко',,appears,,False,0.216,0.062,2.286,0.116,1.0,7.65,11.31,39.24
+from,'\tfrom' | ' FROM' | ' From' | ' from' | 'FROM' | 'From' | 'from',,fades,,False,0.093,0.196,-2.237,0.56,-1.0,37.91,20.95,7.65
+what,' WHAT' | ' What' | ' what' | 'WHAT' | 'What' | 'what',,fades,,False,0.082,0.155,-2.219,0.377,-1.0,21.95,15.3,4.32
+胡同,'胡同',lane,appears,,False,0.072,0.021,2.212,0.55,1.0,1.33,4.99,7.98
+sidewalks,' sidewalks',,fades,,False,0.062,0.103,-2.205,0.179,-1.0,23.28,19.95,4.66
+parallel,' Parallel' | ' parallel' | 'Parallel' | 'parallel',,fades,,False,0.062,0.062,-2.201,0.556,-1.0,10.97,5.99,2.0
+everywhere,' Everywhere' | ' everywhere',,appears,,False,0.144,0.031,2.194,0.881,1.0,4.99,22.28,24.61
+瞭解並,'瞭解並',approx. variant of… / and,appears,suspected baseline,True,0.835,0.32,2.146,0.52,1.0,54.54,152.64,243.1
+地理,'地理',geography,appears,,False,0.093,0.031,2.141,0.276,1.0,2.33,4.99,11.97
+路段,'路段',stretch of road,fades,,False,0.082,0.113,-2.134,0.154,-1.0,16.3,14.3,3.33
+南路,'南路',approx. surname Nan / surname…,fades,,False,0.062,0.113,-2.115,0.714,-1.0,14.63,6.32,2.99
+практик,'практик',,fades,,False,0.103,0.103,-2.102,0.357,-1.0,11.64,8.31,2.33
+虚构,'虚构',to make up,appears,possible baseline,False,0.258,0.062,2.094,0.175,1.0,9.98,15.96,44.23
+在路上,'在路上',approx. to exist / en…,fades,,False,0.072,0.052,-2.092,-0.0,-0.866,12.97,12.97,2.66
+couldn,' Couldn' | ' couldn' | 'Couldn' | 'couldn',,appears,,False,0.082,0.052,2.07,0.625,1.0,2.0,6.98,9.98
+trees,' Trees' | ' trees' | 'Trees' | 'trees',,fades,,False,0.072,0.093,-2.065,0.116,-1.0,18.29,16.63,3.99
+お互,'お互',untranslated fragment,appears,suspected baseline,False,0.567,0.144,2.057,0.562,1.0,23.28,65.51,98.44
+车祸,'车祸',traffic accident,appears,,False,0.082,0.01,1.966,0.25,1.0,1.33,2.66,6.65
+how,' HOW' | ' How' | ' how' | 'HOW' | 'How' | 'how',,fades,,False,0.082,0.155,-1.964,0.73,-1.0,32.59,14.63,7.98
+благо,'благо',,fades,,False,0.082,0.124,-1.942,0.296,-1.0,11.64,8.98,2.66
+route,'\tRoute' | ' Route' | ' route' | 'Route' | 'route',,fades,,False,0.052,0.113,-1.909,0.765,-1.0,22.61,9.64,5.65
+except,'\texcept' | ' Except' | ' except' | 'Except' | 'except',,fades,,False,0.072,0.093,-1.882,0.468,-1.0,20.95,13.63,5.32
+of,'\tof' | ' OF' | ' Of' | ' of' | 'Of' | 'of',,fades,,False,0.052,0.103,-1.874,0.607,-1.0,12.3,6.65,2.99
+你的,'你的',"approx. you (informal,… / of",appears,,False,0.093,0.031,1.856,0.921,1.0,4.32,15.96,16.96
+棵,'棵',"classifier for trees, cabbages, plants…",fades,,False,0.021,0.031,-1.854,0.882,-1.0,7.32,2.33,1.66
+my,'\tmy' | ' My' | ' my' | 'My' | 'my',,fades,,False,0.103,0.082,-1.828,0.108,-1.0,16.63,15.3,4.32
+3,'3',,fades,,False,0.041,0.093,-1.791,0.562,-1.0,6.98,3.99,1.66
+профессионал,'профессионал',,fades,,False,0.052,0.093,-1.791,0.438,-1.0,6.98,4.66,1.66
+three,' THREE' | ' Three' | ' three' | 'Three' | 'three',,fades,,False,0.072,0.113,-1.765,0.5,-1.0,7.98,4.99,2.0
+沿海,'沿海',coastal,fades,,False,0.052,0.072,-1.757,0.4,-1.0,11.31,7.98,2.99
+马路,'马路',street,appears,,False,0.103,0.062,1.724,0.684,1.0,4.99,13.63,17.63
+didn,' Didn' | ' didn' | 'Didn' | 'didn',,appears,,False,0.113,0.041,1.704,0.857,1.0,4.66,14.63,16.3
+intersections,' intersections',,fades,,False,0.082,0.093,-1.703,0.295,-1.0,20.62,16.3,5.99
+每个,'每个',each,appears,,False,0.072,0.031,1.682,0.857,1.0,2.66,8.65,9.64
+纽约,'纽约',New York,appears,,False,0.082,0.052,1.682,0.429,1.0,2.66,5.65,9.64
+crossings,' crossings',,fades,,False,0.052,0.041,-1.647,0.188,-1.0,7.32,6.32,2.0
+城镇化,'城镇化',urbanization,fades,,False,0.052,0.072,-1.647,0.562,-1.0,7.32,4.32,2.0
+and,'\tand' | ' AND' | ' And' | ' and' | 'AND' | 'And' | 'and',,fades,,False,0.186,0.351,-1.61,0.752,-1.0,77.15,37.91,24.94
+downtown,' Downtown' | ' downtown',,fades,"broad, also unsteered",False,0.536,0.526,-1.596,0.008,-1.0,175.92,174.93,57.86
+翻译,'翻译',to translate,fades,,False,0.031,0.062,-1.585,1.0,-0.866,6.98,2.0,2.0
+的城市,'的城市',approx. of / city,fades,,False,0.175,0.227,-1.571,0.147,-1.0,33.59,30.26,10.97
+书店,'书店',bookstore,appears,,False,0.093,0.031,1.566,0.42,1.0,7.98,14.97,24.61
+一棵,'一棵',approx. one / classifier for…,fades,,False,0.031,0.052,-1.542,0.364,-1.0,10.64,7.98,3.33
+walking,' Walking' | ' walking' | 'Walking' | 'walking',,fades,,False,0.093,0.124,-1.539,0.512,-1.0,20.29,13.3,6.65
+途,'途',way,fades,,False,0.031,0.031,-1.499,0.381,-1.0,10.31,7.65,3.33
+帮我,'帮我',approx. to help / I,fades,,False,0.052,0.093,-1.489,0.893,-1.0,13.97,5.65,4.66
+names,'\tnames' | ' NAMES' | ' Names' | ' names' | 'Names' | 'names',,fades,,False,0.093,0.082,-1.435,0.043,-1.0,11.64,11.31,3.99
+描述,'描述',to describe,fades,,False,0.031,0.041,-1.424,0.437,-1.0,7.98,5.65,2.66
+森林,'森林',forest,fades,,False,0.062,0.062,-1.39,0.533,-1.0,15.63,10.31,5.65
+естественн,'естественн',,fades,,False,0.186,0.247,-1.386,0.478,-1.0,35.58,24.94,13.3
+博物馆,'博物馆',museum,fades,,False,0.072,0.052,-1.378,0.071,-1.0,14.63,13.97,5.32
+终点,'终点',the end,fades,,False,0.031,0.041,-1.366,0.867,-1.0,7.65,3.33,2.66
+的地图,'的地图',approx. of / map,fades,,False,0.247,0.278,-1.352,0.474,-1.0,52.54,37.25,20.29
+路口,'路口',crossing,fades,,False,0.175,0.237,-1.342,0.408,-1.0,41.24,30.93,15.96
+northwest,' Northwest' | ' northwest',,fades,,False,0.062,0.072,-1.333,0.368,-1.0,9.98,7.65,3.66
+巷,'巷',lane,appears,,False,0.113,0.052,1.298,0.185,1.0,5.65,7.32,14.63
+streets,' Streets' | ' streets',,fades,"broad, also unsteered",False,0.371,0.454,-1.274,0.121,-1.0,135.02,125.37,55.54
+instruction,' Instruction' | ' instruction' | 'instruction',,fades,,False,0.041,0.052,-1.272,0.552,-1.0,15.96,10.64,6.32
+direction,'\tdirection' | ' Direction' | ' direction' | 'Direction' | 'direction',,fades,,False,0.082,0.124,-1.267,0.316,-1.0,10.31,8.31,3.99
+alright,' Alright' | ' alright' | 'Alright',,appears,,False,0.062,0.031,1.249,0.419,1.0,6.98,11.31,17.29
+instructions,' Instructions' | ' instructions' | 'Instructions' | 'instructions',,fades,,False,0.062,0.072,-1.245,0.32,-1.0,28.27,22.95,11.64
+北方,'北方',north,fades,,False,0.041,0.052,-1.222,0.643,-1.0,7.65,4.66,2.99
+directions,' Directions' | ' directions' | 'Directions',,fades,,False,0.124,0.134,-1.206,0.439,-1.0,38.24,28.6,16.3
+intersect,' intersect' | 'intersect',,fades,,False,0.082,0.062,-1.189,0.125,-1.0,8.98,8.31,3.66
+精准,'精准',accurate,appears,,False,0.052,0.031,1.178,0.333,1.0,2.66,3.99,6.65
+north,' NORTH' | ' North' | ' north' | 'North' | 'north',,fades,"broad, also unsteered",False,0.268,0.32,-1.171,0.047,-1.0,63.52,61.86,27.93
+simple,'\tSimple' | ' SIMPLE' | ' Simple' | ' simple' | 'Simple' | 'simple',,fades,,False,0.031,0.021,-1.162,0.231,-1.0,7.32,6.32,2.99
+树枝,'树枝',branch,fades,,False,0.072,0.062,-1.149,0.143,-1.0,7.98,7.32,3.33
+位于,'位于',to be located at,fades,,False,0.062,0.062,-1.127,0.103,-1.0,17.29,16.3,7.65
+слуша,'слуша',,fades,,False,0.072,0.082,-1.064,0.944,-1.0,10.97,5.32,4.99
+erotische,' Erotische' | ' erotische',,appears,possible baseline,False,0.412,0.165,1.036,0.194,1.0,41.9,50.55,86.46
+oak,' Oak' | ' oak' | 'Oak',,fades,,False,0.155,0.124,-1.036,0.355,-1.0,19.62,15.96,9.31
+询问,'询问',to inquire,fades,,False,0.021,0.021,-1.028,0.615,-1.0,7.98,5.32,3.66
+坐落于,'坐落于',approx. to be… / surname…,fades,,False,0.041,0.041,-1.024,0.267,-1.0,9.31,7.98,4.32
+индивид,'индивид',,fades,,False,0.124,0.206,-1.018,0.645,-1.0,40.24,26.94,19.62
+fetisch,' fetisch',,appears,possible baseline,False,0.309,0.093,1.014,0.198,1.0,25.94,31.26,52.88
+时髦,'时髦',in vogue,,,False,0.103,0.0,3.966,1.273,0.5,0.0,9.31,7.32
+buildings,' Buildings' | ' buildings',,,,False,0.01,0.072,-3.559,1.037,-0.5,9.31,0.0,0.33
+lines,' Lines' | ' lines' | 'lines',,,,False,0.01,0.072,-3.074,1.038,-0.5,9.31,0.33,0.67
+是怎么,'是怎么',approx. correct / how?,,,False,0.062,0.01,3.034,1.278,0.5,0.33,7.98,6.32
+neighbors,' neighbors' | 'Neighbors' | 'neighbors',,,,False,0.155,0.134,-2.834,-0.37,-0.5,17.29,22.95,2.0
+right,'\tright' | ' RIGHT' | ' Right' | ' right' | 'RIGHT' | 'Right' | 'right',,,,False,0.175,0.041,2.807,3.394,0.5,1.33,38.58,12.3
+you,' YOU' | ' You' | ' you' | 'YOU' | 'You' | 'you',,,,False,0.186,0.134,-2.787,-0.323,-0.5,23.61,30.26,2.99
+sidewalk,' sidewalk',,,,False,0.062,0.052,-2.712,-0.32,-0.5,9.31,11.97,1.0
+things,' Things' | ' things' | 'Things' | 'things',,,possible baseline,False,0.258,0.021,2.662,3.917,0.5,1.0,32.26,8.98
+ῑ,'ῑ',,,,False,0.062,0.031,-2.534,-0.917,-0.5,4.32,7.98,0.33
+around,' Around' | ' around' | 'Around' | 'around',,,,False,0.01,0.041,-2.255,1.059,-0.5,6.65,0.67,1.0
+like,' LIKE' | ' Like' | ' like' | 'LIKE' | 'Like' | 'like',,,,False,0.082,0.031,2.252,1.156,0.5,2.33,14.63,12.97
+someone,' Someone' | ' someone' | 'Someone' | 'someone',,,,False,0.175,0.041,2.219,1.962,0.5,4.32,38.91,21.95
+half,' HALF' | ' Half' | ' half' | 'Half' | 'half',,,,False,0.062,0.021,-2.113,-3.0,-0.5,1.66,6.65,0.0
+town,' Town' | ' town' | 'Town' | 'town',,,"broad, also unsteered",False,0.361,0.258,-2.081,-0.819,-0.5,45.23,73.83,10.31
+起点,'起点',starting point,,,False,0.062,0.052,-2.07,-0.375,-0.5,9.98,12.97,2.0
+畅通,'畅通',unobstructed,,,False,0.031,0.031,-2.039,-0.214,-0.5,5.65,6.65,1.0
+every,' EVERY' | ' Every' | ' every' | 'Every' | 'every',,,,False,0.113,0.041,1.98,2.071,0.5,2.66,21.95,11.97
+was,' WAS' | ' Was' | ' was' | 'Was' | 'was',,,,False,0.031,0.031,-1.966,-0.437,-0.5,6.65,8.98,1.33
+城里,'城里',approx. city walls / lining,,,False,0.093,0.01,1.925,2.714,0.5,0.33,6.65,2.66
+just,' JUST' | ' Just' | ' just' | 'JUST' | 'Just' | 'just',,,possible baseline,False,0.32,0.052,1.921,2.63,0.5,4.99,45.23,20.29
+alphabetical,' alphabetical',,,,False,0.041,0.052,-1.919,-0.188,-0.5,13.97,15.96,3.33
+一步步,'一步步',approx. one / step by…,,,False,0.113,0.031,1.874,2.417,0.5,1.0,10.64,4.99
+coordinates,' Coordinates' | ' coordinates' | 'Coordinates' | 'coordinates',,,,False,0.093,0.113,-1.8,-0.167,-0.5,16.3,18.29,4.32
+很简单,'很简单',approx. very / simple,,,False,0.052,0.01,1.729,1.091,0.5,2.66,10.64,9.98
+gmaps,'gMaps',,,,False,0.093,0.021,1.715,4.25,0.5,0.67,11.97,3.33
+村镇,'村镇',hamlet (place),,,False,0.103,0.072,-1.687,-1.0,-0.5,4.32,7.65,1.0
+they,' THEY' | ' They' | ' they' | 'They' | 'they',,,,False,0.165,0.082,-1.673,-2.391,-0.5,10.64,28.93,2.99
+芝加哥,'芝加哥',"Chicago, USA",,,False,0.144,0.031,1.666,2.08,0.5,3.33,20.62,11.64
+wasn,' wasn',,,,False,0.062,0.021,1.647,1.25,0.5,2.0,8.65,7.32
+交通,'交通',to be connected,,,False,0.103,0.082,-1.585,-0.529,-0.5,7.98,10.97,2.33
+城镇,'城镇',town,,,False,0.041,0.113,-1.549,1.077,-0.5,12.64,3.33,3.99
+路程,'路程',route,,,False,0.021,0.041,-1.533,1.056,-0.5,8.65,2.33,2.66
+想象,'想象',to imagine,,,False,0.093,0.041,1.474,1.208,0.5,3.99,13.63,11.97
+地铁,'地铁',underground railway,,,False,0.103,0.041,1.378,1.143,0.5,5.32,15.96,14.63
+down,' DOWN' | ' Down' | ' down' | 'DOWN' | 'Down' | 'down',,,,False,0.062,0.01,1.343,1.9,0.5,1.66,7.98,4.99
+iéndo,'iéndo',,,,False,0.072,0.041,-1.338,-0.154,-0.5,6.65,7.32,2.33
+here,' HERE' | ' Here' | ' here' | 'HERE' | 'Here' | 'here',,,,False,0.082,0.031,1.28,1.2,0.5,2.99,8.98,7.98
+east,' EAST' | ' East' | ' east' | 'East' | 'east',,,"broad, also unsteered",False,0.268,0.278,-1.248,-0.206,-0.5,80.48,90.12,33.59
+mayor,' Mayor' | ' mayor' | 'Mayor',,,,False,0.113,0.021,-1.22,-10.0,-0.5,0.67,7.32,0.0
+海边,'海边',coast,,,False,0.103,0.072,-1.162,-1.692,-0.5,7.32,14.63,2.99
+地点,'地点',place,,,False,0.072,0.041,-1.047,-0.75,-0.5,4.66,6.65,2.0
+路过,'路过',to pass by,,,False,0.062,0.062,-1.023,-0.25,-0.5,9.98,11.31,4.66
+这条路,'这条路',approx. (pronoun) this / strip…,,,False,0.165,0.052,0.99,0.405,1.0,11.97,16.96,24.28
+looking,' Looking' | ' looking' | 'Looking' | 'looking',,,,False,0.021,0.021,-0.973,1.0,-0.866,8.31,3.99,3.99
+旅程,'旅程',journey,,,False,0.052,0.072,-0.966,0.258,-1.0,20.62,17.96,10.31
+then,'\tthen' | ' THEN' | ' Then' | ' then' | 'THEN' | 'Then' | 'then',,,,False,0.072,0.031,0.965,1.8,0.5,2.99,8.98,6.32
+地形,'地形',topography,,,False,0.093,0.093,-0.961,0.909,-1.0,29.6,16.3,14.97
+something,' Something' | ' something' | 'Something' | 'something',,,,False,0.196,0.01,0.951,8.286,0.5,2.0,21.28,4.32
+县城,'县城',county seat,,,False,0.247,0.144,-0.938,-1.658,-0.5,25.94,46.89,13.3
+的答案,'的答案',approx. of / answer,,,False,0.062,0.062,-0.937,0.375,-1.0,10.64,8.65,5.32
+简单,'简单',simple,,,False,0.093,0.031,0.913,0.441,1.0,12.3,17.29,23.61
+метро,' метро',,,,False,0.062,0.041,0.893,2.0,0.5,2.99,8.98,5.99
+横向,'横向',horizontal,,,False,0.113,0.093,-0.893,0.067,-1.0,10.31,9.98,5.32
+艺术品,'艺术品',art piece,,,False,0.021,0.021,0.893,1.556,0.5,2.99,7.65,5.99
+west,' WEST' | ' West' | ' west' | 'WEST' | 'West' | 'west',,,,False,0.206,0.196,-0.888,-0.169,-0.5,50.88,54.87,27.27
+距离,'距离',distance,,,False,0.082,0.021,0.87,0.5,1.0,4.32,6.32,8.31
+南,'南',surname Nan,,,False,0.052,0.031,0.86,0.727,1.0,3.99,6.65,7.65
+sixth,' Sixth' | ' sixth',,,,False,0.041,0.041,-0.834,-0.556,-0.5,6.32,7.98,3.33
+西北,'西北',northwest,,,False,0.082,0.062,-0.834,-0.333,-0.5,6.32,7.32,3.33
+blocks,' Blocks' | ' blocks' | 'Blocks' | 'blocks',,,,False,0.072,0.093,-0.827,0.5,-1.0,8.65,6.65,4.66
+东南,'东南',southeast,,,False,0.124,0.072,0.827,1.5,0.5,4.66,10.64,8.65
+посколь,' посколь',,,,False,0.103,0.175,-0.826,0.538,-1.0,29.27,22.28,16.3
+停车场,'停车场',parking lot,,,False,0.113,0.062,0.825,1.318,0.5,8.98,18.62,16.3
+坐标,'坐标',variant of 座標|坐标[zuo4 biao1],,,False,0.113,0.082,-0.82,-1.389,-0.5,13.3,21.62,7.32
+告诉我,'告诉我',approx. to tell / I,,,False,0.031,0.021,0.813,0.429,1.0,5.65,7.65,10.31
+roads,' Roads' | ' roads' | 'roads',,,,False,0.082,0.082,-0.795,0.406,-1.0,24.61,20.29,13.97
+树叶,'树叶',tree leaves,,,False,0.072,0.062,-0.788,-0.15,-0.5,15.3,16.3,8.65
+城市的,'城市的',approx. city / of,,,False,0.155,0.186,-0.787,-0.091,-0.5,25.61,26.6,14.63
+图书馆,'图书馆',library,,,False,0.144,0.113,-0.779,-0.621,-0.5,22.61,28.6,12.97
+tree,'\ttree' | ' Tree' | ' tree' | 'TREE' | 'Tree' | 'tree',,,,False,0.062,0.072,-0.77,0.611,-1.0,13.97,10.31,7.98
+的距离,'的距离',approx. of / distance,,,False,0.072,0.031,0.757,1.3,0.5,4.32,8.65,7.65
+美术馆,'美术馆',art gallery,,,False,0.062,0.052,-0.753,-0.0,-0.866,9.31,9.31,5.32
+这座城市,'这座城市',approx. (pronoun) this / seat…,,,False,0.062,0.062,-0.721,1.083,-0.5,9.64,5.32,5.65
+名字,'名字',name (of a person or…,,,False,0.072,0.062,0.714,1.875,0.5,3.66,8.65,6.32
+徒步,'徒步',to be on foot,,,False,0.134,0.103,-0.687,0.069,-1.0,24.94,24.28,15.3
+楼房,'楼房',a building of two or…,,,False,0.093,0.062,0.686,2.286,0.5,3.33,8.65,5.65
+дерев,' дерев',,,,False,0.041,0.021,-0.673,-0.364,-0.5,9.31,10.64,5.65
+街道,'街道',street,,"broad, also unsteered",False,0.278,0.34,-0.664,0.776,-1.0,76.16,54.21,47.89
+地图,'地图',map,,"broad, also unsteered",False,0.33,0.361,-0.649,0.477,-1.0,78.48,64.85,49.88
+公园,'公园',park (for public recreation),,,False,0.175,0.134,-0.643,-1.625,-0.5,14.3,22.95,8.98
+事儿,'事儿',one's employment,,,False,0.052,0.021,0.623,1.0,0.866,5.65,8.98,8.98
+回答,'回答',to reply,,,False,0.052,0.072,-0.614,0.615,-1.0,11.97,9.31,7.65
+向东,'向东',approx. surname Xiang / surname…,,,False,0.155,0.196,-0.593,0.465,-1.0,41.9,35.25,27.6
+so,'\tSo' | ' SO' | ' So' | ' so' | 'SO' | 'So' | 'so',,,,False,0.072,0.041,-0.562,-5.8,-0.5,4.66,14.3,2.99
+交汇,'交汇',to flow together,,,False,0.155,0.062,0.553,0.8,1.0,17.29,23.94,25.61
+etc,' etc' | 'etc',,,,False,0.031,0.041,-0.543,0.125,-1.0,7.98,7.65,5.32
+双向,'双向',bidirectional,,,False,0.041,0.021,0.543,0.875,1.0,5.32,7.65,7.98
+unnamed,' unnamed' | 'Unnamed',,,,False,0.062,0.072,-0.518,-0.375,-0.5,8.31,9.31,5.65
+东,'东',surname Dong,,,False,0.062,0.041,0.518,0.0,0.866,5.65,5.65,8.31
+почем,' Почем' | ' почем',,,,False,0.134,0.082,-0.517,-0.455,-0.5,11.64,13.3,7.98
+pornost,' pornost',,,,False,0.093,0.134,-0.492,0.083,-1.0,13.3,12.97,9.31
+way,' WAY' | ' Way' | ' way' | 'WAY' | 'Way' | 'way',,,,False,0.052,0.01,-0.485,-18.0,-0.5,0.67,6.65,0.33
+路线,'路线',itinerary,,,False,0.144,0.155,-0.483,0.611,-1.0,41.57,34.25,29.6
+is,' IS' | ' Is' | ' is' | 'Is' | 'is',,,,False,0.031,0.031,-0.475,1.125,-0.5,8.98,5.99,6.32
+avenue,' Avenue' | ' avenue',,,,False,0.134,0.155,-0.466,0.2,-1.0,29.6,27.93,21.28
+在哪里,'在哪里',approx. to exist / where?,,,False,0.072,0.072,-0.466,-2.0,-0.5,4.32,6.98,2.99
+地段,'地段',section,,,False,0.082,0.031,0.466,3.5,0.5,2.99,7.65,4.32
+路径,'路径',path,,,False,0.082,0.072,-0.466,1.167,-0.5,13.97,9.31,9.98
+maple,' Maple' | ' maple',,,,False,0.082,0.103,-0.457,-0.091,-0.5,12.97,13.3,9.31
+street,' STREET' | ' Street' | ' street' | 'Street' | 'street',,,"broad, also unsteered",False,0.433,0.402,-0.457,-1.113,-0.5,86.46,112.74,62.85
+街,'街',street,,"broad, also unsteered",False,0.309,0.206,0.45,0.86,1.0,44.9,59.2,61.52
+south,' SOUTH' | ' South' | ' south' | 'South' | 'south',,,,False,0.186,0.155,-0.445,-1.464,-0.5,34.59,48.22,25.27
+somewhere,' somewhere',,,,False,0.186,0.082,0.441,5.176,0.5,15.3,44.56,20.95
+怎么做,'怎么做',approx. how? / to make,,,False,0.041,0.021,-0.436,-4.333,-0.5,3.33,7.65,2.33
+哪儿,'哪儿',where?,,,False,0.134,0.031,0.431,9.0,0.5,3.33,15.3,4.66
+简单的,'简单的',approx. simple / of,,,False,0.062,0.031,0.428,1.286,0.5,12.97,18.96,17.63
+提问,'提问',to question,,,False,0.041,0.041,-0.421,0.091,-1.0,13.97,13.63,10.31
+當您在,'當您在',approx. to be / you…,,,False,0.227,0.134,0.42,3.75,0.5,11.31,26.27,15.3
+大街,'大街',street,,"broad, also unsteered",False,0.32,0.227,0.419,1.521,0.5,46.89,71.17,62.85
+neighbor,' Neighbor' | ' neighbor' | 'Neighbor' | 'neighbor',,,,False,0.237,0.165,-0.418,-1.947,-0.5,24.61,36.91,18.29
+pine,' Pine' | ' pine' | 'pine',,,,False,0.103,0.134,-0.41,-0.308,-0.5,16.96,18.29,12.64
+trying,' Trying' | ' trying' | 'Trying' | 'trying',,,,False,0.041,0.01,-0.408,-0.375,-0.5,10.31,11.31,7.65
+рань,' рань',,,,False,0.052,0.041,-0.4,-1.75,-0.5,4.99,7.32,3.66
+榆,'榆',elm,,,False,0.062,0.062,0.382,0.6,1.0,4.99,5.99,6.65
+alphabet,' Alphabet' | ' alphabet' | 'alphabet',,,,False,0.062,0.052,-0.376,-2.571,-0.5,9.64,15.63,7.32
+公交车,'公交车',public transport vehicle,,,False,0.155,0.103,-0.363,-4.0,-0.5,9.98,19.29,7.65
+网格,'网格',grid,,,False,0.093,0.093,-0.355,0.5,-1.0,8.65,7.65,6.65
+进城,'进城',to go to town,,possible baseline,False,0.402,0.175,0.354,4.516,0.5,36.58,83.14,46.89
+指令,'指令',to order,,,False,0.052,0.052,-0.338,0.286,-1.0,10.64,9.98,8.31
+南北,'南北',north and south,,,False,0.113,0.082,0.336,1.875,0.5,9.64,14.63,12.3
+邻居,'邻居',neighbor,,,False,0.134,0.093,0.333,0.8,1.0,12.3,14.97,15.63
+second,' SECOND' | ' Second' | ' second' | 'SECOND' | 'Second' | 'second',,,,False,0.062,0.062,0.329,0.2,1.0,5.99,6.32,7.65
+are,' ARE' | ' Are' | ' are' | 'ARE' | 'Are' | 'are',,,,False,0.052,0.062,-0.327,0.143,-1.0,10.97,10.64,8.65
+馆,'馆',variant of 館|馆[guan3],,,False,0.052,0.062,-0.294,0.5,-1.0,10.31,9.31,8.31
+between,' BETWEEN' | ' Between' | ' between' | 'Between' | 'between',,,,False,0.082,0.113,0.285,-0.5,0.5,8.65,7.65,10.64
+limburg,' limburg',,,,False,0.175,0.113,-0.259,-6.0,-0.5,11.64,23.61,9.64
+it,'\tIt' | '\tit' | ' IT' | ' It' | ' iT' | ' it' | 'It' | 'iT' | 'it',,,,False,0.124,0.041,0.255,8.0,0.5,4.66,12.64,5.65
+方向,'方向',direction,,,False,0.082,0.041,0.255,2.333,0.5,4.66,6.98,5.65
+城市,'城市',city,,,False,0.093,0.103,0.247,1.0,0.866,11.97,14.3,14.3
+树,'树',tree,,,False,0.082,0.082,-0.243,0.3,-1.0,20.95,19.95,17.63
+intersection,' Intersection' | ' intersection' | 'Intersection' | 'intersection',,,,False,0.093,0.082,-0.238,-0.833,-0.5,12.64,14.3,10.64
+步行,'步行',to go on foot,,"broad, also unsteered",False,0.299,0.258,-0.232,-1.531,-0.5,71.17,87.46,60.53
+elm,' Elm' | ' elm' | 'elm',,,,False,0.062,0.072,-0.231,0.167,-1.0,12.97,12.64,10.97
+大道,'大道',main street,,,False,0.082,0.082,-0.219,1.0,-0.866,11.31,9.64,9.64
+fifth,' Fifth' | ' fifth',,,,False,0.052,0.031,-0.217,-0.0,-0.866,6.65,6.65,5.65
+doesn,' Doesn' | ' doesn' | 'doesn',,,,False,0.072,0.052,-0.214,-4.5,-0.5,4.32,7.32,3.66
+going,' Going' | ' going' | 'Going' | 'going',,,,False,0.134,0.052,0.214,9.5,0.5,3.66,9.98,4.32
+thinking,' Thinking' | ' thinking' | 'Thinking' | 'thinking',,,,False,0.062,0.052,0.214,6.0,0.5,3.66,7.65,4.32
+街上,'街上',on the street,,,False,0.124,0.082,-0.213,1.2,-0.5,11.64,9.64,9.98
+森林公园,'森林公园',approx. forest / park (for…,,,False,0.093,0.072,-0.187,-5.571,-0.5,18.62,31.59,16.3
+地标,'地标',landmark,,,False,0.103,0.082,-0.172,-1.75,-0.5,11.31,13.63,9.98
+地处,'地处',to be located at,,,False,0.072,0.052,-0.165,-3.0,-0.5,5.65,7.65,4.99
+思考,'思考',to reflect on,,,False,0.041,0.031,-0.163,-1.0,-0.5,11.97,13.3,10.64
+reddit,' Reddit' | ' reddit' | 'Reddit' | 'reddit',,,,False,0.052,0.041,-0.156,-1.0,-0.5,5.99,6.65,5.32
+树木,'树木',tree,,,False,0.072,0.062,0.135,3.0,0.5,9.64,12.64,10.64
+third,' THIRD' | ' Third' | ' third' | 'Third' | 'third',,,,False,0.062,0.052,0.134,0.0,0.866,6.32,6.32,6.98
+there,' THERE' | ' There' | ' there' | 'There' | 'there',,,,False,0.103,0.082,-0.128,-0.5,-0.5,7.32,7.65,6.65
+okay,' Okay' | ' okay' | 'Okay' | 'okay',,,,False,0.072,0.062,0.098,2.0,0.5,13.63,15.63,14.63
+сосед,' сосед',,,,False,0.072,0.041,-0.085,-9.0,-0.5,5.32,8.31,4.99
+的方向,'的方向',approx. of / direction,,,False,0.093,0.062,0.069,7.0,0.5,6.32,8.65,6.65
+平行,'平行',on an equal footing,,,False,0.052,0.041,-0.063,2.0,-0.5,7.32,6.65,6.98
+幻想,'幻想',to fantasize,,,False,0.031,0.021,-0.063,3.0,-0.5,7.32,6.32,6.98
+街区,'街区',block,,"broad, also unsteered",False,0.608,0.474,0.048,5.235,0.5,168.27,197.87,173.93
+everyone,' Everyone' | ' everyone' | 'Everyone' | 'everyone',,,,False,0.072,0.021,0.0,,0.0,1.33,14.97,1.33
+города,' города',,,,False,0.093,0.031,0.0,,0.0,2.66,7.65,2.66
+パパ活,'パパ活',untranslated fragment,,,False,0.113,0.093,0.0,,0.0,10.31,10.97,10.31
+使用網路,'使用網路',approx. to use / (Tw)…,,"broad, also unsteered",False,0.392,0.258,0.0,,0.0,28.27,57.86,28.27
+这儿,'这儿',here,,,False,0.072,0.031,0.0,,0.0,4.66,8.65,4.66

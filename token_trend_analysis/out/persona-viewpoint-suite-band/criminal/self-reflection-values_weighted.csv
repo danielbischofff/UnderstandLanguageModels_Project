@@ -1,0 +1,137 @@
+word,variants,gloss,trend,flag,in_vector_readout,spread_steered,spread_unsteered,log2fc,onset,rho,unsteered_permille,β=0.25_permille,β=0.1_permille,β=0_permille
+empathy,' empathy',,fades,,False,0.0,0.107,-4.48,1.0,-0.775,10.66,0.0,0.0,0.0
+something,' Something' | ' something' | 'Something' | 'something',,appears,possible baseline,False,0.321,0.0,4.089,0.803,1.0,0.0,6.43,7.37,8.01
+life,' LIFE' | ' Life' | ' life' | 'Life' | 'life',,appears,,False,0.143,0.036,2.457,0.855,1.0,0.43,4.02,4.33,4.63
+你的,'你的',"approx. you (informal,… / of",fades,,False,0.143,0.179,-1.976,0.811,-1.0,7.49,2.66,1.92,1.53
+pretty,' Pretty' | ' pretty' | 'PRETTY' | 'Pretty' | 'pretty',,,possible baseline,True,0.321,0.107,4.911,1.087,0.4,0.58,34.66,31.57,31.93
+挑衅,'挑衅',to provoke,,,False,0.143,0.036,4.729,0.967,0.8,0.15,16.09,15.68,16.62
+tell,' Tell' | ' tell' | 'Tell' | 'tell',,,,False,0.143,0.0,4.369,1.106,0.2,0.0,10.88,10.51,9.83
+maybe,' Maybe' | ' maybe' | 'Maybe' | 'maybe',,,possible baseline,False,0.286,0.036,4.289,1.187,0.2,0.15,14.36,12.69,12.12
+everything,' Everything' | ' everything' | 'Everything' | 'everything',,,possible baseline,False,0.25,0.0,4.279,1.035,0.4,0.0,9.53,9.53,9.2
+伪造,'伪造',to forge,,,True,0.071,0.0,4.251,1.042,0.2,0.0,9.39,9.02,9.02
+他妈,'他妈',approx. him / ma,,possible baseline,True,0.429,0.0,4.115,1.304,0.2,0.0,10.64,8.62,8.16
+vibe,' vibe',,,,False,0.071,0.0,4.107,1.077,0.4,0.0,8.74,8.06,8.12
+just,' JUST' | ' Just' | ' just' | 'JUST' | 'Just' | 'just',,,possible baseline,False,0.286,0.0,3.743,1.066,0.4,0.0,6.61,7.19,6.2
+erotik,' Erotik' | ' erotik',,,,False,0.071,0.179,-3.718,1.003,-0.4,7.76,0.1,0.47,0.13
+emotionally,' emotionally',,,,False,0.036,0.214,-3.686,1.014,-0.316,7.25,0.0,0.1,0.1
+really,' REALLY' | ' Really' | ' really' | 'Really' | 'really',,,possible baseline,True,0.429,0.107,3.682,1.112,0.4,0.76,17.31,17.94,15.65
+yeah,' Yeah' | ' yeah' | 'Yeah' | 'yeah',,,possible baseline,True,0.357,0.0,3.674,1.111,0.4,0.0,6.54,5.47,5.88
+gonna,' gonna',,,,True,0.214,0.0,3.672,1.154,0.4,0.0,6.77,5.69,5.87
+priorit,' priorit',,,,False,0.036,0.179,-3.561,1.01,-0.2,8.41,0.17,0.2,0.26
+没人,'没人',approx. not / person,,,False,0.214,0.0,3.519,1.323,0.2,0.0,6.92,5.91,5.23
+primarily,' primarily',,,,False,0.036,0.143,-3.454,1.034,-0.316,7.78,0.0,0.0,0.26
+kinda,' kinda',,,,True,0.107,0.0,3.298,1.413,0.2,0.0,6.24,4.65,4.42
+нарко,' нарко',,,,False,0.107,0.107,3.176,1.045,0.4,0.69,10.67,9.76,10.24
+alright,' Alright' | ' alright' | 'Alright',,,,False,0.179,0.071,3.137,1.004,0.2,2.37,24.8,24.78,24.72
+wasn,' wasn',,,possible baseline,False,0.25,0.036,3.112,1.067,0.2,0.51,8.75,8.35,8.24
+here,' HERE' | ' Here' | ' here' | 'HERE' | 'Here' | 'here',,,,False,0.179,0.107,3.061,1.064,0.2,0.82,11.17,10.89,10.56
+wouldn,' Wouldn' | ' wouldn',,,,False,0.179,0.0,3.06,1.135,0.2,0.0,4.16,3.75,3.67
+是怎么,'是怎么',approx. correct / how?,,,False,0.179,0.107,2.97,0.964,0.8,0.74,8.94,9.47,9.25
+事儿,'事儿',one's employment,,possible baseline,False,0.25,0.071,2.957,1.184,0.2,1.41,16.67,15.41,14.3
+question,' QUESTION' | ' Question' | ' question' | 'Question' | 'question',,,,False,0.107,0.143,-2.876,1.051,-0.2,7.4,0.23,0.55,0.58
+geile,' Geile' | ' geile',,,,True,0.143,0.071,2.834,1.031,0.2,1.18,11.77,11.6,11.45
+tonight,' Tonight' | ' tonight' | 'Tonight',,,,False,0.143,0.036,2.771,1.4,0.2,0.13,5.24,4.87,3.78
+人际,'人际',human relationships,,,False,0.143,0.25,-2.638,1.046,-0.2,8.62,0.62,0.64,0.96
+didn,' Didn' | ' didn' | 'Didn' | 'didn',,,possible baseline,False,0.286,0.107,2.542,1.055,0.4,2.76,19.36,17.41,18.5
+lgbtq,' LGBTQ',,,,False,0.071,0.321,-2.533,1.003,-0.316,9.28,1.17,1.19,1.19
+讨论,'讨论',to discuss,,,False,0.036,0.107,-2.515,1.032,-0.2,10.87,1.19,1.4,1.49
+如何,'如何',how,,,False,0.036,0.107,-2.487,0.991,-0.8,10.64,1.57,1.48,1.49
+别人,'别人',other people,,,False,0.143,0.071,2.358,1.215,0.2,0.5,5.49,4.98,4.61
+during,' During' | ' during' | 'During' | 'during',,,,False,0.107,0.214,-2.228,1.008,-0.4,10.54,1.79,1.63,1.86
+是你,'是你',"approx. correct / you (informal,…",,,False,0.143,0.071,2.207,1.074,0.4,0.39,3.83,3.92,3.59
+是否,' 是否' | '是否',whether (or not),,,False,0.071,0.071,-2.191,1.0,-0.8,6.19,0.97,0.95,0.97
+responses,' Responses' | ' responses' | 'Responses' | 'responses',,,,False,0.107,0.071,-2.182,1.04,-0.2,21.86,3.73,3.92,4.43
+询问,'询问',to inquire,,,False,0.071,0.071,-2.159,1.018,-0.4,13.31,2.4,2.97,2.59
+as,'\tas' | ' AS' | ' As' | ' as' | 'As' | 'as',,,,False,0.107,0.143,-2.102,0.97,-0.8,3.93,0.63,0.36,0.53
+情感,'情感',feeling,,,False,0.179,0.214,-2.077,1.129,-0.2,12.24,1.27,1.61,2.52
+spend,' Spend' | ' spend',,,,False,0.036,0.071,-2.076,0.996,-0.8,11.15,2.3,2.38,2.26
+价值观,'价值观',value system,,,False,0.071,0.107,-2.054,1.049,-0.2,11.59,1.96,2.4,2.41
+regarding,' Regarding' | ' regarding' | 'Regarding',,,,False,0.036,0.143,-1.965,1.1,-0.2,5.25,0.55,0.79,0.97
+没办法,'没办法',there is nothing to be…,,,False,0.107,0.036,1.911,0.98,0.8,2.21,9.55,9.0,9.7
+这儿,'这儿',here,,possible baseline,False,0.321,0.071,1.874,1.105,0.4,3.86,16.71,15.47,15.49
+哪儿,'哪儿',where?,,,False,0.143,0.071,1.636,1.227,0.2,0.73,3.92,3.61,3.33
+保護政策,'保護政策',approx. to protect / policy,,,True,0.214,0.071,1.63,1.172,0.2,3.15,12.1,11.37,10.79
+for,'\tfor' | ' FOR' | ' For' | ' for' | 'For' | 'for',,,,False,0.071,0.214,-1.586,1.065,-0.2,5.39,1.21,1.24,1.46
+hadn,' hadn',,,,False,0.143,0.071,1.583,1.168,0.2,1.02,4.57,4.26,4.06
+matters,' Matters' | ' matters',,,possible baseline,False,0.321,0.107,1.454,1.137,0.2,6.03,18.94,18.14,17.39
+當您在,'當您在',approx. to be / you…,,possible baseline,False,0.25,0.071,1.449,1.058,0.4,3.16,9.86,10.32,9.5
+things,' Things' | ' things' | 'Things' | 'things',,,possible baseline,False,0.464,0.143,1.398,0.889,0.8,4.54,11.86,13.04,12.77
+are,' ARE' | ' Are' | ' are' | 'ARE' | 'Are' | 'are',,,,False,0.071,0.179,-1.375,1.082,-0.2,8.83,2.63,2.86,3.1
+response,' RESPONSE' | ' Response' | ' response' | 'Response' | 'response',,,,False,0.107,0.107,-1.353,1.034,-0.4,5.26,1.64,1.55,1.76
+的答案,'的答案',approx. of / answer,,,False,0.179,0.143,1.312,1.022,0.4,2.67,7.48,7.06,7.37
+isn,' Isn' | ' isn' | 'Isn',,,possible baseline,False,0.357,0.143,1.302,1.232,0.2,4.91,14.68,14.29,12.84
+once,' Once' | ' once' | 'Once' | 'once',,,,False,0.143,0.107,1.301,1.09,0.4,3.45,9.76,10.51,9.24
+情绪,'情绪',mood,,,False,0.107,0.143,-1.228,1.047,-0.2,10.9,4.06,4.2,4.37
+怎么做,'怎么做',approx. how? / to make,,,False,0.179,0.143,1.216,1.022,0.4,1.48,4.15,4.73,4.09
+is,'\tis' | ' IS' | ' Is' | ' is' | 'Is' | 'is',,,,False,0.179,0.25,-1.104,1.044,-0.2,12.18,5.1,5.4,5.4
+that,'\tthat' | ' THAT' | ' That' | ' that' | 'That' | 'that',,,"broad, also unsteered",False,0.393,0.214,1.079,0.928,0.8,2.79,6.19,6.74,6.45
+someone,' Someone' | ' someone' | 'Someone' | 'someone',,,possible baseline,False,0.429,0.107,1.055,1.039,0.4,27.21,58.23,58.44,57.07
+choice,' Choice' | ' choice' | 'Choice' | 'choice',,,,False,0.143,0.143,-1.023,0.876,-0.8,5.77,2.98,3.06,2.59
+那儿,'那儿',there,,,False,0.214,0.107,1.023,1.103,0.2,7.9,17.47,16.6,16.58
+answer,' Answer' | ' answer' | 'Answer' | 'answer',,,,False,0.214,0.286,-0.994,0.986,-0.8,53.26,26.86,25.51,26.48
+crafting,' Crafting' | ' crafting',,,,False,0.071,0.036,0.976,0.601,1.0,2.81,4.74,5.21,6.02
+於,'於',(of time or place) in,,,False,0.143,0.179,-0.916,0.859,-1.0,7.65,4.36,3.91,3.82
+什么时候,'什么时候',when?,,,False,0.143,0.071,0.888,0.973,0.8,3.38,6.59,7.13,6.67
+为啥,'为啥',dialectal equivalent of 為什麼|为什么[wei4 shen2…,,,False,0.143,0.071,0.872,1.716,0.2,1.04,3.24,2.41,2.32
+whether,' WHETHER' | ' Whether' | ' whether' | 'Whether' | 'whether',,,,False,0.143,0.143,-0.862,1.007,-0.4,26.97,14.53,14.21,14.61
+抉择,'抉择',to choose (literary),,,False,0.143,0.107,0.861,1.13,0.4,7.54,14.96,15.08,14.11
+fetisch,' fetisch',,,,False,0.143,0.143,-0.857,0.787,-1.0,12.72,8.06,7.42,6.8
+瞭解並,'瞭解並',approx. variant of… / and,,,True,0.214,0.107,-0.857,0.988,-0.8,9.73,5.2,5.42,5.15
+the,'\tthe' | ' THE' | ' The' | ' the' | 'The' | 'the',,,"broad, also unsteered",False,0.321,0.429,-0.819,1.134,-0.2,31.76,15.92,16.23,17.79
+是什么,'是什么',approx. correct / what?,,,False,0.143,0.107,0.768,1.15,0.4,4.18,7.96,7.35,7.47
+为什么要,'为什么要',approx. why? / to coerce,,,False,0.071,0.071,0.755,1.042,0.2,2.24,4.21,4.15,4.13
+people,' PEOPLE' | ' People' | ' people' | 'People' | 'people',,,,False,0.214,0.214,-0.72,1.142,-0.4,11.18,5.94,6.74,6.59
+对话,'对话',to talk (with sb),,,False,0.214,0.286,-0.689,1.142,-0.2,7.93,4.27,4.53,4.73
+响应,'响应',to respond to,,,False,0.107,0.071,-0.647,0.902,-0.8,8.53,5.58,5.22,5.26
+你觉得,'你觉得',"approx. you (informal,… / to…",,,False,0.179,0.25,-0.643,0.871,-1.0,20.64,14.01,13.87,13.04
+doesn,' Doesn' | ' doesn' | 'doesn',,,possible baseline,False,0.25,0.107,0.586,0.944,0.8,2.97,4.61,5.17,4.71
+today,' TODAY' | ' Today' | ' today' | 'Today' | 'today',,,,False,0.107,0.071,0.578,0.807,0.8,2.62,3.86,4.22,4.16
+怎样,'怎样',how,,,False,0.107,0.071,-0.548,0.936,-1.0,3.91,2.6,2.58,2.51
+when,'\twhen' | ' WHEN' | ' When' | ' when' | 'When' | 'when',,,"broad, also unsteered",False,0.393,0.464,-0.518,1.1,-0.2,57.87,38.48,38.59,40.25
+ㅤ,'ㅤ',,,,False,0.214,0.179,-0.503,1.106,-0.4,28.46,19.02,20.11,19.93
+是谁,'是谁',approx. correct / who,,,False,0.036,0.036,0.494,1.514,0.2,5.28,8.86,8.49,7.65
+whom,' whom',,,,False,0.071,0.071,-0.49,1.067,-0.4,8.55,5.77,5.95,5.94
+how,' HOW' | ' How' | ' how' | 'HOW' | 'How' | 'how',,,"broad, also unsteered",False,0.5,0.536,-0.478,1.035,-0.2,56.36,39.76,40.05,40.33
+choosing,' Choosing' | ' choosing' | 'Choosing',,,,False,0.071,0.143,-0.462,1.024,-0.4,35.97,25.74,24.66,25.98
+当你,'当你',approx. (onom.) dong / you…,,,False,0.143,0.179,0.455,1.121,0.2,5.38,7.82,7.72,7.55
+影响力,'影响力',influence,,,False,0.143,0.214,-0.454,1.466,-0.2,9.94,5.81,6.21,7.12
+decisions,' decisions',,,,False,0.179,0.214,-0.452,1.169,-0.2,28.23,19.2,19.62,20.5
+缐,'缐',untranslated,,,False,0.179,0.143,-0.452,1.298,-0.2,6.53,4.08,4.46,4.64
+ˈ,'ˈ',,,,False,0.143,0.179,0.444,0.264,1.0,7.97,8.78,10.9,11.02
+who,' WHO' | ' Who' | ' who' | 'WHO' | 'Who' | 'who',,,,False,0.179,0.071,-0.443,0.913,-0.8,27.82,20.98,19.52,20.33
+对你,'对你',"approx. right / you (informal,…",,"broad, also unsteered",False,0.25,0.214,-0.44,0.803,-1.0,5.95,4.59,4.32,4.25
+什么样的,'什么样的',approx. what kind? / of,,"broad, also unsteered",False,0.286,0.214,0.394,0.952,0.8,21.98,28.71,28.5,29.05
+4,'4',,,,False,0.214,0.214,0.389,0.71,1.0,4.0,4.98,5.26,5.39
+deciding,' deciding',,,,False,0.107,0.143,-0.367,1.079,-0.4,12.76,9.55,9.83,9.78
+you,' YOU' | ' You' | ' you' | 'YOU' | 'You' | 'you',,,"broad, also unsteered",False,0.571,0.429,0.317,0.987,0.8,23.06,28.77,30.66,28.85
+choices,' Choices' | ' choices' | 'Choices' | 'choices',,,"broad, also unsteered",False,0.25,0.357,-0.275,1.819,-0.2,28.23,19.15,20.1,23.24
+choose,' Choose' | ' choose' | 'Choose' | 'choose',,,,False,0.214,0.179,-0.263,0.879,-1.0,10.87,9.2,9.1,8.98
+what,' WHAT' | ' What' | ' what' | 'WHAT' | 'What' | 'what',,,"broad, also unsteered",False,0.714,0.536,0.245,0.604,1.0,53.81,59.87,63.41,63.85
+的人生,'的人生',approx. of / life (one's…,,,False,0.143,0.143,-0.243,0.671,-0.8,6.66,5.91,5.41,5.55
+erotische,' Erotische',,,"broad, also unsteered",False,0.321,0.286,-0.241,0.965,-0.8,53.69,45.65,45.32,45.36
+思考,'思考',to reflect on,,,False,0.107,0.143,-0.226,0.571,-1.0,29.55,27.06,25.8,25.2
+5,'5',,,"broad, also unsteered",False,0.25,0.214,-0.219,1.049,-0.4,3.85,3.2,3.19,3.23
+your,' YOUR' | ' Your' | ' your' | 'YOUR' | 'Your' | 'your',,,"broad, also unsteered",False,0.643,0.5,0.217,1.127,0.4,54.92,65.05,66.82,63.91
+okay,' Okay' | ' okay' | 'Okay' | 'okay',,,,False,0.179,0.179,-0.209,1.236,-0.4,13.94,11.53,11.38,11.99
+and,'\tAND' | '\tand' | ' AND' | ' And' | ' and' | 'AND' | 'And' | 'and',,,,False,0.214,0.286,0.183,-0.725,0.4,5.19,4.64,5.03,5.96
+answers,' Answers' | ' answers' | 'Answers',,,,False,0.214,0.179,-0.181,0.197,-0.4,8.1,7.9,8.18,7.08
+的回答,'的回答',approx. of / to reply,,"broad, also unsteered",False,0.25,0.214,-0.169,-0.04,-0.8,8.76,8.8,8.58,7.73
+回答,'回答',to reply,,,False,0.214,0.286,-0.133,1.035,-0.4,29.75,27.0,28.17,27.09
+什么,'什么',what?,,,False,0.179,0.107,-0.126,-0.319,-0.8,3.87,3.99,3.84,3.51
+decision,' Decision' | ' decision' | 'Decision' | 'decision',,,,False,0.143,0.143,-0.125,1.801,-0.4,4.69,3.92,3.9,4.26
+3,'3',,,,False,0.179,0.25,-0.123,1.374,-0.4,7.01,6.16,6.56,6.39
+提问,'提问',to question,,"broad, also unsteered",False,0.321,0.179,-0.117,1.729,-0.2,34.89,30.14,31.48,32.14
+situations,' situations',,,,False,0.143,0.071,0.113,0.998,0.8,7.12,7.74,7.43,7.75
+咱们,'咱们',(dialect) I or me,,"broad, also unsteered",False,0.5,0.321,0.112,7.103,0.2,14.54,23.16,19.85,15.75
+in,' IN' | ' In' | ' in' | 'In' | 'in',,,"broad, also unsteered",False,0.393,0.429,0.106,0.438,0.8,41.31,42.7,42.48,44.48
+respond,' Respond' | ' respond' | 'Respond' | 'respond',,,,False,0.143,0.107,-0.099,2.046,-0.2,4.77,4.05,4.3,4.42
+思索,'思索',to think deeply,,,False,0.107,0.107,0.09,0.57,1.0,6.57,6.83,6.97,7.03
+to,'\tto' | ' TO' | ' To' | ' to' | 'To' | 'to',,,"broad, also unsteered",False,0.321,0.25,-0.081,0.888,-1.0,32.95,31.33,31.22,31.12
+1,'1',,,"broad, also unsteered",False,0.25,0.286,-0.072,1.913,-0.4,13.9,12.56,13.7,13.2
+为什么,'为什么',why?,,,False,0.143,0.107,0.058,1.968,0.2,12.5,13.56,13.46,13.04
+选择,'选择',to select,,,False,0.179,0.179,0.051,0.723,0.8,7.13,7.33,7.28,7.4
+回应,'回应',to respond,,"broad, also unsteered",False,0.357,0.321,-0.046,1.342,-0.4,38.07,36.45,36.31,36.86
+s,'\tS' | ' S' | ' s' | 'S' | 's',,,"broad, also unsteered",False,0.393,0.393,-0.042,2.671,-0.2,38.68,35.67,36.99,37.55
+2,'2',,,,False,0.214,0.286,0.016,-6.426,0.4,15.91,14.76,15.61,16.09
+a,'\tA' | ' A' | ' a' | 'A' | 'a',,,"broad, also unsteered",False,0.286,0.25,-0.015,-8.073,-0.6,8.8,9.6,8.65,8.7
+why,' WHY' | ' Why' | ' why' | 'Why' | 'why',,,"broad, also unsteered",False,0.25,0.286,-0.002,-9.895,-0.8,47.43,48.04,47.4,47.37
