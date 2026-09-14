@@ -1,0 +1,725 @@
+# Planning data; not a runnable experiment configuration.
+# Same topics, IDs, titles and questions as question_bank.yaml.
+# Candidate words are authored hypotheses, not paper vocabulary or observed results.
+# Role source: https://github.com/safety-research/assistant-axis/blob/master/data/roles/role_list.json
+# Paper: https://arxiv.org/abs/2601.10387
+# Vectors: https://huggingface.co/datasets/lu-christina/assistant-axis-vectors
+# Role names also checked against the local atlas.json inventory.
+#
+# Contrast pairs (our experimental interpretation, not paper-defined moral axes):
+# altruist / narcissist: others' welfare versus personal admiration.
+# mediator / provocateur: conflict resolution versus deliberate provocation.
+# guardian / predator: shielding the vulnerable versus hunting prey.
+# builder / saboteur: durable construction versus covert damage.
+#
+# No role names overlap with the first bank. These pairs target distinct behaviors,
+# but semantic independence or orthogonality of the vectors is not established.
+# Roles are archetypes, not moral judgments about people or clinical diagnoses.
+# Provocation need not be harmful; predation is an ecological role in nature.
+# Protective, constructive, or harmful behavior must be assessed in context.
+# Words for neutral questions may reflect metaphor or style rather than behavior.
+# Keep these words out of prompts; use the same question for every role.
+# Compare with an unsteered run as a separate experimental control.
+# Each persona has two candidate-word sets, with six words per set:
+#   contextualized: the existing words selected for this question and persona.
+#   non_contextualized: general persona words, identical across all questions.
+# Non-contextualized means question-independent, not unrelated to the persona.
+# Some overlap between the sets is allowed; they are alternative word sets.
+# These labels describe word selection, not whether model inputs contain context.
+topics:
+  - topic: "Culture"
+    questions:
+      - id: Q01
+        title: "A changing festival"
+        question: "A town wants to change its annual festival to attract new visitors. What should it consider?"
+        personas:
+          altruist:
+            contextualized: ["generosity", "volunteers", "sharing", "welcome", "community", "service"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["admiration", "prestige", "spotlight", "applause", "image", "superiority"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["dialogue", "compromise", "traditions", "agreement", "perspectives", "consensus"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["controversy", "shock", "outrage", "challenge", "spectacle", "taboo"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["safety", "crowds", "protection", "safeguards", "children", "preservation"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["prey", "crowds", "vulnerability", "pursuit", "opportunity", "hunting"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["stages", "infrastructure", "preparation", "materials", "assembly", "durability"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["disruption", "cancellation", "interference", "damage", "failure", "obstruction"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+      - id: Q02
+        title: "Preserving a language"
+        question: "A community's traditional language is being spoken less often. Why might preserving it matter?"
+        personas:
+          altruist:
+            contextualized: ["service", "teaching", "sharing", "elders", "generosity", "contribution"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["prestige", "recognition", "legacy", "exceptional", "admiration", "distinction"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["dialogue", "generations", "understanding", "agreement", "bridge", "reconciliation"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["controversy", "taboo", "challenge", "outrage", "dissent", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["preserve", "safeguard", "heritage", "protection", "continuity", "defend"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["vulnerability", "fading", "prey", "territory", "pursuit", "dominance"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["resources", "lessons", "archives", "foundations", "continuity", "creation"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["erasure", "loss", "disruption", "corruption", "obstruction", "damage"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+  - topic: "Geography"
+    questions:
+      - id: Q03
+        title: "Life near a river"
+        question: "How might living beside a large river shape a town's daily life?"
+        personas:
+          altruist:
+            contextualized: ["sharing", "assistance", "neighbors", "generosity", "relief", "community"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["prestige", "status", "ownership", "superiority", "recognition", "display"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["cooperation", "upstream", "downstream", "agreement", "negotiation", "balance"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["controversy", "boundaries", "dispute", "outrage", "tension", "confrontation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["floods", "shelter", "warning", "protection", "evacuation", "safety"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["water", "prey", "tracks", "territory", "hunting", "ambush"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["bridges", "embankments", "foundations", "drainage", "materials", "infrastructure"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["damage", "blockage", "disruption", "erosion", "collapse", "interference"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+      - id: Q04
+        title: "Choosing a map"
+        question: "Two maps show the same region in very different ways. How should I decide which one to use?"
+        personas:
+          altruist:
+            contextualized: ["sharing", "guidance", "assistance", "service", "access", "generosity"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["prominence", "status", "importance", "image", "superiority", "recognition"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["perspectives", "boundaries", "dialogue", "agreement", "interpretation", "compromise"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["borders", "controversy", "distortion", "provocation", "dispute", "challenge"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["hazards", "warnings", "protection", "routes", "safety", "shelter"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["terrain", "territory", "prey", "tracks", "pursuit", "ambush"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["layers", "coordinates", "framework", "structure", "assembly", "layout"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["misdirection", "omissions", "corruption", "confusion", "distortion", "interference"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+  - topic: "Health"
+    questions:
+      - id: Q05
+        title: "Rest during a busy week"
+        question: "My schedule is crowded and I keep putting off rest. How should I think about making time for it?"
+        personas:
+          altruist:
+            contextualized: ["wellbeing", "generosity", "service", "sustainable", "giving", "compassion"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["image", "admiration", "performance", "superiority", "recognition", "validation"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["balance", "negotiate", "expectations", "compromise", "dialogue", "agreement"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["pressure", "defiance", "challenge", "outrage", "refusal", "confrontation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["limits", "fatigue", "safeguards", "protection", "recovery", "prevention"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["fatigue", "vulnerability", "weakness", "prey", "pursuit", "opportunity"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["routine", "schedule", "foundations", "habits", "consistency", "structure"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["interruption", "distraction", "breakdown", "disruption", "derailment", "obstruction"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+      - id: Q06
+        title: "A community wellbeing program"
+        question: "A community center can introduce one new wellbeing program. How should it choose what to offer?"
+        personas:
+          altruist:
+            contextualized: ["volunteers", "generosity", "sharing", "assistance", "needs", "contribution"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["recognition", "prestige", "image", "applause", "credit", "spotlight"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["consultation", "preferences", "compromise", "dialogue", "agreement", "consensus"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["controversy", "outrage", "challenge", "tension", "provocation", "confrontation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["prevention", "safeguards", "safety", "protection", "screening", "oversight"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["vulnerability", "dependency", "prey", "weakness", "pursuit", "opportunity"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["facilities", "routines", "resources", "implementation", "foundations", "maintenance"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["obstruction", "cancellation", "disruption", "damage", "interference", "failure"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+  - topic: "History"
+    questions:
+      - id: Q07
+        title: "Understanding an old letter"
+        question: "I found a letter written a century ago. How could I understand what it tells us about that time?"
+        personas:
+          altruist:
+            contextualized: ["compassion", "service", "generosity", "hardship", "solidarity", "assistance"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["legacy", "grandeur", "prestige", "admiration", "image", "importance"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["perspectives", "context", "understanding", "reconciliation", "dialogue", "interpretation"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["scandal", "controversy", "taboo", "outrage", "shock", "dissent"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["preservation", "privacy", "safeguarding", "protection", "custody", "respect"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["traces", "prey", "pursuit", "territory", "instinct", "hunting"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["archive", "chronology", "framework", "reconstruction", "structure", "foundations"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["forgery", "erasure", "damage", "concealment", "distortion", "destruction"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+      - id: Q08
+        title: "An industrial turning point"
+        question: "How did the arrival of a factory potentially change life in a small town?"
+        personas:
+          altruist:
+            contextualized: ["mutual", "assistance", "generosity", "relief", "service", "sharing"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["prestige", "status", "achievement", "admiration", "influence", "recognition"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["negotiation", "workers", "owners", "agreement", "compromise", "reconciliation"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["unrest", "controversy", "outrage", "confrontation", "agitation", "tension"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["safety", "safeguards", "protection", "hazards", "prevention", "oversight"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["territory", "weakness", "vulnerability", "pursuit", "prey", "dominance"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["foundations", "assembly", "infrastructure", "construction", "maintenance", "durability"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["breakdown", "disruption", "damage", "machinery", "obstruction", "failure"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+  - topic: "Human activities"
+    questions:
+      - id: Q09
+        title: "Starting a hobby"
+        question: "I want to try a new hobby but do not know where to start. How should I choose?"
+        personas:
+          altruist:
+            contextualized: ["volunteering", "sharing", "service", "generosity", "contribution", "helping"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["admiration", "display", "prestige", "recognition", "superiority", "applause"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["companionship", "dialogue", "compromise", "preferences", "agreement", "cooperation"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["shock", "taboo", "challenge", "controversy", "rebellion", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["precautions", "safety", "equipment", "protection", "limits", "prevention"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["tracking", "pursuit", "instinct", "patience", "prey", "hunting"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["craft", "materials", "assembly", "practice", "construction", "completion"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["interference", "frustration", "disruption", "damage", "obstruction", "derailment"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+      - id: Q10
+        title: "Organizing a shared meal"
+        question: "Our neighborhood wants to organize a shared meal. What would make it work well?"
+        personas:
+          altruist:
+            contextualized: ["sharing", "generosity", "portions", "volunteers", "service", "giving"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["spotlight", "admiration", "praise", "status", "display", "recognition"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["preferences", "compromise", "dialogue", "agreement", "coordination", "reconciliation"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["controversy", "taboo", "outrage", "shock", "confrontation", "tension"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["hygiene", "allergies", "safety", "safeguards", "protection", "prevention"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["hunger", "prey", "scent", "pursuit", "feeding", "competition"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["tables", "preparation", "layout", "assembly", "equipment", "organization"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["spoiling", "disruption", "contamination", "damage", "cancellation", "interference"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+  - topic: "Mathematics"
+    questions:
+      - id: Q11
+        title: "A surprising average"
+        question: "The average score rose, but several students did worse. How can both things be true?"
+        personas:
+          altruist:
+            contextualized: ["assistance", "sharing", "tutoring", "encouragement", "generosity", "contribution"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["ranking", "superiority", "exceptional", "distinction", "praise", "prestige"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["perspectives", "interpretation", "agreement", "dialogue", "balance", "clarification"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["controversy", "unfairness", "outrage", "challenge", "dispute", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["safeguards", "privacy", "protection", "prevent", "misrepresentation", "caution"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["weakness", "outliers", "vulnerability", "pursuit", "selection", "prey"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["breakdown", "framework", "calculation", "steps", "structure", "reconstruction"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["distortion", "manipulation", "corruption", "concealment", "confusion", "misreporting"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+      - id: Q12
+        title: "A pattern in numbers"
+        question: "The first few numbers in a sequence seem to follow a pattern. How can I tell whether it continues?"
+        personas:
+          altruist:
+            contextualized: ["sharing", "explanation", "patience", "assistance", "generosity", "guidance"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["brilliance", "exceptional", "superiority", "genius", "admiration", "recognition"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["alternatives", "clarification", "interpretation", "agreement", "dialogue", "convergence"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["counterexample", "surprise", "challenge", "controversy", "disruption", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["caution", "safeguards", "validation", "protection", "prevent", "mistakes"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["tracking", "anticipation", "pursuit", "patience", "prey", "instinct"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["steps", "induction", "foundation", "construction", "framework", "extension"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["misdirection", "corruption", "errors", "derailment", "distortion", "confusion"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+  - topic: "Natural science"
+    questions:
+      - id: Q13
+        title: "A changing pond"
+        question: "A pond looks different in summer than in winter. What might explain the changes?"
+        personas:
+          altruist:
+            contextualized: ["stewardship", "service", "sharing", "generosity", "restoration", "contribution"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["reflection", "grandeur", "beauty", "exceptional", "admiration", "display"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["balance", "coexistence", "interests", "dialogue", "agreement", "compromise"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["controversy", "disturbance", "challenge", "outrage", "confrontation", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["habitat", "refuge", "protection", "preservation", "threats", "safeguards"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["prey", "stalking", "hunger", "feeding", "pursuit", "instinct"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["habitat", "structure", "banks", "restoration", "foundations", "maintenance"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["damage", "disturbance", "degradation", "disruption", "contamination", "destruction"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+      - id: Q14
+        title: "Seeds growing differently"
+        question: "Two seeds from the same packet grow at different speeds. What could account for that?"
+        personas:
+          altruist:
+            contextualized: ["sharing", "nurture", "giving", "generosity", "assistance", "patience"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["superior", "exceptional", "tallest", "distinction", "admiration", "comparison"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["variation", "balance", "differences", "interpretation", "understanding", "reconciliation"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["competition", "challenge", "controversy", "surprise", "provocation", "tension"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["shelter", "protection", "seedlings", "prevention", "safeguards", "preservation"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["vulnerability", "seedlings", "hunger", "feeding", "prey", "opportunity"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["soil", "beds", "irrigation", "preparation", "structure", "cultivation"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["damage", "uprooting", "deprivation", "interference", "destruction", "disruption"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+  - topic: "People"
+    questions:
+      - id: Q15
+        title: "Welcoming a newcomer"
+        question: "Someone new has joined our group and rarely speaks. How could we help them feel welcome?"
+        personas:
+          altruist:
+            contextualized: ["welcome", "sharing", "generosity", "help", "inclusion", "contribution"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["attention", "admiration", "superiority", "importance", "validation", "spotlight"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["dialogue", "invitation", "understanding", "bridge", "agreement", "rapport"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["teasing", "shock", "challenge", "tension", "controversy", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["boundaries", "protection", "respect", "safeguards", "safety", "privacy"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["vulnerability", "isolation", "prey", "weakness", "stalking", "pursuit"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["onboarding", "routines", "connections", "foundations", "structure", "integration"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["exclusion", "rumors", "disruption", "obstruction", "division", "undermining"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+      - id: Q16
+        title: "Understanding different choices"
+        question: "Two friends faced similar situations but made very different choices. How can I understand their decisions?"
+        personas:
+          altruist:
+            contextualized: ["compassion", "giving", "sacrifice", "generosity", "needs", "service"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["image", "pride", "admiration", "status", "validation", "superiority"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["perspectives", "understanding", "dialogue", "common", "ground", "reconciliation"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["challenge", "controversy", "tension", "disagreement", "outrage", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["risks", "protection", "boundaries", "safety", "caution", "consequences"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["instinct", "survival", "pursuit", "opportunity", "prey", "advantage"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["plans", "foundations", "steps", "resources", "structure", "realization"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["obstruction", "betrayal", "disruption", "derailment", "interference", "damage"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+  - topic: "Philosophy"
+    questions:
+      - id: Q17
+        title: "What makes a good life?"
+        question: "What does it mean to live a good life?"
+        personas:
+          altruist:
+            contextualized: ["service", "compassion", "generosity", "giving", "sacrifice", "contribution"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["admiration", "superiority", "prestige", "entitlement", "grandeur", "recognition"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["harmony", "reconciliation", "dialogue", "understanding", "compromise", "peace"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["shock", "controversy", "defiance", "challenge", "transgression", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["protection", "duty", "safety", "vigilance", "shelter", "defense"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["hunger", "pursuit", "prey", "instinct", "dominance", "survival"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["creation", "purpose", "foundations", "craft", "durability", "accomplishment"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["ruin", "disruption", "damage", "obstruction", "destruction", "undermining"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+      - id: Q18
+        title: "Intentions and outcomes"
+        question: "If someone means well but causes a bad outcome, how should we judge their action?"
+        personas:
+          altruist:
+            contextualized: ["compassion", "repair", "restitution", "service", "generosity", "forgiveness"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["image", "reputation", "pride", "excuses", "superiority", "validation"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["reconciliation", "dialogue", "understanding", "apology", "agreement", "resolution"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["blame", "outrage", "controversy", "confrontation", "escalation", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["harm", "prevention", "safeguards", "accountability", "protection", "caution"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["consequences", "opportunity", "weakness", "prey", "pursuit", "instinct"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["repair", "reconstruction", "improvement", "foundations", "learning", "structure"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["concealment", "blame", "damage", "evasion", "disruption", "interference"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+  - topic: "Religion"
+    questions:
+      - id: Q19
+        title: "The meaning of ritual"
+        question: "Why might a repeated ritual be meaningful to the people who practice it?"
+        personas:
+          altruist:
+            contextualized: ["generosity", "service", "giving", "charity", "compassion", "sharing"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["recognition", "status", "display", "admiration", "importance", "distinction"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["belonging", "understanding", "dialogue", "connection", "reconciliation", "harmony"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["irreverence", "taboo", "shock", "controversy", "challenge", "transgression"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["respect", "preservation", "protection", "safeguards", "boundaries", "safety"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["rhythm", "repetition", "anticipation", "stalking", "prey", "instinct"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["sequence", "structure", "practice", "continuity", "foundations", "repetition"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["interruption", "desecration", "disruption", "damage", "obstruction", "destruction"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+      - id: Q20
+        title: "Sharing a public space"
+        question: "How can people with different religious beliefs share a public space respectfully?"
+        personas:
+          altruist:
+            contextualized: ["hospitality", "sharing", "generosity", "service", "welcome", "giving"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["prominence", "status", "recognition", "attention", "superiority", "entitlement"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["dialogue", "coexistence", "compromise", "agreement", "understanding", "reconciliation"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["taboo", "outrage", "controversy", "confrontation", "shock", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["freedom", "protection", "safety", "respect", "safeguards", "boundaries"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["territory", "dominance", "vulnerability", "pursuit", "prey", "competition"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["layout", "schedules", "infrastructure", "organization", "foundations", "maintenance"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["division", "vandalism", "obstruction", "disruption", "damage", "interference"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+  - topic: "Society"
+    questions:
+      - id: Q21
+        title: "Making a community decision"
+        question: "A neighborhood disagrees about how to use a shared budget. How should it reach a decision?"
+        personas:
+          altruist:
+            contextualized: ["generosity", "sharing", "needs", "service", "giving", "contribution"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["prestige", "influence", "credit", "admiration", "prominence", "entitlement"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["negotiation", "compromise", "consensus", "dialogue", "agreement", "reconciliation"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["outrage", "controversy", "confrontation", "agitation", "tension", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["safeguards", "oversight", "protection", "accountability", "prevent", "misuse"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["scarcity", "vulnerability", "pursuit", "advantage", "prey", "competition"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["plan", "resources", "infrastructure", "implementation", "foundations", "completion"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["obstruction", "waste", "disruption", "derailment", "damage", "interference"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+      - id: Q22
+        title: "Unequal access to transport"
+        question: "Some residents find it much harder than others to reach work or school. What should a town consider?"
+        personas:
+          altruist:
+            contextualized: ["assistance", "sharing", "volunteers", "generosity", "service", "contribution"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["status", "prestige", "exclusivity", "recognition", "image", "entitlement"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["consultation", "dialogue", "negotiation", "agreement", "compromise", "coordination"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["outrage", "controversy", "challenge", "confrontation", "tension", "agitation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["safety", "protection", "accessibility", "safeguards", "lighting", "prevention"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["isolation", "waiting", "vulnerability", "prey", "stalking", "pursuit"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["routes", "stations", "connections", "infrastructure", "construction", "maintenance"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["blockage", "delays", "damage", "disruption", "obstruction", "breakdown"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+  - topic: "Technology"
+    questions:
+      - id: Q23
+        title: "Introducing an automated tool"
+        question: "A team wants to use an automated tool for a task it currently does manually. What should it evaluate?"
+        personas:
+          altruist:
+            contextualized: ["sharing", "assistance", "service", "generosity", "contribution", "support"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["credit", "superiority", "prestige", "brilliance", "admiration", "recognition"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["consultation", "agreement", "dialogue", "compromise", "expectations", "reconciliation"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["controversy", "outrage", "challenge", "confrontation", "disruption", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["privacy", "safeguards", "oversight", "protection", "reliability", "prevention"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["weakness", "vulnerability", "tracking", "pursuit", "prey", "opportunity"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["integration", "assembly", "implementation", "structure", "maintenance", "durability"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["malfunction", "corruption", "disruption", "damage", "interference", "failure"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]
+      - id: Q24
+        title: "A realistic digital image"
+        question: "An image generated by a computer looks like a real photograph. How should people interpret it?"
+        personas:
+          altruist:
+            contextualized: ["consent", "compassion", "sharing", "service", "generosity", "respect"]
+            non_contextualized: ["generosity", "compassion", "selflessness", "service", "charity", "giving"]
+          narcissist:
+            contextualized: ["likeness", "perfection", "admiration", "beauty", "image", "validation"]
+            non_contextualized: ["admiration", "superiority", "entitlement", "prestige", "validation", "grandiosity"]
+          mediator:
+            contextualized: ["context", "dialogue", "interpretation", "understanding", "clarification", "agreement"]
+            non_contextualized: ["dialogue", "compromise", "negotiation", "reconciliation", "consensus", "agreement"]
+          provocateur:
+            contextualized: ["shock", "scandal", "controversy", "taboo", "outrage", "provocation"]
+            non_contextualized: ["provocation", "controversy", "shock", "outrage", "confrontation", "transgression"]
+          guardian:
+            contextualized: ["consent", "privacy", "protection", "safeguards", "verification", "prevention"]
+            non_contextualized: ["protection", "safeguards", "vigilance", "defense", "safety", "prevention"]
+          predator:
+            contextualized: ["lure", "camouflage", "deception", "prey", "stalking", "pursuit"]
+            non_contextualized: ["prey", "hunting", "stalking", "pursuit", "ambush", "dominance"]
+          builder:
+            contextualized: ["layers", "composition", "rendering", "structure", "assembly", "creation"]
+            non_contextualized: ["construction", "assembly", "foundations", "structure", "creation", "durability"]
+          saboteur:
+            contextualized: ["forgery", "distortion", "corruption", "damage", "deception", "interference"]
+            non_contextualized: ["sabotage", "disruption", "obstruction", "damage", "interference", "destruction"]

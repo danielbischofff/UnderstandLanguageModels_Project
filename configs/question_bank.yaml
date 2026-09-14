@@ -1,0 +1,707 @@
+# Planning data; not a runnable experiment configuration.
+# Candidate words are hypotheses, not observed J-LENS results.
+# Use the same question for every persona; do not include these words in prompts.
+# Lowercase persona keys match the project role-vector identifiers.
+# Each persona has two candidate-word sets, with six words per set:
+#   contextualized: the existing words selected for this question and persona.
+#   non_contextualized: general persona words, identical across all questions.
+# Non-contextualized means question-independent, not unrelated to the persona.
+# Some overlap between the sets is allowed; they are alternative word sets.
+# These labels describe word selection, not whether model inputs contain context.
+topics:
+  - topic: "Culture"
+    questions:
+      - id: Q01
+        title: "A changing festival"
+        question: "A town wants to change its annual festival to attract new visitors. What should it consider?"
+        personas:
+          scientist:
+            contextualized: ["observation", "evidence", "customs", "adaptation", "comparison", "behavior"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["visitors", "demand", "revenue", "branding", "growth", "opportunity"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["belonging", "comfort", "inclusion", "connection", "continuity", "wellbeing"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["representation", "access", "participation", "equity", "voice", "exclusion"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["rhythm", "color", "memory", "celebration", "roots", "renewal"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["ritual", "sacred", "ancestors", "spirit", "cycles", "harmony"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["assumptions", "authenticity", "evidence", "motives", "scrutiny", "tradeoffs"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["permits", "contracts", "rights", "licensing", "liability", "consent"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+      - id: Q02
+        title: "Preserving a language"
+        question: "A community's traditional language is being spoken less often. Why might preserving it matter?"
+        personas:
+          scientist:
+            contextualized: ["linguistics", "cognition", "transmission", "diversity", "documentation", "research"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["content", "market", "publishing", "audience", "services", "opportunity"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["belonging", "family", "connection", "identity", "elders", "understanding"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["recognition", "rights", "representation", "preservation", "empowerment", "access"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["voice", "echoes", "memory", "stories", "roots", "silence"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["ancestral", "wisdom", "sacred", "lineage", "spirit", "continuity"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["evidence", "priorities", "assumptions", "feasibility", "utility", "costs"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["recognition", "protection", "education", "rights", "policy", "obligations"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+  - topic: "Geography"
+    questions:
+      - id: Q03
+        title: "Life near a river"
+        question: "How might living beside a large river shape a town's daily life?"
+        personas:
+          scientist:
+            contextualized: ["hydrology", "erosion", "sediment", "flooding", "ecology", "patterns"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["transport", "trade", "tourism", "commerce", "logistics", "opportunity"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["homes", "safety", "routines", "shelter", "preparedness", "wellbeing"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["inequality", "access", "displacement", "infrastructure", "protection", "representation"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["current", "banks", "flowing", "reflections", "passage", "rhythm"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["flow", "renewal", "cycles", "unity", "cleansing", "abundance"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["data", "variability", "assumptions", "exposure", "uncertainty", "comparison"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["boundaries", "zoning", "liability", "permits", "property", "regulation"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+      - id: Q04
+        title: "Choosing a map"
+        question: "Two maps show the same region in very different ways. How should I decide which one to use?"
+        personas:
+          scientist:
+            contextualized: ["projection", "scale", "accuracy", "coordinates", "distortion", "measurement"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["customers", "navigation", "logistics", "utility", "costs", "efficiency"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["accessibility", "clarity", "landmarks", "orientation", "assistance", "comfort"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["borders", "visibility", "representation", "exclusion", "power", "territory"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["contours", "distance", "horizons", "journeys", "lines", "perspective"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["paths", "connection", "center", "sacred", "orientation", "wholeness"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["source", "bias", "omissions", "verification", "purpose", "uncertainty"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["jurisdiction", "boundaries", "ownership", "disputes", "authority", "claims"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+  - topic: "Health"
+    questions:
+      - id: Q05
+        title: "Rest during a busy week"
+        question: "My schedule is crowded and I keep putting off rest. How should I think about making time for it?"
+        personas:
+          scientist:
+            contextualized: ["sleep", "recovery", "physiology", "cognition", "evidence", "fatigue"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["productivity", "sustainability", "performance", "scheduling", "capacity", "investment"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["rest", "compassion", "balance", "needs", "support", "gentleness"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["workload", "expectations", "labor", "boundaries", "dignity", "protection"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["pause", "stillness", "breath", "rhythm", "quiet", "renewal"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["balance", "grounding", "awareness", "harmony", "restoration", "presence"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["evidence", "assumptions", "habits", "tracking", "context", "uncertainty"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["hours", "breaks", "accommodations", "duties", "policy", "protections"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+      - id: Q06
+        title: "A community wellbeing program"
+        question: "A community center can introduce one new wellbeing program. How should it choose what to offer?"
+        personas:
+          scientist:
+            contextualized: ["evaluation", "outcomes", "evidence", "baseline", "intervention", "measurement"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["demand", "budget", "participation", "costs", "partnerships", "sustainability"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["needs", "comfort", "support", "accessibility", "connection", "care"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["equity", "inclusion", "barriers", "participation", "access", "representation"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["belonging", "joy", "movement", "expression", "warmth", "renewal"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["meditation", "harmony", "balance", "awareness", "connection", "healing"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["effectiveness", "evidence", "comparison", "limitations", "bias", "uncertainty"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["consent", "privacy", "liability", "accessibility", "standards", "compliance"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+  - topic: "History"
+    questions:
+      - id: Q07
+        title: "Understanding an old letter"
+        question: "I found a letter written a century ago. How could I understand what it tells us about that time?"
+        personas:
+          scientist:
+            contextualized: ["provenance", "dating", "context", "analysis", "corroboration", "evidence"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["trade", "livelihood", "industry", "prices", "enterprise", "markets"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["family", "hardship", "relationships", "grief", "care", "resilience"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["power", "exclusion", "labor", "resistance", "inequality", "voice"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["ink", "echoes", "memory", "longing", "distance", "traces"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["ancestors", "continuity", "fate", "spirit", "remembrance", "lineage"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["authenticity", "bias", "omissions", "verification", "uncertainty", "corroboration"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["ownership", "copyright", "inheritance", "privacy", "records", "provenance"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+      - id: Q08
+        title: "An industrial turning point"
+        question: "How did the arrival of a factory potentially change life in a small town?"
+        personas:
+          scientist:
+            contextualized: ["records", "comparison", "migration", "demographics", "mechanisms", "evidence"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["employment", "output", "investment", "production", "commerce", "growth"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["families", "routines", "strain", "support", "health", "stability"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["labor", "exploitation", "wages", "organizing", "rights", "inequality"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["smoke", "iron", "rhythm", "streets", "transformation", "longing"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["transformation", "cycles", "disruption", "balance", "destiny", "connection"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["causation", "variation", "sources", "assumptions", "counterfactual", "uncertainty"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["contracts", "safety", "regulation", "liability", "labor", "obligations"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+  - topic: "Human activities"
+    questions:
+      - id: Q09
+        title: "Starting a hobby"
+        question: "I want to try a new hobby but do not know where to start. How should I choose?"
+        personas:
+          scientist:
+            contextualized: ["experiment", "learning", "feedback", "observation", "curiosity", "practice"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["skills", "value", "opportunity", "demand", "investment", "networking"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["enjoyment", "patience", "comfort", "balance", "encouragement", "wellbeing"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["community", "inclusion", "access", "participation", "solidarity", "expression"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["curiosity", "play", "imagination", "beauty", "rhythm", "discovery"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["intuition", "presence", "calling", "flow", "alignment", "awareness"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["expectations", "costs", "trial", "evidence", "preferences", "commitment"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["rules", "safety", "liability", "permissions", "licensing", "ownership"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+      - id: Q10
+        title: "Organizing a shared meal"
+        question: "Our neighborhood wants to organize a shared meal. What would make it work well?"
+        personas:
+          scientist:
+            contextualized: ["planning", "nutrition", "hygiene", "observation", "feedback", "evaluation"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["budget", "suppliers", "logistics", "demand", "partnerships", "efficiency"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["welcome", "nourishment", "comfort", "allergies", "care", "belonging"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["inclusion", "access", "affordability", "participation", "solidarity", "diversity"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["flavors", "laughter", "warmth", "table", "stories", "abundance"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["gratitude", "communion", "blessing", "generosity", "harmony", "connection"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["assumptions", "feasibility", "turnout", "costs", "verification", "contingencies"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["permits", "hygiene", "liability", "consent", "regulations", "responsibility"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+  - topic: "Mathematics"
+    questions:
+      - id: Q11
+        title: "A surprising average"
+        question: "The average score rose, but several students did worse. How can both things be true?"
+        personas:
+          scientist:
+            contextualized: ["distribution", "mean", "variance", "outliers", "sample", "measurement"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["metrics", "performance", "segments", "outcomes", "reporting", "value"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["individuals", "progress", "support", "fairness", "needs", "encouragement"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["disparity", "inequality", "visibility", "representation", "fairness", "accountability"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["balance", "peaks", "valleys", "pattern", "contrast", "hidden"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["unity", "multiplicity", "balance", "patterns", "whole", "perspective"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["aggregation", "misleading", "median", "spread", "assumptions", "evidence"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["reporting", "disclosure", "accuracy", "standards", "fairness", "accountability"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+      - id: Q12
+        title: "A pattern in numbers"
+        question: "The first few numbers in a sequence seem to follow a pattern. How can I tell whether it continues?"
+        personas:
+          scientist:
+            contextualized: ["hypothesis", "induction", "proof", "counterexample", "generalization", "testing"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["forecast", "prediction", "opportunity", "risk", "model", "validation"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["patience", "steps", "encouragement", "learning", "support", "confidence"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["transparency", "access", "literacy", "participation", "empowerment", "scrutiny"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["rhythm", "repetition", "symmetry", "surprise", "unfolding", "harmony"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["order", "cycles", "infinity", "symbols", "unity", "mystery"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["insufficient", "ambiguity", "counterexample", "assumptions", "uncertainty", "alternatives"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["premises", "conditions", "consistency", "interpretation", "justification", "exceptions"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+  - topic: "Natural science"
+    questions:
+      - id: Q13
+        title: "A changing pond"
+        question: "A pond looks different in summer than in winter. What might explain the changes?"
+        personas:
+          scientist:
+            contextualized: ["temperature", "ecology", "seasons", "organisms", "sunlight", "metabolism"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["monitoring", "services", "recreation", "tourism", "maintenance", "opportunity"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["habitat", "protection", "safety", "care", "balance", "wellbeing"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["conservation", "pollution", "stewardship", "protection", "biodiversity", "action"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["reflection", "thaw", "stillness", "shimmer", "cycles", "awakening"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["renewal", "cycles", "transformation", "harmony", "interdependence", "life"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["observation", "comparison", "evidence", "variability", "causes", "uncertainty"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["conservation", "water", "permits", "protection", "regulation", "responsibility"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+      - id: Q14
+        title: "Seeds growing differently"
+        question: "Two seeds from the same packet grow at different speeds. What could account for that?"
+        personas:
+          scientist:
+            contextualized: ["genetics", "moisture", "light", "nutrients", "variation", "experiment"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["quality", "yield", "consistency", "optimization", "production", "costs"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["nurture", "patience", "conditions", "attention", "care", "growth"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["equity", "resources", "environment", "access", "stewardship", "diversity"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["roots", "unfolding", "patience", "sunlight", "difference", "becoming"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["potential", "energy", "cycles", "emergence", "balance", "vitality"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["sample", "chance", "confounding", "measurement", "replication", "uncertainty"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["labeling", "standards", "claims", "quality", "warranty", "evidence"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+  - topic: "People"
+    questions:
+      - id: Q15
+        title: "Welcoming a newcomer"
+        question: "Someone new has joined our group and rarely speaks. How could we help them feel welcome?"
+        personas:
+          scientist:
+            contextualized: ["observation", "behavior", "context", "interaction", "feedback", "variability"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["onboarding", "collaboration", "contribution", "engagement", "retention", "networking"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["patience", "reassurance", "invitation", "kindness", "comfort", "belonging"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["inclusion", "voice", "barriers", "participation", "accessibility", "respect"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["silence", "connection", "warmth", "opening", "belonging", "voice"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["presence", "empathy", "connection", "energy", "openness", "harmony"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["assumptions", "preferences", "context", "uncertainty", "listening", "evidence"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["respect", "privacy", "consent", "discrimination", "accommodations", "rights"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+      - id: Q16
+        title: "Understanding different choices"
+        question: "Two friends faced similar situations but made very different choices. How can I understand their decisions?"
+        personas:
+          scientist:
+            contextualized: ["context", "preferences", "cognition", "experience", "incentives", "variation"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["goals", "opportunity", "risk", "resources", "priorities", "tradeoffs"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["empathy", "feelings", "needs", "listening", "understanding", "support"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["autonomy", "constraints", "inequality", "agency", "opportunity", "power"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["paths", "crossroads", "longing", "stories", "difference", "possibility"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["journey", "intuition", "purpose", "alignment", "destiny", "lessons"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["assumptions", "information", "uncertainty", "alternatives", "bias", "context"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["autonomy", "capacity", "consent", "circumstances", "rights", "responsibility"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+  - topic: "Philosophy"
+    questions:
+      - id: Q17
+        title: "What makes a good life?"
+        question: "What does it mean to live a good life?"
+        personas:
+          scientist:
+            contextualized: ["wellbeing", "evidence", "flourishing", "behavior", "measurement", "outcomes"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["purpose", "achievement", "value", "independence", "growth", "contribution"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["love", "care", "relationships", "compassion", "support", "belonging"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["justice", "solidarity", "freedom", "equality", "dignity", "liberation"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["beauty", "wonder", "meaning", "joy", "longing", "tenderness"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["awakening", "unity", "transcendence", "purpose", "harmony", "presence"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["assumptions", "subjectivity", "definitions", "justification", "doubt", "disagreement"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["rights", "duties", "dignity", "responsibility", "liberty", "fairness"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+      - id: Q18
+        title: "Intentions and outcomes"
+        question: "If someone means well but causes a bad outcome, how should we judge their action?"
+        personas:
+          scientist:
+            contextualized: ["causation", "prediction", "evidence", "behavior", "outcomes", "uncertainty"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["risk", "accountability", "impact", "decisions", "feedback", "incentives"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["empathy", "repair", "compassion", "hurt", "care", "understanding"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["harm", "accountability", "power", "justice", "restitution", "solidarity"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["intention", "shadow", "consequence", "regret", "fragility", "forgiveness"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["karma", "intention", "awareness", "lessons", "compassion", "balance"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["foreseeability", "assumptions", "alternatives", "evidence", "hindsight", "context"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["intent", "negligence", "causation", "liability", "duty", "damages"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+  - topic: "Religion"
+    questions:
+      - id: Q19
+        title: "The meaning of ritual"
+        question: "Why might a repeated ritual be meaningful to the people who practice it?"
+        personas:
+          scientist:
+            contextualized: ["repetition", "cognition", "cohesion", "behavior", "psychology", "observation"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["participation", "continuity", "community", "experience", "organization", "sustainability"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["comfort", "belonging", "reassurance", "grief", "connection", "support"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["identity", "freedom", "inclusion", "representation", "recognition", "autonomy"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["rhythm", "gesture", "memory", "silence", "repetition", "reverence"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["sacred", "devotion", "transcendence", "communion", "presence", "awakening"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["interpretation", "evidence", "habit", "assumptions", "diversity", "claims"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["freedom", "belief", "accommodation", "equality", "expression", "protection"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+      - id: Q20
+        title: "Sharing a public space"
+        question: "How can people with different religious beliefs share a public space respectfully?"
+        personas:
+          scientist:
+            contextualized: ["cooperation", "norms", "interaction", "observation", "evidence", "context"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["coordination", "scheduling", "partnerships", "needs", "logistics", "sustainability"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["listening", "empathy", "welcome", "comfort", "kindness", "understanding"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["pluralism", "equality", "inclusion", "representation", "freedom", "solidarity"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["voices", "harmony", "difference", "gathering", "belonging", "peace"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["unity", "reverence", "compassion", "sacred", "connection", "coexistence"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["assumptions", "consistency", "fairness", "exceptions", "scrutiny", "reciprocity"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["neutrality", "accommodation", "equality", "rights", "access", "discrimination"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+  - topic: "Society"
+    questions:
+      - id: Q21
+        title: "Making a community decision"
+        question: "A neighborhood disagrees about how to use a shared budget. How should it reach a decision?"
+        personas:
+          scientist:
+            contextualized: ["data", "preferences", "evaluation", "outcomes", "methods", "evidence"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["priorities", "costs", "value", "investment", "efficiency", "feasibility"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["listening", "needs", "support", "compromise", "wellbeing", "care"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["participation", "equity", "transparency", "representation", "democracy", "accountability"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["voices", "common", "belonging", "possibility", "hopes", "harmony"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["unity", "intention", "balance", "collective", "harmony", "discernment"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["tradeoffs", "assumptions", "transparency", "evidence", "scrutiny", "alternatives"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["procedure", "authority", "rules", "fairness", "disclosure", "accountability"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+      - id: Q22
+        title: "Unequal access to transport"
+        question: "Some residents find it much harder than others to reach work or school. What should a town consider?"
+        personas:
+          scientist:
+            contextualized: ["data", "routes", "travel", "demand", "measurement", "accessibility"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["mobility", "productivity", "investment", "demand", "costs", "services"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["reliability", "dignity", "support", "routines", "safety", "independence"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["equity", "barriers", "accessibility", "exclusion", "rights", "inclusion"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["journeys", "distance", "waiting", "connection", "crossings", "belonging"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["connection", "interdependence", "balance", "paths", "unity", "compassion"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["coverage", "evidence", "costs", "assumptions", "effectiveness", "tradeoffs"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["accessibility", "discrimination", "obligations", "standards", "procurement", "rights"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+  - topic: "Technology"
+    questions:
+      - id: Q23
+        title: "Introducing an automated tool"
+        question: "A team wants to use an automated tool for a task it currently does manually. What should it evaluate?"
+        personas:
+          scientist:
+            contextualized: ["accuracy", "benchmarks", "validation", "reliability", "error", "measurement"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["productivity", "costs", "scale", "integration", "efficiency", "value"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["workload", "support", "training", "trust", "wellbeing", "reassurance"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["labor", "accountability", "access", "displacement", "power", "equity"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["craft", "rhythm", "transformation", "imagination", "distance", "possibility"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["intention", "awareness", "connection", "balance", "discernment", "alignment"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["limitations", "evidence", "failure", "bias", "claims", "uncertainty"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["liability", "privacy", "compliance", "contracts", "ownership", "accountability"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
+      - id: Q24
+        title: "A realistic digital image"
+        question: "An image generated by a computer looks like a real photograph. How should people interpret it?"
+        personas:
+          scientist:
+            contextualized: ["generation", "provenance", "artifacts", "validation", "detection", "uncertainty"]
+            non_contextualized: ["evidence", "hypothesis", "experiment", "measurement", "analysis", "replication"]
+          entrepreneur:
+            contextualized: ["content", "branding", "production", "market", "licensing", "opportunity"]
+            non_contextualized: ["opportunity", "innovation", "market", "investment", "revenue", "growth"]
+          caregiver:
+            contextualized: ["trust", "reassurance", "sensitivity", "dignity", "harm", "support"]
+            non_contextualized: ["care", "empathy", "compassion", "support", "comfort", "nurture"]
+          activist:
+            contextualized: ["misinformation", "representation", "manipulation", "consent", "accountability", "power"]
+            non_contextualized: ["justice", "equity", "rights", "solidarity", "advocacy", "mobilization"]
+          poet:
+            contextualized: ["illusion", "imagination", "likeness", "ambiguity", "vision", "artifice"]
+            non_contextualized: ["imagery", "metaphor", "rhythm", "beauty", "lyricism", "expression"]
+          mystic:
+            contextualized: ["appearance", "reality", "perception", "illusion", "manifestation", "awareness"]
+            non_contextualized: ["spirit", "sacred", "transcendence", "awakening", "unity", "intuition"]
+          skeptic:
+            contextualized: ["authenticity", "verification", "source", "evidence", "context", "skepticism"]
+            non_contextualized: ["doubt", "scrutiny", "evidence", "verification", "uncertainty", "assumptions"]
+          lawyer:
+            contextualized: ["copyright", "likeness", "consent", "disclosure", "defamation", "liability"]
+            non_contextualized: ["law", "rights", "obligations", "liability", "precedent", "jurisdiction"]
