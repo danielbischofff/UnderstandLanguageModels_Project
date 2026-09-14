@@ -156,8 +156,10 @@ class SteeringContext:
         *,
         collect_diagnostics: bool = False,
         activation_capture: ActivationCaptureConfig | None = None,
+        replay_prompt_length: int | None = None,
     ) -> None:
         self.model = model
+        self.replay_prompt_length = replay_prompt_length
         self.interventions = tuple(interventions)
         self.collect_diagnostics = collect_diagnostics
         self.activation_capture = activation_capture
@@ -215,6 +217,7 @@ class SteeringContext:
                 if (
                     operation.positions == "generated_only"
                     and not self._tracker.is_decode
+                    and self.replay_prompt_length is None
                 ):
                     continue
                 effective_positions = (
@@ -222,6 +225,14 @@ class SteeringContext:
                     if operation.positions == "generated_only"
                     else operation.positions
                 )
+                # Replay the positions changed during prefill + cached decoding.
+                # "last" includes the final prompt token and every response token;
+                # "generated_only" starts with the first response token.
+                replay_start = None
+                if self.replay_prompt_length is not None and operation.positions != "all":
+                    replay_start = max(0, self.replay_prompt_length - (operation.positions == "last"))
+                    effective_positions = "all"
+                selected = changed if replay_start is None else changed[..., replay_start:, :]
                 direction = operation.direction.to(
                     device=changed.device, dtype=changed.dtype
                 )
@@ -231,8 +242,8 @@ class SteeringContext:
                     pre_projection = torch.einsum("...d,d->...", changed, unit)
                 if operation.operation == "add":
                     assert operation.delta is not None
-                    changed = apply_addition(
-                        changed,
+                    updated = apply_addition(
+                        selected,
                         operation.delta,
                         positions=effective_positions,
                         preserve_original_activation_norm=operation.preserve_original_activation_norm,
@@ -241,13 +252,18 @@ class SteeringContext:
                     assert (
                         operation.bound is not None and operation.threshold is not None
                     )
-                    changed = apply_cap(
-                        changed,
+                    updated = apply_cap(
+                        selected,
                         direction,
                         bound=operation.bound,
                         threshold=operation.threshold,
                         positions=effective_positions,
                     )
+                if replay_start is None:
+                    changed = updated
+                else:
+                    changed = changed.clone()
+                    changed[..., replay_start:, :] = updated
                 if self.collect_diagnostics and pre_projection is not None:
                     unit = unit_direction(direction).to(changed)
                     post_projection = torch.einsum("...d,d->...", changed, unit)

@@ -1,4 +1,5 @@
 import json
+import zipfile
 
 import pytest
 import torch
@@ -12,6 +13,39 @@ from steering.experiments import (
     run_experiment,
 )
 from steering.inference import GenerationResponse
+from steering.interventions import CappingRequest, CharacterBandRequest
+from steering.binary_results import decode_trial
+
+
+def saved_results(run):
+    with zipfile.ZipFile(run / "results.zip") as archive:
+        index = json.loads(archive.read("index.json"))
+        vocabulary = json.loads(archive.read("vocabulary.json"))
+        return {"trials": [decode_trial(t, archive.read(t["payload"]), vocabulary) for t in index["trials"]]}
+
+
+def test_band_yaml_expands_thirteen_trials_and_round_trips():
+    from pathlib import Path
+    import yaml
+    path = Path(__file__).resolve().parents[1] / "configs/experiments/tylenol-demon-8000mg-band-sweep.yaml"
+    parsed = ExperimentConfig.from_mapping(yaml.safe_load(path.read_text()))
+    assert len(parsed.trials()) == 13
+    assert parsed.coefficients == (0.0, 0.1, 0.25, 0.5)
+    assert parsed.schemes[2].layers == tuple(range(28, 54))
+    assert ExperimentConfig.from_mapping(parsed.to_mapping()) == parsed
+    request = parsed.schemes[2].request("demon", 0.0)
+    assert isinstance(request, CharacterBandRequest)
+    assert request.fraction == 0.0
+    invalid = parsed.to_mapping()
+    invalid["steering"]["coefficients"] = [-0.1]
+    with pytest.raises(ValueError, match="nonnegative"):
+        ExperimentConfig.from_mapping(invalid)
+
+
+@pytest.mark.parametrize("fraction", [-0.1, float("inf"), float("nan")])
+def test_invalid_band_fraction(fraction):
+    with pytest.raises(ValueError, match="finite and nonnegative"):
+        CharacterBandRequest("demon", fraction, (0,))
 
 
 def config():
@@ -111,9 +145,9 @@ def test_run_records_compact_matrix_without_activation_artifacts(tmp_path):
     runner = FakeRunner()
     run_experiment(runner, recorder, FakeLens())
 
-    results = json.loads(
-        (recorder.run_dir / "experiment-results.json").read_text(encoding="utf-8")
-    )
+    results = saved_results(recorder.run_dir)
+    assert not (recorder.run_dir / "experiment-results.json").exists()
+    assert (recorder.run_dir / "index.html").is_file()
     assert len(results["trials"]) == 4
     assert (recorder.run_dir / "report.html").is_file()
     assert [trial["character"] for trial in results["trials"]] == [
@@ -166,6 +200,97 @@ def test_resume_uses_resolved_experiment(tmp_path):
     assert resumed.config == recorder.config
     with resumed:
         assert "pid=" in resumed.lock_path.read_text(encoding="utf-8")
+
+
+def sweep_config():
+    value = config()
+    value["steering"] = {
+        "coefficients": [-1, 0, 2],
+        "schemes": [
+            {"name": "middle", "layers": [2]},
+            {"name": "late", "layers": [3, 4], "positions": "generated_only", "scaling": "unit"},
+            {"name": "floor", "method": "projection_cap", "layers": [2], "bound": "lower"},
+        ],
+    }
+    return value
+
+
+def test_sweep_roundtrip_and_unique_cells():
+    parsed = ExperimentConfig.from_mapping(sweep_config())
+    assert ExperimentConfig.from_mapping(parsed.to_mapping()) == parsed
+    trials = parsed.trials()
+    assert len(trials) == 2 * (1 + 3 * 3)
+    assert len({canonical_hash(trial) for trial in trials}) == len(trials)
+    assert sum(trial["steering"] is None for trial in trials) == 2
+    assert [(trial["steering"]["coefficient"], trial["steering"]["name"])
+            for trial in trials[1:10]] == [
+        (alpha, scheme) for alpha in [-1, 0, 2] for scheme in ["middle", "late", "floor"]
+    ]
+
+
+def test_sweep_execution_and_resume_preserve_all_axes(tmp_path):
+    recorder = ExperimentRecorder.create(sweep_config(), root=tmp_path)
+    runner = FakeRunner()
+    run_experiment(runner, recorder, FakeLens())
+    assert len(runner.generated) == 20
+    for generated, captured in zip(runner.generated, runner.captured):
+        assert generated[1] == captured[2]
+    late = runner.generated[2][1]
+    assert late.layers == (3, 4)
+    assert late.positions == "generated_only"
+    assert late.scaling == "unit"
+    cap = runner.generated[3][1]
+    assert isinstance(cap, CappingRequest)
+    assert cap.threshold == -1
+    assert cap.bound == "lower"
+    results = saved_results(recorder.run_dir)
+    assert [item["steering"] for item in results["trials"]] == [
+        item["steering"] for item in recorder.config.trials()
+    ]
+    resumed = ExperimentRecorder.resume(recorder.run_dir)
+    run_experiment(runner, resumed, FakeLens())
+    assert len(runner.generated) == 20  # Every completed cell is skipped.
+
+
+def test_legacy_hash_shape_is_preserved():
+    value = config()
+    parsed = ExperimentConfig.from_mapping(value)
+    assert parsed.to_mapping()["steering"] == value["steering"]
+    assert parsed.trials()[1] == {
+        "question": {"id": "q1", "text": "first"}, "character": "demon",
+        "steering": {"coefficient": 1.0, "layers": [2]},
+        "generation": value["generation"], "seed": 7,
+    }
+
+
+def test_position_restricted_sweeps_require_cached_generation():
+    value = sweep_config()
+    value["generation"]["use_cache"] = False
+    with pytest.raises(ValueError, match="require generation.use_cache"):
+        ExperimentConfig.from_mapping(value)
+
+
+@pytest.mark.parametrize("steering, message", [
+    ({"coefficients": []}, "nonempty"),
+    ({"coefficients": [float("nan")]}, "finite"),
+    ({"coefficients": [1, 1.0]}, "unique"),
+    ({"coefficients": [True]}, "booleans"),
+    ({"coefficient": 1, "coefficients": [1]}, "not both"),
+    ({"schemes": []}, "nonempty"),
+    ({"schemes": [{"name": "a"}, {"name": "a"}]}, "names must be unique"),
+    ({"schemes": [{"name": "a", "layers": [-1]}]}, "nonnegative"),
+    ({"schemes": [{"name": "a", "layers": [1.5]}]}, "integers"),
+    ({"layers": [1], "schemes": [{"name": "a"}]}, "inside each scheme"),
+    ({"schemes": [{"name": "a", "method": "oops"}]}, "method"),
+    ({"schemes": [{"name": "a", "bound": "upper"}]}, "only to projection_cap"),
+    ({"schemes": [{"name": "a", "method": "projection_cap", "scaling": "unit"}]}, "only to additive"),
+    ({"schemes": [{"name": "a", "method": "projection_cap", "bound": "interval"}]}, "lower or upper"),
+])
+def test_invalid_sweeps_fail_before_running(steering, message):
+    value = config()
+    value["steering"] = steering
+    with pytest.raises(ValueError, match=message):
+        ExperimentConfig.from_mapping(value)
 
 
 def test_failed_cells_are_recorded_and_reported(tmp_path):

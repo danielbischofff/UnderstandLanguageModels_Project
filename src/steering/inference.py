@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from typing import Any
 
 import torch
@@ -18,12 +18,14 @@ from .capture import ActivationCaptureConfig, ActivationCaptureEvent
 from .hooks import SteeringContext
 from .interventions import (
     CappingRequest,
+    CharacterBandRequest,
     ResolvedIntervention,
     SteeringPlan,
     SteeringRequest,
     unit_direction,
 )
 from .vector_store import VectorStore
+from .recipes import RoleDirection, RoleVector
 
 DEFAULT_MODEL_ID = "Qwen/Qwen3-32B-FP8"
 
@@ -189,11 +191,33 @@ class InferenceRunner:
             )
         return result
 
+    def _resolve_character_band(self, request: CharacterBandRequest) -> list[ResolvedIntervention]:
+        direction = RoleDirection(request.character)
+        vector = self.vector_store.materialize(direction, model_config=self.model.config)
+        center = self.vector_store.materialize(RoleVector(request.character), model_config=self.model.config)
+        thresholds = {}
+        total = int(self.model.config.num_hidden_layers)
+        for layer in request.layers:
+            if not 0 <= layer < total:
+                raise IndexError(f"layer {layer} out of range for {total} layers")
+            delta = vector.tensor[layer].float()
+            unit = unit_direction(delta)
+            projection = float(torch.dot(unit, center.tensor[layer].float()))
+            radius = request.fraction * float(delta.norm())
+            thresholds[layer] = (projection - radius, projection + radius)
+        cap = CappingRequest(direction, "interval", request.layers, thresholds, request.positions)
+        return [replace(op, metadata={
+            **op.metadata, "method": "character_band", "half_width_fraction": request.fraction,
+            "center_vector": center.metadata(),
+        }) for op in self._resolve_cap(cap)]
+
     def resolve(
-        self, steering: SteeringRequest | CappingRequest | SteeringPlan | None
+        self, steering: SteeringRequest | CappingRequest | CharacterBandRequest | SteeringPlan | None
     ) -> list[ResolvedIntervention]:
         if steering is None:
             return []
+        if isinstance(steering, CharacterBandRequest):
+            return self._resolve_character_band(steering)
         if isinstance(steering, SteeringRequest):
             plan = SteeringPlan(additive=[steering])
         elif isinstance(steering, CappingRequest):
@@ -227,7 +251,7 @@ class InferenceRunner:
         self,
         conversation: Sequence[Mapping[str, str]],
         *,
-        steering: SteeringRequest | CappingRequest | SteeringPlan | None = None,
+        steering: SteeringRequest | CappingRequest | CharacterBandRequest | SteeringPlan | None = None,
         seed: int = 0,
         collect_diagnostics: bool = False,
         activation_capture: ActivationCaptureConfig | None = None,
@@ -299,14 +323,15 @@ class InferenceRunner:
         conversation: Sequence[Mapping[str, str]],
         generated_token_ids: Sequence[int],
         *,
-        steering: SteeringRequest | CappingRequest | SteeringPlan | None,
+        steering: SteeringRequest | CappingRequest | CharacterBandRequest | SteeringPlan | None,
         layers: Sequence[int],
     ) -> list[ActivationCaptureEvent]:
         """Capture one teacher-forced prompt+response pass for J-Lens.
 
         This second causal forward pass is equivalent to cached decoding at each
-        position for ``positions='all'`` steering, but includes the final sampled
-        token and avoids retaining every intermediate generation forward call.
+        position, including position-restricted steering. The prompt boundary
+        determines the replay mask. This includes the final sampled token and
+        avoids retaining every intermediate generation forward call.
         """
 
         inputs = self._tokenize(conversation)
@@ -338,6 +363,7 @@ class InferenceRunner:
             self.resolve(steering),
             collect_diagnostics=False,
             activation_capture=capture,
+            replay_prompt_length=input_ids.shape[1],
         )
         self.model.eval()
         with torch.inference_mode(), context:

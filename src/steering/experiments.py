@@ -1,14 +1,15 @@
-"""Question-by-character experiments with immediate J-Lens readout."""
+"""Question/character/alpha/scheme experiments with immediate J-Lens readout."""
 
 from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import subprocess
 import time
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
@@ -22,9 +23,10 @@ from safetensors.torch import save_file
 from .capture import ActivationCaptureEvent
 from .inference import GenerationResponse, InferenceRunner
 from .j_lens import JLenseReader
-from .interventions import SteeringRequest
+from .interventions import CappingRequest, CharacterBandRequest, SteeringRequest
 from .recipes import RoleDirection
-from .report import write_experiment_report
+from .report import write_experiment_report, write_bundle_reports
+from .binary_results import write_result_bundle
 
 UNSTEERED = "unsteered"
 
@@ -74,6 +76,78 @@ class Question:
 
 
 @dataclass(frozen=True)
+class SteeringScheme:
+    """One named set of layer, position, and intervention choices."""
+
+    name: str
+    layers: tuple[int, ...]
+    method: str = "additive"
+    positions: str = "all"
+    scaling: str = "raw"
+    preserve_original_activation_norm: bool = False
+    bound: str = "lower"
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> SteeringScheme:
+        if not isinstance(value, Mapping):
+            raise TypeError("each steering scheme must be a mapping")
+        unknown = set(value) - set(cls.__dataclass_fields__)
+        if unknown:
+            raise ValueError(f"unknown steering scheme fields: {sorted(unknown)}")
+        name = value.get("name")
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("steering scheme name must be nonempty")
+        layers = value.get("layers", [32])
+        if (
+            not isinstance(layers, (list, tuple)) or not layers
+            or any(type(layer) is not int or layer < 0 for layer in layers)
+            or len(set(layers)) != len(layers)
+        ):
+            raise ValueError("steering layers must be nonempty, unique nonnegative integers")
+        scheme = cls(**{**value, "name": name.strip(), "layers": tuple(layers)})
+        if scheme.method not in {"additive", "projection_cap", "character_band"}:
+            raise ValueError("scheme method must be additive, projection_cap, or character_band")
+        if type(scheme.preserve_original_activation_norm) is not bool:
+            raise TypeError("preserve_original_activation_norm must be a boolean")
+        if scheme.method != "additive":
+            if "scaling" in value or "preserve_original_activation_norm" in value:
+                raise ValueError("scaling and norm preservation apply only to additive schemes")
+        if scheme.method == "projection_cap":
+            if scheme.bound not in {"lower", "upper"}:
+                raise ValueError("projection_cap bound must be lower or upper")
+        elif "bound" in value:
+            raise ValueError("bound applies only to projection_cap schemes")
+        scheme.request("validation", 0.0)  # Validate without materializing a vector.
+        return scheme
+
+    def to_mapping(self) -> dict[str, Any]:
+        value = {**asdict(self), "layers": list(self.layers)}
+        if self.method == "additive":
+            del value["bound"]
+        else:
+            del value["scaling"]
+            del value["preserve_original_activation_norm"]
+            if self.method == "character_band":
+                del value["bound"]
+        return value
+
+    def request(self, character: str, alpha: float) -> SteeringRequest | CappingRequest | CharacterBandRequest:
+        if self.method == "character_band":
+            return CharacterBandRequest(character, alpha, self.layers, self.positions)
+        direction = RoleDirection(character)
+        if self.method == "projection_cap":
+            return CappingRequest(
+                direction, bound=self.bound, layers=self.layers,
+                threshold=alpha, positions=self.positions,
+            )
+        return SteeringRequest(
+            direction, coefficient=alpha, layers=self.layers, scaling=self.scaling,
+            positions=self.positions,
+            preserve_original_activation_norm=self.preserve_original_activation_norm,
+        )
+
+
+@dataclass(frozen=True)
 class ExperimentConfig:
     """The complete, human-authored definition of an experiment matrix."""
 
@@ -82,13 +156,14 @@ class ExperimentConfig:
     vector_revision: str
     questions: tuple[Question, ...]
     characters: tuple[str, ...]
-    coefficient: float
-    steering_layers: tuple[int, ...]
+    coefficients: tuple[float, ...]
+    schemes: tuple[SteeringScheme, ...]
     generation: Mapping[str, Any]
     seed: int
     top_k: int
     keep_activations: bool
     description: str | None = None
+    legacy_steering: bool = False
 
     @classmethod
     def from_mapping(cls, value: Mapping[str, Any]) -> ExperimentConfig:
@@ -197,19 +272,46 @@ class ExperimentConfig:
         steering = value.get("steering", {})
         if not isinstance(steering, Mapping):
             raise TypeError("steering must be a mapping")
-        steering_unknown = set(steering) - {"coefficient", "layers"}
+        steering_unknown = set(steering) - {"coefficient", "layers", "coefficients", "schemes"}
         if steering_unknown:
             raise ValueError(f"unknown steering fields: {sorted(steering_unknown)}")
-        coefficient = float(steering.get("coefficient", 1.0))
-        layers = tuple(int(layer) for layer in steering.get("layers", [32]))
-        if not layers or len(set(layers)) != len(layers):
-            raise ValueError("steering layers must be nonempty and unique")
+        if "coefficient" in steering and "coefficients" in steering:
+            raise ValueError("use coefficient or coefficients, not both")
+        if "layers" in steering and "schemes" in steering:
+            raise ValueError("put layers inside each scheme when using schemes")
+        raw_coefficients = steering.get("coefficients", [steering.get("coefficient", 1.0)])
+        if not isinstance(raw_coefficients, list) or not raw_coefficients:
+            raise ValueError("steering.coefficients must be a nonempty list")
+        if any(isinstance(item, bool) for item in raw_coefficients):
+            raise ValueError("steering coefficients must be numbers, not booleans")
+        coefficients = tuple(float(item) for item in raw_coefficients)
+        if (
+            not all(math.isfinite(item) for item in coefficients)
+            or len(set(coefficients)) != len(coefficients)
+        ):
+            raise ValueError("steering coefficients must be finite and unique")
+        raw_schemes = steering.get(
+            "schemes", [{"name": "additive", "layers": steering.get("layers", [32])}]
+        )
+        if not isinstance(raw_schemes, list) or not raw_schemes:
+            raise ValueError("steering.schemes must be a nonempty list")
+        schemes = tuple(SteeringScheme.from_mapping(item) for item in raw_schemes)
+        if any(scheme.method == "character_band" for scheme in schemes) and any(alpha < 0 for alpha in coefficients):
+            raise ValueError("band half-width fractions must be nonnegative")
+        if len({scheme.name for scheme in schemes}) != len(schemes):
+            raise ValueError("steering scheme names must be unique")
 
         generation = value.get("generation", {"max_new_tokens": 128})
         if not isinstance(generation, Mapping):
             raise TypeError("generation must be a mapping")
         generation = dict(generation)
         generation.setdefault("max_new_tokens", 128)
+        if generation.get("use_cache") is False and any(
+            scheme.positions != "all" for scheme in schemes
+        ):
+            raise ValueError(
+                "position-restricted schemes require generation.use_cache: true for faithful replay"
+            )
 
         j_lens = value.get("j_lens", {})
         if not isinstance(j_lens, Mapping):
@@ -240,8 +342,9 @@ class ExperimentConfig:
             ),
             questions=tuple(questions),
             characters=characters,
-            coefficient=coefficient,
-            steering_layers=layers,
+            coefficients=coefficients,
+            schemes=schemes,
+            legacy_steering=not ({"coefficients", "schemes"} & set(steering)),
             generation=generation,
             seed=int(value.get("seed", 0)),
             top_k=top_k,
@@ -249,7 +352,7 @@ class ExperimentConfig:
         )
 
     def trials(self) -> list[dict[str, Any]]:
-        """Expand the question x character matrix in stable row-major order."""
+        """Expand all axes, sharing one unsteered control per question."""
         return [
             {
                 "question": {"id": question.id, "text": question.text},
@@ -258,8 +361,11 @@ class ExperimentConfig:
                     None
                     if character == UNSTEERED
                     else {
-                        "coefficient": self.coefficient,
-                        "layers": list(self.steering_layers),
+                        **(
+                            {"layers": list(scheme.layers)} if self.legacy_steering
+                            else scheme.to_mapping()
+                        ),
+                        "coefficient": alpha,
                     }
                 ),
                 "generation": dict(self.generation),
@@ -267,6 +373,10 @@ class ExperimentConfig:
             }
             for question in self.questions
             for character in self.characters
+            for alpha, scheme in (
+                [(None, None)] if character == UNSTEERED else
+                [(alpha, scheme) for alpha in self.coefficients for scheme in self.schemes]
+            )
         ]
 
     def to_mapping(self) -> dict[str, Any]:
@@ -280,10 +390,12 @@ class ExperimentConfig:
                 for question in self.questions
             ],
             "characters": list(self.characters),
-            "steering": {
-                "coefficient": self.coefficient,
-                "layers": list(self.steering_layers),
-            },
+            "steering": (
+                {"coefficient": self.coefficients[0], "layers": list(self.schemes[0].layers)}
+                if self.legacy_steering else
+                {"coefficients": list(self.coefficients),
+                 "schemes": [scheme.to_mapping() for scheme in self.schemes]}
+            ),
             "generation": dict(self.generation),
             "seed": self.seed,
             "j_lens": {"top_k": self.top_k},
@@ -419,6 +531,7 @@ class ExperimentRecorder:
             "schema_version": 1,
             "question": trial["question"],
             "character": trial["character"],
+            "steering": trial["steering"],
             "response": {
                 "text": response.text,
                 "generated_token_ids": response.generated_token_ids,
@@ -455,6 +568,7 @@ class ExperimentRecorder:
             "status": "complete",
             "question": trial["question"]["id"],
             "character": trial["character"],
+            "steering": trial["steering"],
             "path": str(trial_dir.relative_to(self.run_dir)),
         }
         self._write_manifest(manifest)
@@ -508,38 +622,36 @@ class ExperimentRecorder:
             "error": failure,
             "question": trial["question"]["id"],
             "character": trial["character"],
+            "steering": trial["steering"],
         }
         self._write_manifest(manifest)
 
     def write_outputs(self) -> None:
-        results = [
-            json.loads(path.read_text(encoding="utf-8"))
-            for path in sorted((self.run_dir / "trials").glob("*/result.json"))
-        ]
-        document = {
-            "schema_version": 1,
-            "experiment": self.config.to_mapping(),
-            "trials": results,
-        }
-        _atomic_text(
-            self.run_dir / "experiment-results.json",
-            json.dumps(document, ensure_ascii=False) + "\n",
-        )
-        write_experiment_report(self.run_dir / "report.html", document)
+        if not any((self.run_dir / "trials").glob("*/result.json")):
+            write_experiment_report(self.run_dir / "report.html", {
+                "schema_version": 1, "experiment": self.config.to_mapping(), "trials": [],
+            })
+            return
+        # Preserve per-trial checkpoints for resume, but avoid a second giant
+        # JSON document or loading the entire matrix into memory for reporting.
+        temporary = self.run_dir / ".results.zip.tmp"
+        temporary.unlink(missing_ok=True)
+        write_result_bundle(self.run_dir, temporary)
+        bundle = self.run_dir / "results.zip"
+        temporary.replace(bundle)
+        write_bundle_reports(bundle, self.run_dir)
 
 
-def _steering_for_trial(trial: Mapping[str, Any]) -> SteeringRequest | None:
+def _steering_for_trial(trial: Mapping[str, Any]) -> SteeringRequest | CappingRequest | CharacterBandRequest | None:
     character = str(trial["character"])
     if character == UNSTEERED:
         return None
     steering = trial["steering"]
-    return SteeringRequest(
-        RoleDirection(character),
-        coefficient=float(steering["coefficient"]),
-        layers=steering["layers"],
-        scaling="raw",
-        positions="all",
-    )
+    scheme = SteeringScheme.from_mapping({
+        "name": "additive",
+        **{key: value for key, value in steering.items() if key != "coefficient"},
+    })
+    return scheme.request(character, float(steering["coefficient"]))
 
 
 def run_experiment(

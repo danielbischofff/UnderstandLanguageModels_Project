@@ -6,8 +6,8 @@ import torch
 
 import steering.inference as inference_module
 from steering.inference import InferenceRunner
-from steering.interventions import CappingRequest, SteeringPlan, SteeringRequest
-from steering.recipes import PublishedAssistantAxis, RoleDirection
+from steering.interventions import CappingRequest, CharacterBandRequest, SteeringPlan, SteeringRequest, apply_cap
+from steering.recipes import PublishedAssistantAxis, RoleDirection, RoleVector
 from steering.vector_store import MaterializedVector
 
 
@@ -73,6 +73,28 @@ def test_add_then_cap_order():
     resolved = runner().resolve(plan)
     assert [item.operation for item in resolved] == ["add", "cap"]
     assert resolved[1].threshold == -2.0
+
+
+@pytest.mark.parametrize("fraction", [0.0, 0.1, 0.25, 0.5])
+def test_character_band_uses_absolute_center_and_layer_specific_distance(fraction):
+    class BandStore:
+        def materialize(self, recipe, model_config=None):
+            tensor = torch.tensor([[5., 7.], [8., 9.]]) if isinstance(recipe, RoleVector) else torch.tensor([[2., 0.], [4., 0.]])
+            return MaterializedVector(recipe, tensor, (), tuple(tensor.norm(dim=-1).tolist()))
+
+    loaded = InferenceRunner(Model(2), object(), vector_store=BandStore(), model_id="test")
+    resolved = loaded.resolve(CharacterBandRequest("demon", fraction, (0, 1)))
+    for op, center, distance in zip(resolved, [5., 8.], [2., 4.]):
+        assert op.bound == "interval"
+        assert op.threshold == pytest.approx((center - fraction * distance, center + fraction * distance))
+        h = torch.tensor([[[-100., 3.], [center, 4.], [100., 5.]]])
+        actual = apply_cap(h, op.direction, bound=op.bound, threshold=op.threshold)
+        torch.testing.assert_close(actual[..., 1], h[..., 1])
+        torch.testing.assert_close(actual[0, :, 0], torch.tensor([center - fraction * distance, center, center + fraction * distance]))
+        assert op.metadata["half_width_fraction"] == fraction
+        assert "center_vector" in op.metadata
+    with pytest.raises(IndexError):
+        loaded.resolve(CharacterBandRequest("demon", fraction, (-1,)))
 
 
 def test_loader_does_not_override_checkpoint_quantization_config(monkeypatch):
@@ -217,3 +239,47 @@ def test_j_lens_readout_uses_model_norm_and_head():
     assert ids.tolist() == [[0, 1]]
     assert scores.shape == probabilities.shape == (1, 2)
     assert np.all(probabilities > 0)
+
+
+@pytest.mark.parametrize("positions", ["all", "last", "generated_only"])
+@pytest.mark.parametrize("method", ["additive", "projection_cap", "character_band"])
+def test_replay_matches_cached_causal_decoding(monkeypatch, positions, method):
+    from transformers import Qwen3Config, Qwen3ForCausalLM
+    from steering.capture import ActivationCaptureConfig
+    from steering.hooks import SteeringContext
+
+    torch.manual_seed(0)
+    model = Qwen3ForCausalLM(Qwen3Config(
+        vocab_size=24, hidden_size=8, intermediate_size=16, num_hidden_layers=2,
+        num_attention_heads=2, num_key_value_heads=2, head_dim=4,
+    )).eval()
+
+    class TinyStore:
+        def materialize(self, recipe, model_config=None):
+            tensor = torch.zeros(2, 8)
+            tensor[:, 0] = 1
+            return MaterializedVector(recipe, tensor, (), (1.0, 1.0))
+
+    loaded = InferenceRunner(model, object(), vector_store=TinyStore(), model_id="test")
+    prompt = torch.tensor([[1, 2, 3]])
+    generated = [4, 5]
+    monkeypatch.setattr(loaded, "_tokenize", lambda _: {"input_ids": prompt})
+    recipe = RoleDirection("demon")
+    request = (
+        SteeringRequest(recipe, coefficient=0.5, layers=[0], positions=positions)
+        if method == "additive" else
+        CappingRequest(recipe, "lower", [0], threshold=0.5, positions=positions)
+    )
+    if method == "character_band":
+        request = CharacterBandRequest("demon", 0.25, (0, 1), positions)
+    context = SteeringContext(model, loaded.resolve(request), activation_capture=ActivationCaptureConfig(
+        layers=[0, 1], points=["post_intervention"], positions="all", dtype="bfloat16",
+    ))
+    with torch.inference_mode(), context:
+        output = model(input_ids=prompt, use_cache=True)
+        for token in generated:
+            output = model(input_ids=torch.tensor([[token]]), past_key_values=output.past_key_values, use_cache=True)
+    replay = loaded.capture_complete_sequence([], generated, steering=request, layers=[0, 1])
+    for event in replay:
+        cached = torch.cat([item.tensor for item in context.activation_events if item.layer == event.layer], dim=1)
+        torch.testing.assert_close(event.tensor.float(), cached.float(), atol=0.002, rtol=0.01)

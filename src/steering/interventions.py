@@ -138,6 +138,25 @@ class CappingRequest:
 
 
 @dataclass(frozen=True)
+class CharacterBandRequest:
+    """Clamp around a character projection; half-width is a fraction of ||R-D||."""
+
+    character: str
+    fraction: float
+    layers: tuple[int, ...]
+    positions: PositionPolicy = "all"
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "layers", _validate_layers(self.layers, required=True))
+        if not self.character.strip():
+            raise ValueError("character must be nonempty")
+        if not math.isfinite(self.fraction) or self.fraction < 0:
+            raise ValueError("band half-width fraction must be finite and nonnegative")
+        if self.positions not in {"all", "last", "generated_only"}:
+            raise ValueError(f"unknown token-position policy: {self.positions!r}")
+
+
+@dataclass(frozen=True)
 class SteeringPlan:
     additive: tuple[SteeringRequest, ...] = field(default_factory=tuple)
     caps: tuple[CappingRequest, ...] = field(default_factory=tuple)
