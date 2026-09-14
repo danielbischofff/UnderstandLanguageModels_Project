@@ -14,7 +14,6 @@ sections/            One file per paper section, in the required order:
   results.tex          Results and their interpretation
   discussion.tex       Reflection, limitations, future work
   conclusion.tex       Optional; can be merged into the discussion
-  acknowledgments.tex  Optional
   ai_usage.tex         AI usage declaration (placed after the references)
 references.bib       Bibliography
 figures/, tables/    Figure files and table sources
