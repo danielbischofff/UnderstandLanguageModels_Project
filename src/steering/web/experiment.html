@@ -49,6 +49,9 @@
       color: var(--text);
       font: inherit;
     }
+    .search-field { display: grid; gap: 6px; align-content: start; }
+    .inline-check { display: flex; align-items: center; gap: 6px; font-weight: 500; }
+    .inline-check input { width: auto; min-height: 0; margin: 0; }
     select:focus, input:focus, button:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 1px; }
     .panel {
       background: var(--surface);
@@ -151,10 +154,13 @@
       <label>Evaluation query<select id="question-select"></select></label>
       <label>Steering scheme<select id="scheme-select"></select></label>
       <label><span id="coefficient-label">Alpha (α)</span><select id="alpha-select"></select></label>
-      <label>Find a J-Lens token
+      <div class="search-field">
+        <label for="token-search">Find a J-Lens token</label>
         <input id="token-search" list="token-suggestions" type="search" placeholder="e.g. danger, cruel, help">
         <datalist id="token-suggestions"></datalist>
-      </label>
+        <label class="inline-check"><input id="search-from-intervention" type="checkbox" checked>
+          Only from the first steered layer on</label>
+      </div>
     </section>
 
     <p class="secondary" id="steering-description"></p>
@@ -220,6 +226,7 @@
     }];
     const coefficients = steeringConfig.coefficients || [steeringConfig.coefficient ?? 1];
     const searchInput = document.getElementById("token-search");
+    const fromInterventionInput = document.getElementById("search-from-intervention");
     const suggestions = document.getElementById("token-suggestions");
     const promptTokens = document.getElementById("prompt-tokens");
     const responseTokens = document.getElementById("response-tokens");
@@ -306,6 +313,15 @@
       return layer.readPosition ? layer.readPosition(selected) : (layer.positions[selected] || []);
     }
 
+    // Search ignores layers before the selected scheme's first steered layer.
+    // The unsteered control uses the same cutoff so the two stay comparable.
+    function searchStartLayer() {
+      if (!fromInterventionInput.checked) return -Infinity;
+      const scheme = schemes.find(item => item.name === schemeSelect.value);
+      return Math.min(...(scheme?.layers || [32]));
+    }
+    const searchesLayer = layer => layer >= searchStartLayer();
+
     function matchesSearch(item) {
       const query = normalized(searchInput.value);
       const entry = translation(item);
@@ -328,7 +344,7 @@
       });
       readout.forEach((item, index) => {
         const row = document.createElement("tr");
-        row.classList.toggle("is-hit", matchesSearch(item));
+        row.classList.toggle("is-hit", searchesLayer(layer.layer) && matchesSearch(item));
         const rank = row.insertCell();
         rank.textContent = String(index + 1);
         const word = row.insertCell();
@@ -364,7 +380,7 @@
         cell.className = "layer";
         cell.dataset.layer = String(layer.layer);
         cell.setAttribute("aria-controls", "readout-table");
-        cell.classList.toggle("search-hit", readout.some(matchesSearch));
+        cell.classList.toggle("search-hit", searchesLayer(layer.layer) && readout.some(matchesSearch));
         cell.innerHTML = `<span class="layer-index">Layer ${layer.layer}</span><span class="layer-word"></span>`;
         renderWord(cell.querySelector(".layer-word"), top || {text: "—"});
         layerGrid.append(cell);
@@ -376,6 +392,7 @@
       let score = 0;
       let layers = 0;
       for (const layer of trial.j_lens.layers) {
+        if (!searchesLayer(layer.layer)) continue;
         const matches = topAt(layer, selected).filter(matchesSearch);
         if (matches.length) layers += 1;
         for (const item of matches) score = Math.max(score, Number(item.probability) || 0);
@@ -416,9 +433,11 @@
         }
       });
       searchLegend.hidden = hits === 0;
+      const start = searchStartLayer();
+      const scope = Number.isFinite(start) ? ` in layers ${start} and later` : "";
       searchSummary.textContent = hits
-        ? `${JSON.stringify(searchInput.value.trim())} appears among the retained J-Lens words at ${hits} text positions; intensity is normalized by maximum probability in this response.`
-        : `${JSON.stringify(searchInput.value.trim())} does not appear among the retained top words.`;
+        ? `${JSON.stringify(searchInput.value.trim())} appears among the retained J-Lens words${scope} at ${hits} text positions; intensity is normalized by maximum probability in this response.`
+        : `${JSON.stringify(searchInput.value.trim())} does not appear among the retained top words${scope}.`;
       renderLayers();
     }
 
@@ -572,6 +591,7 @@
     schemeSelect.addEventListener("change", renderTrial);
     alphaSelect.addEventListener("change", renderTrial);
     searchInput.addEventListener("input", renderSearch);
+    fromInterventionInput.addEventListener("change", renderSearch);
     for (const event of ["pointerover", "focusin", "click"]) {
       layerGrid.addEventListener(event, selectLayer);
     }

@@ -88,6 +88,15 @@ const {chromium} = require('playwright');
     assert.equal(await answer(), 'other-band-2');
     assert.match(await page.locator('#coefficient-label').textContent(), /Half-width/);
     assert.match(await page.locator('#steering-description').textContent(), /half-width β = 2/);
+    // The band scheme steers from layer 1, so layer-0-only "cruel" is hidden until the cutoff is cleared.
+    await page.fill('#token-search', 'cruel');
+    assert.equal(await page.locator('#search-from-intervention').isChecked(), true);
+    assert.equal(await page.locator('.token[data-hit="true"]').count(), 0);
+    assert.match(await page.locator('#search-summary').textContent(), /layers 1 and later/);
+    await page.locator('#search-from-intervention').uncheck();
+    assert.equal(await page.locator('.token[data-hit="true"]').count(), 1);
+    await page.locator('#search-from-intervention').check();
+    await page.fill('#token-search', 'danger');
     await page.selectOption('#scheme-select', 'floor');
     assert.match(await page.locator('#coefficient-label').textContent(), /Alpha/);
     await page.evaluate(() => {
