@@ -13,6 +13,7 @@ from sklearn.metrics import pairwise_distances, silhouette_score
 
 from .inputs import matrix
 from .optimization import train_embedding
+from .palette import map_colors
 from .quality import embedding_quality
 
 
@@ -260,9 +261,11 @@ class RoleMap:
         ]
 
     def role_records(self):
+        colors = map_colors(self)
         return [
             {
                 "label": label,
+                "color": colors[int(cluster)],
                 **(
                     {"subcluster": self.config["subcluster_ids"][i]}
                     if "subcluster_ids" in self.config

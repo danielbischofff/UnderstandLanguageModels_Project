@@ -8,6 +8,7 @@ import numpy as np
 from openTSNE import TSNEEmbedding
 
 from .labels import PINNED_ROLES, label_offsets, labeled_indices
+from .palette import cluster_colors, soften
 
 
 def default_positions(embedding, frames, vector, pca_position):
@@ -85,13 +86,13 @@ def export_training(
         extent = max(extent, float(np.max(np.abs(default_xy))))
         np.save(output / "default-vector-positions.npy", default_xy)
     extent = max(extent * 1.12, 1e-4)
-    colors = (
-        "#aab3bf"
-        if clusters is None
-        else np.asarray(
-            ["#87aade", "#d6b681", "#93b6a1", "#cc9aba", "#9bc2c9", "#b6a3d2"]
-        )[np.asarray(clusters) % 6]
-    )
+    if clusters is None or vectors is None:
+        colors = "#aab3bf"
+    else:
+        # The map's own slot colours, softened so the moving points stay a
+        # backdrop for the labels, and never renumbered between runs.
+        table = cluster_colors(vectors, labels, clusters, metric)
+        colors = [soften(table[int(c)]) for c in np.asarray(clusters)]
     selected = (
         labeled_indices(vectors, labels, clusters, metric)
         if vectors is not None and clusters is not None

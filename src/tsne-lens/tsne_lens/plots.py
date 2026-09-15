@@ -9,21 +9,21 @@ import plotly.graph_objects as go
 from plotly.colors import qualitative
 
 from .labels import label_offsets, labeled_indices
+from .palette import map_colors
 
 
 def make_figure(role_map, trajectories):
     fig = go.Figure()
     roles = role_map.role_records()
     last_step = max((len(t["points"]) - 1 for t in trajectories), default=1)
+    # Fixed by cluster membership, so this map and the ribbons agree on the six.
+    colors = map_colors(role_map)
     for cluster in sorted(set(role_map.clusters)):
         group = [r for r in roles if r["cluster"] == cluster]
-        color = (
-            "#9ca3af"
-            if cluster == -1
-            else qualitative.Dark24[int(cluster) % len(qualitative.Dark24)]
-        )
+        color = colors[int(cluster)]
         label = role_map.cluster_names[int(cluster)]
-        legend_label = f"{int(cluster) + 1}. {label}" if cluster >= 0 else label
+        # The cluster's own id, as projection.json and the ribbons use it.
+        legend_label = f"{int(cluster)} · {label}" if cluster >= 0 else label
         fig.add_trace(
             go.Scatter(
                 x=[r["x"] for r in group],
@@ -39,7 +39,7 @@ def make_figure(role_map, trajectories):
             fig.add_annotation(
                 x=float(np.median([r["x"] for r in group])),
                 y=float(np.median([r["y"] for r in group])),
-                text=str(int(cluster) + 1),
+                text=str(int(cluster)),
                 showarrow=False,
                 yshift=18,
                 bgcolor="rgba(255,255,255,0.8)",

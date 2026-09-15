@@ -471,3 +471,87 @@ def test_main_defaults_use_fixed_three_scales_and_heavier_tails(role_map):
         for r in m.config["training_history"]
     )
     assert len(set(m.clusters)) == 6
+
+
+def test_cluster_ribbons_helpers(role_map):
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+    import cluster_ribbons as ribbons
+
+    assert ribbons.parse_labelled_path("alpha=runs/0001") == ("alpha", Path("runs/0001"))
+    assert ribbons.parse_labelled_path("a/sweep/runs/0001")[0] == "sweep"
+    with pytest.raises(Exception):
+        ribbons.parse_labelled_path("=nothing")
+
+    assert ribbons.display_token("Ġfeel") == "feel"
+    assert ribbons.display_token("Ġ") == "␣"
+    assert ribbons.display_token("Ċ") == "⏎"
+    assert ribbons.display_token("<|im_start|>") == "im_start"
+
+    assert ribbons.tint_for(ribbons.TINT_CEILING) == ribbons.MAX_ALPHA
+    assert ribbons.tint_for(ribbons.MIN_SIMILARITY) == ribbons.MIN_ALPHA
+    assert ribbons.tint_for(0.7) == pytest.approx(0.64)
+
+    # A residual sitting on a role vector must take that role's own cluster.
+    clusters, similarities, neighbors = ribbons.neighbour_table(
+        role_map.vectors[:3], role_map, 5
+    )
+    record = dict(neighbor_clusters=clusters, neighbor_similarities=similarities)
+    ribbons.assign_cells(record, 0.5)
+    assert record["clusters"] == [int(role_map.clusters[i]) for i in range(3)]
+    assert all(s == pytest.approx(1.0, abs=1e-6) for s in record["similarities"])
+    assert all(0 < p <= 1 for p in record["purities"])
+    assert [n[0]["label"] for n in neighbors] == role_map.labels[:3]
+    assert all(len(n) == 5 for n in neighbors)
+
+    # The threshold, not the ranking, decides whether a cell is coloured at all:
+    # the same neighbours give a cluster below the bar and white above it.
+    assert ribbons.cell_for([2, 2, 1], [0.61, 0.55, 0.52], 0.5) == (2, 0.61, 2 / 3)
+    assert ribbons.cell_for([2, 2, 1], [0.61, 0.55, 0.52], 0.7) == (None, 0.61, 0.0)
+    # Only qualifying neighbours are counted, and the tint is their best.
+    assert ribbons.cell_for([2, 2, 1], [0.44, 0.42, 0.58], 0.5) == (1, 0.58, 1 / 3)
+
+
+def test_cluster_colors_follow_membership_not_ward_numbering(role_map):
+    from tsne_lens.palette import CLUSTER_COLORS, cluster_slots, map_colors, soften
+
+    slots = cluster_slots(
+        role_map.vectors, role_map.labels, role_map.clusters, role_map.config["metric"]
+    )
+    assert sorted(slots.values()) == list(range(3))
+
+    # Renumbering Ward's clusters must not move a colour: the same members keep
+    # the same slot, which is what makes two runs of the same map comparable.
+    shuffled = np.asarray([(int(c) + 1) % 3 for c in role_map.clusters])
+    moved = cluster_slots(
+        role_map.vectors, role_map.labels, shuffled, role_map.config["metric"]
+    )
+    assert {slots[int(c)] for c in role_map.clusters} == {
+        moved[int(c)] for c in shuffled
+    }
+    for original, renamed in zip(role_map.clusters, shuffled):
+        assert slots[int(original)] == moved[int(renamed)]
+
+    colors = map_colors(role_map)
+    assert set(colors.values()) <= set(CLUSTER_COLORS)
+    assert len(set(colors.values())) == 3
+    assert {r["color"] for r in role_map.role_records()} == set(colors.values())
+    assert soften("#000000", 0.5) == "#808080"
+
+
+def test_cluster_ribbons_row_labels():
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+    import cluster_ribbons as ribbons
+
+    band = dict(run="band", steering={}, method="character_band", layers=[29],
+                coefficient=0.25)
+    assert ribbons.row_label(band) == "band · L29 · w=0.25"
+    alpha = dict(run="alpha", steering={}, method="additive", layers=[32],
+                 coefficient=4.0)
+    assert ribbons.row_label(alpha) == "alpha · L32 · α=4"
+    assert ribbons.row_label(dict(run="alpha", steering=None)) == "alpha · no steering"

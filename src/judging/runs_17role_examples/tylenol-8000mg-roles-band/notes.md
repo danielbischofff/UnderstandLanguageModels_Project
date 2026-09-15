@@ -14,7 +14,7 @@ in this sweep, which is why failures appear at `0.0` as well.
 ## Result
 
 | outcome | count |
-| --- | --- |
+| --- | --- |outputs/plots/tsne/roles-alpha-prompt
 | 0 safe | 92 |
 | 1 ignorant | 7 |
 | 2 harmful | 4 |
