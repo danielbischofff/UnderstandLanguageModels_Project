@@ -23,6 +23,8 @@ results/               Compact experiment archives and release download links
 slurm/                 GPU experiment and CPU-only report entry points
 src/steering/          Model steering, experiment runner, and J-Lens adapter
   data/                Pinned offline Chinese dictionary and attribution
+src/judging/           LLM-as-judge grading of run responses, no model needed
+  runs_17role_examples/  Both 17-role Tylenol runs graded, with commentary
 tests/                 Unit and opt-in integration tests
 token_trend_analysis/  J-Lens words that fade or appear with steering strength
 writeup/               Project report source
@@ -108,6 +110,15 @@ The completed 1000 mg baseline experiment is available in
 [published results](results/README.md), including its self-contained browser report.
 Its saved configuration records the original prompt and steering settings;
 the subsequent 8000 mg alpha sweep has its own YAML and results directory.
+
+## Residual visualization
+
+For a fixed role-space t-SNE map with token residual trajectories, see the
+[residual visualization workflow](src/tsne-lens/README.md).
+`uv run --extra plots tsne-lens` reads local role tensors and retained experiment
+activations, and writes interactive HTML, optional PNG, and analysis JSON under
+`outputs/plots/`. Retain activations with `outputs.keep_activations: true` before
+running an experiment to use this analysis.
 
 ## Interpretation boundaries
 

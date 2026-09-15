@@ -194,6 +194,75 @@ def test_optional_activation_retention_uses_safetensors(tmp_path):
     )
     assert not (activation_dir.parent / "response.txt").exists()
     assert not (activation_dir.parent / "status.json").exists()
+
+
+def test_generation_capture_is_retained_instead_of_j_lens_replay(tmp_path):
+    value = config()
+    value["outputs"] = {"keep_activations": True, "activation_capture": {
+        "layers": [0], "points": ["pre_intervention", "post_intervention"],
+        "positions": "all", "dtype": "bfloat16",
+    }}
+    parsed = ExperimentConfig.from_mapping(value)
+    assert ExperimentConfig.from_mapping(parsed.to_mapping()) == parsed
+
+    class CapturingRunner(FakeRunner):
+        def generate(self, conversation, *, steering, **kwargs):
+            response = super().generate(conversation, steering=steering, **kwargs)
+            assert kwargs["activation_capture"] == parsed.activation_capture
+            for point, number in [("pre_intervention", 1), ("post_intervention", 2)]:
+                response.activations.append(ActivationCaptureEvent(
+                    tensor=torch.full((1, 2, 6), number, dtype=torch.bfloat16),
+                    layer=0, point=point, phase="prefill", forward_index=0,
+                    input_token_ids=[[10, 11]], cache_positions=[0, 1], position_policy="all",
+                ))
+            return response
+
+    recorder = ExperimentRecorder.create(parsed, root=tmp_path)
+    run_experiment(CapturingRunner(), recorder, FakeLens())
+    for path in (recorder.run_dir / "trials").iterdir():
+        manifest = json.loads((path / "activations/manifest.json").read_text())
+        assert manifest["source"] == "generation"
+        assert [event["point"] for event in manifest["events"]] == ["pre_intervention", "post_intervention"]
+        tensors = load_file(path / "activations/activations.safetensors")
+        assert torch.all(tensors["event_000001"] == 2)
+    invalid = parsed.to_mapping()
+    invalid["outputs"]["keep_activations"] = False
+    with pytest.raises(ValueError, match="requires keep_activations"):
+        ExperimentConfig.from_mapping(invalid)
+    invalid = parsed.to_mapping()
+    invalid["generation"]["use_cache"] = False
+    with pytest.raises(ValueError, match="requires use_cache"):
+        ExperimentConfig.from_mapping(invalid)
+
+
+def test_tsne_experiment_matrices():
+    from pathlib import Path
+    import yaml
+
+    directory = Path(__file__).resolve().parents[1] / "configs/experiments/tsne-lens"
+    for mode, strengths in [("alpha", (1, 2.5, 4)), ("band", (0, 0.1, 0.25))]:
+        path = directory / f"tylenol-8000mg-roles-{mode}.yaml"
+        parsed = ExperimentConfig.from_mapping(yaml.safe_load(path.read_text()))
+        assert ExperimentConfig.from_mapping(parsed.to_mapping()) == parsed
+        assert parsed.name == path.stem
+        # Layers are steered in separate trials: 17 roles x 3 x 2 schemes + control.
+        assert len(parsed.trials()) == 103
+        assert parsed.coefficients == strengths
+        assert [(s.name, s.layers) for s in parsed.schemes] == [
+            ("layer-29", (29,)), ("layer-32", (32,))
+        ]
+        assert {s.method for s in parsed.schemes} == {
+            "additive" if mode == "alpha" else "character_band"
+        }
+        # Capture is independent of the steered layer: layer 32 always feeds the
+        # role map, including in the trials that only steer layer 29.
+        assert parsed.activation_capture.layers == (29, 32)
+        assert parsed.activation_capture.positions == "all"
+        assert parsed.model["id"] == "Qwen/Qwen3-32B"
+        assert parsed.model.get("quantization") is None
+        assert len(parsed.characters) == 18
+        assert "survivor" in parsed.characters and "widow" in parsed.characters
+
 def test_resume_uses_resolved_experiment(tmp_path):
     recorder = ExperimentRecorder.create(config(), root=tmp_path)
     resumed = ExperimentRecorder.resume(recorder.run_dir)
