@@ -120,6 +120,17 @@ activations, and writes interactive HTML, optional PNG, and analysis JSON under
 `outputs/plots/`. Retain activations with `outputs.keep_activations: true` before
 running an experiment to use this analysis.
 
+## Quantitative analysis
+
+Score arbitrary word sets against saved runs and export interactive plots, CSV and JSON:
+
+```bash
+uv run --extra plots quantitive-analysis results/tylenol-demon/0001_20260907T205129Z_e2191eaef3780817 --sets src/quantitive_analysis/examples/tylenol.yaml --layer 32
+```
+
+Retained activations enable rank and cosine metrics; compact archives enable cosine
+only. See [analysis options](src/quantitive_analysis/README.md).
+
 ## Interpretation boundaries
 
 The J-Lens was fitted on generic text using the original Qwen3-32B checkpoint
