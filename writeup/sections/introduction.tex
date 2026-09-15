@@ -1,0 +1,29 @@
+% Motivation and research question in the context of the field / class;
+% why it is interesting or novel relative to related work. State the research
+% question, hypotheses and purpose clearly. No exhaustive literature review needed.
+% Text taken verbatim from Project Proposals/j_lens_persona_space_relationship.md.
+\section{Introduction}
+\label{sec:introduction}
+
+In ``Verbalizable Representations Form a Global Workspace in Language Models'' \citep{gurnee2026global}, Anthropic introduces the J-Lens method, which enables us to inspect which tokens the model is inclined to verbalize based on intermediate activations in the residual stream in specific model layers and token positions.
+
+In one of their analyses (section 6 in the paper), they report that the tokens verbalized in the J-Lens in the instruction tuned model, at the token positions of the user's query, correspond to an ``Assistant's point of view'' on the user's query. This is in contrast to the base model, which doesn't exhibit this point of view. In their example, both the base and instruction tuned models are given a user prompt indicating that the user took a dangerous dose of a specific medication.
+Words expressing concern and danger show up in the instruction-tuned model's J-space, but not in the base model.
+
+The way they interpret this result - instruction tuning teaches the model to use the user turn tokens to already think about what to write in the assistant turn. It can afford to do that since it no longer needs to predict the user's tokens in the chat settings (unlike the base model which is trained on next token prediction).
+
+This raises the question - when steering the model's activation to
+embody personas other than the assistant, would we get these personas' points of view in the J-Lens readouts?
+
+``The Assistant Axis'' paper \citep{lu2026assistant} introduces a model persona sub-space in the residual stream.
+It identifies vectors in this space that correspond to different characters, including the assistant persona. It does this by prompting the model to adopt a specific personas, and then averaging the model's activation over all token positions. The result is a per-layer residual stream direction that represents this persona.
+
+In our project, we will use the persona-axis vectors to study the relationships between the J-space and the model persona sub-space.
+We will test the hypotheses below:
+
+\textbf{Hypothesis 1} - If we steer the model towards specific persona vectors from The Assistant Axis paper \citep{lu2026assistant}, we expect the J-Lens tokens that come up to reflect this character's ``point of view'', and diminish the Assistant's.
+
+
+We check different steering methods, as well as different settings. We have evidence that this effect is indeed present, to varying degrees in each setting and steering method, as shown in the sections below.
+
+Section \ref{sec:methods} discusses the steering methods we used, as well as the metrics we used to measure the presence of different words for the sake of our Analysis.

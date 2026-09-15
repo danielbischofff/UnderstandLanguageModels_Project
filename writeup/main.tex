@@ -1,0 +1,50 @@
+% Final project write-up for "Understanding Language Models".
+% Uses the ACL style files (acl.sty, acl_natbib.bst) as required by the
+% grading criteria. Each paper section lives in its own file under sections/.
+\documentclass[11pt]{article}
+
+% "final" gives the non-anonymous camera-ready layout (names must be visible).
+\usepackage[final]{acl}
+
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+\graphicspath{{figures/}}
+
+% The author block uses two rows; the default title box is too short for that.
+\setlength\titlebox{6cm}
+
+\title{Investigating Persona Steering with J-Lens}
+
+% Checklist: names, matriculation numbers and number of credits of all members.
+% The full addresses are too wide for three columns, so they share one line.
+\author{Daniel Bischoff \\
+  \\\And
+  Illia Shakun \\
+  \\\And
+  Yonatan Dankner \\
+  \\\AND
+  \mdseries\texttt{\{d.bischoff, illia.shakun, yonatan.dankner\}@student.uni-tuebingen.de}}
+
+\begin{document}
+\maketitle
+
+\input{sections/abstract}
+\input{sections/introduction}
+
+\input{sections/methods}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/conclusion}
+
+\bibliography{references}
+
+\input{sections/ai_usage}
+
+\end{document}

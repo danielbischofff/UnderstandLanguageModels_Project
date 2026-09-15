@@ -1,0 +1,605 @@
+<title>J-Lens Token Drift</title>
+<meta name="description" content="Which J-Lens words fade or appear at the question tokens as persona steering gets stronger.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+<style>
+:root {
+  --ground: #F3F5F7;
+  --surface: #FFFFFF;
+  --surface-2: #EAEEF2;
+  --ink: #18202C;
+  --muted: #5A6475;
+  --faint: #8A93A2;
+  --rule: #D8DEE5;
+  --fade: #2D6A96;
+  --fade-soft: #DCE8F2;
+  --appear: #B4472F;
+  --appear-soft: #F5E1DB;
+  --base: #9A7516;
+  --base-soft: #F2E8CC;
+  --focus: #2D6A96;
+  --shadow: 0 12px 40px rgba(24, 32, 44, .16);
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, "PingFang SC", "Microsoft YaHei", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #11151B;
+    --surface: #181D25;
+    --surface-2: #212833;
+    --ink: #E4E8EE;
+    --muted: #9BA4B3;
+    --faint: #6F7888;
+    --rule: #2A323E;
+    --fade: #74AEDA;
+    --fade-soft: #1C2D3C;
+    --appear: #E58069;
+    --appear-soft: #3A221D;
+    --base: #D4AA4B;
+    --base-soft: #332A14;
+    --focus: #74AEDA;
+    --shadow: 0 12px 40px rgba(0, 0, 0, .5);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #11151B;
+  --surface: #181D25;
+  --surface-2: #212833;
+  --ink: #E4E8EE;
+  --muted: #9BA4B3;
+  --faint: #6F7888;
+  --rule: #2A323E;
+  --fade: #74AEDA;
+  --fade-soft: #1C2D3C;
+  --appear: #E58069;
+  --appear-soft: #3A221D;
+  --base: #D4AA4B;
+  --base-soft: #332A14;
+  --focus: #74AEDA;
+  --shadow: 0 12px 40px rgba(0, 0, 0, .5);
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font: 14px/1.5 var(--sans);
+}
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.wrap { max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; display: grid; gap: 22px; }
+
+header.top { display: grid; gap: 6px; }
+.eyebrow { font: 500 11px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 600 30px/1.15 var(--serif); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+.lede { margin: 0; color: var(--muted); max-width: 72ch; }
+
+/* controls */
+.controls { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: end; padding: 14px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.field { display: grid; gap: 6px; }
+.field > span { font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.seg { display: inline-flex; background: var(--surface-2); border-radius: 8px; padding: 3px; gap: 2px; flex-wrap: wrap; }
+.seg button { border: 0; background: transparent; padding: 6px 11px; border-radius: 6px; cursor: pointer; color: var(--muted); white-space: nowrap; }
+.seg button:hover { color: var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.12); font-weight: 500; }
+.seg .grouplabel { align-self: center; padding: 0 6px 0 8px; font: 500 10px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
+.select { padding: 6px 30px 6px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); font: 500 13px/1.3 var(--mono); max-width: 100%; }
+.question { font: 500 15px/1.45 var(--serif); color: var(--ink); margin: 0 0 10px; max-width: 68ch; padding-left: 12px; border-left: 2px solid var(--rule); }
+.search { position: relative; }
+.search input { width: 240px; max-width: 100%; padding: 7px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); }
+.check { display: inline-flex; gap: 7px; align-items: center; color: var(--muted); cursor: pointer; padding-bottom: 6px; }
+.check input { accent-color: var(--fade); }
+
+/* summary */
+.summary { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 900px) { .summary { grid-template-columns: 1fr; } }
+.summary h2 { font: 600 20px/1.25 var(--serif); margin: 0 0 6px; text-wrap: balance; }
+.summary p { margin: 0 0 10px; color: var(--muted); max-width: 68ch; }
+.ladder { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 10px 0 12px; }
+.ladder .step { font: 500 12px/1 var(--mono); padding: 5px 8px; border: 1px solid var(--rule); border-radius: 5px; background: var(--surface); }
+.ladder .arrow { color: var(--faint); font-family: var(--mono); }
+.stats { display: flex; gap: 22px; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+.stat { display: grid; gap: 2px; }
+.stat b { font: 600 22px/1 var(--mono); }
+.stat span { font-size: 12px; color: var(--muted); }
+.stat.fade b { color: var(--fade); }
+.stat.appear b { color: var(--appear); }
+.crowd h3 { font: 500 11px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.crowd p { font-size: 12.5px; margin: 8px 0 0; color: var(--muted); }
+.crowd svg { display: block; width: 100%; height: auto; }
+
+/* legend */
+.legend { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 12.5px; color: var(--muted); padding: 10px 14px; background: var(--surface-2); border-radius: 8px; }
+.legend b { color: var(--ink); font-weight: 500; }
+
+/* lists */
+.lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; align-items: start; }
+.lists.single { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 980px) { .lists { grid-template-columns: minmax(0, 1fr); } }
+.list { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.list > header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 14px 10px; border-bottom: 1px solid var(--rule); }
+.list > header h3 { margin: 0; font: 600 17px/1.2 var(--serif); display: flex; gap: 8px; align-items: baseline; }
+.list > header h3 .n { font: 500 13px/1 var(--mono); color: var(--muted); }
+.list.fade > header h3::before, .list.appear > header h3::before { content: ""; width: 9px; height: 9px; border-radius: 50%; display: inline-block; transform: translateY(-1px); }
+.list.fade > header h3::before { background: var(--fade); }
+.list.appear > header h3::before { background: var(--appear); }
+.list > header .hint { font-size: 12px; color: var(--muted); }
+.colhead, .row { display: grid; grid-template-columns: minmax(0, 1fr) 132px 62px 48px; gap: 12px; align-items: center; padding: 0 14px; }
+.colhead { font: 500 10.5px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--faint); padding-top: 9px; padding-bottom: 7px; border-bottom: 1px solid var(--rule); }
+.colhead .num, .row .num { text-align: right; }
+.rows { display: grid; }
+.row { width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--rule); background: transparent; padding-top: 8px; padding-bottom: 8px; cursor: pointer; }
+.row:last-child { border-bottom: 0; }
+.row:hover { background: var(--surface-2); }
+.row[aria-current="true"] { background: var(--surface-2); box-shadow: inset 3px 0 0 var(--ink); }
+.wordcell { display: grid; gap: 3px; min-width: 0; }
+.wordline { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; min-width: 0; }
+.tok { font: 500 13.5px/1.25 var(--mono); background: var(--surface-2); padding: 2px 6px; border-radius: 4px; overflow-wrap: anywhere; }
+.gloss { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pill { font: 500 10.5px/1 var(--mono); padding: 3px 6px; border-radius: 99px; white-space: nowrap; letter-spacing: .02em; }
+.pill.base { background: var(--base-soft); color: var(--base); }
+.pill.maybe { border: 1px dashed var(--base); color: var(--base); padding: 2px 5px; }
+.pill.broad { border: 1px solid var(--rule); color: var(--muted); padding: 2px 5px; }
+.pill.vec { color: var(--muted); border: 1px solid var(--rule); padding: 2px 5px; }
+.pill.t-fades { background: var(--fade-soft); color: var(--fade); }
+.pill.t-appears { background: var(--appear-soft); color: var(--appear); }
+.pill.t-none { border: 1px solid var(--rule); color: var(--muted); padding: 2px 5px; }
+.num { font: 500 13px/1 var(--mono); font-variant-numeric: tabular-nums; }
+.num.neg { color: var(--fade); }
+.num.pos { color: var(--appear); }
+.agree { font: 400 12px/1 var(--mono); color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.spark { display: block; width: 132px; height: 30px; }
+@media (max-width: 560px) {
+  .colhead, .row { grid-template-columns: minmax(0, 1fr) 84px 50px 38px; gap: 8px; padding-left: 10px; padding-right: 10px; }
+  .spark { width: 84px; }
+  .wrap { padding: 20px 14px 48px; }
+}
+.more { display: block; width: 100%; border: 0; border-top: 1px solid var(--rule); background: var(--surface); padding: 10px; color: var(--fade); cursor: pointer; font-weight: 500; }
+.more:hover { background: var(--surface-2); }
+.empty { padding: 22px 14px; color: var(--muted); }
+.status { padding: 40px 0; color: var(--muted); text-align: center; }
+
+/* detail sheet */
+.sheet { position: fixed; inset: 0 0 0 auto; width: min(620px, 100%); background: var(--surface); border-left: 1px solid var(--rule); box-shadow: var(--shadow); transform: translateX(0); display: grid; grid-template-rows: auto 1fr; z-index: 20; }
+.sheet[hidden] { display: none !important; }
+.sheet > header { display: flex; justify-content: space-between; align-items: start; gap: 12px; padding: 18px 20px 14px; border-bottom: 1px solid var(--rule); }
+.sheet .body { overflow-y: auto; padding: 16px 20px 40px; display: grid; gap: 18px; align-content: start; }
+.sheet h2 { margin: 0; font: 600 26px/1.2 var(--mono); overflow-wrap: anywhere; }
+.sheet .sub { color: var(--muted); margin-top: 4px; }
+.close { border: 1px solid var(--rule); background: var(--surface); border-radius: 7px; padding: 5px 10px; cursor: pointer; }
+.close:hover { background: var(--surface-2); }
+.kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 12px 16px; }
+.kv div { display: grid; gap: 3px; }
+.kv dt { font: 500 10.5px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
+.kv dd { margin: 0; font: 500 15px/1.2 var(--mono); font-variant-numeric: tabular-nums; }
+.kv dd small { font: 400 11.5px/1.3 var(--sans); color: var(--muted); display: block; margin-top: 2px; }
+.sheet h4 { margin: 0 0 6px; font: 500 11px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.chart svg { display: block; width: 100%; height: auto; }
+.multiples { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px 16px; }
+.multiple { display: grid; gap: 2px; min-width: 0; }
+.multiple .mt { display: flex; justify-content: space-between; gap: 8px; font: 500 11.5px/1.3 var(--mono); }
+.multiple .mt span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.multiple .q { font-size: 11.5px; color: var(--muted); line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.7em; }
+.note { font-size: 12.5px; color: var(--muted); margin: 0; }
+
+details.method { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 16px; }
+details.method summary { cursor: pointer; font: 600 15px/1.3 var(--serif); }
+details.method .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 6px 28px; margin-top: 10px; }
+details.method p { margin: 6px 0; color: var(--muted); font-size: 13px; max-width: 68ch; }
+details.method b { color: var(--ink); font-weight: 500; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .sheet:not([hidden]) { animation: slide .18s ease-out; }
+  @keyframes slide { from { transform: translateX(24px); opacity: .6; } to { transform: none; opacity: 1; } }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Qwen3-32B · J-Lens · question tokens only</div>
+    <h1>J-Lens Token Drift</h1>
+    <p class="lede">Which words the J-Lens reads out more, or less, at the question tokens as persona steering gets stronger. Every word is counted over question positions × layers from the first intervention layer to 62, then followed along the strength ladder: tested across schemes for the Tylenol sweeps, and described question by question for the persona suites.</p>
+  </header>
+
+  <section class="controls" aria-label="Filters">
+    <div class="field">
+      <span>Experiment</span>
+      <div class="seg" id="exp" role="group" aria-label="Experiment"></div>
+    </div>
+    <div class="field" id="charField" hidden>
+      <span>Persona</span>
+      <div class="seg" id="char" role="group" aria-label="Persona"></div>
+    </div>
+    <label class="field" id="unitField" hidden>
+      <span>Question</span>
+      <select id="unit" class="select"></select>
+    </label>
+    <div class="field">
+      <span>Metric</span>
+      <div class="seg" id="metric" role="group" aria-label="Metric">
+        <button type="button" data-v="cells">Cell count</button>
+        <button type="button" data-v="weighted">Rank-weighted</button>
+      </div>
+    </div>
+    <label class="field search">
+      <span>Find any tested word or gloss</span>
+      <input id="q" type="search" placeholder="e.g. warn, 永恒, doctor" autocomplete="off">
+    </label>
+    <label class="check"><input type="checkbox" id="hideBase"> Hide baseline words</label>
+  </section>
+
+  <div id="main"><div class="status">Loading the single-layer sweep…</div></div>
+
+  <details class="method">
+    <summary>How the lists are made</summary>
+    <div class="cols">
+      <div>
+        <p><b>Region.</b> Only the question's tokens, up to the newline before the answer: they are the same tokens at every strength, so each cell is comparable. Layers run from the first intervention layer to 62.</p>
+        <p><b>Words.</b> Tokens that differ only by a leading space or capitals are merged (<code>" warn"</code> = <code>"warn"</code>). A cell counts a word once.</p>
+        <p><b>Cell count</b> is how many (position, layer) cells hold the word in their top-10. <b>Rank-weighted</b> weights each cell by 1/rank, so rank 1 counts 1.0 and rank 10 counts 0.1. Both are shown in ‰ of the grid.</p>
+      </div>
+      <div>
+        <p><b>Tylenol sweeps (tested).</b> Per scheme: rank correlation between the word's values and strength order. These are summed over schemes, and strengths are shuffled 100,000 times within each scheme. q is that p-value after false-discovery correction. <b>Listed</b> if q &lt; 0.05, the change is at least 2×, and the direction holds in every scheme.</p>
+        <p><b>Persona suites (per question, described).</b> Each question is one 3–4 point ladder, which cannot be tested. <b>Listed</b> if the word's series never moves against the trend (ties allowed) and changes at least 2× from unsteered to the strongest strength. Expect some noise among small counts.</p>
+        <p><b>Baseline</b>: once steered, at ≥ 50% of question positions and twice as widely as unsteered (dashed: ≥ 25%), so probably the steering vector's own readout rather than content. <b>vec</b>: in the direct J-Lens readout of the character − default vector.</p>
+      </div>
+    </div>
+  </details>
+</div>
+
+<aside class="sheet" id="sheet" hidden aria-labelledby="sheetTitle" role="dialog">
+  <header>
+    <div>
+      <div class="eyebrow" id="sheetEyebrow"></div>
+      <h2 id="sheetTitle"></h2>
+      <div class="sub" id="sheetSub"></div>
+    </div>
+    <button type="button" class="close" id="close">Close</button>
+  </header>
+  <div class="body" id="sheetBody"></div>
+</aside>
+
+<script>
+(() => {
+  const EXPERIMENTS = [
+    { id: "tylenol-demon-8000mg-single-layer-sweep", group: "Tylenol 8000 mg", label: "Additive α, one layer", size: "0.1 MB" },
+    { id: "tylenol-demon-8000mg-band-sweep", group: "Tylenol 8000 mg", label: "Band cap β", size: "0.1 MB" },
+    { id: "persona-viewpoint-suite-alpha", group: "Per question", label: "Additive α", size: "1.7 MB" },
+    { id: "persona-viewpoint-suite-band", group: "Per question", label: "Band cap β", size: "1.7 MB" },
+  ];
+  const C = { word: 0, gloss: 1, variants: 2, trend: 3, flag: 4, vec: 5, sS: 6, sU: 7, qF: 8, qA: 9, fc: 10, agree: 11, onset: 12, rho: 13, pm: 14 };
+  const PAGE = 40;
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const showTok = (w) => w.startsWith("'") && w.endsWith("'") ? w.slice(1, -1) || w : w;
+
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem("jlens-drift:" + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+    set(k, v) { try { localStorage.setItem("jlens-drift:" + k, JSON.stringify(v)); } catch {} },
+  };
+  const state = {
+    exp: store.get("exp", EXPERIMENTS[0].id),
+    char: store.get("char", 0),
+    unit: store.get("unit", 0),
+    metric: store.get("metric", "cells"),
+    hideBase: store.get("hideBase", false),
+    query: "",
+    shown: { fades: PAGE, appears: PAGE, search: PAGE },
+    selected: null,
+  };
+  if (!EXPERIMENTS.some((e) => e.id === state.exp)) state.exp = EXPERIMENTS[0].id;
+
+  // ---------- loading ----------
+  const loading = {};
+  function load(id, done) {
+    const data = window.TREND_DATA && window.TREND_DATA[id];
+    if (data) return done(data);
+    const meta = EXPERIMENTS.find((e) => e.id === id);
+    $("main").innerHTML = `<div class="status">Loading ${esc(meta.group)} · ${esc(meta.label)} (${meta.size})…</div>`;
+    if (loading[id]) return;
+    loading[id] = true;
+    const s = document.createElement("script");
+    s.src = `data/${id}.js`;
+    s.onload = () => { loading[id] = false; if (state.exp === id) done(window.TREND_DATA[id]); };
+    s.onerror = () => { loading[id] = false; $("main").innerHTML = `<div class="status">The data file data/${esc(id)}.js did not load. Rebuild it with build_web.py and republish.</div>`; };
+    document.head.appendChild(s);
+  }
+
+  // ---------- controls ----------
+  function renderExpControl() {
+    let html = "", group = "";
+    for (const e of EXPERIMENTS) {
+      if (e.group !== group) { group = e.group; html += `<span class="grouplabel">${esc(group)}</span>`; }
+      html += `<button type="button" data-v="${e.id}" aria-pressed="${e.id === state.exp}">${esc(e.label)}</button>`;
+    }
+    $("exp").innerHTML = html;
+  }
+  function renderCharControl(data) {
+    const chars = data.characters;
+    $("charField").hidden = chars.length < 2;
+    if (state.char >= chars.length) state.char = 0;
+    $("char").innerHTML = chars.map((c, i) => `<button type="button" data-v="${i}" aria-pressed="${i === state.char}">${esc(c.character)}</button>`).join("");
+  }
+  function renderUnitControl(data) {
+    const units = data.characters[state.char].units;
+    $("unitField").hidden = units.length < 2;
+    if (state.unit >= units.length) state.unit = 0;
+    $("unit").innerHTML = units.map((u, i) => `<option value="${i}"${i === state.unit ? " selected" : ""}>${esc(u.question || "all schemes")}</option>`).join("");
+  }
+  function syncPressed(id, value) {
+    for (const b of $(id).querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset.v === String(value)));
+  }
+
+  $("exp").addEventListener("click", (ev) => {
+    const b = ev.target.closest("button"); if (!b) return;
+    state.exp = b.dataset.v; state.char = 0; state.unit = 0;
+    store.set("exp", state.exp); store.set("char", 0); store.set("unit", 0);
+    resetPaging(); closeSheet(); syncPressed("exp", state.exp); render();
+  });
+  $("char").addEventListener("click", (ev) => {
+    const b = ev.target.closest("button"); if (!b) return;
+    state.char = Number(b.dataset.v); store.set("char", state.char); resetPaging(); closeSheet(); syncPressed("char", state.char); render();
+  });
+  $("unit").addEventListener("change", (ev) => {
+    state.unit = Number(ev.target.value); store.set("unit", state.unit); resetPaging(); closeSheet(); render();
+  });
+  $("metric").addEventListener("click", (ev) => {
+    const b = ev.target.closest("button"); if (!b) return;
+    state.metric = b.dataset.v; store.set("metric", state.metric); syncPressed("metric", state.metric); render();
+  });
+  $("hideBase").checked = state.hideBase;
+  $("hideBase").addEventListener("change", (ev) => { state.hideBase = ev.target.checked; store.set("hideBase", state.hideBase); resetPaging(); render(); });
+  let typing;
+  $("q").addEventListener("input", (ev) => { clearTimeout(typing); typing = setTimeout(() => { state.query = ev.target.value.trim(); resetPaging(); render(); }, 120); });
+  function resetPaging() { state.shown = { fades: PAGE, appears: PAGE, search: PAGE }; }
+
+  // ---------- helpers ----------
+  const pooled = (pm) => pm[0].map((_, a) => pm.reduce((s, r) => s + r[a], 0) / pm.length);
+  const fmtFc = (v) => (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(1);
+  const fmtQ = (v) => v === null ? "—" : v >= 0.001 ? v.toFixed(3) : v.toExponential(0).replace("e-", "e−");
+  const fmtRho = (v) => (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(2);
+  const isBase = (r) => r[C.flag] === 1 || r[C.flag] === 2;
+
+  function flagPills(r) {
+    let h = "";
+    if (r[C.flag] === 2) h += `<span class="pill base" title="Suspected baseline: at ≥50% of question positions once steered">baseline</span>`;
+    else if (r[C.flag] === 1) h += `<span class="pill maybe" title="Possible baseline: at ≥25% of question positions once steered">baseline?</span>`;
+    else if (r[C.flag] === 3) h += `<span class="pill broad" title="Broad, but already so without steering">broad</span>`;
+    if (r[C.vec]) h += `<span class="pill vec" title="In the direct J-Lens readout of the character − default vector">vec</span>`;
+    return h;
+  }
+  function trendPill(r) {
+    return r[C.trend] === 1 ? `<span class="pill t-fades">fades</span>` : r[C.trend] === 2 ? `<span class="pill t-appears">appears</span>` : `<span class="pill t-none">no trend</span>`;
+  }
+
+  function spark(r) {
+    const w = 132, h = 30, pad = 3;
+    const pm = r[C.pm], mean = pooled(pm);
+    const max = Math.max(1e-9, ...pm.flat());
+    const n = mean.length;
+    const x = (i) => pad + (i * (w - 2 * pad)) / (n - 1);
+    const y = (v) => h - pad - (v / max) * (h - 2 * pad);
+    const line = (s) => s.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("");
+    const color = r[C.fc] < 0 ? "var(--fade)" : "var(--appear)";
+    const reps = pm.length > 1 ? pm.map((s) => `<path d="${line(s)}" fill="none" stroke="var(--faint)" stroke-opacity=".35" stroke-width="1"/>`).join("") : "";
+    const area = `${line(mean)}L${x(n - 1).toFixed(1)},${h - pad}L${x(0).toFixed(1)},${h - pad}Z`;
+    return `<svg class="spark" viewBox="0 0 ${w} ${h}" aria-hidden="true">
+      <line x1="${pad}" x2="${w - pad}" y1="${h - pad}" y2="${h - pad}" stroke="var(--rule)" stroke-width="1"/>
+      <path d="${area}" fill="${color}" fill-opacity=".10"/>${reps}
+      <path d="${line(mean)}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linejoin="round"/>
+      <circle cx="${x(n - 1)}" cy="${y(mean[n - 1])}" r="2.4" fill="${color}"/></svg>`;
+  }
+
+  function rowHtml(r, unit) {
+    const gloss = r[C.gloss] ? `<div class="gloss" title="${esc(r[C.gloss])}">${esc(r[C.gloss])}</div>` : "";
+    const last = unit.mode === "question" ? fmtRho(r[C.rho][0]) : `${r[C.agree]}/${unit.replicates.length}`;
+    return `<button type="button" class="row" data-key="${esc(r[C.word])}" aria-current="${state.selected === r[C.word]}">
+      <div class="wordcell"><div class="wordline"><span class="tok">${esc(showTok(r[C.word]))}</span>${state.query ? trendPill(r) : ""}${flagPills(r)}</div>${gloss}</div>
+      ${spark(r)}
+      <div class="num ${r[C.fc] < 0 ? "neg" : "pos"}">${fmtFc(r[C.fc])}</div>
+      <div class="agree">${last}</div>
+    </button>`;
+  }
+
+  function listHtml(kind, title, rows, unit, hint) {
+    const shown = state.shown[kind];
+    const body = rows.length
+      ? rows.slice(0, shown).map((r) => rowHtml(r, unit)).join("")
+      : `<div class="empty">${state.query ? "No tested word matches. Only words filling at least 20 cells in some trial were tested." : "No word passes the criteria here."}</div>`;
+    const more = rows.length > shown ? `<button type="button" class="more" data-kind="${kind}">Show ${Math.min(PAGE * 2, rows.length - shown)} more of ${rows.length - shown} remaining</button>` : "";
+    const lastHead = unit.mode === "question" ? "ρ" : "Agree";
+    return `<section class="list ${kind === "fades" ? "fade" : kind === "appears" ? "appear" : ""}">
+      <header><h3>${title} <span class="n">${rows.length}</span></h3><span class="hint">${hint}</span></header>
+      <div class="colhead"><span>Word</span><span>Weak → strong</span><span class="num">log2FC</span><span class="num">${lastHead}</span></div>
+      <div class="rows">${body}</div>${more}</section>`;
+  }
+
+  function crowdChart(unit) {
+    const labels = unit.labels, share = unit.baselineShare;
+    const mean = labels.map((_, a) => share.reduce((s, r) => s + r[a], 0) / share.length);
+    const w = 460, h = 120, left = 8, right = 8, top = 18, bottom = 22;
+    const bw = (w - left - right) / labels.length;
+    const max = Math.max(0.05, ...mean);
+    const bars = mean.map((v, i) => {
+      const bh = (v / max) * (h - top - bottom);
+      const x = left + i * bw + bw * 0.18, bwid = bw * 0.64, y = h - bottom - bh;
+      return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bwid.toFixed(1)}" height="${Math.max(bh, 0.5).toFixed(1)}" rx="2" fill="var(--base)" fill-opacity="${i ? 0.85 : 0.4}"/>
+        <text x="${(x + bwid / 2).toFixed(1)}" y="${(y - 5).toFixed(1)}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink)">${Math.round(v * 100)}%</text>
+        <text x="${(x + bwid / 2).toFixed(1)}" y="${h - 6}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">${esc(labels[i])}</text>`;
+    }).join("");
+    return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Share of readout slots taken by baseline words at each strength">
+      <line x1="${left}" x2="${w - right}" y1="${h - bottom}" y2="${h - bottom}" stroke="var(--rule)"/>${bars}</svg>`;
+  }
+
+  // ---------- main render ----------
+  let current = null;
+  const currentUnit = () => current.characters[state.char].units[state.unit];
+  function render() {
+    renderExpControl();
+    syncPressed("metric", state.metric);
+    load(state.exp, (data) => {
+      current = data;
+      renderCharControl(data);
+      renderUnitControl(data);
+      const character = data.characters[state.char].character;
+      const unit = currentUnit();
+      const perQuestion = unit.mode === "question";
+      const R = unit.replicates.length;
+      const rows = unit.metrics[state.metric];
+      const meta = EXPERIMENTS.find((e) => e.id === data.name);
+      const visible = rows.filter((r) => !(state.hideBase && isBase(r)));
+      const byFc = (a, b) => Math.abs(b[C.fc]) - Math.abs(a[C.fc]);
+      const fades = visible.filter((r) => r[C.trend] === 1).sort(byFc);
+      const appears = visible.filter((r) => r[C.trend] === 2).sort(byFc);
+      const allFades = rows.filter((r) => r[C.trend] === 1).length, allAppears = rows.filter((r) => r[C.trend] === 2).length;
+      const nBase = rows.filter((r) => r[C.trend] === 2 && isBase(r)).length;
+      const finalShare = Math.max(...unit.baselineShare.map((s) => s[s.length - 1]));
+
+      let lists;
+      if (state.query) {
+        const q = state.query.toLowerCase();
+        const hits = visible.filter((r) => r[C.word].includes(q) || r[C.gloss].toLowerCase().includes(q) || r[C.variants].some((v) => v.toLowerCase().includes(q))).sort(byFc);
+        lists = `<div class="lists single">${listHtml("search", `Matches for “${esc(state.query)}”`, hits, unit, "All tested words, listed or not")}</div>`;
+      } else {
+        lists = `<div class="lists">${listHtml("fades", "Fading", fades, unit, "Sorted by size of change")}${listHtml("appears", "Appearing", appears, unit, "Sorted by size of change")}</div>`;
+      }
+
+      const context = perQuestion
+        ? `<p class="question">${esc(unit.questionText)}</p><p>${esc(data.summary)} Question <code>${esc(unit.question)}</code>, layers ${unit.replicates[0].firstLayer}–62 over ${unit.replicates[0].positions} question positions.</p>`
+        : `<p>${esc(data.summary)} Schemes: ${unit.replicates.map((r) => `${esc(r.name)} (from layer ${r.firstLayer})`).join(", ")}.</p>`;
+      const legend = perQuestion
+        ? `<span><b>Weak → strong</b>: the word's ‰ of this question's grid at each strength</span>
+           <span><b>Listed</b>: never moves against the trend, and changes at least 2× (described, not tested)</span>
+           <span><b>log2FC</b>: strongest vs unsteered; −1 halved, +3 eight times more</span>
+           <span><b>ρ</b>: rank correlation with strength; ties pull it towards 0</span>
+           <span><b>baseline</b>: probably the steering vector's own readout</span>`
+        : `<span><b>Weak → strong</b>: the word's ‰ of the grid at each strength; bold line = mean, faint lines = each of the ${R} schemes</span>
+           <span><b>log2FC</b>: −1 halved, +3 eight times more (${unit.labels.length > 5 ? "two strongest vs two weakest" : "strongest vs unsteered"})</span>
+           <span><b>Agree</b>: schemes where the trend has this sign (all required)</span>
+           <span><b>baseline</b>: probably the steering vector's own readout</span>`;
+
+      $("main").innerHTML = `
+        <section class="summary">
+          <div>
+            <div class="eyebrow">${esc(meta.group)} · ${esc(meta.label)} · ${esc(character)}</div>
+            <h2>${perQuestion ? esc(unit.question) : esc(meta.label)}</h2>
+            ${context}
+            <div class="ladder" aria-label="Strength ladder">${unit.labels.map((l, i) => `${i ? '<span class="arrow">→</span>' : ""}<span class="step">${esc(l)}</span>`).join("")}</div>
+            <div class="stats">
+              <div class="stat fade"><b>${allFades}</b><span>fading</span></div>
+              <div class="stat appear"><b>${allAppears}</b><span>appearing, ${nBase} baseline</span></div>
+              <div class="stat"><b>${unit.tested}</b><span>words tested</span></div>
+            </div>
+          </div>
+          <div class="crowd">
+            <h3>Readout taken by baseline words</h3>
+            ${crowdChart(unit)}
+            <p>Share of each cell's top-10 entries held by baseline-flagged words${perQuestion ? " on this question" : ", averaged over schemes"}. Top-10 slots are zero-sum: at ${Math.round(100 * finalShare)}% a word can lose up to ${Math.abs(Math.log2(1 - finalShare)).toFixed(1)} log2 units just from crowding.</p>
+          </div>
+        </section>
+        <div class="legend" style="margin-top:22px">${legend}<span>Click a word for its full series</span></div>
+        <div style="margin-top:14px">${lists}</div>`;
+
+      if (state.selected) openSheet(state.selected, false);
+    });
+  }
+
+  $("main").addEventListener("click", (ev) => {
+    const more = ev.target.closest(".more");
+    if (more) { state.shown[more.dataset.kind] += PAGE * 2; render(); return; }
+    const row = ev.target.closest(".row");
+    if (row) openSheet(row.dataset.key, true);
+  });
+
+  // ---------- detail sheet ----------
+  function lineChart(series, labels, max, opts) {
+    const { w, h, left, bottom, top, color, showAllX, showY, faint } = opts;
+    const right = 10;
+    const n = labels.length;
+    const x = (i) => left + (i * (w - left - right)) / (n - 1);
+    const y = (v) => h - bottom - (v / max) * (h - top - bottom);
+    const path = (s) => s.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("");
+    const nice = max >= 10 ? Math.round(max) : max >= 1 ? max.toFixed(1) : max.toFixed(2);
+    let g = `<line x1="${left}" x2="${w - right}" y1="${h - bottom}" y2="${h - bottom}" stroke="var(--rule)"/>`;
+    g += `<line x1="${left}" x2="${w - right}" y1="${y(max)}" y2="${y(max)}" stroke="var(--rule)" stroke-dasharray="2 3"/>`;
+    if (showY) {
+      g += `<text x="${left - 6}" y="${y(max) + 4}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">${nice}‰</text>`;
+      g += `<text x="${left - 6}" y="${h - bottom + 4}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">0</text>`;
+    }
+    labels.forEach((l, i) => {
+      if (!showAllX && i !== 0 && i !== n - 1) return;
+      const anchor = i === 0 ? "start" : i === n - 1 ? "end" : "middle";
+      g += `<text x="${x(i)}" y="${h - 6}" text-anchor="${showAllX ? "middle" : anchor}" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">${esc(showAllX ? l : i === 0 ? "unst." : l)}</text>`;
+    });
+    if (faint) g += faint.map((s) => `<path d="${path(s)}" fill="none" stroke="var(--faint)" stroke-opacity=".45" stroke-width="1"/>`).join("");
+    for (const s of series) {
+      g += `<path d="${path(s)}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round"/>`;
+      g += s.map((v, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="${i === n - 1 ? 3 : 2.2}" fill="${color}"><title>${esc(labels[i])}: ${v.toFixed(1)}‰</title></circle>`).join("");
+    }
+    return `<svg viewBox="0 0 ${w} ${h}" role="img">${g}</svg>`;
+  }
+
+  function openSheet(key, focus) {
+    if (!current) return;
+    const unit = currentUnit();
+    const perQuestion = unit.mode === "question";
+    const r = unit.metrics[state.metric].find((row) => row[C.word] === key);
+    if (!r) { closeSheet(); return; }
+    state.selected = key;
+    for (const el of document.querySelectorAll(".row")) el.setAttribute("aria-current", String(el.dataset.key === key));
+    const R = unit.replicates.length;
+    const color = r[C.fc] < 0 ? "var(--fade)" : "var(--appear)";
+    const pm = r[C.pm], mean = pooled(pm), max = Math.max(1e-9, ...pm.flat());
+    const where = perQuestion ? ` · ${unit.question}` : "";
+    $("sheetEyebrow").textContent = `${current.name}${where} · ${current.characters[state.char].character} · ${state.metric === "cells" ? "cell count" : "rank-weighted"}`;
+    $("sheetTitle").textContent = showTok(r[C.word]);
+    $("sheetSub").innerHTML = `${trendPill(r)} ${flagPills(r)} ${r[C.gloss] ? esc(r[C.gloss]) : ""}${r[C.variants].length ? ` <span style="color:var(--faint)">· also ${r[C.variants].map((v) => `<code>${esc(JSON.stringify(v))}</code>`).join(" ")}</span>` : ""}`;
+    const onset = r[C.onset] === null ? "—" : `${Math.round(r[C.onset] * 100)}%`;
+    const stats = perQuestion
+      ? `<div><dt>log2FC</dt><dd style="color:${color}">${fmtFc(r[C.fc])}<small>strongest vs unsteered</small></dd></div>
+         <div><dt>ρ</dt><dd>${fmtRho(r[C.rho][0])}<small>rank correlation with strength</small></dd></div>`
+      : `<div><dt>log2FC</dt><dd style="color:${color}">${fmtFc(r[C.fc])}<small>${unit.labels.length > 5 ? "two strongest vs two weakest" : "strongest vs unsteered"}</small></dd></div>
+         <div><dt>q fading / appearing</dt><dd>${fmtQ(r[C.qF])} / ${fmtQ(r[C.qA])}<small>below 0.05 = significant</small></dd></div>
+         <div><dt>Agree</dt><dd>${r[C.agree]}/${R}<small>schemes with this sign</small></dd></div>`;
+    const multiples = perQuestion ? "" : `
+      <div>
+        <h4>Each scheme</h4>
+        <div class="multiples">${unit.replicates.map((rep, i) => `
+          <div class="multiple">
+            <div class="mt"><span title="${esc(rep.name)}">${esc(rep.name)}</span><span style="color:var(--muted)">ρ ${fmtRho(r[C.rho][i])}</span></div>
+            <div class="q">layers ${rep.firstLayer}–62 · ${rep.grid} cells</div>
+            <div class="chart">${lineChart([pm[i]], unit.labels, max, { w: 200, h: 84, left: 4, bottom: 18, top: 8, color, showAllX: false, showY: false })}</div>
+          </div>`).join("")}</div>
+      </div>`;
+    $("sheetBody").innerHTML = `
+      ${perQuestion ? `<p class="question">${esc(unit.questionText)}</p>` : ""}
+      <dl class="kv">
+        ${stats}
+        <div><dt>Onset</dt><dd>${onset}<small>of the change present at ${esc(unit.labels[1])}</small></dd></div>
+        <div><dt>Spread steered / unsteered</dt><dd>${Math.round(r[C.sS] * 100)}% / ${Math.round(r[C.sU] * 100)}%<small>question positions reached</small></dd></div>
+      </dl>
+      <div>
+        <h4>${perQuestion ? "‰ of this question's grid" : `Mean over ${R} schemes, ‰ of grid`}</h4>
+        <div class="chart">${lineChart([mean], unit.labels, max, { w: 560, h: 170, left: 44, bottom: 22, top: 12, color, showAllX: true, showY: true, faint: R > 1 ? pm : null })}</div>
+        ${R > 1 ? `<p class="note">Faint lines are the individual schemes, on the same scale (top line = ${max.toFixed(1)}‰).</p>` : ""}
+      </div>
+      ${multiples}`;
+    $("sheet").hidden = false;
+    if (focus) $("close").focus();
+  }
+  function closeSheet() {
+    state.selected = null;
+    $("sheet").hidden = true;
+    for (const el of document.querySelectorAll(".row[aria-current='true']")) el.setAttribute("aria-current", "false");
+  }
+  $("close").addEventListener("click", closeSheet);
+  document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && !$("sheet").hidden) closeSheet(); });
+
+  render();
+})();
+</script>

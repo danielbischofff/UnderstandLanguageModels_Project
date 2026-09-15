@@ -12,6 +12,12 @@
         "direct_character_vectors_j_lens_analysis/out"
       ],
       "port": 8777
+    },
+    {
+      "name": "report-preview",
+      "runtimeExecutable": "runtime/windows-test-venv/Scripts/python.exe",
+      "runtimeArgs": ["-m", "http.server", "8778", "--directory", "runtime/reports"],
+      "port": 8778
     }
   ]
 }

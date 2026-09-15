@@ -26,6 +26,7 @@ src/steering/          Model steering, experiment runner, and J-Lens adapter
 src/judging/           LLM-as-judge grading of run responses, no model needed
   runs_17role_examples/  Both 17-role Tylenol runs graded, with commentary
 tests/                 Unit and opt-in integration tests
+token_trend_analysis/  J-Lens words that fade or appear with steering strength
 writeup/               Project report source
 setup.sh               One-time environment and artifact setup
 runtime/               Ignored models, environment, logs, and experiment output
