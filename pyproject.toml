@@ -28,6 +28,7 @@ steering-experiment = "steering.cli.experiment:main"
 steering-j-lens = "steering.cli.j_lens_tokens:main"
 steering-preflight = "steering.cli.preflight:main"
 steering-prefetch = "steering.cli.prefetch:main"
+quantitive-analysis = "quantitive_analysis.cli:main"
 steering-report = "steering.cli.report:main"
 tsne-lens = "tsne_lens.cli:main"
 judge-export = "judging.cli.export:main"
@@ -38,7 +39,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/steering", "src/tsne-lens/tsne_lens", "src/judging"]
+packages = ["src/steering", "src/tsne-lens/tsne_lens", "src/judging", "src/quantitive_analysis"]
 
 [tool.hatch.build.targets.wheel.sources]
 "src/steering" = "steering"

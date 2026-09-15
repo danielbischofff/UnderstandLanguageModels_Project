@@ -65,6 +65,18 @@ class Unembedding:
     def __repr__(self) -> str:
         return f"Unembedding(vocab={self.vocab_size}, d_model={self.d_model})"
 
+    def rows(self, token_ids: np.ndarray) -> np.ndarray:
+        """The raw ``lm_head`` rows for ``token_ids`` as ``[n, d_model]`` float32.
+
+        These are the vocabulary's own directions in model space, used for
+        token-to-token similarity. No norm gain is applied: that belongs to the
+        readout of an activation, not to a comparison between two tokens.
+        """
+        ids = np.asarray(token_ids, dtype=np.int64).reshape(-1)
+        if ids.size and (ids.min() < 0 or ids.max() >= self.vocab_size):
+            raise IndexError(f"token id outside vocabulary of {self.vocab_size}")
+        return bf16_to_float32(np.asarray(self._weight[ids]))
+
     def logits(self, residuals: np.ndarray, chunk: int = VOCAB_CHUNK) -> np.ndarray:
         """Map ``[n, d_model]`` residuals to ``[n, vocab_size]`` logits.
 
