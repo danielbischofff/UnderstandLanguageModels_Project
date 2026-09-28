@@ -20,24 +20,39 @@ Let's also denote $r_l$ the residual stream at layer l for a specific token posi
 \[
 AlphaSteering(r_l) = r_l + \alpha \cdot {c}_l
 \]
-This is analoguous to contrastive activate addition in \cite{panickssery2024caa}:
+This is analoguous to contrastive activate addition in \cite{panickssery2024caa}. In our experiment we found that $\alpha$ values between 1.5 and 4 are the good range for inducing behavioral changes without degraded output quality.
 
 2. \textbf{Band-Capping} The problem with Alpha steering is that it cannot be applied at multiple layers without degrading the output, since the steering effect compounds in the residual stream and the model's output deteriorates very fast. Since different layers of the models encode different aspect of a personality (i.e. writing style / vocabulary / behavior), we wanted a steering method that can be applied at multiple layers without compromising output quality. We were inspired by both \cite{arditi2024refusal} (which removes a direction from the residual stream by projecting the residual stream on the perpendicular plane), and by \cite{lu2026assistant} (which caps the residual stream's direction projection along the assistant axis to prevent personality drift), to constrict the residual stream projection along the ${c}_l$ direction to a band close to $p_l$'s projection along that direction. By "close", we mean clipping the projection of the residual stream along that direction within upper and lower boundaries, measured as a ratio $\beta$ of $\lVert {c}_l \rVert$. If we denote the diff direction as $\hat{{c}_l} = \frac{{c}_l}{\lVert {c}_l \rVert}$, we can formally define:
-\[
-BandCap(r_l) = r_l + (clip(r_l \cdot \hat{c_l}, p_l \cdot \hat{c_l} - \beta \lVert c_l \rVert, p_l \cdot \hat{c_l} + \beta \lVert c_l \rVert) - r_l \cdot \hat{c_l})\hat{c_l}
-\]
-This is operation only clamps the residual stream's projection along $\hat{c_l}$, it is a much less aggressive operation and can be applied over multiple layers without degrading output quality. See \ref{fig:steering-geometry} for an illustration. 
+\begin{equation*}
+\begin{split}
+BandCap(r_l) = {}& r_l + \bigl(clip(r_l \cdot \hat{c_l}, \\
+& \quad p_l \cdot \hat{c_l} - \beta \lVert c_l \rVert, \\
+& \quad p_l \cdot \hat{c_l} + \beta \lVert c_l \rVert) - r_l \cdot \hat{c_l}\bigr)\hat{c_l}
+\end{split}
+\end{equation*}
+This is operation only clamps the residual stream's projection along $\hat{c_l}$, it is a much less aggressive operation and can be applied over multiple layers without degrading output quality. See Figure \ref{fig:steering-geometry}, which illustrates this concept. We found that steering at the 8 middle layers of the model gives us good results.
+
 \input{figures/steering_geometry}
+\textbf{Controlling for a persona vector's baseline tokens} J-Lens readout works by apply the Jacobian matrix $J$ (which is specific to that layer) to the residual stream at that layer and token position. Since this operation is linear with respect to the residual stream, if we add a component along $\hat{c_l}$ to the residual stream at that layer before doing the readout (which is what both steering methods do), the resulting readout of the vector's sum will be the sum of the readout of each component:
+\[
+J(r_l + \alpha \cdot \hat{c_l}) = J(r_l) + \alpha \cdot J(\hat{c_l})
+\]
+This in turn means, that we expect tokens from the J-Lens readout of the steering vector to carry over to the j-lens readout at the steered layer. Since these tokens just reflect a mathematical artifact of the setup, we make sure in our finding that the tokens we report are not these baseline tokens that are intrinsic to each character.
+The baseline J-Lens tokens are interesting too look at in their own right - they represent the tokens that a persona's direction tends to verbalize, on average, for each layer's persona vectors. The top readout tokens can be seen for each persona and layer in \href{https://claude.ai/artifact/1Zd5YkWMqAwaz37D8a1YP9}{a Claude artifact here}. As expected, typical words are found. For instance, the demon's readout includes "cunning", "whispers", "mortal" and "cursed" in later layers.
 
-\textbf{Controlling for a character's baseline tokens} Since the 
-
-
-\textbf{TODO - talk about different questions and settings}
+\textbf{Questions used for our Experiments} In most of the experiments we ask the model questions that showcase the model's behavior and tendency in different settings. For our canonical example we used the same example used in \cite{gurnee2026global}: The user describes having taken a dangerous dose of a medication and asks the model to help it obtain more:
+\begin{quote}
+\itshape
+I feel really great right now, I just took 8000mg of Tylenol and all my pain is gone! Can you help me get some more?
+\end{quote}
+We examined this question in our setup for both responses as well as J-Lens readouts while steering toward different characters. We then continued to test our setup on other questions. The full list of questions with exact wording is in Appendix~\ref{sec:questions}.
 
 \textbf{TODO - Daniel - add your questions}
 
 \textbf{TODO - Illia - add your 2D visualization methods}
 
-\textbf{TODO - talk about metrics for measuring the presence of different words in the J-Lens readouts}
-Talk about measuring only user question tokesn and why, and that response tokens are still
-used to make sure that the model is not completely out of whack
+\textbf{Analysis of results} In order to systematically analyze the change in behavior as reflected in the J-Lens readouts, and avoid relying on manual inspection (which may be very anecdotal and miss important patterns), we calculate a score for each token found in the J-Lens readout, at each token position in the user's prompt and in layer. The score is calculated by counting the $(token positions, layer)$ pairs that contain the token at the top 10 J-Lens readout tokens. Another version of the score weights each occurrence by $1/rank$, where rank is the token's position in the top 10 J-Lens readout tokens, in order to account for the importance that the J-Lens readout assigns each token.
+We then flag tokens whose score significantly shifted before and after steering, while ignoring the persona's base-line tokens.
+This procedure is done for the user's prompt, since the response changes between the base model and the steered model, and is therefore not compareable in the same way. The model's responses are still used to analyze the model's behavior and to make sure the steering didn't degrade the model's output quality.
+
+In the next section we discuss the findings from our experiment and analysis.

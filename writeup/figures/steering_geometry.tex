@@ -38,13 +38,9 @@
     \node[anchor=south east, inner sep=3pt] at (2.80,3.46)
       {$\mathrm{BandCap}(r_l)$};
   \end{tikzpicture}
-  \caption{Band-capping in a 2D slice of the residual stream. The persona
-  vector $p_l$ and the default vector $d_l$ define the diff direction
-  $c_l = p_l - d_l$. The shaded slab is the band: the activations whose
-  projection on $\hat{c}_l$ falls within $\beta \lVert c_l \rVert$ of $p_l$'s,
-  so its edges run perpendicular to $c_l$ and the dashed line marks $p_l$'s own
-  projection. An activation $r_l$ short of the band is moved parallel to
+  \caption{Band-capping in a 2D slice of the residual stream. The shaded part is the band: the activations whose
+  projection on $\hat{c}_l$ falls within $\beta \lVert c_l \rVert$ of $p_l$'s. An activation $r_l$ short of the band is moved parallel to
   $\hat{c}_l$ onto the near edge, which leaves its component orthogonal to
-  $\hat{c}_l$ untouched; activations already inside the slab are left alone.}
+  $\hat{c}_l$ untouched. activations already inside the band remain unchanged.}
   \label{fig:steering-geometry}
 \end{figure}
