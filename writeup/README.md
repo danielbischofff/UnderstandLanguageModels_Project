@@ -15,6 +15,7 @@ sections/            One file per paper section, in the required order:
   discussion.tex       Reflection, limitations, future work
   conclusion.tex       Optional; can be merged into the discussion
   ai_usage.tex         AI usage declaration (placed after the references)
+  appendix.tex         Optional supplementary material (lettered sections, last)
 references.bib       Bibliography
 figures/, tables/    Figure files and table sources
 acl.sty, acl_natbib.bst  ACL style files (unmodified)
