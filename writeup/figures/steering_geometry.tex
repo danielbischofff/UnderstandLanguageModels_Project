@@ -1,0 +1,50 @@
+% Geometry of the two steering methods, drawn in the plane spanned by the unit
+% diff direction \hat c_l (horizontal) and its orthogonal complement (vertical).
+% Both panels are schematic: no numbers from the experiments enter here.
+% Include with \input{figures/steering_geometry}; needs tikz and amsmath.
+\begin{figure}[t]
+  \centering
+  \footnotesize
+  \begin{tikzpicture}[x=1.3cm, y=0.72cm, >=latex, line join=round]
+    \node[anchor=west] at (-0.3,3.5) {(a) Alpha steering};
+    \draw[->] (-0.3,0) -- (5.2,0) node[below] {$\hat{c}_l$};
+    \draw[->] (0,-0.3) -- (0,3.1) node[left] {$c_l^{\perp}$};
+    \fill (0.7,1.4) circle (1.7pt) node[below=3pt] {$r_l$};
+    \draw[->, very thick] (0.7,1.4) -- (2.5,1.4);
+    \fill (2.5,1.4) circle (1.7pt) node[above=3pt] {$r_l + \alpha c_l$};
+    \draw[->, dashed, black!55] (2.5,1.4) -- (4.9,1.4);
+    \node[black!55, anchor=west, align=left] at (3.0,2.3)
+      {larger $\alpha$:\\no upper limit};
+  \end{tikzpicture}
+
+  \vspace{1.2ex}
+
+  \begin{tikzpicture}[x=1.3cm, y=0.72cm, >=latex, line join=round]
+    \node[anchor=west] at (-0.3,3.5) {(b) Band-capping};
+    \fill[black!8] (2.3,-0.3) rectangle (3.7,3.1);
+    \draw[dashed, black!55] (3.0,-0.3) -- (3.0,3.1);
+    \node[black!55, anchor=south] at (3.0,3.1) {$p_l \cdot \hat{c}_l$};
+    \draw[->] (-0.3,0) -- (5.2,0) node[below] {$\hat{c}_l$};
+    \draw[->] (0,-0.3) -- (0,3.1) node[left] {$c_l^{\perp}$};
+    \draw[|<->|] (3.0,2.5) -- (3.7,2.5);
+    \node[anchor=south, inner sep=2pt] at (3.35,2.5) {$\beta \lVert c_l \rVert$};
+    % Below the band: pushed up to the lower edge.
+    \fill (0.7,2.4) circle (1.7pt) node[below=3pt] {$r_l$};
+    \draw[->, very thick] (0.7,2.4) -- (2.3,2.4);
+    % Already inside the band: untouched.
+    \fill (3.2,1.5) circle (1.7pt);
+    \node[anchor=west, inner sep=3pt] at (3.75,1.5) {unchanged};
+    % Beyond the band: pulled back to the near edge.
+    \fill (4.9,0.6) circle (1.7pt) node[above=3pt] {$r_l'$};
+    \draw[->, very thick] (4.9,0.6) -- (3.7,0.6);
+  \end{tikzpicture}
+  \caption{The two steering methods in the plane spanned by the unit diff
+  direction $\hat{c}_l$ and its orthogonal complement. (a) Alpha steering adds
+  $\alpha c_l$, so the projection along $\hat{c}_l$ grows without bound as
+  $\alpha$ grows. (b) Band-capping clips that projection into a band of
+  half-width $\beta \lVert c_l \rVert$ around $p_l \cdot \hat{c}_l$: activations
+  outside the band are moved to the nearest edge, from either side, and
+  activations already inside it are left alone. Neither method changes the
+  component orthogonal to $\hat{c}_l$.}
+  \label{fig:steering-geometry}
+\end{figure}
