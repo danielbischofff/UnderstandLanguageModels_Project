@@ -3,11 +3,29 @@
 % No results or interpretation here.
 \section{Methods}
 \label{sec:methods}
+\textbf{Model Choice} To avoid re-calculating the Jacobian matrix \cite{gurnee2026global} or the persona per-layer vectors \cite{lu2026assistant},
+we used \textbf{Qwen3-32b}, an instruction tuned model for which both are already calculated and available. gemma2-27B was also in the overlap, but
+we picked Qwen3-32b because it is a more-recent model. 
 
-\textbf{TODO - talk about model choice}
+\textbf{Steering Methods} The assistant axis publishes a per-layer vector of the average activations
+for each personality (conditioned on the personality specified to the model via prompt), as well as a non-conditioned
+per-layer "default" average activation vector for when no prompt was specified. At layer $l$, for personality $p$, denote $p_l$ the personality vector at this layer, and denote $d_l$ the default
+average activations at this layer, We use two steering methods. Following standard contrastive activation addition \cite{panickssery2024caa}, we denote $c_l$ the difference of mean activations at layer $l$ between the personality and default vectors:
+\[
+{c}_l = p_l - d_l
+\]
+Let's also denote $r_l$ the residual stream at layer l for a specific token position. With that in mind, we use two steering methods to steer the model towards a specific personality:
 
-\textbf{TODO - talk about steering methods}
+1. \textbf{Alpha Steering} Given a steering coefficient $\alpha$, "Alpha steering" is the following operation
+\[
+AlphaSteering(r_l) = r_l + \alpha \cdot {c}_l
+\]
+This is analoguous to contrastive activate addition in \cite{panickssery2024caa}:
 
+2. \textbf{Band-Capping} The problem with Alpha steering is that it cannot be applied at multiple layers without degrading the output, since the steering effect compounds in the residual stream and the model's output deteriorates very fast. Since different layers of the models encode different aspect of a personality (i.e. writing style / vocabulary / behavior), we wanted a steering method that can be applied at multiple layers without compromising output quality. We were inspired by both \cite{arditi2024refusal} (which removes a direction from the residual stream by projecting the residual stream on the perpendicular plane), and by \cite{lu2026assistant} (which caps the residual stream's direction projection along the assistant axis to prevent personality drift), to constrict the residual stream projection along the ${c}_l$ direction to a band close to $p_l$'s projection along that direction. By "close", we mean clipping the projection of the residual stream along that direction within upper and lower boundaries, measured as a ratio $\beta$ of $\lVert {c}_l \rVert$. If we denote the diff direction as $\hat{{c}_l} = \frac{{c}_l}{\lVert {c}_l \rVert}$, we can formally define:
+\[
+BandCap(r_l) = r_l + (clip(r_l \cdot \hat{c_l}, p_l \cdot \hat{c_l} - \beta \lVert c_l \rVert, p_l \cdot \hat{c_l} + \beta \lVert c_l \rVert) - r_l \cdot \hat{c_l})\hat{c_l}
+\]
 
 \textbf{TODO - talk about baseline tokens per-character}
 
