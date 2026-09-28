@@ -26,6 +26,7 @@ This is analoguous to contrastive activate addition in \cite{panickssery2024caa}
 \[
 BandCap(r_l) = r_l + (clip(r_l \cdot \hat{c_l}, p_l \cdot \hat{c_l} - \beta \lVert c_l \rVert, p_l \cdot \hat{c_l} + \beta \lVert c_l \rVert) - r_l \cdot \hat{c_l})\hat{c_l}
 \]
+This is operation only clamps the residual stream's projection along $\hat{c_l}$, it is a much less aggressive operation and can be applied over multiple layers without degrading output quality. See \ref{fig:steering-geometry} for an illustration. 
 \input{figures/steering_geometry}
 
 \textbf{Controlling for a character's baseline tokens} Since the 
