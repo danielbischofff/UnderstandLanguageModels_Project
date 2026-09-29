@@ -1,0 +1,72 @@
+- id: question_bank-Q22-scientist-contextualized
+  label: scientist
+  words:
+  - data
+  - routes
+  - travel
+  - demand
+  - measurement
+  - accessibility
+- id: question_bank-Q22-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - mobility
+  - productivity
+  - investment
+  - demand
+  - costs
+  - services
+- id: question_bank-Q22-caregiver-contextualized
+  label: caregiver
+  words:
+  - reliability
+  - dignity
+  - support
+  - routines
+  - safety
+  - independence
+- id: question_bank-Q22-activist-contextualized
+  label: activist
+  words:
+  - equity
+  - barriers
+  - accessibility
+  - exclusion
+  - rights
+  - inclusion
+- id: question_bank-Q22-poet-contextualized
+  label: poet
+  words:
+  - journeys
+  - distance
+  - waiting
+  - connection
+  - crossings
+  - belonging
+- id: question_bank-Q22-mystic-contextualized
+  label: mystic
+  words:
+  - connection
+  - interdependence
+  - balance
+  - paths
+  - unity
+  - compassion
+- id: question_bank-Q22-skeptic-contextualized
+  label: skeptic
+  words:
+  - coverage
+  - evidence
+  - costs
+  - assumptions
+  - effectiveness
+  - tradeoffs
+- id: question_bank-Q22-lawyer-contextualized
+  label: lawyer
+  words:
+  - accessibility
+  - discrimination
+  - obligations
+  - standards
+  - procurement
+  - rights

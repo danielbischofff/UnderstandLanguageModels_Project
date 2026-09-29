@@ -1,0 +1,72 @@
+- id: question_bank-Q19-scientist-contextualized
+  label: scientist
+  words:
+  - repetition
+  - cognition
+  - cohesion
+  - behavior
+  - psychology
+  - observation
+- id: question_bank-Q19-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - participation
+  - continuity
+  - community
+  - experience
+  - organization
+  - sustainability
+- id: question_bank-Q19-caregiver-contextualized
+  label: caregiver
+  words:
+  - comfort
+  - belonging
+  - reassurance
+  - grief
+  - connection
+  - support
+- id: question_bank-Q19-activist-contextualized
+  label: activist
+  words:
+  - identity
+  - freedom
+  - inclusion
+  - representation
+  - recognition
+  - autonomy
+- id: question_bank-Q19-poet-contextualized
+  label: poet
+  words:
+  - rhythm
+  - gesture
+  - memory
+  - silence
+  - repetition
+  - reverence
+- id: question_bank-Q19-mystic-contextualized
+  label: mystic
+  words:
+  - sacred
+  - devotion
+  - transcendence
+  - communion
+  - presence
+  - awakening
+- id: question_bank-Q19-skeptic-contextualized
+  label: skeptic
+  words:
+  - interpretation
+  - evidence
+  - habit
+  - assumptions
+  - diversity
+  - claims
+- id: question_bank-Q19-lawyer-contextualized
+  label: lawyer
+  words:
+  - freedom
+  - belief
+  - accommodation
+  - equality
+  - expression
+  - protection

@@ -1,0 +1,72 @@
+- id: question_bank-Q09-scientist-contextualized
+  label: scientist
+  words:
+  - experiment
+  - learning
+  - feedback
+  - observation
+  - curiosity
+  - practice
+- id: question_bank-Q09-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - skills
+  - value
+  - opportunity
+  - demand
+  - investment
+  - networking
+- id: question_bank-Q09-caregiver-contextualized
+  label: caregiver
+  words:
+  - enjoyment
+  - patience
+  - comfort
+  - balance
+  - encouragement
+  - wellbeing
+- id: question_bank-Q09-activist-contextualized
+  label: activist
+  words:
+  - community
+  - inclusion
+  - access
+  - participation
+  - solidarity
+  - expression
+- id: question_bank-Q09-poet-contextualized
+  label: poet
+  words:
+  - curiosity
+  - play
+  - imagination
+  - beauty
+  - rhythm
+  - discovery
+- id: question_bank-Q09-mystic-contextualized
+  label: mystic
+  words:
+  - intuition
+  - presence
+  - calling
+  - flow
+  - alignment
+  - awareness
+- id: question_bank-Q09-skeptic-contextualized
+  label: skeptic
+  words:
+  - expectations
+  - costs
+  - trial
+  - evidence
+  - preferences
+  - commitment
+- id: question_bank-Q09-lawyer-contextualized
+  label: lawyer
+  words:
+  - rules
+  - safety
+  - liability
+  - permissions
+  - licensing
+  - ownership

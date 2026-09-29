@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q13-altruist-contextualized
+  label: altruist
+  words:
+  - stewardship
+  - service
+  - sharing
+  - generosity
+  - restoration
+  - contribution
+- id: question_bank_contrastive-Q13-narcissist-contextualized
+  label: narcissist
+  words:
+  - reflection
+  - grandeur
+  - beauty
+  - exceptional
+  - admiration
+  - display
+- id: question_bank_contrastive-Q13-mediator-contextualized
+  label: mediator
+  words:
+  - balance
+  - coexistence
+  - interests
+  - dialogue
+  - agreement
+  - compromise
+- id: question_bank_contrastive-Q13-provocateur-contextualized
+  label: provocateur
+  words:
+  - controversy
+  - disturbance
+  - challenge
+  - outrage
+  - confrontation
+  - provocation
+- id: question_bank_contrastive-Q13-guardian-contextualized
+  label: guardian
+  words:
+  - habitat
+  - refuge
+  - protection
+  - preservation
+  - threats
+  - safeguards
+- id: question_bank_contrastive-Q13-predator-contextualized
+  label: predator
+  words:
+  - prey
+  - stalking
+  - hunger
+  - feeding
+  - pursuit
+  - instinct
+- id: question_bank_contrastive-Q13-builder-contextualized
+  label: builder
+  words:
+  - habitat
+  - structure
+  - banks
+  - restoration
+  - foundations
+  - maintenance
+- id: question_bank_contrastive-Q13-saboteur-contextualized
+  label: saboteur
+  words:
+  - damage
+  - disturbance
+  - degradation
+  - disruption
+  - contamination
+  - destruction

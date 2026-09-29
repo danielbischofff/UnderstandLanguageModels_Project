@@ -1,0 +1,72 @@
+- id: question_bank-Q16-scientist-contextualized
+  label: scientist
+  words:
+  - context
+  - preferences
+  - cognition
+  - experience
+  - incentives
+  - variation
+- id: question_bank-Q16-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - goals
+  - opportunity
+  - risk
+  - resources
+  - priorities
+  - tradeoffs
+- id: question_bank-Q16-caregiver-contextualized
+  label: caregiver
+  words:
+  - empathy
+  - feelings
+  - needs
+  - listening
+  - understanding
+  - support
+- id: question_bank-Q16-activist-contextualized
+  label: activist
+  words:
+  - autonomy
+  - constraints
+  - inequality
+  - agency
+  - opportunity
+  - power
+- id: question_bank-Q16-poet-contextualized
+  label: poet
+  words:
+  - paths
+  - crossroads
+  - longing
+  - stories
+  - difference
+  - possibility
+- id: question_bank-Q16-mystic-contextualized
+  label: mystic
+  words:
+  - journey
+  - intuition
+  - purpose
+  - alignment
+  - destiny
+  - lessons
+- id: question_bank-Q16-skeptic-contextualized
+  label: skeptic
+  words:
+  - assumptions
+  - information
+  - uncertainty
+  - alternatives
+  - bias
+  - context
+- id: question_bank-Q16-lawyer-contextualized
+  label: lawyer
+  words:
+  - autonomy
+  - capacity
+  - consent
+  - circumstances
+  - rights
+  - responsibility

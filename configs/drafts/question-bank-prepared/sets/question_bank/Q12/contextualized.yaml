@@ -1,0 +1,72 @@
+- id: question_bank-Q12-scientist-contextualized
+  label: scientist
+  words:
+  - hypothesis
+  - induction
+  - proof
+  - counterexample
+  - generalization
+  - testing
+- id: question_bank-Q12-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - forecast
+  - prediction
+  - opportunity
+  - risk
+  - model
+  - validation
+- id: question_bank-Q12-caregiver-contextualized
+  label: caregiver
+  words:
+  - patience
+  - steps
+  - encouragement
+  - learning
+  - support
+  - confidence
+- id: question_bank-Q12-activist-contextualized
+  label: activist
+  words:
+  - transparency
+  - access
+  - literacy
+  - participation
+  - empowerment
+  - scrutiny
+- id: question_bank-Q12-poet-contextualized
+  label: poet
+  words:
+  - rhythm
+  - repetition
+  - symmetry
+  - surprise
+  - unfolding
+  - harmony
+- id: question_bank-Q12-mystic-contextualized
+  label: mystic
+  words:
+  - order
+  - cycles
+  - infinity
+  - symbols
+  - unity
+  - mystery
+- id: question_bank-Q12-skeptic-contextualized
+  label: skeptic
+  words:
+  - insufficient
+  - ambiguity
+  - counterexample
+  - assumptions
+  - uncertainty
+  - alternatives
+- id: question_bank-Q12-lawyer-contextualized
+  label: lawyer
+  words:
+  - premises
+  - conditions
+  - consistency
+  - interpretation
+  - justification
+  - exceptions

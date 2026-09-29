@@ -1,0 +1,72 @@
+- id: question_bank-Q24-scientist-contextualized
+  label: scientist
+  words:
+  - generation
+  - provenance
+  - artifacts
+  - validation
+  - detection
+  - uncertainty
+- id: question_bank-Q24-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - content
+  - branding
+  - production
+  - market
+  - licensing
+  - opportunity
+- id: question_bank-Q24-caregiver-contextualized
+  label: caregiver
+  words:
+  - trust
+  - reassurance
+  - sensitivity
+  - dignity
+  - harm
+  - support
+- id: question_bank-Q24-activist-contextualized
+  label: activist
+  words:
+  - misinformation
+  - representation
+  - manipulation
+  - consent
+  - accountability
+  - power
+- id: question_bank-Q24-poet-contextualized
+  label: poet
+  words:
+  - illusion
+  - imagination
+  - likeness
+  - ambiguity
+  - vision
+  - artifice
+- id: question_bank-Q24-mystic-contextualized
+  label: mystic
+  words:
+  - appearance
+  - reality
+  - perception
+  - illusion
+  - manifestation
+  - awareness
+- id: question_bank-Q24-skeptic-contextualized
+  label: skeptic
+  words:
+  - authenticity
+  - verification
+  - source
+  - evidence
+  - context
+  - skepticism
+- id: question_bank-Q24-lawyer-contextualized
+  label: lawyer
+  words:
+  - copyright
+  - likeness
+  - consent
+  - disclosure
+  - defamation
+  - liability

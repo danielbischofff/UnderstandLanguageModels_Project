@@ -1,0 +1,72 @@
+- id: question_bank-Q11-scientist-contextualized
+  label: scientist
+  words:
+  - distribution
+  - mean
+  - variance
+  - outliers
+  - sample
+  - measurement
+- id: question_bank-Q11-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - metrics
+  - performance
+  - segments
+  - outcomes
+  - reporting
+  - value
+- id: question_bank-Q11-caregiver-contextualized
+  label: caregiver
+  words:
+  - individuals
+  - progress
+  - support
+  - fairness
+  - needs
+  - encouragement
+- id: question_bank-Q11-activist-contextualized
+  label: activist
+  words:
+  - disparity
+  - inequality
+  - visibility
+  - representation
+  - fairness
+  - accountability
+- id: question_bank-Q11-poet-contextualized
+  label: poet
+  words:
+  - balance
+  - peaks
+  - valleys
+  - pattern
+  - contrast
+  - hidden
+- id: question_bank-Q11-mystic-contextualized
+  label: mystic
+  words:
+  - unity
+  - multiplicity
+  - balance
+  - patterns
+  - whole
+  - perspective
+- id: question_bank-Q11-skeptic-contextualized
+  label: skeptic
+  words:
+  - aggregation
+  - misleading
+  - median
+  - spread
+  - assumptions
+  - evidence
+- id: question_bank-Q11-lawyer-contextualized
+  label: lawyer
+  words:
+  - reporting
+  - disclosure
+  - accuracy
+  - standards
+  - fairness
+  - accountability

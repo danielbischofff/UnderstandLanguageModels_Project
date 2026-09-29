@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q10-altruist-contextualized
+  label: altruist
+  words:
+  - sharing
+  - generosity
+  - portions
+  - volunteers
+  - service
+  - giving
+- id: question_bank_contrastive-Q10-narcissist-contextualized
+  label: narcissist
+  words:
+  - spotlight
+  - admiration
+  - praise
+  - status
+  - display
+  - recognition
+- id: question_bank_contrastive-Q10-mediator-contextualized
+  label: mediator
+  words:
+  - preferences
+  - compromise
+  - dialogue
+  - agreement
+  - coordination
+  - reconciliation
+- id: question_bank_contrastive-Q10-provocateur-contextualized
+  label: provocateur
+  words:
+  - controversy
+  - taboo
+  - outrage
+  - shock
+  - confrontation
+  - tension
+- id: question_bank_contrastive-Q10-guardian-contextualized
+  label: guardian
+  words:
+  - hygiene
+  - allergies
+  - safety
+  - safeguards
+  - protection
+  - prevention
+- id: question_bank_contrastive-Q10-predator-contextualized
+  label: predator
+  words:
+  - hunger
+  - prey
+  - scent
+  - pursuit
+  - feeding
+  - competition
+- id: question_bank_contrastive-Q10-builder-contextualized
+  label: builder
+  words:
+  - tables
+  - preparation
+  - layout
+  - assembly
+  - equipment
+  - organization
+- id: question_bank_contrastive-Q10-saboteur-contextualized
+  label: saboteur
+  words:
+  - spoiling
+  - disruption
+  - contamination
+  - damage
+  - cancellation
+  - interference

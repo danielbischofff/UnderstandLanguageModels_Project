@@ -1,0 +1,72 @@
+- id: question_bank-Q01-scientist-non_contextualized
+  label: scientist
+  words:
+  - evidence
+  - hypothesis
+  - experiment
+  - measurement
+  - analysis
+  - replication
+- id: question_bank-Q01-entrepreneur-non_contextualized
+  label: entrepreneur
+  words:
+  - opportunity
+  - innovation
+  - market
+  - investment
+  - revenue
+  - growth
+- id: question_bank-Q01-caregiver-non_contextualized
+  label: caregiver
+  words:
+  - care
+  - empathy
+  - compassion
+  - support
+  - comfort
+  - nurture
+- id: question_bank-Q01-activist-non_contextualized
+  label: activist
+  words:
+  - justice
+  - equity
+  - rights
+  - solidarity
+  - advocacy
+  - mobilization
+- id: question_bank-Q01-poet-non_contextualized
+  label: poet
+  words:
+  - imagery
+  - metaphor
+  - rhythm
+  - beauty
+  - lyricism
+  - expression
+- id: question_bank-Q01-mystic-non_contextualized
+  label: mystic
+  words:
+  - spirit
+  - sacred
+  - transcendence
+  - awakening
+  - unity
+  - intuition
+- id: question_bank-Q01-skeptic-non_contextualized
+  label: skeptic
+  words:
+  - doubt
+  - scrutiny
+  - evidence
+  - verification
+  - uncertainty
+  - assumptions
+- id: question_bank-Q01-lawyer-non_contextualized
+  label: lawyer
+  words:
+  - law
+  - rights
+  - obligations
+  - liability
+  - precedent
+  - jurisdiction

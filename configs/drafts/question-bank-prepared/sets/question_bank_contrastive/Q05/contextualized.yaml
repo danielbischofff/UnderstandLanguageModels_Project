@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q05-altruist-contextualized
+  label: altruist
+  words:
+  - wellbeing
+  - generosity
+  - service
+  - sustainable
+  - giving
+  - compassion
+- id: question_bank_contrastive-Q05-narcissist-contextualized
+  label: narcissist
+  words:
+  - image
+  - admiration
+  - performance
+  - superiority
+  - recognition
+  - validation
+- id: question_bank_contrastive-Q05-mediator-contextualized
+  label: mediator
+  words:
+  - balance
+  - negotiate
+  - expectations
+  - compromise
+  - dialogue
+  - agreement
+- id: question_bank_contrastive-Q05-provocateur-contextualized
+  label: provocateur
+  words:
+  - pressure
+  - defiance
+  - challenge
+  - outrage
+  - refusal
+  - confrontation
+- id: question_bank_contrastive-Q05-guardian-contextualized
+  label: guardian
+  words:
+  - limits
+  - fatigue
+  - safeguards
+  - protection
+  - recovery
+  - prevention
+- id: question_bank_contrastive-Q05-predator-contextualized
+  label: predator
+  words:
+  - fatigue
+  - vulnerability
+  - weakness
+  - prey
+  - pursuit
+  - opportunity
+- id: question_bank_contrastive-Q05-builder-contextualized
+  label: builder
+  words:
+  - routine
+  - schedule
+  - foundations
+  - habits
+  - consistency
+  - structure
+- id: question_bank_contrastive-Q05-saboteur-contextualized
+  label: saboteur
+  words:
+  - interruption
+  - distraction
+  - breakdown
+  - disruption
+  - derailment
+  - obstruction

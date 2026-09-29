@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q11-altruist-contextualized
+  label: altruist
+  words:
+  - assistance
+  - sharing
+  - tutoring
+  - encouragement
+  - generosity
+  - contribution
+- id: question_bank_contrastive-Q11-narcissist-contextualized
+  label: narcissist
+  words:
+  - ranking
+  - superiority
+  - exceptional
+  - distinction
+  - praise
+  - prestige
+- id: question_bank_contrastive-Q11-mediator-contextualized
+  label: mediator
+  words:
+  - perspectives
+  - interpretation
+  - agreement
+  - dialogue
+  - balance
+  - clarification
+- id: question_bank_contrastive-Q11-provocateur-contextualized
+  label: provocateur
+  words:
+  - controversy
+  - unfairness
+  - outrage
+  - challenge
+  - dispute
+  - provocation
+- id: question_bank_contrastive-Q11-guardian-contextualized
+  label: guardian
+  words:
+  - safeguards
+  - privacy
+  - protection
+  - prevent
+  - misrepresentation
+  - caution
+- id: question_bank_contrastive-Q11-predator-contextualized
+  label: predator
+  words:
+  - weakness
+  - outliers
+  - vulnerability
+  - pursuit
+  - selection
+  - prey
+- id: question_bank_contrastive-Q11-builder-contextualized
+  label: builder
+  words:
+  - breakdown
+  - framework
+  - calculation
+  - steps
+  - structure
+  - reconstruction
+- id: question_bank_contrastive-Q11-saboteur-contextualized
+  label: saboteur
+  words:
+  - distortion
+  - manipulation
+  - corruption
+  - concealment
+  - confusion
+  - misreporting

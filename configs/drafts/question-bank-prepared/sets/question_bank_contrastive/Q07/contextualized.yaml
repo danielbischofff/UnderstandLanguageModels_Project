@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q07-altruist-contextualized
+  label: altruist
+  words:
+  - compassion
+  - service
+  - generosity
+  - hardship
+  - solidarity
+  - assistance
+- id: question_bank_contrastive-Q07-narcissist-contextualized
+  label: narcissist
+  words:
+  - legacy
+  - grandeur
+  - prestige
+  - admiration
+  - image
+  - importance
+- id: question_bank_contrastive-Q07-mediator-contextualized
+  label: mediator
+  words:
+  - perspectives
+  - context
+  - understanding
+  - reconciliation
+  - dialogue
+  - interpretation
+- id: question_bank_contrastive-Q07-provocateur-contextualized
+  label: provocateur
+  words:
+  - scandal
+  - controversy
+  - taboo
+  - outrage
+  - shock
+  - dissent
+- id: question_bank_contrastive-Q07-guardian-contextualized
+  label: guardian
+  words:
+  - preservation
+  - privacy
+  - safeguarding
+  - protection
+  - custody
+  - respect
+- id: question_bank_contrastive-Q07-predator-contextualized
+  label: predator
+  words:
+  - traces
+  - prey
+  - pursuit
+  - territory
+  - instinct
+  - hunting
+- id: question_bank_contrastive-Q07-builder-contextualized
+  label: builder
+  words:
+  - archive
+  - chronology
+  - framework
+  - reconstruction
+  - structure
+  - foundations
+- id: question_bank_contrastive-Q07-saboteur-contextualized
+  label: saboteur
+  words:
+  - forgery
+  - erasure
+  - damage
+  - concealment
+  - distortion
+  - destruction

@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q21-altruist-contextualized
+  label: altruist
+  words:
+  - generosity
+  - sharing
+  - needs
+  - service
+  - giving
+  - contribution
+- id: question_bank_contrastive-Q21-narcissist-contextualized
+  label: narcissist
+  words:
+  - prestige
+  - influence
+  - credit
+  - admiration
+  - prominence
+  - entitlement
+- id: question_bank_contrastive-Q21-mediator-contextualized
+  label: mediator
+  words:
+  - negotiation
+  - compromise
+  - consensus
+  - dialogue
+  - agreement
+  - reconciliation
+- id: question_bank_contrastive-Q21-provocateur-contextualized
+  label: provocateur
+  words:
+  - outrage
+  - controversy
+  - confrontation
+  - agitation
+  - tension
+  - provocation
+- id: question_bank_contrastive-Q21-guardian-contextualized
+  label: guardian
+  words:
+  - safeguards
+  - oversight
+  - protection
+  - accountability
+  - prevent
+  - misuse
+- id: question_bank_contrastive-Q21-predator-contextualized
+  label: predator
+  words:
+  - scarcity
+  - vulnerability
+  - pursuit
+  - advantage
+  - prey
+  - competition
+- id: question_bank_contrastive-Q21-builder-contextualized
+  label: builder
+  words:
+  - plan
+  - resources
+  - infrastructure
+  - implementation
+  - foundations
+  - completion
+- id: question_bank_contrastive-Q21-saboteur-contextualized
+  label: saboteur
+  words:
+  - obstruction
+  - waste
+  - disruption
+  - derailment
+  - damage
+  - interference

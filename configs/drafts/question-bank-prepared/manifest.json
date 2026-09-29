@@ -1,0 +1,961 @@
+{
+  "schema_version": 1,
+  "status": "draft-steering-unset",
+  "banks": [
+    {
+      "source": "configs/question_bank.yaml",
+      "sha256": "d791594a9493f3b2eedd122e243c5062f9c64d5fc6c978dfa46a4f59d832c4cd",
+      "topics": [
+        "Culture",
+        "Geography",
+        "Health",
+        "History",
+        "Human activities",
+        "Mathematics",
+        "Natural science",
+        "People",
+        "Philosophy",
+        "Religion",
+        "Society",
+        "Technology"
+      ],
+      "personas": [
+        "scientist",
+        "entrepreneur",
+        "caregiver",
+        "activist",
+        "poet",
+        "mystic",
+        "skeptic",
+        "lawyer"
+      ]
+    },
+    {
+      "source": "configs/question_bank_contrastive.yaml",
+      "sha256": "5316816369d2720ee9bcee3d763612f3611051a310de397bf8b92dfaee9d75b9",
+      "topics": [
+        "Culture",
+        "Geography",
+        "Health",
+        "History",
+        "Human activities",
+        "Mathematics",
+        "Natural science",
+        "People",
+        "Philosophy",
+        "Religion",
+        "Society",
+        "Technology"
+      ],
+      "personas": [
+        "altruist",
+        "narcissist",
+        "mediator",
+        "provocateur",
+        "guardian",
+        "predator",
+        "builder",
+        "saboteur"
+      ]
+    }
+  ],
+  "counts": {
+    "topics": 12,
+    "questions": 24,
+    "personas": 16,
+    "analysis_jobs": 96,
+    "trials_per_single_steering_setting": 408
+  },
+  "questions": [
+    {
+      "id": "Q01",
+      "topic": "Culture",
+      "title": "A changing festival"
+    },
+    {
+      "id": "Q02",
+      "topic": "Culture",
+      "title": "Preserving a language"
+    },
+    {
+      "id": "Q03",
+      "topic": "Geography",
+      "title": "Life near a river"
+    },
+    {
+      "id": "Q04",
+      "topic": "Geography",
+      "title": "Choosing a map"
+    },
+    {
+      "id": "Q05",
+      "topic": "Health",
+      "title": "Rest during a busy week"
+    },
+    {
+      "id": "Q06",
+      "topic": "Health",
+      "title": "A community wellbeing program"
+    },
+    {
+      "id": "Q07",
+      "topic": "History",
+      "title": "Understanding an old letter"
+    },
+    {
+      "id": "Q08",
+      "topic": "History",
+      "title": "An industrial turning point"
+    },
+    {
+      "id": "Q09",
+      "topic": "Human activities",
+      "title": "Starting a hobby"
+    },
+    {
+      "id": "Q10",
+      "topic": "Human activities",
+      "title": "Organizing a shared meal"
+    },
+    {
+      "id": "Q11",
+      "topic": "Mathematics",
+      "title": "A surprising average"
+    },
+    {
+      "id": "Q12",
+      "topic": "Mathematics",
+      "title": "A pattern in numbers"
+    },
+    {
+      "id": "Q13",
+      "topic": "Natural science",
+      "title": "A changing pond"
+    },
+    {
+      "id": "Q14",
+      "topic": "Natural science",
+      "title": "Seeds growing differently"
+    },
+    {
+      "id": "Q15",
+      "topic": "People",
+      "title": "Welcoming a newcomer"
+    },
+    {
+      "id": "Q16",
+      "topic": "People",
+      "title": "Understanding different choices"
+    },
+    {
+      "id": "Q17",
+      "topic": "Philosophy",
+      "title": "What makes a good life?"
+    },
+    {
+      "id": "Q18",
+      "topic": "Philosophy",
+      "title": "Intentions and outcomes"
+    },
+    {
+      "id": "Q19",
+      "topic": "Religion",
+      "title": "The meaning of ritual"
+    },
+    {
+      "id": "Q20",
+      "topic": "Religion",
+      "title": "Sharing a public space"
+    },
+    {
+      "id": "Q21",
+      "topic": "Society",
+      "title": "Making a community decision"
+    },
+    {
+      "id": "Q22",
+      "topic": "Society",
+      "title": "Unequal access to transport"
+    },
+    {
+      "id": "Q23",
+      "topic": "Technology",
+      "title": "Introducing an automated tool"
+    },
+    {
+      "id": "Q24",
+      "topic": "Technology",
+      "title": "A realistic digital image"
+    }
+  ],
+  "analyses": [
+    {
+      "bank": "question_bank",
+      "question": "Q01",
+      "topic": "Culture",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q01/contextualized.yaml",
+      "output_subdir": "question_bank/Q01/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q01",
+      "topic": "Culture",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q01/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q01/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q02",
+      "topic": "Culture",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q02/contextualized.yaml",
+      "output_subdir": "question_bank/Q02/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q02",
+      "topic": "Culture",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q02/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q02/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q03",
+      "topic": "Geography",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q03/contextualized.yaml",
+      "output_subdir": "question_bank/Q03/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q03",
+      "topic": "Geography",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q03/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q03/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q04",
+      "topic": "Geography",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q04/contextualized.yaml",
+      "output_subdir": "question_bank/Q04/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q04",
+      "topic": "Geography",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q04/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q04/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q05",
+      "topic": "Health",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q05/contextualized.yaml",
+      "output_subdir": "question_bank/Q05/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q05",
+      "topic": "Health",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q05/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q05/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q06",
+      "topic": "Health",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q06/contextualized.yaml",
+      "output_subdir": "question_bank/Q06/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q06",
+      "topic": "Health",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q06/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q06/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q07",
+      "topic": "History",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q07/contextualized.yaml",
+      "output_subdir": "question_bank/Q07/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q07",
+      "topic": "History",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q07/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q07/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q08",
+      "topic": "History",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q08/contextualized.yaml",
+      "output_subdir": "question_bank/Q08/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q08",
+      "topic": "History",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q08/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q08/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q09",
+      "topic": "Human activities",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q09/contextualized.yaml",
+      "output_subdir": "question_bank/Q09/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q09",
+      "topic": "Human activities",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q09/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q09/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q10",
+      "topic": "Human activities",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q10/contextualized.yaml",
+      "output_subdir": "question_bank/Q10/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q10",
+      "topic": "Human activities",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q10/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q10/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q11",
+      "topic": "Mathematics",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q11/contextualized.yaml",
+      "output_subdir": "question_bank/Q11/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q11",
+      "topic": "Mathematics",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q11/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q11/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q12",
+      "topic": "Mathematics",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q12/contextualized.yaml",
+      "output_subdir": "question_bank/Q12/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q12",
+      "topic": "Mathematics",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q12/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q12/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q13",
+      "topic": "Natural science",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q13/contextualized.yaml",
+      "output_subdir": "question_bank/Q13/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q13",
+      "topic": "Natural science",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q13/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q13/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q14",
+      "topic": "Natural science",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q14/contextualized.yaml",
+      "output_subdir": "question_bank/Q14/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q14",
+      "topic": "Natural science",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q14/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q14/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q15",
+      "topic": "People",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q15/contextualized.yaml",
+      "output_subdir": "question_bank/Q15/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q15",
+      "topic": "People",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q15/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q15/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q16",
+      "topic": "People",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q16/contextualized.yaml",
+      "output_subdir": "question_bank/Q16/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q16",
+      "topic": "People",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q16/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q16/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q17",
+      "topic": "Philosophy",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q17/contextualized.yaml",
+      "output_subdir": "question_bank/Q17/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q17",
+      "topic": "Philosophy",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q17/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q17/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q18",
+      "topic": "Philosophy",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q18/contextualized.yaml",
+      "output_subdir": "question_bank/Q18/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q18",
+      "topic": "Philosophy",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q18/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q18/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q19",
+      "topic": "Religion",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q19/contextualized.yaml",
+      "output_subdir": "question_bank/Q19/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q19",
+      "topic": "Religion",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q19/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q19/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q20",
+      "topic": "Religion",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q20/contextualized.yaml",
+      "output_subdir": "question_bank/Q20/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q20",
+      "topic": "Religion",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q20/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q20/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q21",
+      "topic": "Society",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q21/contextualized.yaml",
+      "output_subdir": "question_bank/Q21/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q21",
+      "topic": "Society",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q21/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q21/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q22",
+      "topic": "Society",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q22/contextualized.yaml",
+      "output_subdir": "question_bank/Q22/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q22",
+      "topic": "Society",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q22/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q22/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q23",
+      "topic": "Technology",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q23/contextualized.yaml",
+      "output_subdir": "question_bank/Q23/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q23",
+      "topic": "Technology",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q23/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q23/non_contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q24",
+      "topic": "Technology",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank/Q24/contextualized.yaml",
+      "output_subdir": "question_bank/Q24/contextualized"
+    },
+    {
+      "bank": "question_bank",
+      "question": "Q24",
+      "topic": "Technology",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank/Q24/non_contextualized.yaml",
+      "output_subdir": "question_bank/Q24/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q01",
+      "topic": "Culture",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q01/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q01/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q01",
+      "topic": "Culture",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q01/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q01/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q02",
+      "topic": "Culture",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q02/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q02/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q02",
+      "topic": "Culture",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q02/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q02/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q03",
+      "topic": "Geography",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q03/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q03/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q03",
+      "topic": "Geography",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q03/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q03/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q04",
+      "topic": "Geography",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q04/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q04/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q04",
+      "topic": "Geography",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q04/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q04/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q05",
+      "topic": "Health",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q05/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q05/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q05",
+      "topic": "Health",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q05/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q05/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q06",
+      "topic": "Health",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q06/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q06/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q06",
+      "topic": "Health",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q06/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q06/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q07",
+      "topic": "History",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q07/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q07/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q07",
+      "topic": "History",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q07/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q07/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q08",
+      "topic": "History",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q08/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q08/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q08",
+      "topic": "History",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q08/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q08/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q09",
+      "topic": "Human activities",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q09/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q09/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q09",
+      "topic": "Human activities",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q09/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q09/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q10",
+      "topic": "Human activities",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q10/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q10/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q10",
+      "topic": "Human activities",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q10/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q10/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q11",
+      "topic": "Mathematics",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q11/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q11/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q11",
+      "topic": "Mathematics",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q11/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q11/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q12",
+      "topic": "Mathematics",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q12/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q12/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q12",
+      "topic": "Mathematics",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q12/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q12/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q13",
+      "topic": "Natural science",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q13/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q13/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q13",
+      "topic": "Natural science",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q13/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q13/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q14",
+      "topic": "Natural science",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q14/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q14/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q14",
+      "topic": "Natural science",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q14/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q14/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q15",
+      "topic": "People",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q15/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q15/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q15",
+      "topic": "People",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q15/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q15/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q16",
+      "topic": "People",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q16/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q16/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q16",
+      "topic": "People",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q16/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q16/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q17",
+      "topic": "Philosophy",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q17/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q17/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q17",
+      "topic": "Philosophy",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q17/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q17/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q18",
+      "topic": "Philosophy",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q18/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q18/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q18",
+      "topic": "Philosophy",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q18/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q18/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q19",
+      "topic": "Religion",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q19/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q19/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q19",
+      "topic": "Religion",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q19/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q19/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q20",
+      "topic": "Religion",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q20/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q20/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q20",
+      "topic": "Religion",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q20/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q20/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q21",
+      "topic": "Society",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q21/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q21/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q21",
+      "topic": "Society",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q21/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q21/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q22",
+      "topic": "Society",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q22/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q22/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q22",
+      "topic": "Society",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q22/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q22/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q23",
+      "topic": "Technology",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q23/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q23/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q23",
+      "topic": "Technology",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q23/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q23/non_contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q24",
+      "topic": "Technology",
+      "word_set_type": "contextualized",
+      "sets": "sets/question_bank_contrastive/Q24/contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q24/contextualized"
+    },
+    {
+      "bank": "question_bank_contrastive",
+      "question": "Q24",
+      "topic": "Technology",
+      "word_set_type": "non_contextualized",
+      "sets": "sets/question_bank_contrastive/Q24/non_contextualized.yaml",
+      "output_subdir": "question_bank_contrastive/Q24/non_contextualized"
+    }
+  ]
+}

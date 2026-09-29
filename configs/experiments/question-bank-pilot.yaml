@@ -1,0 +1,39 @@
+# Pilot: 2 questions x 4 personas x 2 strengths + 2 shared controls = 18 trials.
+# Calibration questions: reserve Q01 and Q23 from a later held-out evaluation.
+name: question-bank-pilot
+description: Pilot spanning Culture and Technology with two personas from each question bank, to assess coherence, steering strength, runtime, activation storage, and later word-bank analysis.
+model:
+  id: Qwen/Qwen3-32B
+  revision: 9216db5781bf21249d130ec9da846c4624c16137
+  tokenizer_revision: 9216db5781bf21249d130ec9da846c4624c16137
+  dtype: bfloat16
+  enable_thinking: false
+vectors:
+  revision: 3b3b788432ad33e3a28d9ff08e88a530c0740814
+characters: [unsteered, scientist, caregiver, mediator, provocateur]
+questions:
+  # Culture: Q01, copied verbatim from both banks.
+  - id: Q01
+    text: A town wants to change its annual festival to attract new visitors. What should it consider?
+  # Technology: Q23, copied verbatim from both banks.
+  - id: Q23
+    text: A team wants to use an automated tool for a task it currently does manually. What should it evaluate?
+steering:
+  # Existing sweep endpoints; their suitability for these personas is untested.
+  coefficients: [1.5, 4.0]
+  schemes:
+    - name: layer-32
+      method: additive
+      layers: [32] # Zero-based intervention layer; not a readout-layer restriction.
+      positions: all
+      scaling: raw
+      preserve_original_activation_norm: false
+generation:
+  max_new_tokens: 256
+  do_sample: false
+seed: 0
+j_lens:
+  top_k: 10
+outputs:
+  # Retain replay residuals at fitted J-Lens layers for later rank recomputation.
+  keep_activations: true

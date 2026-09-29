@@ -1,0 +1,72 @@
+- id: question_bank-Q04-scientist-contextualized
+  label: scientist
+  words:
+  - projection
+  - scale
+  - accuracy
+  - coordinates
+  - distortion
+  - measurement
+- id: question_bank-Q04-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - customers
+  - navigation
+  - logistics
+  - utility
+  - costs
+  - efficiency
+- id: question_bank-Q04-caregiver-contextualized
+  label: caregiver
+  words:
+  - accessibility
+  - clarity
+  - landmarks
+  - orientation
+  - assistance
+  - comfort
+- id: question_bank-Q04-activist-contextualized
+  label: activist
+  words:
+  - borders
+  - visibility
+  - representation
+  - exclusion
+  - power
+  - territory
+- id: question_bank-Q04-poet-contextualized
+  label: poet
+  words:
+  - contours
+  - distance
+  - horizons
+  - journeys
+  - lines
+  - perspective
+- id: question_bank-Q04-mystic-contextualized
+  label: mystic
+  words:
+  - paths
+  - connection
+  - center
+  - sacred
+  - orientation
+  - wholeness
+- id: question_bank-Q04-skeptic-contextualized
+  label: skeptic
+  words:
+  - source
+  - bias
+  - omissions
+  - verification
+  - purpose
+  - uncertainty
+- id: question_bank-Q04-lawyer-contextualized
+  label: lawyer
+  words:
+  - jurisdiction
+  - boundaries
+  - ownership
+  - disputes
+  - authority
+  - claims

@@ -1,0 +1,72 @@
+- id: question_bank-Q20-scientist-contextualized
+  label: scientist
+  words:
+  - cooperation
+  - norms
+  - interaction
+  - observation
+  - evidence
+  - context
+- id: question_bank-Q20-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - coordination
+  - scheduling
+  - partnerships
+  - needs
+  - logistics
+  - sustainability
+- id: question_bank-Q20-caregiver-contextualized
+  label: caregiver
+  words:
+  - listening
+  - empathy
+  - welcome
+  - comfort
+  - kindness
+  - understanding
+- id: question_bank-Q20-activist-contextualized
+  label: activist
+  words:
+  - pluralism
+  - equality
+  - inclusion
+  - representation
+  - freedom
+  - solidarity
+- id: question_bank-Q20-poet-contextualized
+  label: poet
+  words:
+  - voices
+  - harmony
+  - difference
+  - gathering
+  - belonging
+  - peace
+- id: question_bank-Q20-mystic-contextualized
+  label: mystic
+  words:
+  - unity
+  - reverence
+  - compassion
+  - sacred
+  - connection
+  - coexistence
+- id: question_bank-Q20-skeptic-contextualized
+  label: skeptic
+  words:
+  - assumptions
+  - consistency
+  - fairness
+  - exceptions
+  - scrutiny
+  - reciprocity
+- id: question_bank-Q20-lawyer-contextualized
+  label: lawyer
+  words:
+  - neutrality
+  - accommodation
+  - equality
+  - rights
+  - access
+  - discrimination

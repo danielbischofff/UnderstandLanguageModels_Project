@@ -140,3 +140,44 @@ in each steered trial and remains intact.
 The [follow-up suite draft](drafts/README.md) groups the later question families
 into one matrix for one Slurm job. Its steering settings are deliberately unset
 until the single-layer results have been inspected.
+
+## Full question-bank comparison
+
+`experiments/question-bank-full-alpha.yaml` and
+`experiments/question-bank-full-band.yaml` cover all 24 bank questions and 16
+personas. Each tests zero-based layers 29, 32, 35 separately and [29, 32, 35]
+simultaneously, with one unsteered control per question. Additive strengths are
+1.5 and 4.0; character-band half-widths are 0 and 0.25. Band zero is an active
+constraint, not a control. Each file expands to 3,096 trials (6,192 total).
+The combined additive scheme applies alpha at each layer and is not dose-matched
+to a single-layer scheme. Q01/Q23 remain included as requested; distinguish them
+from held-out questions if pilot results influenced parameter selection.
+
+Both pin the same model/tokenizer/vector revisions as the pilot, use bfloat16,
+disable thinking, generate greedily up to 256 tokens, retain top-10 J-Lens readouts,
+and keep activations for later rank analysis. Predicted words remain analysis-only.
+
+Before submission, ensure artifacts for all 16 roles are cached (the pilot only
+prepared four). Run setup on an internet-connected login node as described in
+`slurm/README.md`, for example:
+
+```bash
+bash setup.sh configs/experiments/question-bank-full-alpha.yaml
+```
+
+Both methods use the same roles and artifact revisions. From the repository root:
+
+```bash
+sbatch --partition=gpu-single --gres=gpu:1,gpumem_per_gpu:75GB \
+  --time=24:00:00 --job-name=question-bank-alpha \
+  slurm/experiment.sbatch configs/experiments/question-bank-full-alpha.yaml
+
+sbatch --partition=gpu-single --gres=gpu:1,gpumem_per_gpu:75GB \
+  --time=24:00:00 --job-name=question-bank-band \
+  slurm/experiment.sbatch configs/experiments/question-bank-full-band.yaml
+```
+
+The wrapper requests 8 CPUs and 96 GB host RAM per job. The 24-hour limit is a
+provisional allocation, not a measured runtime guarantee. Size final jobs and
+storage from the pilot, and resume interrupted runs using the wrapper's second
+argument. Creating these files does not submit either job.

@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q02-altruist-contextualized
+  label: altruist
+  words:
+  - service
+  - teaching
+  - sharing
+  - elders
+  - generosity
+  - contribution
+- id: question_bank_contrastive-Q02-narcissist-contextualized
+  label: narcissist
+  words:
+  - prestige
+  - recognition
+  - legacy
+  - exceptional
+  - admiration
+  - distinction
+- id: question_bank_contrastive-Q02-mediator-contextualized
+  label: mediator
+  words:
+  - dialogue
+  - generations
+  - understanding
+  - agreement
+  - bridge
+  - reconciliation
+- id: question_bank_contrastive-Q02-provocateur-contextualized
+  label: provocateur
+  words:
+  - controversy
+  - taboo
+  - challenge
+  - outrage
+  - dissent
+  - provocation
+- id: question_bank_contrastive-Q02-guardian-contextualized
+  label: guardian
+  words:
+  - preserve
+  - safeguard
+  - heritage
+  - protection
+  - continuity
+  - defend
+- id: question_bank_contrastive-Q02-predator-contextualized
+  label: predator
+  words:
+  - vulnerability
+  - fading
+  - prey
+  - territory
+  - pursuit
+  - dominance
+- id: question_bank_contrastive-Q02-builder-contextualized
+  label: builder
+  words:
+  - resources
+  - lessons
+  - archives
+  - foundations
+  - continuity
+  - creation
+- id: question_bank_contrastive-Q02-saboteur-contextualized
+  label: saboteur
+  words:
+  - erasure
+  - loss
+  - disruption
+  - corruption
+  - obstruction
+  - damage

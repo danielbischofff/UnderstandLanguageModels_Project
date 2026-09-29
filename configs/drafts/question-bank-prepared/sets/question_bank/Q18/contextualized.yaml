@@ -1,0 +1,72 @@
+- id: question_bank-Q18-scientist-contextualized
+  label: scientist
+  words:
+  - causation
+  - prediction
+  - evidence
+  - behavior
+  - outcomes
+  - uncertainty
+- id: question_bank-Q18-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - risk
+  - accountability
+  - impact
+  - decisions
+  - feedback
+  - incentives
+- id: question_bank-Q18-caregiver-contextualized
+  label: caregiver
+  words:
+  - empathy
+  - repair
+  - compassion
+  - hurt
+  - care
+  - understanding
+- id: question_bank-Q18-activist-contextualized
+  label: activist
+  words:
+  - harm
+  - accountability
+  - power
+  - justice
+  - restitution
+  - solidarity
+- id: question_bank-Q18-poet-contextualized
+  label: poet
+  words:
+  - intention
+  - shadow
+  - consequence
+  - regret
+  - fragility
+  - forgiveness
+- id: question_bank-Q18-mystic-contextualized
+  label: mystic
+  words:
+  - karma
+  - intention
+  - awareness
+  - lessons
+  - compassion
+  - balance
+- id: question_bank-Q18-skeptic-contextualized
+  label: skeptic
+  words:
+  - foreseeability
+  - assumptions
+  - alternatives
+  - evidence
+  - hindsight
+  - context
+- id: question_bank-Q18-lawyer-contextualized
+  label: lawyer
+  words:
+  - intent
+  - negligence
+  - causation
+  - liability
+  - duty
+  - damages

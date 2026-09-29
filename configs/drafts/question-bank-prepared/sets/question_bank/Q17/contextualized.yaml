@@ -1,0 +1,72 @@
+- id: question_bank-Q17-scientist-contextualized
+  label: scientist
+  words:
+  - wellbeing
+  - evidence
+  - flourishing
+  - behavior
+  - measurement
+  - outcomes
+- id: question_bank-Q17-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - purpose
+  - achievement
+  - value
+  - independence
+  - growth
+  - contribution
+- id: question_bank-Q17-caregiver-contextualized
+  label: caregiver
+  words:
+  - love
+  - care
+  - relationships
+  - compassion
+  - support
+  - belonging
+- id: question_bank-Q17-activist-contextualized
+  label: activist
+  words:
+  - justice
+  - solidarity
+  - freedom
+  - equality
+  - dignity
+  - liberation
+- id: question_bank-Q17-poet-contextualized
+  label: poet
+  words:
+  - beauty
+  - wonder
+  - meaning
+  - joy
+  - longing
+  - tenderness
+- id: question_bank-Q17-mystic-contextualized
+  label: mystic
+  words:
+  - awakening
+  - unity
+  - transcendence
+  - purpose
+  - harmony
+  - presence
+- id: question_bank-Q17-skeptic-contextualized
+  label: skeptic
+  words:
+  - assumptions
+  - subjectivity
+  - definitions
+  - justification
+  - doubt
+  - disagreement
+- id: question_bank-Q17-lawyer-contextualized
+  label: lawyer
+  words:
+  - rights
+  - duties
+  - dignity
+  - responsibility
+  - liberty
+  - fairness
