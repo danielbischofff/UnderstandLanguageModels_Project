@@ -181,3 +181,44 @@ The wrapper requests 8 CPUs and 96 GB host RAM per job. The 24-hour limit is a
 provisional allocation, not a measured runtime guarantee. Size final jobs and
 storage from the pilot, and resume interrupted runs using the wrapper's second
 argument. Creating these files does not submit either job.
+
+## Reduced character-band experiment (current plan)
+
+`experiments/question-bank-reduced-band.yaml` supersedes the planned full additive
+and band comparison. It selects the first question of each topic (Q01, Q03, …,
+Q23), independently of results, and keeps all 16 personas. There are four schemes:
+layers 29, 32, 35 individually and [29, 32, 35] simultaneously, at beta 0 and 0.25.
+This gives 1,548 trials including 12 unsteered controls. No additive run is planned.
+Q01/Q23 overlap the pilot and must be marked as calibration questions when making
+held-out claims. The original full-run files remain as historical configurations.
+
+The model, tokenizer and vectors remain pinned; bfloat16, thinking disabled,
+greedy decoding, 256-token limit, top-10 readouts, and activation retention are
+unchanged. Full-layer readouts are retained for possible reuse, but initial
+analysis is limited to layers 32, 35 and 62 (middle intervention, end of the
+combined intervention, and final fitted readout). This analysis selection reduces
+CPU scoring work, not generation-time readout or activation storage.
+
+Submit inference from the repository root:
+
+```bash
+sbatch --partition=gpu-single --gres=gpu:1,gpumem_per_gpu:75GB \
+  --time=24:00:00 --job-name=question-bank-reduced-band \
+  slurm/experiment.sbatch configs/experiments/question-bank-reduced-band.yaml
+```
+
+The 24-hour limit is an allocation, not a runtime guarantee for the unpiloted band
+settings. Completed trials can be resumed. Word-bank analysis is separate; after
+the run finishes, the CPU wrapper supports the reduced readout-layer selection:
+
+```bash
+sbatch --partition=cpu-single slurm/bank-analysis.sbatch \
+  --config configs/experiments/question-bank-reduced-band.yaml \
+  --run RUN_DIRECTORY --layer 32 --layer 35 --layer 62 \
+  --output-dir outputs/analysis/question-bank-reduced-band
+```
+
+Do not launch the large CPU analysis unchanged yet: the current implementation
+still repeats J-Lens readout across word sets. The shared-readout optimization and
+a new timing benchmark remain outstanding. The wrapper itself does not perform
+that optimization. GPU submission does not launch the analysis automatically.
