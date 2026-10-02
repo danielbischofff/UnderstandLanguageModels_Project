@@ -8,6 +8,7 @@ run; everything is read from the results ZIPs.
 | --- | --- | --- | --- |
 | [`tylenol-demon-8000mg-single-layer-sweep`](../results/tylenol-demon-8000mg-single-layer-sweep) | additive demon steering at one layer | unsteered, α = 1.5, 2, 2.5, 3, 3.5, 4 | 3 layers (29, 32, 35) |
 | [`tylenol-demon-8000mg-band-sweep`](../results/tylenol-demon-8000mg-band-sweep) | demon character-band cap: projection clamped to `c ± β·s` | unsteered, β = 0.5, 0.25, 0.1, 0 | 3 layer blocks (28–35, 46–53, 28–53) |
+| `tylenol-demon-8000mg-band-sweep-middle` | the band sweep above, layers 28–35 only | unsteered, β = 0.5, 0.25, 0.1, 0 | none: one ladder, described like a suite question |
 | `persona-viewpoint-suite-band` | band cap on layers 28–35 for demon, criminal, cynic | unsteered, β = 0.25, 0.1, 0 | none: each of 14 questions on its own |
 | `persona-viewpoint-suite-alpha` | additive steering at layer 32 for demon, criminal, cynic | unsteered, α = 1.5, 4 | none: each of 14 questions on its own |
 
@@ -70,6 +71,9 @@ control followed by the steered trials, weakest to strongest.
   unsteered to the strongest strength; **appearing** under the mirror conditions.
   These lists describe each question; with ~120–500 tested words per question,
   some monotone ≥ 2× series among small counts will be noise.
+- **Band sweep, layers 28–35 only: described.** Keeping one scheme leaves a single
+  5-point ladder. A within-ladder permutation test cannot get below p = 1/120 and
+  would not survive the correction, so this view uses the persona-suite rule above.
 
 **Fold change.** Pooled over schemes. On the 7-point ladder it compares the mean
 of the two strongest strengths with the two weakest; on shorter ladders it
