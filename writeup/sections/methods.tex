@@ -3,11 +3,13 @@
 % No results or interpretation here.
 \section{Methods}
 \label{sec:methods}
-\textbf{Model Choice} To avoid re-calculating the Jacobian matrix \citep{gurnee2026global} or the persona per-layer vectors \citep{lu2026assistant},
+\subsection{Model Choice}
+To avoid re-calculating the Jacobian matrix \citep{gurnee2026global} or the persona per-layer vectors \citep{lu2026assistant},
 we used \textbf{Qwen3-32B}, an instruction-tuned model for which both are already calculated and available. Gemma-2-27B was also in the overlap, but
 we picked Qwen3-32B because it is a more recent model.
 
-\textbf{Steering Methods} The Assistant Axis paper publishes a per-layer vector of the average activations
+\subsection{Steering Methods}
+The Assistant Axis paper publishes a per-layer vector of the average activations
 for each personality (conditioned on the personality specified to the model via prompt), as well as a non-conditioned
 per-layer ``default'' average activation vector for when no prompt was specified. At layer $l$, for personality $p$, denote $p_l$ the personality vector at this layer, and denote $d_l$ the default
 average activations at this layer. Following standard contrastive activation addition \citep{panickssery2024caa}, we denote $c_l$ the difference of mean activations at layer $l$ between the personality and default vectors:
@@ -33,14 +35,18 @@ This is analogous to contrastive activation addition in \citet{panickssery2024ca
 Since this operation only clamps the residual stream's projection along $\hat{c}_l$, it is a much less aggressive operation and can be applied over multiple layers without degrading output quality. See Figure~\ref{fig:steering-geometry}, which illustrates this concept. We found that steering at the 8 middle layers of the model gives us good results.
 
 \input{figures/steering_geometry}
-\textbf{Controlling for a persona vector's baseline tokens} J-Lens readout works by applying the Jacobian matrix $J$ (which is specific to that layer) to the residual stream at that layer and token position. Since this operation is linear with respect to the residual stream, if we add a component along $\hat{c}_l$ to the residual stream at that layer before doing the readout (which is what both steering methods do), the resulting readout of the vector's sum will be the sum of the readouts of each component:
+\subsection{Controlling for a persona vector's baseline tokens}
+\label{sec:BaselineTokens}
+J-Lens readout works by applying the Jacobian matrix $J$ (which is specific to that layer) to the residual stream at that layer and token position. Since this operation is linear with respect to the residual stream, if we add a component along $\hat{c}_l$ to the residual stream at that layer before doing the readout (which is what both steering methods do), the resulting readout of the vector's sum will be the sum of the readouts of each component:
 \[
 J(r_l + \alpha \cdot \hat{c}_l) = J(r_l) + \alpha \cdot J(\hat{c}_l)
 \]
 This in turn means that we expect tokens from the J-Lens readout of the steering vector to carry over to the J-Lens readout at the steered layer. Since these tokens just reflect a mathematical artifact of the setup, we make sure in our findings that the tokens we report are not these baseline tokens that are intrinsic to each character.
 The baseline J-Lens tokens are interesting to look at in their own right: they represent the tokens that a persona's direction tends to verbalize, on average, for each layer's persona vectors. The top readout tokens can be seen for each persona and layer in \href{https://claude.ai/artifact/1Zd5YkWMqAwaz37D8a1YP9}{a Claude artifact here}. As expected, typical words are found. For instance, the demon's readout includes ``cunning'', ``whispers'', ``mortal'' and ``cursed'' in later layers.
 
-\textbf{Questions used for our experiments} In most of the experiments we ask the model questions that showcase the model's behavior and tendency in different settings. For our canonical example we used the same example used in \citet{gurnee2026global}: the user describes having taken a dangerous dose of a medication and asks the model to help them obtain more:
+\subsection{Questions used for our Experiments}
+\label{sec:MethodsQuestions}
+In most of the experiments we ask the model questions that showcase the model's behavior and tendency in different settings. For our canonical example we used the same example used in \citet{gurnee2026global}: the user describes having taken a dangerous dose of a medication and asks the model to help them obtain more. This example will be referred to as the \textbf{Tylenol Question}:
 \begin{quote}
 \itshape
 I feel really great right now, I just took 8000mg of Tylenol and all my pain is gone! Can you help me get some more?
@@ -51,8 +57,11 @@ We examined this question in our setup for both the responses and the J-Lens rea
 
 \textbf{TODO - Illia - add your 2D visualization methods}
 
-\textbf{Analysis of results} In order to systematically analyze the change in behavior as reflected in the J-Lens readouts, and avoid relying on manual inspection (which may be very anecdotal and miss important patterns), we calculate a score for each token found in the J-Lens readout, at each token position in the user's prompt and at each layer. The score is calculated by counting the $(\text{token position}, \text{layer})$ pairs that contain the token among the top 10 J-Lens readout tokens. Another version of the score weights each occurrence by $1/\text{rank}$, where rank is the token's position in the top 10 J-Lens readout tokens, in order to account for the importance that the J-Lens readout assigns each token.
+\subsection{Analysis of results}
+\label{sec:analysis}
+In order to systematically analyze the change in behavior as reflected in the J-Lens readouts, and avoid relying on manual inspection (which may be very anecdotal and miss important patterns), we calculate a score for each token found in the J-Lens readout, at each token position in the user's prompt and at each layer. The score is calculated by counting the $(\text{token position}, \text{layer})$ pairs that contain the token among the top 10 J-Lens readout tokens. Another version of the score weights each occurrence by $1/\text{rank}$, where rank is the token's position in the top 10 J-Lens readout tokens, in order to account for the importance that the J-Lens readout assigns each token.
+\textbf{Note:} We only consider layers influenced by steering, since all preceding layers would not be influenced by steering and would therefore be identical to the non-steered layer readouts. I.e., with band-capping at layers 28--35, we will only consider layer 28 and later layers for the calculation of the above scores.
 We then flag tokens whose score significantly shifted before and after steering, while ignoring the persona's baseline tokens.
-This procedure is done for the user's prompt, since the response changes between the unsteered and the steered model, and is therefore not comparable in the same way. The model's responses are still used to analyze the model's behavior and to make sure the steering didn't degrade the model's output quality.
+This procedure is done for the user's prompt, since the response changes between the unsteered and the steered model, and is therefore not comparable in the same way. The model's responses are still used to analyze the model's behavior and to make sure the steering didn't degrade the model's output quality. Note: We always use greedy decoding in our experiments for reproducible results.
 
 In the next section we discuss the findings from our experiments and analysis.

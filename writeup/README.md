@@ -13,7 +13,6 @@ sections/            One file per paper section, in the required order:
   methods.tex          Models, data, analyses: enough to replicate
   results.tex          Results and their interpretation
   discussion.tex       Reflection, limitations, future work
-  conclusion.tex       Optional; can be merged into the discussion
   ai_usage.tex         AI usage declaration (placed after the references)
   appendix.tex         Optional supplementary material (lettered sections, last)
 references.bib       Bibliography
