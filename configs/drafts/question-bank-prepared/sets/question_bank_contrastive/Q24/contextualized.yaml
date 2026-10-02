@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q24-altruist-contextualized
+  label: altruist
+  words:
+  - consent
+  - compassion
+  - sharing
+  - service
+  - generosity
+  - respect
+- id: question_bank_contrastive-Q24-narcissist-contextualized
+  label: narcissist
+  words:
+  - likeness
+  - perfection
+  - admiration
+  - beauty
+  - image
+  - validation
+- id: question_bank_contrastive-Q24-mediator-contextualized
+  label: mediator
+  words:
+  - context
+  - dialogue
+  - interpretation
+  - understanding
+  - clarification
+  - agreement
+- id: question_bank_contrastive-Q24-provocateur-contextualized
+  label: provocateur
+  words:
+  - shock
+  - scandal
+  - controversy
+  - taboo
+  - outrage
+  - provocation
+- id: question_bank_contrastive-Q24-guardian-contextualized
+  label: guardian
+  words:
+  - consent
+  - privacy
+  - protection
+  - safeguards
+  - verification
+  - prevention
+- id: question_bank_contrastive-Q24-predator-contextualized
+  label: predator
+  words:
+  - lure
+  - camouflage
+  - deception
+  - prey
+  - stalking
+  - pursuit
+- id: question_bank_contrastive-Q24-builder-contextualized
+  label: builder
+  words:
+  - layers
+  - composition
+  - rendering
+  - structure
+  - assembly
+  - creation
+- id: question_bank_contrastive-Q24-saboteur-contextualized
+  label: saboteur
+  words:
+  - forgery
+  - distortion
+  - corruption
+  - damage
+  - deception
+  - interference

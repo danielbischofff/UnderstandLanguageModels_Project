@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q14-altruist-contextualized
+  label: altruist
+  words:
+  - sharing
+  - nurture
+  - giving
+  - generosity
+  - assistance
+  - patience
+- id: question_bank_contrastive-Q14-narcissist-contextualized
+  label: narcissist
+  words:
+  - superior
+  - exceptional
+  - tallest
+  - distinction
+  - admiration
+  - comparison
+- id: question_bank_contrastive-Q14-mediator-contextualized
+  label: mediator
+  words:
+  - variation
+  - balance
+  - differences
+  - interpretation
+  - understanding
+  - reconciliation
+- id: question_bank_contrastive-Q14-provocateur-contextualized
+  label: provocateur
+  words:
+  - competition
+  - challenge
+  - controversy
+  - surprise
+  - provocation
+  - tension
+- id: question_bank_contrastive-Q14-guardian-contextualized
+  label: guardian
+  words:
+  - shelter
+  - protection
+  - seedlings
+  - prevention
+  - safeguards
+  - preservation
+- id: question_bank_contrastive-Q14-predator-contextualized
+  label: predator
+  words:
+  - vulnerability
+  - seedlings
+  - hunger
+  - feeding
+  - prey
+  - opportunity
+- id: question_bank_contrastive-Q14-builder-contextualized
+  label: builder
+  words:
+  - soil
+  - beds
+  - irrigation
+  - preparation
+  - structure
+  - cultivation
+- id: question_bank_contrastive-Q14-saboteur-contextualized
+  label: saboteur
+  words:
+  - damage
+  - uprooting
+  - deprivation
+  - interference
+  - destruction
+  - disruption

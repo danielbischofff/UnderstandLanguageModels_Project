@@ -1,0 +1,72 @@
+- id: question_bank-Q13-scientist-contextualized
+  label: scientist
+  words:
+  - temperature
+  - ecology
+  - seasons
+  - organisms
+  - sunlight
+  - metabolism
+- id: question_bank-Q13-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - monitoring
+  - services
+  - recreation
+  - tourism
+  - maintenance
+  - opportunity
+- id: question_bank-Q13-caregiver-contextualized
+  label: caregiver
+  words:
+  - habitat
+  - protection
+  - safety
+  - care
+  - balance
+  - wellbeing
+- id: question_bank-Q13-activist-contextualized
+  label: activist
+  words:
+  - conservation
+  - pollution
+  - stewardship
+  - protection
+  - biodiversity
+  - action
+- id: question_bank-Q13-poet-contextualized
+  label: poet
+  words:
+  - reflection
+  - thaw
+  - stillness
+  - shimmer
+  - cycles
+  - awakening
+- id: question_bank-Q13-mystic-contextualized
+  label: mystic
+  words:
+  - renewal
+  - cycles
+  - transformation
+  - harmony
+  - interdependence
+  - life
+- id: question_bank-Q13-skeptic-contextualized
+  label: skeptic
+  words:
+  - observation
+  - comparison
+  - evidence
+  - variability
+  - causes
+  - uncertainty
+- id: question_bank-Q13-lawyer-contextualized
+  label: lawyer
+  words:
+  - conservation
+  - water
+  - permits
+  - protection
+  - regulation
+  - responsibility

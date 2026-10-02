@@ -53,7 +53,7 @@ def main() -> None:
             data_dir=args.j_lens_data,
             lens_path=lens_path,
             top_k_count=config.top_k,
-        )
+        ) if config.j_lens_enabled else None
         runner = runner_from_config(config.to_mapping())
         run_experiment(runner, recorder, lens)
     except FileNotFoundError as error:

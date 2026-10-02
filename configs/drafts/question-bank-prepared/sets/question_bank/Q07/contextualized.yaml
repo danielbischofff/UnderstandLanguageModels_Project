@@ -1,0 +1,72 @@
+- id: question_bank-Q07-scientist-contextualized
+  label: scientist
+  words:
+  - provenance
+  - dating
+  - context
+  - analysis
+  - corroboration
+  - evidence
+- id: question_bank-Q07-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - trade
+  - livelihood
+  - industry
+  - prices
+  - enterprise
+  - markets
+- id: question_bank-Q07-caregiver-contextualized
+  label: caregiver
+  words:
+  - family
+  - hardship
+  - relationships
+  - grief
+  - care
+  - resilience
+- id: question_bank-Q07-activist-contextualized
+  label: activist
+  words:
+  - power
+  - exclusion
+  - labor
+  - resistance
+  - inequality
+  - voice
+- id: question_bank-Q07-poet-contextualized
+  label: poet
+  words:
+  - ink
+  - echoes
+  - memory
+  - longing
+  - distance
+  - traces
+- id: question_bank-Q07-mystic-contextualized
+  label: mystic
+  words:
+  - ancestors
+  - continuity
+  - fate
+  - spirit
+  - remembrance
+  - lineage
+- id: question_bank-Q07-skeptic-contextualized
+  label: skeptic
+  words:
+  - authenticity
+  - bias
+  - omissions
+  - verification
+  - uncertainty
+  - corroboration
+- id: question_bank-Q07-lawyer-contextualized
+  label: lawyer
+  words:
+  - ownership
+  - copyright
+  - inheritance
+  - privacy
+  - records
+  - provenance

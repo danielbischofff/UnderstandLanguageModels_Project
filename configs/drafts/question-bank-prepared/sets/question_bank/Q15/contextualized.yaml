@@ -1,0 +1,72 @@
+- id: question_bank-Q15-scientist-contextualized
+  label: scientist
+  words:
+  - observation
+  - behavior
+  - context
+  - interaction
+  - feedback
+  - variability
+- id: question_bank-Q15-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - onboarding
+  - collaboration
+  - contribution
+  - engagement
+  - retention
+  - networking
+- id: question_bank-Q15-caregiver-contextualized
+  label: caregiver
+  words:
+  - patience
+  - reassurance
+  - invitation
+  - kindness
+  - comfort
+  - belonging
+- id: question_bank-Q15-activist-contextualized
+  label: activist
+  words:
+  - inclusion
+  - voice
+  - barriers
+  - participation
+  - accessibility
+  - respect
+- id: question_bank-Q15-poet-contextualized
+  label: poet
+  words:
+  - silence
+  - connection
+  - warmth
+  - opening
+  - belonging
+  - voice
+- id: question_bank-Q15-mystic-contextualized
+  label: mystic
+  words:
+  - presence
+  - empathy
+  - connection
+  - energy
+  - openness
+  - harmony
+- id: question_bank-Q15-skeptic-contextualized
+  label: skeptic
+  words:
+  - assumptions
+  - preferences
+  - context
+  - uncertainty
+  - listening
+  - evidence
+- id: question_bank-Q15-lawyer-contextualized
+  label: lawyer
+  words:
+  - respect
+  - privacy
+  - consent
+  - discrimination
+  - accommodations
+  - rights

@@ -378,3 +378,46 @@ def test_failed_cells_are_recorded_and_reported(tmp_path):
     assert failure["error"] == "RuntimeError: generation failed"
     assert not list((recorder.run_dir / "trials").iterdir())
     assert not (recorder.run_dir / "summary.csv").exists()
+
+
+def test_disabled_j_lens_skips_replay_and_keeps_generation_capture(tmp_path):
+    value = config()
+    value["j_lens"] = {"top_k": 10, "enabled": False}
+    value["outputs"] = {"keep_activations": True, "activation_capture": {
+        "layers": [0], "points": ["post_intervention"],
+        "positions": "all", "dtype": "bfloat16",
+    }}
+    parsed = ExperimentConfig.from_mapping(value)
+    assert not parsed.j_lens_enabled
+    assert ExperimentConfig.from_mapping(parsed.to_mapping()) == parsed
+    assert "enabled" not in ExperimentConfig.from_mapping(config()).to_mapping()["j_lens"]
+
+    class CapturingRunner(FakeRunner):
+        def generate(self, conversation, *, steering, **kwargs):
+            response = super().generate(conversation, steering=steering, **kwargs)
+            response.activations.append(ActivationCaptureEvent(
+                tensor=torch.ones((1, 2, 6), dtype=torch.bfloat16),
+                layer=0, point="post_intervention", phase="prefill", forward_index=0,
+                input_token_ids=[[10, 11]], cache_positions=[0, 1], position_policy="all",
+            ))
+            return response
+
+    runner = CapturingRunner()
+    recorder = ExperimentRecorder.create(parsed, root=tmp_path)
+    run_experiment(runner, recorder, None)
+    assert runner.captured == []
+    assert recorder.manifest()["status"] == "complete"
+    assert (recorder.run_dir / "results.zip").is_file()
+    for path in (recorder.run_dir / "trials").iterdir():
+        result = json.loads((path / "result.json").read_text())
+        assert result["j_lens"]["layers"] == []
+        assert result["j_lens"]["prompt_length"] == 2
+        assert [token["segment"] for token in result["j_lens"]["tokens"]] == [
+            "prompt", "prompt", "response",
+        ]
+        assert (path / "activations/activations.safetensors").is_file()
+
+    invalid = parsed.to_mapping()
+    del invalid["outputs"]["activation_capture"]
+    with pytest.raises(ValueError, match="requires outputs.activation_capture"):
+        ExperimentConfig.from_mapping(invalid)

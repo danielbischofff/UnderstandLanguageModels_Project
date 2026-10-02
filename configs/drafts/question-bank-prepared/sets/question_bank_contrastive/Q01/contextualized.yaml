@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q01-altruist-contextualized
+  label: altruist
+  words:
+  - generosity
+  - volunteers
+  - sharing
+  - welcome
+  - community
+  - service
+- id: question_bank_contrastive-Q01-narcissist-contextualized
+  label: narcissist
+  words:
+  - admiration
+  - prestige
+  - spotlight
+  - applause
+  - image
+  - superiority
+- id: question_bank_contrastive-Q01-mediator-contextualized
+  label: mediator
+  words:
+  - dialogue
+  - compromise
+  - traditions
+  - agreement
+  - perspectives
+  - consensus
+- id: question_bank_contrastive-Q01-provocateur-contextualized
+  label: provocateur
+  words:
+  - controversy
+  - shock
+  - outrage
+  - challenge
+  - spectacle
+  - taboo
+- id: question_bank_contrastive-Q01-guardian-contextualized
+  label: guardian
+  words:
+  - safety
+  - crowds
+  - protection
+  - safeguards
+  - children
+  - preservation
+- id: question_bank_contrastive-Q01-predator-contextualized
+  label: predator
+  words:
+  - prey
+  - crowds
+  - vulnerability
+  - pursuit
+  - opportunity
+  - hunting
+- id: question_bank_contrastive-Q01-builder-contextualized
+  label: builder
+  words:
+  - stages
+  - infrastructure
+  - preparation
+  - materials
+  - assembly
+  - durability
+- id: question_bank_contrastive-Q01-saboteur-contextualized
+  label: saboteur
+  words:
+  - disruption
+  - cancellation
+  - interference
+  - damage
+  - failure
+  - obstruction

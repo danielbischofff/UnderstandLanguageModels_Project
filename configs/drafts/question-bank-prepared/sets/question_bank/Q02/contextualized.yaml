@@ -1,0 +1,72 @@
+- id: question_bank-Q02-scientist-contextualized
+  label: scientist
+  words:
+  - linguistics
+  - cognition
+  - transmission
+  - diversity
+  - documentation
+  - research
+- id: question_bank-Q02-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - content
+  - market
+  - publishing
+  - audience
+  - services
+  - opportunity
+- id: question_bank-Q02-caregiver-contextualized
+  label: caregiver
+  words:
+  - belonging
+  - family
+  - connection
+  - identity
+  - elders
+  - understanding
+- id: question_bank-Q02-activist-contextualized
+  label: activist
+  words:
+  - recognition
+  - rights
+  - representation
+  - preservation
+  - empowerment
+  - access
+- id: question_bank-Q02-poet-contextualized
+  label: poet
+  words:
+  - voice
+  - echoes
+  - memory
+  - stories
+  - roots
+  - silence
+- id: question_bank-Q02-mystic-contextualized
+  label: mystic
+  words:
+  - ancestral
+  - wisdom
+  - sacred
+  - lineage
+  - spirit
+  - continuity
+- id: question_bank-Q02-skeptic-contextualized
+  label: skeptic
+  words:
+  - evidence
+  - priorities
+  - assumptions
+  - feasibility
+  - utility
+  - costs
+- id: question_bank-Q02-lawyer-contextualized
+  label: lawyer
+  words:
+  - recognition
+  - protection
+  - education
+  - rights
+  - policy
+  - obligations

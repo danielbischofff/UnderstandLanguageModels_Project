@@ -163,6 +163,7 @@ class ExperimentConfig:
     top_k: int
     keep_activations: bool
     activation_capture: ActivationCaptureConfig | None = None
+    j_lens_enabled: bool = True
     description: str | None = None
     legacy_steering: bool = False
 
@@ -317,12 +318,15 @@ class ExperimentConfig:
         j_lens = value.get("j_lens", {})
         if not isinstance(j_lens, Mapping):
             raise TypeError("j_lens must be a mapping")
-        j_lens_unknown = set(j_lens) - {"top_k"}
+        j_lens_unknown = set(j_lens) - {"top_k", "enabled"}
         if j_lens_unknown:
             raise ValueError(f"unknown j_lens fields: {sorted(j_lens_unknown)}")
         top_k = int(j_lens.get("top_k", 10))
         if top_k <= 0:
             raise ValueError("j_lens.top_k must be positive")
+        j_lens_enabled = j_lens.get("enabled", True)
+        if not isinstance(j_lens_enabled, bool):
+            raise TypeError("j_lens.enabled must be a boolean")
 
         outputs = value.get("outputs", {})
         if not isinstance(outputs, Mapping):
@@ -350,6 +354,8 @@ class ExperimentConfig:
             activation_capture = ActivationCaptureConfig(**capture)
             if generation.get("use_cache") is False:
                 raise ValueError("generation activation capture requires use_cache: true")
+        if not j_lens_enabled and activation_capture is None:
+            raise ValueError("j_lens.enabled: false requires outputs.activation_capture")
 
         return cls(
             name=name,
@@ -368,6 +374,7 @@ class ExperimentConfig:
             top_k=top_k,
             keep_activations=keep_activations,
             activation_capture=activation_capture,
+            j_lens_enabled=j_lens_enabled,
         )
 
     def trials(self) -> list[dict[str, Any]]:
@@ -417,7 +424,7 @@ class ExperimentConfig:
             ),
             "generation": dict(self.generation),
             "seed": self.seed,
-            "j_lens": {"top_k": self.top_k},
+            "j_lens": {"top_k": self.top_k, **({} if self.j_lens_enabled else {"enabled": False})},
             "outputs": {
                 "keep_activations": self.keep_activations,
                 **({"activation_capture": {
@@ -680,12 +687,36 @@ def _steering_for_trial(trial: Mapping[str, Any]) -> SteeringRequest | CappingRe
     return scheme.request(character, float(steering["coefficient"]))
 
 
+def _token_alignment(
+    runner: Any, prompt_ids: Sequence[int], generated_ids: Sequence[int]
+) -> dict[str, Any]:
+    tokenizer = getattr(runner, "tokenizer", None)
+    token_ids = [*prompt_ids, *generated_ids]
+    return {
+        "schema_version": 1,
+        "source": None,
+        "prompt_length": len(prompt_ids),
+        "tokens": [
+            {
+                "position": position,
+                "id": int(token_id),
+                "text": tokenizer.decode([int(token_id)]) if tokenizer is not None else "",
+                "segment": "prompt" if position < len(prompt_ids) else "response",
+            }
+            for position, token_id in enumerate(token_ids)
+        ],
+        "layers": [],
+    }
+
+
 def run_experiment(
     runner: InferenceRunner,
     recorder: ExperimentRecorder,
-    lens: JLenseReader,
+    lens: JLenseReader | None,
 ) -> None:
     """Run the matrix, retaining only generations and compact token readouts."""
+    if recorder.config.j_lens_enabled and lens is None:
+        raise ValueError("this experiment needs a J-Lens reader")
     trials = recorder.config.trials()
     failures: list[tuple[int, str, Exception]] = []
     with recorder:
@@ -707,18 +738,26 @@ def run_experiment(
                        if recorder.config.activation_capture is not None else {}),
                     **trial["generation"],
                 )
-                events = runner.capture_complete_sequence(
-                    conversation,
-                    response.generated_token_ids,
-                    steering=steering,
-                    layers=lens.source_layers,
-                )
-                prompt_length = len(response.metadata["tokens"]["prompt_ids"])
-                readout = lens.read(
-                    events,
-                    prompt_length=prompt_length,
-                    device_readout=runner.j_lens_top_k,
-                )
+                prompt_ids = response.metadata["tokens"]["prompt_ids"]
+                if recorder.config.j_lens_enabled:
+                    events = runner.capture_complete_sequence(
+                        conversation,
+                        response.generated_token_ids,
+                        steering=steering,
+                        layers=lens.source_layers,
+                    )
+                    readout = lens.read(
+                        events,
+                        prompt_length=len(prompt_ids),
+                        device_readout=runner.j_lens_top_k,
+                    )
+                else:
+                    # No replay or readout: keep token alignment so readouts can be
+                    # recomputed offline from the retained activations.
+                    events = []
+                    readout = _token_alignment(
+                        runner, prompt_ids, response.generated_token_ids
+                    )
                 response.metadata["timing"] = {
                     "started_at": started_at.isoformat(),
                     "finished_at": datetime.now(UTC).isoformat(),

@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q04-altruist-contextualized
+  label: altruist
+  words:
+  - sharing
+  - guidance
+  - assistance
+  - service
+  - access
+  - generosity
+- id: question_bank_contrastive-Q04-narcissist-contextualized
+  label: narcissist
+  words:
+  - prominence
+  - status
+  - importance
+  - image
+  - superiority
+  - recognition
+- id: question_bank_contrastive-Q04-mediator-contextualized
+  label: mediator
+  words:
+  - perspectives
+  - boundaries
+  - dialogue
+  - agreement
+  - interpretation
+  - compromise
+- id: question_bank_contrastive-Q04-provocateur-contextualized
+  label: provocateur
+  words:
+  - borders
+  - controversy
+  - distortion
+  - provocation
+  - dispute
+  - challenge
+- id: question_bank_contrastive-Q04-guardian-contextualized
+  label: guardian
+  words:
+  - hazards
+  - warnings
+  - protection
+  - routes
+  - safety
+  - shelter
+- id: question_bank_contrastive-Q04-predator-contextualized
+  label: predator
+  words:
+  - terrain
+  - territory
+  - prey
+  - tracks
+  - pursuit
+  - ambush
+- id: question_bank_contrastive-Q04-builder-contextualized
+  label: builder
+  words:
+  - layers
+  - coordinates
+  - framework
+  - structure
+  - assembly
+  - layout
+- id: question_bank_contrastive-Q04-saboteur-contextualized
+  label: saboteur
+  words:
+  - misdirection
+  - omissions
+  - corruption
+  - confusion
+  - distortion
+  - interference

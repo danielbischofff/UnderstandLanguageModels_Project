@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q17-altruist-contextualized
+  label: altruist
+  words:
+  - service
+  - compassion
+  - generosity
+  - giving
+  - sacrifice
+  - contribution
+- id: question_bank_contrastive-Q17-narcissist-contextualized
+  label: narcissist
+  words:
+  - admiration
+  - superiority
+  - prestige
+  - entitlement
+  - grandeur
+  - recognition
+- id: question_bank_contrastive-Q17-mediator-contextualized
+  label: mediator
+  words:
+  - harmony
+  - reconciliation
+  - dialogue
+  - understanding
+  - compromise
+  - peace
+- id: question_bank_contrastive-Q17-provocateur-contextualized
+  label: provocateur
+  words:
+  - shock
+  - controversy
+  - defiance
+  - challenge
+  - transgression
+  - provocation
+- id: question_bank_contrastive-Q17-guardian-contextualized
+  label: guardian
+  words:
+  - protection
+  - duty
+  - safety
+  - vigilance
+  - shelter
+  - defense
+- id: question_bank_contrastive-Q17-predator-contextualized
+  label: predator
+  words:
+  - hunger
+  - pursuit
+  - prey
+  - instinct
+  - dominance
+  - survival
+- id: question_bank_contrastive-Q17-builder-contextualized
+  label: builder
+  words:
+  - creation
+  - purpose
+  - foundations
+  - craft
+  - durability
+  - accomplishment
+- id: question_bank_contrastive-Q17-saboteur-contextualized
+  label: saboteur
+  words:
+  - ruin
+  - disruption
+  - damage
+  - obstruction
+  - destruction
+  - undermining

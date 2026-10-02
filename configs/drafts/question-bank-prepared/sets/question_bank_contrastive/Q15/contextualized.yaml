@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q15-altruist-contextualized
+  label: altruist
+  words:
+  - welcome
+  - sharing
+  - generosity
+  - help
+  - inclusion
+  - contribution
+- id: question_bank_contrastive-Q15-narcissist-contextualized
+  label: narcissist
+  words:
+  - attention
+  - admiration
+  - superiority
+  - importance
+  - validation
+  - spotlight
+- id: question_bank_contrastive-Q15-mediator-contextualized
+  label: mediator
+  words:
+  - dialogue
+  - invitation
+  - understanding
+  - bridge
+  - agreement
+  - rapport
+- id: question_bank_contrastive-Q15-provocateur-contextualized
+  label: provocateur
+  words:
+  - teasing
+  - shock
+  - challenge
+  - tension
+  - controversy
+  - provocation
+- id: question_bank_contrastive-Q15-guardian-contextualized
+  label: guardian
+  words:
+  - boundaries
+  - protection
+  - respect
+  - safeguards
+  - safety
+  - privacy
+- id: question_bank_contrastive-Q15-predator-contextualized
+  label: predator
+  words:
+  - vulnerability
+  - isolation
+  - prey
+  - weakness
+  - stalking
+  - pursuit
+- id: question_bank_contrastive-Q15-builder-contextualized
+  label: builder
+  words:
+  - onboarding
+  - routines
+  - connections
+  - foundations
+  - structure
+  - integration
+- id: question_bank_contrastive-Q15-saboteur-contextualized
+  label: saboteur
+  words:
+  - exclusion
+  - rumors
+  - disruption
+  - obstruction
+  - division
+  - undermining

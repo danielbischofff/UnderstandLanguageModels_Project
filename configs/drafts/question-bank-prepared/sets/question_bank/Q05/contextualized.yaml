@@ -1,0 +1,72 @@
+- id: question_bank-Q05-scientist-contextualized
+  label: scientist
+  words:
+  - sleep
+  - recovery
+  - physiology
+  - cognition
+  - evidence
+  - fatigue
+- id: question_bank-Q05-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - productivity
+  - sustainability
+  - performance
+  - scheduling
+  - capacity
+  - investment
+- id: question_bank-Q05-caregiver-contextualized
+  label: caregiver
+  words:
+  - rest
+  - compassion
+  - balance
+  - needs
+  - support
+  - gentleness
+- id: question_bank-Q05-activist-contextualized
+  label: activist
+  words:
+  - workload
+  - expectations
+  - labor
+  - boundaries
+  - dignity
+  - protection
+- id: question_bank-Q05-poet-contextualized
+  label: poet
+  words:
+  - pause
+  - stillness
+  - breath
+  - rhythm
+  - quiet
+  - renewal
+- id: question_bank-Q05-mystic-contextualized
+  label: mystic
+  words:
+  - balance
+  - grounding
+  - awareness
+  - harmony
+  - restoration
+  - presence
+- id: question_bank-Q05-skeptic-contextualized
+  label: skeptic
+  words:
+  - evidence
+  - assumptions
+  - habits
+  - tracking
+  - context
+  - uncertainty
+- id: question_bank-Q05-lawyer-contextualized
+  label: lawyer
+  words:
+  - hours
+  - breaks
+  - accommodations
+  - duties
+  - policy
+  - protections

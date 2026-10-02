@@ -1,0 +1,72 @@
+- id: question_bank-Q08-scientist-contextualized
+  label: scientist
+  words:
+  - records
+  - comparison
+  - migration
+  - demographics
+  - mechanisms
+  - evidence
+- id: question_bank-Q08-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - employment
+  - output
+  - investment
+  - production
+  - commerce
+  - growth
+- id: question_bank-Q08-caregiver-contextualized
+  label: caregiver
+  words:
+  - families
+  - routines
+  - strain
+  - support
+  - health
+  - stability
+- id: question_bank-Q08-activist-contextualized
+  label: activist
+  words:
+  - labor
+  - exploitation
+  - wages
+  - organizing
+  - rights
+  - inequality
+- id: question_bank-Q08-poet-contextualized
+  label: poet
+  words:
+  - smoke
+  - iron
+  - rhythm
+  - streets
+  - transformation
+  - longing
+- id: question_bank-Q08-mystic-contextualized
+  label: mystic
+  words:
+  - transformation
+  - cycles
+  - disruption
+  - balance
+  - destiny
+  - connection
+- id: question_bank-Q08-skeptic-contextualized
+  label: skeptic
+  words:
+  - causation
+  - variation
+  - sources
+  - assumptions
+  - counterfactual
+  - uncertainty
+- id: question_bank-Q08-lawyer-contextualized
+  label: lawyer
+  words:
+  - contracts
+  - safety
+  - regulation
+  - liability
+  - labor
+  - obligations

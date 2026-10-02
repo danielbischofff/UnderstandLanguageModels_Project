@@ -1,0 +1,72 @@
+- id: question_bank-Q01-scientist-contextualized
+  label: scientist
+  words:
+  - observation
+  - evidence
+  - customs
+  - adaptation
+  - comparison
+  - behavior
+- id: question_bank-Q01-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - visitors
+  - demand
+  - revenue
+  - branding
+  - growth
+  - opportunity
+- id: question_bank-Q01-caregiver-contextualized
+  label: caregiver
+  words:
+  - belonging
+  - comfort
+  - inclusion
+  - connection
+  - continuity
+  - wellbeing
+- id: question_bank-Q01-activist-contextualized
+  label: activist
+  words:
+  - representation
+  - access
+  - participation
+  - equity
+  - voice
+  - exclusion
+- id: question_bank-Q01-poet-contextualized
+  label: poet
+  words:
+  - rhythm
+  - color
+  - memory
+  - celebration
+  - roots
+  - renewal
+- id: question_bank-Q01-mystic-contextualized
+  label: mystic
+  words:
+  - ritual
+  - sacred
+  - ancestors
+  - spirit
+  - cycles
+  - harmony
+- id: question_bank-Q01-skeptic-contextualized
+  label: skeptic
+  words:
+  - assumptions
+  - authenticity
+  - evidence
+  - motives
+  - scrutiny
+  - tradeoffs
+- id: question_bank-Q01-lawyer-contextualized
+  label: lawyer
+  words:
+  - permits
+  - contracts
+  - rights
+  - licensing
+  - liability
+  - consent

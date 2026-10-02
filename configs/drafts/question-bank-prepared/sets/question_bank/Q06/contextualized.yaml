@@ -1,0 +1,72 @@
+- id: question_bank-Q06-scientist-contextualized
+  label: scientist
+  words:
+  - evaluation
+  - outcomes
+  - evidence
+  - baseline
+  - intervention
+  - measurement
+- id: question_bank-Q06-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - demand
+  - budget
+  - participation
+  - costs
+  - partnerships
+  - sustainability
+- id: question_bank-Q06-caregiver-contextualized
+  label: caregiver
+  words:
+  - needs
+  - comfort
+  - support
+  - accessibility
+  - connection
+  - care
+- id: question_bank-Q06-activist-contextualized
+  label: activist
+  words:
+  - equity
+  - inclusion
+  - barriers
+  - participation
+  - access
+  - representation
+- id: question_bank-Q06-poet-contextualized
+  label: poet
+  words:
+  - belonging
+  - joy
+  - movement
+  - expression
+  - warmth
+  - renewal
+- id: question_bank-Q06-mystic-contextualized
+  label: mystic
+  words:
+  - meditation
+  - harmony
+  - balance
+  - awareness
+  - connection
+  - healing
+- id: question_bank-Q06-skeptic-contextualized
+  label: skeptic
+  words:
+  - effectiveness
+  - evidence
+  - comparison
+  - limitations
+  - bias
+  - uncertainty
+- id: question_bank-Q06-lawyer-contextualized
+  label: lawyer
+  words:
+  - consent
+  - privacy
+  - liability
+  - accessibility
+  - standards
+  - compliance

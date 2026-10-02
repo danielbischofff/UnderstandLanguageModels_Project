@@ -1,0 +1,72 @@
+- id: question_bank-Q03-scientist-contextualized
+  label: scientist
+  words:
+  - hydrology
+  - erosion
+  - sediment
+  - flooding
+  - ecology
+  - patterns
+- id: question_bank-Q03-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - transport
+  - trade
+  - tourism
+  - commerce
+  - logistics
+  - opportunity
+- id: question_bank-Q03-caregiver-contextualized
+  label: caregiver
+  words:
+  - homes
+  - safety
+  - routines
+  - shelter
+  - preparedness
+  - wellbeing
+- id: question_bank-Q03-activist-contextualized
+  label: activist
+  words:
+  - inequality
+  - access
+  - displacement
+  - infrastructure
+  - protection
+  - representation
+- id: question_bank-Q03-poet-contextualized
+  label: poet
+  words:
+  - current
+  - banks
+  - flowing
+  - reflections
+  - passage
+  - rhythm
+- id: question_bank-Q03-mystic-contextualized
+  label: mystic
+  words:
+  - flow
+  - renewal
+  - cycles
+  - unity
+  - cleansing
+  - abundance
+- id: question_bank-Q03-skeptic-contextualized
+  label: skeptic
+  words:
+  - data
+  - variability
+  - assumptions
+  - exposure
+  - uncertainty
+  - comparison
+- id: question_bank-Q03-lawyer-contextualized
+  label: lawyer
+  words:
+  - boundaries
+  - zoning
+  - liability
+  - permits
+  - property
+  - regulation

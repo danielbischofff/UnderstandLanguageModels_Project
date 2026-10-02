@@ -1,0 +1,72 @@
+- id: question_bank-Q10-scientist-contextualized
+  label: scientist
+  words:
+  - planning
+  - nutrition
+  - hygiene
+  - observation
+  - feedback
+  - evaluation
+- id: question_bank-Q10-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - budget
+  - suppliers
+  - logistics
+  - demand
+  - partnerships
+  - efficiency
+- id: question_bank-Q10-caregiver-contextualized
+  label: caregiver
+  words:
+  - welcome
+  - nourishment
+  - comfort
+  - allergies
+  - care
+  - belonging
+- id: question_bank-Q10-activist-contextualized
+  label: activist
+  words:
+  - inclusion
+  - access
+  - affordability
+  - participation
+  - solidarity
+  - diversity
+- id: question_bank-Q10-poet-contextualized
+  label: poet
+  words:
+  - flavors
+  - laughter
+  - warmth
+  - table
+  - stories
+  - abundance
+- id: question_bank-Q10-mystic-contextualized
+  label: mystic
+  words:
+  - gratitude
+  - communion
+  - blessing
+  - generosity
+  - harmony
+  - connection
+- id: question_bank-Q10-skeptic-contextualized
+  label: skeptic
+  words:
+  - assumptions
+  - feasibility
+  - turnout
+  - costs
+  - verification
+  - contingencies
+- id: question_bank-Q10-lawyer-contextualized
+  label: lawyer
+  words:
+  - permits
+  - hygiene
+  - liability
+  - consent
+  - regulations
+  - responsibility

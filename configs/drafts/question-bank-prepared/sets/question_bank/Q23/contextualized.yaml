@@ -1,0 +1,72 @@
+- id: question_bank-Q23-scientist-contextualized
+  label: scientist
+  words:
+  - accuracy
+  - benchmarks
+  - validation
+  - reliability
+  - error
+  - measurement
+- id: question_bank-Q23-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - productivity
+  - costs
+  - scale
+  - integration
+  - efficiency
+  - value
+- id: question_bank-Q23-caregiver-contextualized
+  label: caregiver
+  words:
+  - workload
+  - support
+  - training
+  - trust
+  - wellbeing
+  - reassurance
+- id: question_bank-Q23-activist-contextualized
+  label: activist
+  words:
+  - labor
+  - accountability
+  - access
+  - displacement
+  - power
+  - equity
+- id: question_bank-Q23-poet-contextualized
+  label: poet
+  words:
+  - craft
+  - rhythm
+  - transformation
+  - imagination
+  - distance
+  - possibility
+- id: question_bank-Q23-mystic-contextualized
+  label: mystic
+  words:
+  - intention
+  - awareness
+  - connection
+  - balance
+  - discernment
+  - alignment
+- id: question_bank-Q23-skeptic-contextualized
+  label: skeptic
+  words:
+  - limitations
+  - evidence
+  - failure
+  - bias
+  - claims
+  - uncertainty
+- id: question_bank-Q23-lawyer-contextualized
+  label: lawyer
+  words:
+  - liability
+  - privacy
+  - compliance
+  - contracts
+  - ownership
+  - accountability

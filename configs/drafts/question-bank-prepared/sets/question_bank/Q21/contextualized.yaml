@@ -1,0 +1,72 @@
+- id: question_bank-Q21-scientist-contextualized
+  label: scientist
+  words:
+  - data
+  - preferences
+  - evaluation
+  - outcomes
+  - methods
+  - evidence
+- id: question_bank-Q21-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - priorities
+  - costs
+  - value
+  - investment
+  - efficiency
+  - feasibility
+- id: question_bank-Q21-caregiver-contextualized
+  label: caregiver
+  words:
+  - listening
+  - needs
+  - support
+  - compromise
+  - wellbeing
+  - care
+- id: question_bank-Q21-activist-contextualized
+  label: activist
+  words:
+  - participation
+  - equity
+  - transparency
+  - representation
+  - democracy
+  - accountability
+- id: question_bank-Q21-poet-contextualized
+  label: poet
+  words:
+  - voices
+  - common
+  - belonging
+  - possibility
+  - hopes
+  - harmony
+- id: question_bank-Q21-mystic-contextualized
+  label: mystic
+  words:
+  - unity
+  - intention
+  - balance
+  - collective
+  - harmony
+  - discernment
+- id: question_bank-Q21-skeptic-contextualized
+  label: skeptic
+  words:
+  - tradeoffs
+  - assumptions
+  - transparency
+  - evidence
+  - scrutiny
+  - alternatives
+- id: question_bank-Q21-lawyer-contextualized
+  label: lawyer
+  words:
+  - procedure
+  - authority
+  - rules
+  - fairness
+  - disclosure
+  - accountability

@@ -1,0 +1,103 @@
+# 12 questions x 16 personas x 2 band widths x 4 schemes + 12 controls = 1548 trials.
+# Replaces the planned full alpha/band comparison; original configurations are retained for provenance.
+# First question per topic, selected independently of outcomes. Q01/Q23 are calibration questions.
+# Beta=0 pins the persona projection; it does not disable steering.
+# Retain all fitted-layer readouts/activations; initial CPU analysis uses only layers 32, 35, 62.
+name: question-bank-reduced-band
+description: 'Reduced exploratory character-band experiment: first question per topic
+  (12 total), all 16 personas, beta 0 and 0.25, and layers 29/32/35 separately or
+  together. Q01 and Q23 are pilot calibration questions. Planned analysis readout
+  layers: 32, 35, 62.'
+model:
+  id: Qwen/Qwen3-32B
+  revision: 9216db5781bf21249d130ec9da846c4624c16137
+  tokenizer_revision: 9216db5781bf21249d130ec9da846c4624c16137
+  dtype: bfloat16
+  enable_thinking: false
+vectors:
+  revision: 3b3b788432ad33e3a28d9ff08e88a530c0740814
+characters:
+- unsteered
+- scientist
+- entrepreneur
+- caregiver
+- activist
+- poet
+- mystic
+- skeptic
+- lawyer
+- altruist
+- narcissist
+- mediator
+- provocateur
+- guardian
+- predator
+- builder
+- saboteur
+questions:
+- id: Q01
+  text: A town wants to change its annual festival to attract new visitors. What should
+    it consider?
+- id: Q03
+  text: How might living beside a large river shape a town's daily life?
+- id: Q05
+  text: My schedule is crowded and I keep putting off rest. How should I think about
+    making time for it?
+- id: Q07
+  text: I found a letter written a century ago. How could I understand what it tells
+    us about that time?
+- id: Q09
+  text: I want to try a new hobby but do not know where to start. How should I choose?
+- id: Q11
+  text: The average score rose, but several students did worse. How can both things
+    be true?
+- id: Q13
+  text: A pond looks different in summer than in winter. What might explain the changes?
+- id: Q15
+  text: Someone new has joined our group and rarely speaks. How could we help them
+    feel welcome?
+- id: Q17
+  text: What does it mean to live a good life?
+- id: Q19
+  text: Why might a repeated ritual be meaningful to the people who practice it?
+- id: Q21
+  text: A neighborhood disagrees about how to use a shared budget. How should it reach
+    a decision?
+- id: Q23
+  text: A team wants to use an automated tool for a task it currently does manually.
+    What should it evaluate?
+steering:
+  coefficients:
+  - 0.0
+  - 0.25
+  schemes:
+  - name: layer-29
+    method: character_band
+    layers:
+    - 29
+    positions: all
+  - name: layer-32
+    method: character_band
+    layers:
+    - 32
+    positions: all
+  - name: layer-35
+    method: character_band
+    layers:
+    - 35
+    positions: all
+  - name: combined-29-32-35
+    method: character_band
+    layers:
+    - 29
+    - 32
+    - 35
+    positions: all
+generation:
+  max_new_tokens: 256
+  do_sample: false
+seed: 0
+j_lens:
+  top_k: 10
+outputs:
+  keep_activations: true

@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q18-altruist-contextualized
+  label: altruist
+  words:
+  - compassion
+  - repair
+  - restitution
+  - service
+  - generosity
+  - forgiveness
+- id: question_bank_contrastive-Q18-narcissist-contextualized
+  label: narcissist
+  words:
+  - image
+  - reputation
+  - pride
+  - excuses
+  - superiority
+  - validation
+- id: question_bank_contrastive-Q18-mediator-contextualized
+  label: mediator
+  words:
+  - reconciliation
+  - dialogue
+  - understanding
+  - apology
+  - agreement
+  - resolution
+- id: question_bank_contrastive-Q18-provocateur-contextualized
+  label: provocateur
+  words:
+  - blame
+  - outrage
+  - controversy
+  - confrontation
+  - escalation
+  - provocation
+- id: question_bank_contrastive-Q18-guardian-contextualized
+  label: guardian
+  words:
+  - harm
+  - prevention
+  - safeguards
+  - accountability
+  - protection
+  - caution
+- id: question_bank_contrastive-Q18-predator-contextualized
+  label: predator
+  words:
+  - consequences
+  - opportunity
+  - weakness
+  - prey
+  - pursuit
+  - instinct
+- id: question_bank_contrastive-Q18-builder-contextualized
+  label: builder
+  words:
+  - repair
+  - reconstruction
+  - improvement
+  - foundations
+  - learning
+  - structure
+- id: question_bank_contrastive-Q18-saboteur-contextualized
+  label: saboteur
+  words:
+  - concealment
+  - blame
+  - damage
+  - evasion
+  - disruption
+  - interference

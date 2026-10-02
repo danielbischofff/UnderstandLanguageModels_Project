@@ -1,0 +1,72 @@
+- id: question_bank-Q14-scientist-contextualized
+  label: scientist
+  words:
+  - genetics
+  - moisture
+  - light
+  - nutrients
+  - variation
+  - experiment
+- id: question_bank-Q14-entrepreneur-contextualized
+  label: entrepreneur
+  words:
+  - quality
+  - yield
+  - consistency
+  - optimization
+  - production
+  - costs
+- id: question_bank-Q14-caregiver-contextualized
+  label: caregiver
+  words:
+  - nurture
+  - patience
+  - conditions
+  - attention
+  - care
+  - growth
+- id: question_bank-Q14-activist-contextualized
+  label: activist
+  words:
+  - equity
+  - resources
+  - environment
+  - access
+  - stewardship
+  - diversity
+- id: question_bank-Q14-poet-contextualized
+  label: poet
+  words:
+  - roots
+  - unfolding
+  - patience
+  - sunlight
+  - difference
+  - becoming
+- id: question_bank-Q14-mystic-contextualized
+  label: mystic
+  words:
+  - potential
+  - energy
+  - cycles
+  - emergence
+  - balance
+  - vitality
+- id: question_bank-Q14-skeptic-contextualized
+  label: skeptic
+  words:
+  - sample
+  - chance
+  - confounding
+  - measurement
+  - replication
+  - uncertainty
+- id: question_bank-Q14-lawyer-contextualized
+  label: lawyer
+  words:
+  - labeling
+  - standards
+  - claims
+  - quality
+  - warranty
+  - evidence

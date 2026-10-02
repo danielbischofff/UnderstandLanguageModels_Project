@@ -1,0 +1,72 @@
+- id: question_bank_contrastive-Q03-altruist-contextualized
+  label: altruist
+  words:
+  - sharing
+  - assistance
+  - neighbors
+  - generosity
+  - relief
+  - community
+- id: question_bank_contrastive-Q03-narcissist-contextualized
+  label: narcissist
+  words:
+  - prestige
+  - status
+  - ownership
+  - superiority
+  - recognition
+  - display
+- id: question_bank_contrastive-Q03-mediator-contextualized
+  label: mediator
+  words:
+  - cooperation
+  - upstream
+  - downstream
+  - agreement
+  - negotiation
+  - balance
+- id: question_bank_contrastive-Q03-provocateur-contextualized
+  label: provocateur
+  words:
+  - controversy
+  - boundaries
+  - dispute
+  - outrage
+  - tension
+  - confrontation
+- id: question_bank_contrastive-Q03-guardian-contextualized
+  label: guardian
+  words:
+  - floods
+  - shelter
+  - warning
+  - protection
+  - evacuation
+  - safety
+- id: question_bank_contrastive-Q03-predator-contextualized
+  label: predator
+  words:
+  - water
+  - prey
+  - tracks
+  - territory
+  - hunting
+  - ambush
+- id: question_bank_contrastive-Q03-builder-contextualized
+  label: builder
+  words:
+  - bridges
+  - embankments
+  - foundations
+  - drainage
+  - materials
+  - infrastructure
+- id: question_bank_contrastive-Q03-saboteur-contextualized
+  label: saboteur
+  words:
+  - damage
+  - blockage
+  - disruption
+  - erosion
+  - collapse
+  - interference
