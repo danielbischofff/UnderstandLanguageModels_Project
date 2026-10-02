@@ -16,6 +16,10 @@
 \usepackage{booktabs}
 \usepackage{amsmath}  % \lVert ... \rVert and the split environment
 \usepackage{tikz}     % the steering-geometry figure
+\usepackage{CJKutf8}  % Chinese J-Lens tokens, via \zh{...}
+
+% Chinese text inline; pdflatex has no CJK glyphs otherwise.
+\newcommand{\zh}[1]{\begin{CJK}{UTF8}{gbsn}#1\end{CJK}}
 
 \graphicspath{{figures/}}
 

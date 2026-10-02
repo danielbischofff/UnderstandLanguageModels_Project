@@ -35,7 +35,9 @@ BandCap(r_l) = {}& r_l + \bigl(clip(r_l \cdot \hat{c_l}, \\
 This is operation only clamps the residual stream's projection along $\hat{c_l}$, it is a much less aggressive operation and can be applied over multiple layers without degrading output quality. See Figure \ref{fig:steering-geometry}, which illustrates this concept. We found that steering at the 8 middle layers of the model gives us good results.
 
 \input{figures/steering_geometry}
-\textbf{Controlling for a persona vector's baseline tokens} J-Lens readout works by apply the Jacobian matrix $J$ (which is specific to that layer) to the residual stream at that layer and token position. Since this operation is linear with respect to the residual stream, if we add a component along $\hat{c_l}$ to the residual stream at that layer before doing the readout (which is what both steering methods do), the resulting readout of the vector's sum will be the sum of the readout of each component:
+\subsection{Controlling for a persona vector's baseline tokens}
+\label{sec:BaselineTokens}
+J-Lens readout works by apply the Jacobian matrix $J$ (which is specific to that layer) to the residual stream at that layer and token position. Since this operation is linear with respect to the residual stream, if we add a component along $\hat{c_l}$ to the residual stream at that layer before doing the readout (which is what both steering methods do), the resulting readout of the vector's sum will be the sum of the readout of each component:
 \[
 J(r_l + \alpha \cdot \hat{c_l}) = J(r_l) + \alpha \cdot J(\hat{c_l})
 \]
@@ -58,6 +60,7 @@ We examined this question in our setup for both responses as well as J-Lens read
 \subsection{Analysis of results}
 \label{sec:analysis}
 In order to systematically analyze the change in behavior as reflected in the J-Lens readouts, and avoid relying on manual inspection (which may be very anecdotal and miss important patterns), we calculate a score for each token found in the J-Lens readout, at each token position in the user's prompt and in layer. The score is calculated by counting the $(token positions, layer)$ pairs that contain the token at the top 10 J-Lens readout tokens. Another version of the score weights each occurrence by $1/rank$, where rank is the token's position in the top 10 J-Lens readout tokens, in order to account for the importance that the J-Lens readout assigns each token.
+\textbf{Note:} We only consider layers influenced by steering, since all preceding layers would not be influenced by steering and would therefore be identical to the non-steered layer readouts. I.e., with band-capping at layer 28-35, we will only consider layer 28 and later layers for the calculation of the above scores.
 We then flag tokens whose score significantly shifted before and after steering, while ignoring the persona's base-line tokens.
 This procedure is done for the user's prompt, since the response changes between the base model and the steered model, and is therefore not compareable in the same way. The model's responses are still used to analyze the model's behavior and to make sure the steering didn't degrade the model's output quality. Note: We always use greedy decoding in our experiment for reproducible results.
 

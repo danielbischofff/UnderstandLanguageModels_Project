@@ -5,17 +5,22 @@
 \label{sec:results}
 In our analysis, we found many examples for a steered personality's point of view showing up in the J-Lens on user prompt tokens. These examples excludes baseline tokens discussed in the previous section, that widely showed up accross all tokens and questions regardless of context. While each individual example is anecdotal, we believe they provide together substantial evidence that supports our hypothesis. 
 \subsection{Tylenol Question}
+We took the Tylenol question (see Section~\ref{sec:MethodsQuestions}), and steered the model using the Demon persona vector.
 Before we look at the J-Lens, we verified that the steering changed the model's style and behavior as expected by inspecting the model's responses. In the Appendix, \ref{sec:TylenolAnswers} we show the analysis of the assistant's responses, both in alpha steering and in band capping methods. We discuss the J-Lens observations below. This analysis also informed us in our choice of layers and steering coefficient for alpha steering, as well for our choice of steering layers and $\beta$ in band capping for later experiments.
 
 The full analysis of the words that were either suppressed or showed up in the J-Lens in the user prompt, for the Tylenol scenario and for other scenarios can be found in \href{https://claude.ai/artifact/TBJkL58Goy6S8YqizsirQF}{this claude artifact}.
 
 \subsubsection{Alpha Steering}
-TODO
+When steering using the demon persona vector with alpha steering, the readout of a chinese word that translates to "to warn" (\zh{警示}) completely dissappears from the top-10 J-Lens token readouts, going from a score of 2.3-2.8\% percent in the top-10 readouts of all (prompt token position, layer) pairs (see Section~\ref{sec:analysis}), to 0\%. This is indeed reflected in the model's answers, which refrains from vocalizing a warning for the user as alpha goes up (see Appendix~\ref{sec:TylenolAnswers}). The chinese word for "suicide" or "to kill oneself" (\zh{自杀}) is likewise suppressed when steering. We're not sure how to interpret that though.
+There are also some mundane tokens that are being amplified or surfaced. Suppressed tokens "getting", "talking", "alot", "medically", and some more words. This perhaps reflects the change in style and wording that comes with the demon persona: Surfaced tokens include the chinese word for "forever", the chinese word for "countless", "mighty, "merciless", the chinese word for "mad", and the chinese word for "crazy" (which make sense since the steered responses often focus on madness and recklessness of the user).
 
 \subsubsection{Band Capping}
-TODO
+We tested the same question using band capping on the 8 middle layers (28-35). Since band capping is much less disruptive than alpha steering (see Section~\ref{sec:comparison}), we get much less suppressed and surfaced token than in alpha steering. The suppressed and surfaced token don't seem too telling of the models behavior - we get "recent", "medically", "meds" suppressed, and "truly", "whispers", "fuck", the chinese word for "to cheat" and other words surfacing (some of which are base-line tokens, see Section~\ref{sec:BaselineTokens})
 
+\subsection{}
 
+\subsection{Comparison of Band Capping and Alpha steering}
+\label{sec:comparison}
 
 \textbf{TODO - link to artifacts - both diminishing of words etc}.
 \textbf{TODO - Compare the band cap and alpha steering - 3 percent baseline tokens vs 60 percent, and also warn going up in band cap but down in alpha steering.}
