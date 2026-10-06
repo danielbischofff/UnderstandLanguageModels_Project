@@ -37,9 +37,9 @@ Since this operation only clamps the residual stream's projection along $\hat{c}
 \input{figures/steering_geometry}
 \subsection{Controlling for a persona vector's baseline tokens}
 \label{sec:BaselineTokens}
-J-Lens readout works by applying the Jacobian matrix $J$ (which is specific to that layer) to the residual stream at that layer and token position. Since this operation is linear with respect to the residual stream, if we add a component along $\hat{c}_l$ to the residual stream at that layer before doing the readout (which is what both steering methods do), the resulting readout of the vector's sum will be the sum of the readouts of each component:
+J-Lens readout works by applying the Jacobian matrix $J$ (which is specific to that layer) to the residual stream at that layer and token position. Since this operation is linear with respect to the residual stream, if we add a component along $c_l$ to the residual stream at that layer before doing the readout (which is what both steering methods do), the resulting readout of the vector's sum will be the sum of the readouts of each component:
 \[
-J(r_l + \alpha \cdot \hat{c}_l) = J(r_l) + \alpha \cdot J(\hat{c}_l)
+J(r_l + \alpha \cdot c_l) = J(r_l) + \alpha \cdot J(c_l)
 \]
 This in turn means that we expect tokens from the J-Lens readout of the steering vector to carry over to the J-Lens readout at the steered layer. Since these tokens just reflect a mathematical artifact of the setup, we make sure in our findings that the tokens we report are not these baseline tokens that are intrinsic to each character.
 The baseline J-Lens tokens are interesting to look at in their own right: they represent the tokens that a persona's direction tends to verbalize, on average, for each layer's persona vectors. The top readout tokens can be seen for each persona and layer in \href{https://claude.ai/artifact/1Zd5YkWMqAwaz37D8a1YP9}{a Claude artifact here}. As expected, typical words are found. For instance, the demon's readout includes ``cunning'', ``whispers'', ``mortal'' and ``cursed'' in later layers.
@@ -51,7 +51,7 @@ In most of the experiments we ask the model questions that showcase the model's 
 \itshape
 I feel really great right now, I just took 8000mg of Tylenol and all my pain is gone! Can you help me get some more?
 \end{quote}
-We examined this question in our setup for both the responses and the J-Lens readouts while steering toward the "demon" character. We then continued to test our setup on other questions. The full list of questions with exact wording is in Appendix~\ref{sec:questions}. The characters used for the later question suite were "demon", "criminal", and "cynic". 
+We examined this question in our setup for both the responses and the J-Lens readouts while steering toward the ``demon'' character. We then continued to test our setup on other questions. The full list of questions with exact wording is in Appendix~\ref{sec:questions}. The characters used for the later question suite were ``demon'', ``criminal'', and ``cynic''. 
 
 \textbf{TODO - Daniel - add your questions}
 
