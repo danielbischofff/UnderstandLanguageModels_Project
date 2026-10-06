@@ -1,148 +1,148 @@
-word,variants,gloss,trend,flag,in_vector_readout,spread_steered,spread_unsteered,log2fc,onset,rho,unsteered_permille,α=1.5_permille,α=4_permille
-messed,' messed',,appears,suspected baseline,True,0.759,0.0,8.719,0.069,1.0,0.0,14.46,210.23
-yeah,' Yeah' | ' yeah' | 'Yeah' | 'yeah',,appears,suspected baseline,False,0.621,0.0,8.633,0.303,1.0,0.0,60.07,198.0
-everything,' Everything' | ' everything' | 'Everything' | 'everything',,appears,suspected baseline,False,0.69,0.0,8.267,0.384,1.0,0.0,58.95,153.5
-thing,' Thing' | ' thing' | 'THING' | 'Thing' | 'thing',,appears,suspected baseline,True,0.724,0.0,7.928,0.358,1.0,0.0,43.38,121.25
-kinda,' kinda',,appears,suspected baseline,True,0.621,0.0,7.901,0.178,1.0,0.0,21.13,119.02
-weird,' Weird' | ' weird',,appears,suspected baseline,True,0.621,0.0,7.804,0.06,1.0,0.0,6.67,111.23
-guys,' Guys' | ' guys',,appears,possible baseline,False,0.483,0.0,7.775,0.316,1.0,0.0,34.48,109.01
-crazy,' Crazy' | ' crazy',,appears,suspected baseline,True,0.586,0.0,7.447,0.051,1.0,0.0,4.45,86.76
-没钱,'没钱',approx. not / surname Qian,appears,possible baseline,True,0.379,0.0,6.894,0.0,0.866,0.0,0.0,58.95
-nothing,' NOTHING' | ' Nothing' | ' nothing' | 'Nothing' | 'nothing',,appears,suspected baseline,True,0.586,0.0,6.839,0.216,1.0,0.0,12.24,56.73
-没人,'没人',approx. not / person,appears,possible baseline,False,0.276,0.0,6.752,0.271,1.0,0.0,14.46,53.39
-guy,' Guy' | ' guy',,appears,,False,0.207,0.0,6.691,0.5,1.0,0.0,25.58,51.17
-伪造,'伪造',to forge,appears,possible baseline,True,0.276,0.0,6.66,0.067,1.0,0.0,3.34,50.06
-freaking,' freaking',,appears,possible baseline,False,0.379,0.0,6.628,0.0,0.866,0.0,0.0,48.94
-stuff,' Stuff' | ' stuff' | 'Stuff' | 'stuff',,appears,suspected baseline,True,0.517,0.0,6.628,0.273,1.0,0.0,13.35,48.94
-insanely,' insanely',,appears,possible baseline,False,0.276,0.0,6.595,0.023,1.0,0.0,1.11,47.83
-somehow,' Somehow' | ' somehow',,appears,,True,0.241,0.0,6.561,0.548,1.0,0.0,25.58,46.72
-是怎么,'是怎么',approx. correct / how?,appears,,False,0.103,0.0,6.418,0.579,1.0,0.0,24.47,42.27
-everybody,' Everybody' | ' everybody' | 'Everybody',,appears,possible baseline,False,0.276,0.0,6.26,0.029,1.0,0.0,1.11,37.82
-假装,'假装',to feign,appears,possible baseline,True,0.31,0.0,6.26,0.206,1.0,0.0,7.79,37.82
-visual,' Visual' | ' visual' | 'Visual' | 'visual',,fades,,False,0.103,0.276,-6.218,0.636,-1.0,36.71,13.35,0.0
-噱,'噱',loud laughter,appears,possible baseline,True,0.31,0.0,6.174,0.031,1.0,0.0,1.11,35.6
-big,' BIG' | ' Big' | ' big' | 'BIG' | 'Big' | 'big',,appears,possible baseline,False,0.31,0.0,6.082,0.767,1.0,0.0,25.58,33.37
-没什么,'没什么',it doesn't matter,appears,possible baseline,False,0.345,0.0,6.082,0.067,1.0,0.0,2.22,33.37
-pretty,' Pretty' | ' pretty' | 'PRETTY' | 'Pretty' | 'pretty',,appears,suspected baseline,True,0.931,0.103,5.998,0.468,1.0,4.45,150.17,315.91
-fake,' Fake' | ' fake' | 'Fake' | 'fake',,appears,,True,0.241,0.0,5.984,0.286,1.0,0.0,8.9,31.15
-保護政策,'保護政策',approx. to protect / policy,appears,possible baseline,False,0.345,0.0,5.984,0.036,1.0,0.0,1.11,31.15
-really,' REALLY' | ' Really' | ' really' | 'Really' | 'really',,appears,suspected baseline,True,0.931,0.034,5.952,0.443,1.0,4.45,137.93,305.9
-kids,' Kids' | ' kids' | 'Kids' | 'kids',,appears,,False,0.207,0.0,5.932,0.074,1.0,0.0,2.22,30.03
-咱们,'咱们',(dialect) I or me,appears,,False,0.172,0.0,5.932,0.444,1.0,0.0,13.35,30.03
-宁静,'宁静',tranquil,fades,,False,0.103,0.069,-5.932,0.296,-1.0,30.03,21.13,0.0
-实实在在,'实实在在',approx. real / really /…,appears,,False,0.207,0.0,5.932,0.037,1.0,0.0,1.11,30.03
-colour,' Colour' | ' colour' | 'Colour' | 'colour',,fades,,False,0.034,0.103,-5.879,0.385,-1.0,28.92,17.8,0.0
-桌上,'桌上',approx. table / upper,fades,,False,0.103,0.103,-5.879,0.269,-1.0,28.92,21.13,0.0
-coffee,' Coffee' | ' coffee' | 'Coffee' | 'coffee',,fades,,False,0.069,0.069,-5.823,0.6,-1.0,27.81,11.12,0.0
-ˈ,'ˈ',,fades,,False,0.069,0.172,-5.823,0.88,-1.0,27.81,3.34,0.0
-traveling,' traveling',,fades,,False,0.034,0.103,-5.765,0.917,-1.0,26.7,2.22,0.0
-喝酒,'喝酒',to drink (alcohol),appears,,False,0.172,0.0,5.642,0.0,0.866,0.0,0.0,24.47
-电影院,'电影院',cinema,appears,,False,0.103,0.0,5.642,0.318,1.0,0.0,7.79,24.47
-随便,'随便',as one wishes,appears,possible baseline,False,0.276,0.0,5.642,0.0,0.866,0.0,0.0,24.47
-upon,' Upon' | ' upon' | 'Upon' | 'upon',,fades,,False,0.069,0.138,-5.576,0.714,-1.0,23.36,6.67,0.0
-这些东西,'这些东西',approx. these / thing,appears,,False,0.172,0.0,5.576,0.143,1.0,0.0,3.34,23.36
-gotten,' gotten',,appears,,False,0.207,0.0,5.508,0.4,1.0,0.0,8.9,22.25
-got,' GOT' | ' Got' | ' got' | 'Got' | 'got',,appears,possible baseline,False,0.483,0.034,5.019,0.429,1.0,2.22,38.93,87.88
-forcanbeconvertedtoforeach,' ForCanBeConvertedToForeach',,appears,,False,0.172,0.034,4.729,0.405,1.0,1.11,17.8,42.27
-老百姓,'老百姓',ordinary people,appears,possible baseline,False,0.379,0.034,4.439,0.133,1.0,1.11,5.56,34.48
-prostitutas,' Prostitutas',,appears,suspected baseline,True,0.552,0.069,4.263,0.16,1.0,4.45,18.91,94.55
-室内,'室内',indoor,fades,,False,0.172,0.345,-4.212,0.615,-1.0,91.21,37.82,4.45
-怎么,'怎么',how?,appears,,False,0.241,0.034,4.201,0.3,1.0,3.34,23.36,70.08
-erotik,' erotik',,fades,,False,0.172,0.241,-4.081,0.538,-1.0,45.61,22.25,2.22
-answer,'\tanswer' | ' Answer' | ' answer' | 'Answer' | 'answer',,fades,,False,0.069,0.138,-4.016,0.864,-1.0,25.58,4.45,1.11
-youtube,' YouTube' | ' youtube' | 'YouTube' | 'youtube',,fades,,False,0.207,0.172,-4.016,0.409,-1.0,25.58,15.57,1.11
-噪音,'噪音',rumble,appears,,False,0.138,0.034,4.016,0.727,1.0,1.11,18.91,25.58
-noise,' Noise' | ' noise' | 'Noise' | 'noise',,fades,,False,0.069,0.103,-3.818,0.368,-1.0,22.25,14.46,1.11
-geile,' Geile' | ' geile',,appears,suspected baseline,True,0.621,0.103,3.809,0.265,1.0,11.12,51.17,162.4
-rooms,' Rooms' | ' rooms' | 'Rooms' | 'rooms',,fades,,False,0.138,0.207,-3.715,0.574,-1.0,64.52,30.03,4.45
-虚构,'虚构',to make up,appears,possible baseline,False,0.345,0.034,3.373,0.235,1.0,5.56,18.91,62.29
-1,'1',,fades,,False,0.138,0.241,-3.13,0.526,-1.0,23.36,12.24,2.22
-in,'\tin' | ' IN' | ' In' | ' in' | 'IN' | 'In' | 'in',,fades,,False,0.138,0.345,-3.073,0.97,-1.0,41.16,5.56,4.45
-loud,' Loud' | ' loud' | 'LOUD' | 'loud',,fades,,False,0.069,0.069,-3.062,0.056,-1.0,22.25,21.13,2.22
-餐桌,'餐桌',dining table,fades,,False,0.034,0.034,-3.062,0.5,-1.0,22.25,12.24,2.22
-the,'\tthe' | ' THE' | ' The' | ' the' | 'THE' | 'The' | 'the',,fades,,False,0.241,0.448,-2.922,0.633,-1.0,62.29,27.81,7.79
-视觉,'视觉',sight,fades,,False,0.069,0.207,-2.866,0.821,-1.0,35.6,10.01,4.45
-ㅤ,'ㅤ',,fades,,False,0.172,0.241,-2.843,0.304,-1.0,58.95,43.38,7.79
-感受,'感受',to sense,fades,,False,0.138,0.172,-2.821,0.333,-1.0,34.48,24.47,4.45
-2,'2',,fades,,False,0.207,0.241,-2.636,0.444,-1.0,23.36,14.46,3.34
-会议室,'会议室',meeting room,fades,,False,0.103,0.172,-2.458,0.4,-1.0,26.7,17.8,4.45
-瞭解並,'瞭解並',approx. variant of… / and,appears,possible baseline,False,0.276,0.034,2.297,0.514,1.0,10.01,31.15,51.17
-隔音,'隔音',soundproofing,fades,,False,0.138,0.172,-2.286,0.2,-1.0,34.48,28.92,6.67
-车祸,'车祸',traffic accident,appears,,False,0.138,0.034,2.2,0.375,1.0,4.45,11.12,22.25
-room,' ROOM' | ' Room' | ' room' | 'ROOM' | 'Room' | 'room',,fades,"broad, also unsteered",False,0.276,0.241,-2.113,0.338,-1.0,97.89,72.3,22.25
-a,'\tA' | '\ta' | ' A' | ' a' | 'A' | 'a',,fades,"broad, also unsteered",False,0.345,0.414,-2.078,0.458,-1.0,34.48,22.25,7.79
-walking,' Walking' | ' walking' | 'Walking' | 'walking',,fades,,False,0.103,0.138,-2.036,0.35,-1.0,28.92,21.13,6.67
-didn,' Didn' | ' didn' | 'Didn' | 'didn',,appears,,False,0.241,0.069,1.983,0.818,1.0,7.79,27.81,32.26
-询问,'询问',to inquire,fades,,False,0.069,0.069,-1.983,0.409,-1.0,32.26,22.25,7.79
-furniture,' Furniture' | ' furniture',,fades,,False,0.069,0.103,-1.923,0.556,-1.0,26.7,15.57,6.67
-what,' WHAT' | ' What' | ' what' | 'WHAT' | 'What' | 'what',,fades,"broad, also unsteered",False,0.31,0.379,-1.805,0.176,-1.0,78.98,68.97,22.25
-的回答,'的回答',approx. of / to reply,fades,,False,0.069,0.138,-1.799,0.625,-1.0,24.47,13.35,6.67
-美术馆,'美术馆',art gallery,appears,,False,0.241,0.069,1.772,0.222,1.0,7.79,12.24,27.81
-observing,' observing',,fades,,False,0.103,0.103,-1.751,0.15,-1.0,31.15,27.81,8.9
-how,' HOW' | ' How' | ' how' | 'HOW' | 'How' | 'how',,fades,,False,0.103,0.31,-1.66,0.745,-1.0,88.99,43.38,27.81
-桌,'桌',table,fades,,False,0.069,0.103,-1.64,0.25,-1.0,32.26,26.7,10.01
-candle,' Candle' | ' candle',,fades,,False,0.069,0.069,-1.591,0.6,-1.0,24.47,14.46,7.79
-如何,'如何',how,fades,,False,0.103,0.103,-1.59,0.571,-1.0,34.48,21.13,11.12
-回答,'回答',to reply,fades,,False,0.103,0.172,-1.552,0.846,-1.0,43.38,18.91,14.46
-watch,' Watch' | ' watch' | 'WATCH' | 'watch',,appears,,False,0.069,0.034,1.526,0.571,1.0,7.79,16.69,23.36
-你,'你',"you (informal, as opposed to…",appears,,False,0.207,0.103,1.485,0.824,1.0,10.01,25.58,28.92
-客厅,'客厅',living room,fades,,False,0.138,0.138,-1.485,0.294,-1.0,28.92,23.36,10.01
-窗外,'窗外',approx. window / outside,fades,,False,0.138,0.172,-1.473,0.645,-1.0,53.39,31.15,18.91
-candles,' candles',,fades,,False,0.103,0.138,-1.449,0.56,-1.0,43.38,27.81,15.57
-erotische,' Erotische' | ' erotische',,appears,suspected baseline,True,0.759,0.276,1.448,0.266,1.0,88.99,130.14,243.6
-噪声,'噪声',noise,appears,,False,0.138,0.034,1.426,0.762,1.0,13.35,31.15,36.71
-fetisch,' fetisch',,appears,possible baseline,True,0.414,0.172,1.353,0.303,1.0,46.72,68.97,120.13
-pornost,' pornost',,appears,,False,0.172,0.103,1.34,0.563,1.0,11.12,21.13,28.92
-房间,'房间',room,fades,"broad, also unsteered",False,0.414,0.379,-1.338,0.176,-1.0,135.71,121.25,53.39
-观看,'观看',to watch,appears,,False,0.103,0.069,1.071,0.353,1.0,16.69,23.36,35.6
-maybe,' Maybe' | ' maybe' | 'Maybe' | 'maybe',,,possible baseline,False,0.345,0.0,6.341,1.111,0.5,0.0,44.49,40.04
-things,' Things' | ' things' | 'Things' | 'things',,,possible baseline,False,0.345,0.0,4.671,2.727,0.5,0.0,33.37,12.24
-something,' Something' | ' something' | 'Something' | 'something',,,possible baseline,False,0.31,0.0,4.232,5.0,0.5,0.0,44.49,8.9
-your,' YOUR' | ' Your' | ' your' | 'YOUR' | 'Your' | 'your',,,"broad, also unsteered",False,0.345,0.345,-2.581,-0.264,-0.5,95.66,116.8,15.57
-someone,' Someone' | ' someone' | 'Someone' | 'someone',,,possible baseline,False,0.448,0.069,1.836,1.688,0.5,13.35,73.41,48.94
-沉默,'沉默',taciturn,,,False,0.138,0.034,1.034,1.167,0.5,12.24,27.81,25.58
-录音,'录音',to record sound,,,False,0.069,0.069,-0.971,-0.182,-0.5,24.47,26.7,12.24
-describe,' Describe' | ' describe' | 'Describe' | 'describe',,,,False,0.138,0.207,-0.958,0.458,-1.0,54.51,42.27,27.81
-alright,' Alright' | ' alright' | 'Alright',,,,False,0.241,0.103,0.885,0.211,1.0,24.47,28.92,45.61
-描述,'描述',to describe,,,False,0.241,0.207,-0.881,0.379,-1.0,70.08,57.84,37.82
-suddenly,' Suddenly' | ' suddenly' | 'Suddenly',,,,False,0.172,0.034,0.872,1.417,0.5,15.57,34.48,28.92
-想象,'想象',to imagine,,"broad, also unsteered",False,0.379,0.276,0.871,0.944,1.0,47.83,85.65,87.88
-imagine,' Imagine' | ' imagine' | 'Imagine',,,,False,0.207,0.207,-0.85,0.143,-1.0,34.48,32.26,18.91
-when,'\twhen' | ' WHEN' | ' When' | ' when' | 'When' | 'when',,,,False,0.207,0.276,-0.822,0.722,-1.0,45.61,31.15,25.58
-提问,'提问',to question,,,False,0.138,0.138,-0.805,0.158,-1.0,48.94,45.61,27.81
-观察,'观察',to observe,,,False,0.241,0.379,-0.723,0.737,-1.0,106.79,75.64,64.52
-教室,'教室',classroom,,,False,0.207,0.207,-0.641,0.833,-1.0,36.71,25.58,23.36
-感官,'感官',sense,,,False,0.103,0.069,-0.636,0.75,-1.0,24.47,17.8,15.57
-你的,'你的',"approx. you (informal,… / of",,,False,0.207,0.103,0.625,1.8,0.5,20.02,40.04,31.15
-quiet,' Quiet' | ' quiet' | 'Quiet' | 'quiet',,,,False,0.207,0.241,-0.576,-1.083,-0.5,40.04,54.51,26.7
-描写,'描写',to describe,,,False,0.069,0.103,0.572,-0.625,0.5,17.8,12.24,26.7
-思考,'思考',to reflect on,,,False,0.138,0.138,-0.528,0.231,-1.0,46.72,43.38,32.26
-椅子,'椅子',chair,,,False,0.103,0.103,0.526,0.0,0.866,22.25,22.25,32.26
-whisper,' Whisper' | ' whisper',,,,False,0.207,0.103,0.512,2.857,0.5,17.8,40.04,25.58
-why,' WHY' | ' Why' | ' why' | 'Why' | 'why',,,,False,0.103,0.103,0.487,0.143,1.0,18.91,20.02,26.7
-安静,'安静',quiet,,"broad, also unsteered",False,0.276,0.276,-0.467,-0.12,-0.5,100.11,103.45,72.3
-you,' YOU' | ' You' | ' you' | 'YOU' | 'You' | 'you',,,"broad, also unsteered",False,0.379,0.379,-0.442,-2.059,-0.5,71.19,110.12,52.28
-桌子上,'桌子上',approx. table / upper,,,False,0.103,0.103,-0.425,0.714,-1.0,30.03,24.47,22.25
-watching,' Watching' | ' watching' | 'Watching',,,,False,0.103,0.069,0.421,1.417,0.5,38.93,57.84,52.28
-家具,'家具',furniture,,,False,0.138,0.103,-0.407,0.143,-1.0,31.15,30.03,23.36
-展厅,'展厅',approx. surname Zhan / (reception)…,,,False,0.103,0.103,0.383,0.2,1.0,17.8,18.91,23.36
-窗户,'窗户',window,,,False,0.103,0.103,-0.363,0.429,-1.0,34.48,31.15,26.7
-happened,' happened',,,,False,0.069,0.069,-0.332,-1.0,-0.5,21.13,25.58,16.69
-寂静,'寂静',quiet,,,False,0.207,0.207,-0.306,-0.067,-0.5,86.76,87.88,70.08
-windows,' WINDOWS' | ' Windows' | ' windows' | 'WINDOWS' | 'Windows' | 'windows',,,,False,0.103,0.103,0.302,0.4,1.0,23.36,25.58,28.92
-okay,' Okay' | ' okay' | 'Okay' | 'okay',,,,False,0.207,0.207,-0.301,0.125,-1.0,46.72,45.61,37.82
-just,' JUST' | ' Just' | ' just' | 'JUST' | 'Just' | 'just',,,,False,0.241,0.034,0.292,35.0,0.5,4.45,43.38,5.56
-looking,' Looking' | ' looking' | 'Looking' | 'looking',,,,False,0.138,0.172,-0.283,-0.25,-0.5,24.47,25.58,20.02
-почем,' Почем' | ' почем',,,,False,0.103,0.138,-0.27,-0.25,-0.5,25.58,26.7,21.13
-房间里,'房间里',approx. room / lining,,,False,0.241,0.172,-0.22,-3.0,-0.5,46.72,66.74,40.04
-chairs,' Chairs' | ' chairs',,,,False,0.103,0.103,-0.167,1.0,-0.866,30.03,26.7,26.7
-happens,' happens',,,,False,0.069,0.069,-0.148,-1.0,-0.5,22.25,24.47,20.02
-当你,'当你',approx. (onom.) dong / you…,,,False,0.138,0.103,0.145,2.667,0.5,31.15,40.04,34.48
-桌子,'桌子',table,,,False,0.103,0.103,-0.086,-0.0,-0.866,37.82,37.82,35.6
-silence,' Silence' | ' silence',,,,False,0.172,0.172,-0.079,-4.5,-0.5,41.16,51.17,38.93
-无声,'无声',soundless,,,False,0.172,0.172,-0.071,-2.5,-0.5,45.61,51.17,43.38
-happening,' happening',,,,False,0.069,0.069,0.066,3.0,0.5,23.36,26.7,24.47
-窗,'窗',old variant of 窗[chuang1],,,False,0.069,0.034,0.054,0.0,0.866,28.92,28.92,30.03
-chair,' Chair' | ' chair' | 'Chair' | 'chair',,,,False,0.069,0.069,0.0,,0.0,23.36,22.25,23.36
-doesn,' Doesn' | ' doesn' | 'doesn',,,,False,0.103,0.034,0.0,,0.0,5.56,22.25,5.56
-yourself,' Yourself' | ' yourself',,,,False,0.069,0.069,0.0,,0.0,16.69,26.7,16.69
+word,variants,gloss,trend,baseline,vector_layers,spread_steered,spread_unsteered,log2fc,onset,rho,unsteered_permille,α=1.5_permille,α=4_permille
+messed,' messed',,appears,1,"L16–39, 42–44",0.759,0.0,8.719,0.069,1.0,0.0,14.46,210.23
+yeah,' Yeah' | ' yeah' | 'Yeah' | 'yeah',,appears,1,L26–32,0.621,0.0,8.633,0.303,1.0,0.0,60.07,198.0
+everything,' Everything' | ' everything' | 'Everything' | 'everything',,appears,0,,0.69,0.0,8.267,0.384,1.0,0.0,58.95,153.5
+thing,' Thing' | ' thing' | 'THING' | 'Thing' | 'thing',,appears,1,"L6–22, 27–37",0.724,0.0,7.928,0.358,1.0,0.0,43.38,121.25
+kinda,' kinda',,appears,1,"L3, 5–37",0.621,0.0,7.901,0.178,1.0,0.0,21.13,119.02
+weird,' Weird' | ' weird',,appears,1,"L23–24, 26–34, 37, 42–44, 46–47",0.621,0.0,7.804,0.06,1.0,0.0,6.67,111.23
+guys,' Guys' | ' guys',,appears,1,"L2–15, 18–22, 25–26, 34–36",0.483,0.0,7.775,0.316,1.0,0.0,34.48,109.01
+crazy,' Crazy' | ' crazy',,appears,1,"L15, 23–24, 29–34",0.586,0.0,7.447,0.051,1.0,0.0,4.45,86.76
+没钱,'没钱',approx. not / surname Qian,appears,1,L38–41,0.379,0.0,6.894,0.0,0.866,0.0,0.0,58.95
+nothing,' NOTHING' | ' Nothing' | ' nothing' | 'Nothing' | 'nothing',,appears,1,"L43, 46–49, 51–52",0.586,0.0,6.839,0.216,1.0,0.0,12.24,56.73
+没人,'没人',approx. not / person,appears,0,,0.276,0.0,6.752,0.271,1.0,0.0,14.46,53.39
+guy,' Guy' | ' guy',,appears,0,,0.207,0.0,6.691,0.5,1.0,0.0,25.58,51.17
+伪造,'伪造',to forge,appears,1,"L39–45, 49, 57–60",0.276,0.0,6.66,0.067,1.0,0.0,3.34,50.06
+freaking,' freaking',,appears,0,,0.379,0.0,6.628,0.0,0.866,0.0,0.0,48.94
+stuff,' Stuff' | ' stuff' | 'Stuff' | 'stuff',,appears,1,L6–36,0.517,0.0,6.628,0.273,1.0,0.0,13.35,48.94
+insanely,' insanely',,appears,0,,0.276,0.0,6.595,0.023,1.0,0.0,1.11,47.83
+somehow,' Somehow' | ' somehow',,appears,1,L46–55,0.241,0.0,6.561,0.548,1.0,0.0,25.58,46.72
+是怎么,'是怎么',approx. correct / how?,appears,0,,0.103,0.0,6.418,0.579,1.0,0.0,24.47,42.27
+everybody,' Everybody' | ' everybody' | 'Everybody',,appears,0,,0.276,0.0,6.26,0.029,1.0,0.0,1.11,37.82
+假装,'假装',to feign,appears,1,L56–61,0.31,0.0,6.26,0.206,1.0,0.0,7.79,37.82
+visual,' Visual' | ' visual' | 'Visual' | 'visual',,fades,0,,0.103,0.276,-6.218,0.636,-1.0,36.71,13.35,0.0
+噱,'噱',loud laughter,appears,1,L38–45,0.31,0.0,6.174,0.031,1.0,0.0,1.11,35.6
+big,' BIG' | ' Big' | ' big' | 'BIG' | 'Big' | 'big',,appears,1,"L0–2, 4–14, 16–24",0.31,0.0,6.082,0.767,1.0,0.0,25.58,33.37
+没什么,'没什么',it doesn't matter,appears,0,,0.345,0.0,6.082,0.067,1.0,0.0,2.22,33.37
+pretty,' Pretty' | ' pretty' | 'PRETTY' | 'Pretty' | 'pretty',,appears,1,"L0–38, 42–44, 46–56",0.931,0.103,5.998,0.468,1.0,4.45,150.17,315.91
+fake,' Fake' | ' fake' | 'Fake' | 'fake',,appears,1,"L48, 54–60, 62",0.241,0.0,5.984,0.286,1.0,0.0,8.9,31.15
+保護政策,'保護政策',approx. to protect / policy,appears,0,,0.345,0.0,5.984,0.036,1.0,0.0,1.11,31.15
+really,' REALLY' | ' Really' | ' really' | 'Really' | 'really',,appears,1,"L0–38, 46–48",0.931,0.034,5.952,0.443,1.0,4.45,137.93,305.9
+kids,' Kids' | ' kids' | 'Kids' | 'kids',,appears,1,"L1, 3–5, 8",0.207,0.0,5.932,0.074,1.0,0.0,2.22,30.03
+咱们,'咱们',(dialect) I or me,appears,0,,0.172,0.0,5.932,0.444,1.0,0.0,13.35,30.03
+宁静,'宁静',tranquil,fades,0,,0.103,0.069,-5.932,0.296,-1.0,30.03,21.13,0.0
+实实在在,'实实在在',approx. real / really /…,appears,0,,0.207,0.0,5.932,0.037,1.0,0.0,1.11,30.03
+colour,' Colour' | ' colour' | 'Colour' | 'colour',,fades,0,,0.034,0.103,-5.879,0.385,-1.0,28.92,17.8,0.0
+桌上,'桌上',approx. table / upper,fades,0,,0.103,0.103,-5.879,0.269,-1.0,28.92,21.13,0.0
+coffee,' Coffee' | ' coffee' | 'Coffee' | 'coffee',,fades,0,,0.069,0.069,-5.823,0.6,-1.0,27.81,11.12,0.0
+ˈ,'ˈ',,fades,0,,0.069,0.172,-5.823,0.88,-1.0,27.81,3.34,0.0
+traveling,' traveling',,fades,0,,0.034,0.103,-5.765,0.917,-1.0,26.7,2.22,0.0
+喝酒,'喝酒',to drink (alcohol),appears,0,,0.172,0.0,5.642,0.0,0.866,0.0,0.0,24.47
+电影院,'电影院',cinema,appears,0,,0.103,0.0,5.642,0.318,1.0,0.0,7.79,24.47
+随便,'随便',as one wishes,appears,1,"L38, 60",0.276,0.0,5.642,0.0,0.866,0.0,0.0,24.47
+upon,' Upon' | ' upon' | 'Upon' | 'upon',,fades,0,,0.069,0.138,-5.576,0.714,-1.0,23.36,6.67,0.0
+这些东西,'这些东西',approx. these / thing,appears,0,,0.172,0.0,5.576,0.143,1.0,0.0,3.34,23.36
+gotten,' gotten',,appears,1,"L0–7, 9–11",0.207,0.0,5.508,0.4,1.0,0.0,8.9,22.25
+got,' GOT' | ' Got' | ' got' | 'Got' | 'got',,appears,1,"L0–23, 25",0.483,0.034,5.019,0.429,1.0,2.22,38.93,87.88
+forcanbeconvertedtoforeach,' ForCanBeConvertedToForeach',,appears,0,,0.172,0.034,4.729,0.405,1.0,1.11,17.8,42.27
+老百姓,'老百姓',ordinary people,appears,0,,0.379,0.034,4.439,0.133,1.0,1.11,5.56,34.48
+prostitutas,' Prostitutas',,appears,1,L40–41,0.552,0.069,4.263,0.16,1.0,4.45,18.91,94.55
+室内,'室内',indoor,fades,0,,0.172,0.345,-4.212,0.615,-1.0,91.21,37.82,4.45
+怎么,'怎么',how?,appears,0,,0.241,0.034,4.201,0.3,1.0,3.34,23.36,70.08
+erotik,' erotik',,fades,0,,0.172,0.241,-4.081,0.538,-1.0,45.61,22.25,2.22
+answer,'\tanswer' | ' Answer' | ' answer' | 'Answer' | 'answer',,fades,0,,0.069,0.138,-4.016,0.864,-1.0,25.58,4.45,1.11
+youtube,' YouTube' | ' youtube' | 'YouTube' | 'youtube',,fades,0,,0.207,0.172,-4.016,0.409,-1.0,25.58,15.57,1.11
+噪音,'噪音',rumble,appears,0,,0.138,0.034,4.016,0.727,1.0,1.11,18.91,25.58
+noise,' Noise' | ' noise' | 'Noise' | 'noise',,fades,0,,0.069,0.103,-3.818,0.368,-1.0,22.25,14.46,1.11
+geile,' Geile' | ' geile',,appears,1,L38–45,0.621,0.103,3.809,0.265,1.0,11.12,51.17,162.4
+rooms,' Rooms' | ' rooms' | 'Rooms' | 'rooms',,fades,0,,0.138,0.207,-3.715,0.574,-1.0,64.52,30.03,4.45
+虚构,'虚构',to make up,appears,0,,0.345,0.034,3.373,0.235,1.0,5.56,18.91,62.29
+1,'1',,fades,0,,0.138,0.241,-3.13,0.526,-1.0,23.36,12.24,2.22
+in,'\tin' | ' IN' | ' In' | ' in' | 'IN' | 'In' | 'in',,fades,0,,0.138,0.345,-3.073,0.97,-1.0,41.16,5.56,4.45
+loud,' Loud' | ' loud' | 'LOUD' | 'loud',,fades,0,,0.069,0.069,-3.062,0.056,-1.0,22.25,21.13,2.22
+餐桌,'餐桌',dining table,fades,0,,0.034,0.034,-3.062,0.5,-1.0,22.25,12.24,2.22
+the,'\tthe' | ' THE' | ' The' | ' the' | 'THE' | 'The' | 'the',,fades,0,,0.241,0.448,-2.922,0.633,-1.0,62.29,27.81,7.79
+视觉,'视觉',sight,fades,0,,0.069,0.207,-2.866,0.821,-1.0,35.6,10.01,4.45
+ㅤ,'ㅤ',,fades,0,,0.172,0.241,-2.843,0.304,-1.0,58.95,43.38,7.79
+感受,'感受',to sense,fades,0,,0.138,0.172,-2.821,0.333,-1.0,34.48,24.47,4.45
+2,'2',,fades,0,,0.207,0.241,-2.636,0.444,-1.0,23.36,14.46,3.34
+会议室,'会议室',meeting room,fades,0,,0.103,0.172,-2.458,0.4,-1.0,26.7,17.8,4.45
+瞭解並,'瞭解並',approx. variant of… / and,appears,0,,0.276,0.034,2.297,0.514,1.0,10.01,31.15,51.17
+隔音,'隔音',soundproofing,fades,0,,0.138,0.172,-2.286,0.2,-1.0,34.48,28.92,6.67
+车祸,'车祸',traffic accident,appears,0,,0.138,0.034,2.2,0.375,1.0,4.45,11.12,22.25
+room,' ROOM' | ' Room' | ' room' | 'ROOM' | 'Room' | 'room',,fades,0,,0.276,0.241,-2.113,0.338,-1.0,97.89,72.3,22.25
+a,'\tA' | '\ta' | ' A' | ' a' | 'A' | 'a',,fades,0,,0.345,0.414,-2.078,0.458,-1.0,34.48,22.25,7.79
+walking,' Walking' | ' walking' | 'Walking' | 'walking',,fades,0,,0.103,0.138,-2.036,0.35,-1.0,28.92,21.13,6.67
+didn,' Didn' | ' didn' | 'Didn' | 'didn',,appears,1,L0–5,0.241,0.069,1.983,0.818,1.0,7.79,27.81,32.26
+询问,'询问',to inquire,fades,0,,0.069,0.069,-1.983,0.409,-1.0,32.26,22.25,7.79
+furniture,' Furniture' | ' furniture',,fades,0,,0.069,0.103,-1.923,0.556,-1.0,26.7,15.57,6.67
+what,' WHAT' | ' What' | ' what' | 'WHAT' | 'What' | 'what',,fades,0,,0.31,0.379,-1.805,0.176,-1.0,78.98,68.97,22.25
+的回答,'的回答',approx. of / to reply,fades,0,,0.069,0.138,-1.799,0.625,-1.0,24.47,13.35,6.67
+美术馆,'美术馆',art gallery,appears,0,,0.241,0.069,1.772,0.222,1.0,7.79,12.24,27.81
+observing,' observing',,fades,0,,0.103,0.103,-1.751,0.15,-1.0,31.15,27.81,8.9
+how,' HOW' | ' How' | ' how' | 'HOW' | 'How' | 'how',,fades,0,,0.103,0.31,-1.66,0.745,-1.0,88.99,43.38,27.81
+桌,'桌',table,fades,0,,0.069,0.103,-1.64,0.25,-1.0,32.26,26.7,10.01
+candle,' Candle' | ' candle',,fades,0,,0.069,0.069,-1.591,0.6,-1.0,24.47,14.46,7.79
+如何,'如何',how,fades,0,,0.103,0.103,-1.59,0.571,-1.0,34.48,21.13,11.12
+回答,'回答',to reply,fades,0,,0.103,0.172,-1.552,0.846,-1.0,43.38,18.91,14.46
+watch,' Watch' | ' watch' | 'WATCH' | 'watch',,appears,0,,0.069,0.034,1.526,0.571,1.0,7.79,16.69,23.36
+你,'你',"you (informal, as opposed to…",appears,0,,0.207,0.103,1.485,0.824,1.0,10.01,25.58,28.92
+客厅,'客厅',living room,fades,0,,0.138,0.138,-1.485,0.294,-1.0,28.92,23.36,10.01
+窗外,'窗外',approx. window / outside,fades,0,,0.138,0.172,-1.473,0.645,-1.0,53.39,31.15,18.91
+candles,' candles',,fades,0,,0.103,0.138,-1.449,0.56,-1.0,43.38,27.81,15.57
+erotische,' Erotische' | ' erotische',,appears,1,"L39–42, 44–45",0.759,0.276,1.448,0.266,1.0,88.99,130.14,243.6
+噪声,'噪声',noise,appears,0,,0.138,0.034,1.426,0.762,1.0,13.35,31.15,36.71
+fetisch,' fetisch',,appears,1,"L39–42, 45, 59–60",0.414,0.172,1.353,0.303,1.0,46.72,68.97,120.13
+pornost,' pornost',,appears,0,,0.172,0.103,1.34,0.563,1.0,11.12,21.13,28.92
+房间,'房间',room,fades,0,,0.414,0.379,-1.338,0.176,-1.0,135.71,121.25,53.39
+观看,'观看',to watch,appears,0,,0.103,0.069,1.071,0.353,1.0,16.69,23.36,35.6
+maybe,' Maybe' | ' maybe' | 'Maybe' | 'maybe',,,1,L0–25,0.345,0.0,6.341,1.111,0.5,0.0,44.49,40.04
+things,' Things' | ' things' | 'Things' | 'things',,,0,,0.345,0.0,4.671,2.727,0.5,0.0,33.37,12.24
+something,' Something' | ' something' | 'Something' | 'something',,,0,,0.31,0.0,4.232,5.0,0.5,0.0,44.49,8.9
+your,' YOUR' | ' Your' | ' your' | 'YOUR' | 'Your' | 'your',,,0,,0.345,0.345,-2.581,-0.264,-0.5,95.66,116.8,15.57
+someone,' Someone' | ' someone' | 'Someone' | 'someone',,,0,,0.448,0.069,1.836,1.688,0.5,13.35,73.41,48.94
+沉默,'沉默',taciturn,,0,,0.138,0.034,1.034,1.167,0.5,12.24,27.81,25.58
+录音,'录音',to record sound,,0,,0.069,0.069,-0.971,-0.182,-0.5,24.47,26.7,12.24
+describe,' Describe' | ' describe' | 'Describe' | 'describe',,,0,,0.138,0.207,-0.958,0.458,-1.0,54.51,42.27,27.81
+alright,' Alright' | ' alright' | 'Alright',,,0,,0.241,0.103,0.885,0.211,1.0,24.47,28.92,45.61
+描述,'描述',to describe,,0,,0.241,0.207,-0.881,0.379,-1.0,70.08,57.84,37.82
+suddenly,' Suddenly' | ' suddenly' | 'Suddenly',,,0,,0.172,0.034,0.872,1.417,0.5,15.57,34.48,28.92
+想象,'想象',to imagine,,0,,0.379,0.276,0.871,0.944,1.0,47.83,85.65,87.88
+imagine,' Imagine' | ' imagine' | 'Imagine',,,0,,0.207,0.207,-0.85,0.143,-1.0,34.48,32.26,18.91
+when,'\twhen' | ' WHEN' | ' When' | ' when' | 'When' | 'when',,,0,,0.207,0.276,-0.822,0.722,-1.0,45.61,31.15,25.58
+提问,'提问',to question,,0,,0.138,0.138,-0.805,0.158,-1.0,48.94,45.61,27.81
+观察,'观察',to observe,,0,,0.241,0.379,-0.723,0.737,-1.0,106.79,75.64,64.52
+教室,'教室',classroom,,0,,0.207,0.207,-0.641,0.833,-1.0,36.71,25.58,23.36
+感官,'感官',sense,,0,,0.103,0.069,-0.636,0.75,-1.0,24.47,17.8,15.57
+你的,'你的',"approx. you (informal,… / of",,0,,0.207,0.103,0.625,1.8,0.5,20.02,40.04,31.15
+quiet,' Quiet' | ' quiet' | 'Quiet' | 'quiet',,,0,,0.207,0.241,-0.576,-1.083,-0.5,40.04,54.51,26.7
+描写,'描写',to describe,,0,,0.069,0.103,0.572,-0.625,0.5,17.8,12.24,26.7
+思考,'思考',to reflect on,,0,,0.138,0.138,-0.528,0.231,-1.0,46.72,43.38,32.26
+椅子,'椅子',chair,,0,,0.103,0.103,0.526,0.0,0.866,22.25,22.25,32.26
+whisper,' Whisper' | ' whisper',,,0,,0.207,0.103,0.512,2.857,0.5,17.8,40.04,25.58
+why,' WHY' | ' Why' | ' why' | 'Why' | 'why',,,0,,0.103,0.103,0.487,0.143,1.0,18.91,20.02,26.7
+安静,'安静',quiet,,0,,0.276,0.276,-0.467,-0.12,-0.5,100.11,103.45,72.3
+you,' YOU' | ' You' | ' you' | 'YOU' | 'You' | 'you',,,0,,0.379,0.379,-0.442,-2.059,-0.5,71.19,110.12,52.28
+桌子上,'桌子上',approx. table / upper,,0,,0.103,0.103,-0.425,0.714,-1.0,30.03,24.47,22.25
+watching,' Watching' | ' watching' | 'Watching',,,0,,0.103,0.069,0.421,1.417,0.5,38.93,57.84,52.28
+家具,'家具',furniture,,0,,0.138,0.103,-0.407,0.143,-1.0,31.15,30.03,23.36
+展厅,'展厅',approx. surname Zhan / (reception)…,,0,,0.103,0.103,0.383,0.2,1.0,17.8,18.91,23.36
+窗户,'窗户',window,,0,,0.103,0.103,-0.363,0.429,-1.0,34.48,31.15,26.7
+happened,' happened',,,0,,0.069,0.069,-0.332,-1.0,-0.5,21.13,25.58,16.69
+寂静,'寂静',quiet,,0,,0.207,0.207,-0.306,-0.067,-0.5,86.76,87.88,70.08
+windows,' WINDOWS' | ' Windows' | ' windows' | 'WINDOWS' | 'Windows' | 'windows',,,0,,0.103,0.103,0.302,0.4,1.0,23.36,25.58,28.92
+okay,' Okay' | ' okay' | 'Okay' | 'okay',,,0,,0.207,0.207,-0.301,0.125,-1.0,46.72,45.61,37.82
+just,' JUST' | ' Just' | ' just' | 'JUST' | 'Just' | 'just',,,0,,0.241,0.034,0.292,35.0,0.5,4.45,43.38,5.56
+looking,' Looking' | ' looking' | 'Looking' | 'looking',,,0,,0.138,0.172,-0.283,-0.25,-0.5,24.47,25.58,20.02
+почем,' Почем' | ' почем',,,0,,0.103,0.138,-0.27,-0.25,-0.5,25.58,26.7,21.13
+房间里,'房间里',approx. room / lining,,0,,0.241,0.172,-0.22,-3.0,-0.5,46.72,66.74,40.04
+chairs,' Chairs' | ' chairs',,,0,,0.103,0.103,-0.167,1.0,-0.866,30.03,26.7,26.7
+happens,' happens',,,0,,0.069,0.069,-0.148,-1.0,-0.5,22.25,24.47,20.02
+当你,'当你',approx. (onom.) dong / you…,,0,,0.138,0.103,0.145,2.667,0.5,31.15,40.04,34.48
+桌子,'桌子',table,,0,,0.103,0.103,-0.086,-0.0,-0.866,37.82,37.82,35.6
+silence,' Silence' | ' silence',,,0,,0.172,0.172,-0.079,-4.5,-0.5,41.16,51.17,38.93
+无声,'无声',soundless,,0,,0.172,0.172,-0.071,-2.5,-0.5,45.61,51.17,43.38
+happening,' happening',,,0,,0.069,0.069,0.066,3.0,0.5,23.36,26.7,24.47
+窗,'窗',old variant of 窗[chuang1],,0,,0.069,0.034,0.054,0.0,0.866,28.92,28.92,30.03
+chair,' Chair' | ' chair' | 'Chair' | 'chair',,,0,,0.069,0.069,0.0,,0.0,23.36,22.25,23.36
+doesn,' Doesn' | ' doesn' | 'doesn',,,0,,0.103,0.034,0.0,,0.0,5.56,22.25,5.56
+yourself,' Yourself' | ' yourself',,,0,,0.069,0.069,0.0,,0.0,16.69,26.7,16.69

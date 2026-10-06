@@ -143,9 +143,6 @@ h1 { font: 600 30px/1.15 var(--serif); margin: 0; letter-spacing: -.01em; text-w
 .gloss { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pill { font: 500 10.5px/1 var(--mono); padding: 3px 6px; border-radius: 99px; white-space: nowrap; letter-spacing: .02em; }
 .pill.base { background: var(--base-soft); color: var(--base); }
-.pill.maybe { border: 1px dashed var(--base); color: var(--base); padding: 2px 5px; }
-.pill.broad { border: 1px solid var(--rule); color: var(--muted); padding: 2px 5px; }
-.pill.vec { color: var(--muted); border: 1px solid var(--rule); padding: 2px 5px; }
 .pill.t-fades { background: var(--fade-soft); color: var(--fade); }
 .pill.t-appears { background: var(--appear-soft); color: var(--appear); }
 .pill.t-none { border: 1px solid var(--rule); color: var(--muted); padding: 2px 5px; }
@@ -246,7 +243,7 @@ details.method b { color: var(--ink); font-weight: 500; }
       <div>
         <p><b>Tylenol sweeps (tested).</b> Per scheme: rank correlation between the word's values and strength order. These are summed over schemes, and strengths are shuffled 100,000 times within each scheme. q is that p-value after false-discovery correction. <b>Listed</b> if q &lt; 0.05, the change is at least 2×, and the direction holds in every scheme.</p>
         <p><b>Persona suites (per question, described).</b> Each question is one 3–4 point ladder, which cannot be tested. <b>Listed</b> if the word's series never moves against the trend (ties allowed) and changes at least 2× from unsteered to the strongest strength. Expect some noise among small counts.</p>
-        <p><b>Baseline</b>: once steered, at ≥ 50% of question positions and twice as widely as unsteered (dashed: ≥ 25%), so probably the steering vector's own readout rather than content. <b>vec</b>: in the direct J-Lens readout of the character − default vector.</p>
+        <p><b>Baseline</b>: the word is in the top-10 J-Lens readout of the character − default vector itself, at any layer 0–62 (hover the pill for the layers). It is the steering vector's own readout rather than content that depends on the question.</p>
       </div>
     </div>
   </details>
@@ -273,7 +270,7 @@ details.method b { color: var(--ink); font-weight: 500; }
     { id: "persona-viewpoint-suite-alpha", group: "Per question", label: "Additive α", size: "1.7 MB" },
     { id: "persona-viewpoint-suite-band", group: "Per question", label: "Band cap β", size: "1.7 MB" },
   ];
-  const C = { word: 0, gloss: 1, variants: 2, trend: 3, flag: 4, vec: 5, sS: 6, sU: 7, qF: 8, qA: 9, fc: 10, agree: 11, onset: 12, rho: 13, pm: 14 };
+  const C = { word: 0, gloss: 1, variants: 2, trend: 3, base: 4, vecLayers: 5, sS: 6, sU: 7, qF: 8, qA: 9, fc: 10, agree: 11, onset: 12, rho: 13, pm: 14 };
   const PAGE = 40;
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -364,15 +361,10 @@ details.method b { color: var(--ink); font-weight: 500; }
   const fmtFc = (v) => (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(1);
   const fmtQ = (v) => v === null ? "—" : v >= 0.001 ? v.toFixed(3) : v.toExponential(0).replace("e-", "e−");
   const fmtRho = (v) => (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(2);
-  const isBase = (r) => r[C.flag] === 1 || r[C.flag] === 2;
+  const isBase = (r) => r[C.base] === 1;
 
   function flagPills(r) {
-    let h = "";
-    if (r[C.flag] === 2) h += `<span class="pill base" title="Suspected baseline: at ≥50% of question positions once steered">baseline</span>`;
-    else if (r[C.flag] === 1) h += `<span class="pill maybe" title="Possible baseline: at ≥25% of question positions once steered">baseline?</span>`;
-    else if (r[C.flag] === 3) h += `<span class="pill broad" title="Broad, but already so without steering">broad</span>`;
-    if (r[C.vec]) h += `<span class="pill vec" title="In the direct J-Lens readout of the character − default vector">vec</span>`;
-    return h;
+    return isBase(r) ? `<span class="pill base" title="In the top-10 readout of the character − default vector at ${esc(r[C.vecLayers])}">baseline</span>` : "";
   }
   function trendPill(r) {
     return r[C.trend] === 1 ? `<span class="pill t-fades">fades</span>` : r[C.trend] === 2 ? `<span class="pill t-appears">appears</span>` : `<span class="pill t-none">no trend</span>`;
@@ -458,7 +450,7 @@ details.method b { color: var(--ink); font-weight: 500; }
       const fades = visible.filter((r) => r[C.trend] === 1).sort(byFc);
       const appears = visible.filter((r) => r[C.trend] === 2).sort(byFc);
       const allFades = rows.filter((r) => r[C.trend] === 1).length, allAppears = rows.filter((r) => r[C.trend] === 2).length;
-      const nBase = rows.filter((r) => r[C.trend] === 2 && isBase(r)).length;
+      const nBase = (trend) => rows.filter((r) => r[C.trend] === trend && isBase(r)).length;
       const finalShare = Math.max(...unit.baselineShare.map((s) => s[s.length - 1]));
 
       let lists;
@@ -478,11 +470,11 @@ details.method b { color: var(--ink); font-weight: 500; }
            <span><b>Listed</b>: never moves against the trend, and changes at least 2× (described, not tested)</span>
            <span><b>log2FC</b>: strongest vs unsteered; −1 halved, +3 eight times more</span>
            <span><b>ρ</b>: rank correlation with strength; ties pull it towards 0</span>
-           <span><b>baseline</b>: probably the steering vector's own readout</span>`
+           <span><b>baseline</b>: in the vector's own top-10 readout at some layer</span>`
         : `<span><b>Weak → strong</b>: the word's ‰ of the grid at each strength; bold line = mean, faint lines = each of the ${R} schemes</span>
            <span><b>log2FC</b>: −1 halved, +3 eight times more (${unit.labels.length > 5 ? "two strongest vs two weakest" : "strongest vs unsteered"})</span>
            <span><b>Agree</b>: schemes where the trend has this sign (all required)</span>
-           <span><b>baseline</b>: probably the steering vector's own readout</span>`;
+           <span><b>baseline</b>: in the vector's own top-10 readout at some layer</span>`;
 
       $("main").innerHTML = `
         <section class="summary">
@@ -492,15 +484,15 @@ details.method b { color: var(--ink); font-weight: 500; }
             ${context}
             <div class="ladder" aria-label="Strength ladder">${unit.labels.map((l, i) => `${i ? '<span class="arrow">→</span>' : ""}<span class="step">${esc(l)}</span>`).join("")}</div>
             <div class="stats">
-              <div class="stat fade"><b>${allFades}</b><span>fading</span></div>
-              <div class="stat appear"><b>${allAppears}</b><span>appearing, ${nBase} baseline</span></div>
+              <div class="stat fade"><b>${allFades}</b><span>fading, ${nBase(1)} baseline</span></div>
+              <div class="stat appear"><b>${allAppears}</b><span>appearing, ${nBase(2)} baseline</span></div>
               <div class="stat"><b>${unit.tested}</b><span>words tested</span></div>
             </div>
           </div>
           <div class="crowd">
             <h3>Readout taken by baseline words</h3>
             ${crowdChart(unit)}
-            <p>Share of each cell's top-10 entries held by baseline-flagged words${perQuestion ? " on this question" : ", averaged over schemes"}. Top-10 slots are zero-sum: at ${Math.round(100 * finalShare)}% a word can lose up to ${Math.abs(Math.log2(1 - finalShare)).toFixed(1)} log2 units just from crowding.</p>
+            <p>Share of each cell's top-10 entries held by baseline words (the character − default vector's own top-10 readout, any layer)${perQuestion ? " on this question" : ", averaged over schemes"}. Top-10 slots are zero-sum: at ${Math.round(100 * finalShare)}% a word can lose up to ${Math.abs(Math.log2(1 - finalShare)).toFixed(1)} log2 units just from crowding.</p>
           </div>
         </section>
         <div class="legend" style="margin-top:22px">${legend}<span>Click a word for its full series</span></div>

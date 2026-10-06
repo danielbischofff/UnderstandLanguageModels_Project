@@ -1,12 +1,13 @@
 % Reflection in light of the research question, limitations, future directions,
 % what worked and what did not (and why).
 \section{Discussion}
-\textbf{TODO} mention that though some behavior and "point of view" was reflected in the J-Lens readout on the user's token, some shift in behavior didn't come with easily interpretible change in J-Lens token, especially in many band-capping questions.
+\label{sec:discussion}
+
+While our evidence shows that the steered personas' ``point of view'' was reflected in the J-Lens readout on the user prompt's token positions, some shift in behavior didn't come with easily interpretable change in J-Lens tokens, especially in many band-capping questions. The change in behavior seems to be much more striking than is reflected by the J-Lens tokens. As mentioned, our results are at times sensitive to the layers, the steering scheme and the steering intensity.
+Our results are by no means conclusive: They support our hypothesis, but we believe more rigorous tests and further research are needed in order to further establish it or disprove it, and to measure the extent of this effect. 
+
+\subsection{The assistant persona is still present}
+When analysing our results, we noticed that J-Lens tokens corresponding to the assistant's point of view are often still present, meaning that the steering didn't completely erase this effect in most cases, but only in some. This could be a result of the way the steering vectors were obtained: In \cite{lu2026assistant}, the original LLMs were just told to play a role, but their safety training was still in place, and may have kept the model's behavior within reasonable alignment boundaries, not too far off from an assistant persona.
 
 \subsection{Future work}
-\textbf{TODO} - Perhaps we could try other steering schemes (i.e. band cap around bigger alpha)
-
-\textbf{TODO - acknowledge that the results are somewhat anecdotal and the assistant's point of view is still there. Hypothesize that this can also be a result of the steering vectors representing a still-aligned personality to begin with, since the original LLM was just playing a role}
-
-
-\label{sec:discussion}
+We recommend future work to try other steering schemes, and improve on our methods to better quantify the effect. Another steering scheme could be for example using the band-cap method to anchor the steered projection around $\alpha \cdot p_l \cdot \hat{c}_l$, to be able to band cap the residual stream around a bigger alpha multiple of the $c_l$ direction. This would allow increasing the intensity of band-capping, while still being able to steer over multiple layers and avoiding an overshoot.
