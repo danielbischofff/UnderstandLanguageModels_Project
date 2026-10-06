@@ -260,6 +260,9 @@ src/run_sweep.py      all 275 characters, two contrasts -> out/atlas.json
 src/refusal_readout.py    the same readout on a refusal direction
 src/noise_floor.py    calibrates the atlas against random directions
 src/raw_vs_contrast.py    open question: what causes the rare-token attractor
+src/vector_topk.py    top-10 role - default readout at every layer for the steered
+                      roles -> out/vs_default_top10.json (baseline words for
+                      ../token_trend_analysis)
 src/build_web.py      inline a readout into its viewer -> out/*.html
 web/template.html         the single-character viewer
 web/atlas_template.html   the whole-cast viewer

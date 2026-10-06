@@ -1,193 +1,193 @@
-word,variants,gloss,trend,flag,in_vector_readout,spread_steered,spread_unsteered,log2fc,onset,rho,unsteered_permille,α=1.5_permille,α=4_permille
-messed,' messed',,appears,suspected baseline,True,0.8,0.0,5.902,0.029,1.0,0.0,0.86,29.4
-thing,' Thing' | ' thing' | 'THING' | 'Thing' | 'thing',,appears,suspected baseline,True,0.725,0.025,5.448,0.266,1.0,0.19,8.03,29.64
-kinda,' kinda',,appears,suspected baseline,True,0.825,0.075,5.0,0.241,1.0,1.45,16.04,62.07
-everything,' Everything' | ' everything' | 'Everything' | 'everything',,appears,suspected baseline,False,0.775,0.075,4.779,0.515,1.0,1.73,32.11,60.67
-gonna,' gonna',,appears,possible baseline,False,0.35,0.025,4.657,0.1,1.0,0.08,1.49,14.15
-没什么,'没什么',it doesn't matter,appears,possible baseline,False,0.3,0.0,4.608,0.097,1.0,0.0,1.14,11.69
-your,' YOUR' | ' Your' | ' your' | 'YOUR' | 'Your' | 'your',,fades,"broad, also unsteered",False,0.325,0.375,-4.605,0.62,-1.0,39.51,15.72,1.14
-stuff,' Stuff' | ' stuff' | 'Stuff' | 'stuff',,appears,suspected baseline,True,0.75,0.025,4.526,0.345,1.0,0.85,11.14,30.7
-赚钱,'赚钱',to earn money,appears,possible baseline,False,0.3,0.025,4.498,0.47,1.0,0.28,8.21,17.13
-weird,' Weird' | ' weird',,appears,suspected baseline,True,0.575,0.025,4.489,0.132,1.0,0.08,1.72,12.54
-yeah,' Yeah' | ' yeah' | 'Yeah' | 'yeah',,appears,suspected baseline,False,0.875,0.05,4.458,0.297,1.0,2.65,22.27,68.77
-thank,' THANK' | ' Thank' | ' thank' | 'Thank' | 'thank',,fades,,False,0.075,0.125,-4.433,0.824,-1.0,12.05,2.18,0.08
-没人,'没人',approx. not / person,appears,possible baseline,False,0.275,0.0,4.39,0.323,1.0,0.0,3.22,9.98
-everytime,' everytime',,appears,,False,0.15,0.0,4.337,0.192,1.0,0.0,1.85,9.6
-funny,' Funny' | ' funny' | 'Funny',,appears,possible baseline,True,0.475,0.0,4.335,0.134,1.0,0.0,1.29,9.59
-回应,'回应',to respond,fades,,False,0.075,0.125,-4.193,0.852,-1.0,8.64,1.28,0.0
-crazy,' Crazy' | ' crazy',,appears,suspected baseline,True,0.7,0.05,4.144,0.301,1.0,1.81,13.41,40.31
-讨论,'讨论',to discuss,fades,,False,0.05,0.075,-4.049,0.952,-1.0,7.78,0.37,0.0
-新的,'新的',approx. surname Xin / of,fades,,False,0.025,0.075,-3.996,0.759,-1.0,7.48,1.8,0.0
-ㅤ,'ㅤ',,fades,,False,0.125,0.175,-3.966,0.428,-1.0,23.71,14.02,1.05
-哪怕,'哪怕',even,appears,,False,0.075,0.0,3.932,0.458,1.0,0.0,3.27,7.13
-gotten,' gotten',,appears,possible baseline,False,0.325,0.025,3.915,0.208,1.0,0.08,1.78,8.26
-recently,' Recently' | ' recently' | 'Recently',,fades,,False,0.15,0.175,-3.897,0.665,-1.0,18.59,6.75,0.78
-s,'\tS' | ' S' | ' s' | 'S' | 's',,fades,,False,0.05,0.2,-3.897,0.731,-1.0,8.95,2.51,0.13
-拼命,'拼命',to do one's utmost,appears,,False,0.075,0.0,3.825,0.056,1.0,0.0,0.37,6.58
-靠谱,'靠谱',reliable,appears,possible baseline,False,0.35,0.025,3.818,0.271,1.0,0.4,3.62,12.24
-噱,'噱',loud laughter,appears,,True,0.1,0.0,3.788,0.0,0.866,0.0,0.0,6.41
-怎么,'怎么',how?,appears,,False,0.2,0.05,3.777,0.214,1.0,0.39,2.82,11.72
-guy,' Guy' | ' guy',,appears,possible baseline,False,0.325,0.025,3.775,0.424,1.0,0.27,4.4,10.02
-2,'2',,fades,,False,0.15,0.2,-3.769,0.221,-1.0,12.42,9.78,0.45
-暖心,'暖心',(coll.) heartwarming,fades,,False,0.1,0.225,-3.755,0.808,-1.0,6.25,1.2,0.0
-thanks,' Thanks' | ' thanks' | 'Thanks' | 'thanks',,fades,,False,0.05,0.25,-3.693,0.908,-1.0,5.97,0.55,0.0
-1,'1',,fades,,False,0.15,0.15,-3.687,0.347,-1.0,12.17,8.12,0.48
-colorful,' colorful',,fades,,False,0.0,0.05,-3.651,1.0,-0.866,5.78,0.0,0.0
-freaking,' freaking',,appears,possible baseline,False,0.35,0.0,3.647,0.017,1.0,0.0,0.1,5.76
-ˈ,'ˈ',,fades,,False,0.05,0.1,-3.627,0.95,-1.0,5.68,0.28,0.0
-实实在在,'实实在在',approx. real / really /…,appears,,False,0.2,0.025,3.6,0.656,1.0,0.08,4.32,6.54
-对话,'对话',to talk (with sb),fades,,False,0.025,0.075,-3.564,0.769,-1.0,5.41,1.25,0.0
-the,'\tthe' | ' THE' | ' The' | ' the' | 'THE' | 'The' | 'the',,fades,,False,0.1,0.25,-3.538,0.823,-1.0,17.17,3.88,1.02
-big,' BIG' | ' Big' | ' big' | 'BIG' | 'Big' | 'big',,appears,suspected baseline,False,0.55,0.05,3.526,0.7,1.0,0.83,10.61,14.81
-fake,' Fake' | ' fake' | 'Fake' | 'fake',,appears,,True,0.1,0.0,3.509,0.074,1.0,0.0,0.39,5.19
-exciting,' exciting',,fades,,False,0.15,0.2,-3.423,0.671,-1.0,16.04,5.98,1.04
-终极,'终极',ultimate,appears,,False,0.125,0.0,3.38,0.263,1.0,0.0,1.24,4.71
-没钱,'没钱',approx. not / surname Qian,appears,,True,0.2,0.0,3.379,0.0,0.866,0.0,0.0,4.7
-advice,' Advice' | ' advice' | 'Advice',,fades,,False,0.025,0.075,-3.273,0.443,-1.0,15.96,9.42,1.2
-hopes,' hopes',,fades,,False,0.1,0.125,-3.244,0.718,-1.0,4.24,1.2,0.0
-pretty,' Pretty' | ' pretty' | 'PRETTY' | 'Pretty' | 'pretty',,appears,suspected baseline,True,0.95,0.425,3.2,0.518,1.0,28.59,151.87,266.81
-geile,' Geile' | ' geile',,appears,possible baseline,True,0.25,0.05,3.16,0.223,1.0,1.01,3.69,13.0
-suggestions,' Suggestions' | ' suggestions' | 'Suggestions',,fades,,False,0.05,0.05,-3.128,0.706,-1.0,3.87,1.14,0.0
-惊喜,'惊喜',nice surprise,fades,,False,0.1,0.175,-3.112,0.777,-1.0,6.34,1.64,0.29
-新篇章,'新篇章',approx. surname Xin / chapter,fades,,False,0.05,0.05,-3.103,0.304,-1.0,3.8,2.64,0.0
-这些东西,'这些东西',approx. these / thing,appears,,False,0.125,0.025,3.053,0.376,1.0,0.12,1.8,4.61
-兴奋,'兴奋',excited,fades,,False,0.1,0.1,-3.044,0.205,-1.0,11.84,9.62,1.0
-somehow,' Somehow' | ' somehow',,appears,possible baseline,True,0.35,0.05,3.041,0.601,1.0,2.21,14.01,21.84
-everybody,' Everybody' | ' everybody' | 'Everybody',,appears,,False,0.1,0.0,3.037,0.099,1.0,0.0,0.36,3.6
-bigger,' bigger',,appears,,False,0.1,0.0,2.993,0.492,1.0,0.0,1.71,3.48
-newfound,' newfound',,fades,,False,0.05,0.05,-2.946,0.463,-1.0,3.35,1.8,0.0
-欣喜,'欣喜',happy,fades,,False,0.075,0.1,-2.909,0.831,-1.0,4.47,0.89,0.16
-喜悦,'喜悦',happy,fades,,False,0.125,0.25,-2.885,0.727,-1.0,9.97,3.39,0.92
-in,'\tin' | ' IN' | ' In' | ' in' | 'IN' | 'In' | 'in',,fades,,False,0.1,0.2,-2.878,0.954,-1.0,12.68,1.81,1.29
-a,'\tA' | '\ta' | ' A' | ' a' | 'A' | 'a',,fades,,False,0.075,0.175,-2.831,0.977,-1.0,4.59,0.32,0.22
-未来发展,'未来发展',approx. future / development,fades,,False,0.1,0.1,-2.826,0.561,-1.0,13.37,6.68,1.46
-询问,'询问',to inquire,fades,,False,0.05,0.1,-2.762,0.539,-1.0,5.63,2.81,0.4
-feeling,' Feeling' | ' feeling',,fades,,False,0.1,0.225,-2.727,0.929,-1.0,32.98,6.59,4.56
-favorite,' Favorite' | ' favorite' | 'Favorite' | 'favorite',,fades,,False,0.1,0.15,-2.711,0.616,-1.0,3.83,1.57,0.16
-荣耀,'荣耀',honor,fades,,False,0.025,0.025,-2.699,0.211,-1.0,2.75,2.17,0.0
-热议,'热议',to discuss passionately,fades,,False,0.1,0.15,-2.687,0.579,-1.0,8.95,4.33,0.97
-decades,' decades',,fades,,False,0.075,0.075,-2.685,0.39,-1.0,8.54,5.57,0.91
-努力,'努力',to make an effort,fades,,False,0.05,0.05,-2.629,0.591,-1.0,8.3,3.94,0.92
-展望,'展望',outlook,fades,,False,0.1,0.1,-2.628,0.497,-1.0,6.4,3.53,0.62
-老百姓,'老百姓',ordinary people,appears,,False,0.1,0.025,2.613,0.275,1.0,0.16,1.09,3.55
-wasn,' wasn',,appears,,False,0.2,0.05,2.58,0.442,1.0,0.34,2.2,4.54
-answer,'\tanswer' | ' Answer' | ' answer' | 'Answer' | 'answer',,fades,,False,0.125,0.175,-2.562,0.66,-1.0,11.36,4.86,1.51
-渴望,'渴望',to thirst for,fades,,False,0.075,0.075,-2.537,0.532,-1.0,3.45,1.71,0.18
-new,' NEW' | ' New' | ' new' | 'new',,fades,,False,0.1,0.125,-2.531,0.486,-1.0,13.83,8.06,1.98
-needed,' Needed' | ' needed' | 'Needed' | 'needed',,fades,,False,0.075,0.075,-2.489,0.403,-1.0,4.52,2.86,0.4
-didn,' Didn' | ' didn' | 'Didn' | 'didn',,appears,possible baseline,False,0.325,0.1,2.465,0.566,1.0,2.52,10.24,16.16
-celebr,' Celebr' | ' celebr' | 'Celebr',,fades,,False,0.15,0.15,-2.454,0.293,-1.0,6.9,5.12,0.85
-guys,' Guys' | ' guys',,appears,suspected baseline,False,0.75,0.25,2.445,0.538,1.0,13.21,46.01,74.14
-职场,'职场',workplace,fades,,False,0.1,0.05,-2.437,0.063,-1.0,8.52,8.06,1.17
-翻译,'翻译',to translate,fades,,False,0.05,0.075,-2.417,0.388,-1.0,13.37,8.99,2.1
-this,'\tthis' | ' THIS' | ' This' | ' this' | 'THIS' | 'This' | 'this',,fades,,False,0.1,0.175,-2.39,0.58,-1.0,7.01,3.49,0.93
-i,'\tI' | ' I' | ' i' | 'I' | 'i',,fades,"broad, also unsteered",False,0.275,0.325,-2.378,0.844,-1.0,27.46,8.41,4.88
-achievements,' achievements',,fades,,False,0.025,0.05,-2.348,0.82,-1.0,6.67,1.94,0.91
-建议,'建议',to propose,fades,,False,0.05,0.125,-2.345,0.554,-1.0,15.15,8.19,2.58
-couldn,' Couldn' | ' couldn' | 'Couldn' | 'couldn',,appears,possible baseline,False,0.275,0.125,2.329,0.538,1.0,1.56,6.03,9.86
-3,'3',,fades,,False,0.15,0.15,-2.281,0.406,-1.0,5.65,3.67,0.77
-的回答,'的回答',approx. of / to reply,fades,,False,0.05,0.125,-2.28,0.44,-1.0,4.04,2.45,0.44
-excitement,' excitement',,fades,,False,0.1,0.1,-2.254,0.675,-1.0,8.93,3.9,1.48
-really,' REALLY' | ' Really' | ' really' | 'Really' | 'really',,appears,"broad, also unsteered",True,0.95,0.55,2.232,0.588,1.0,77.82,248.04,367.49
-got,' GOT' | ' Got' | ' got' | 'Got' | 'got',,appears,suspected baseline,False,0.75,0.175,2.208,0.439,1.0,12.57,33.34,59.86
-4,'4',,fades,,False,0.1,0.125,-2.201,0.187,-1.0,3.32,2.76,0.33
-feel,' Feel' | ' feel' | 'Feel' | 'feel',,fades,,False,0.1,0.25,-2.198,0.988,-1.0,15.45,3.13,2.98
-celebration,' Celebration' | ' celebration',,fades,,False,0.175,0.175,-2.148,0.38,-1.0,13.37,9.29,2.63
-even,' EVEN' | ' Even' | ' even' | 'Even' | 'even',,fades,,False,0.15,0.175,-2.048,0.632,-1.0,8.31,4.09,1.63
-5,'5',,fades,,False,0.1,0.125,-2.009,0.635,-1.0,5.03,2.39,0.87
-you,' YOU' | ' You' | ' you' | 'YOU' | 'You' | 'you',,fades,"broad, also unsteered",False,0.425,0.325,-1.991,0.373,-1.0,39.23,28.14,9.49
-圆满,'圆满',satisfactory,fades,,False,0.075,0.075,-1.817,0.501,-1.0,9.34,5.81,2.29
-7,'7',,fades,,False,0.1,0.125,-1.813,0.4,-1.0,2.33,1.52,0.31
-即将到来,'即将到来',approx. about to / to…,fades,,False,0.075,0.075,-1.77,0.643,-1.0,14.8,7.84,3.99
-isn,' Isn' | ' isn' | 'Isn',,appears,,False,0.15,0.025,1.726,0.881,1.0,0.56,2.73,3.02
-amazing,' amazing',,fades,,False,0.1,0.075,-1.724,0.052,-1.0,3.1,2.97,0.59
-newbie,' newbie',,fades,,False,0.075,0.075,-1.724,0.418,-1.0,2.81,1.85,0.5
-prostitutas,' Prostitutas',,appears,,True,0.15,0.075,1.696,0.234,1.0,0.65,1.25,3.21
-想要,'想要',to want to,fades,,False,0.075,0.1,-1.675,0.617,-1.0,4.42,2.34,1.04
-excited,' excited',,fades,,False,0.1,0.1,-1.614,0.348,-1.0,23.99,18.25,7.5
-fetisch,' fetisch',,appears,,True,0.15,0.1,1.606,0.573,1.0,5.55,12.63,17.92
-my,'\tmy' | ' My' | ' my' | 'My' | 'my',,fades,"broad, also unsteered",False,0.375,0.475,-1.551,0.499,-1.0,32.32,21.53,10.7
-bought,' bought',,appears,,False,0.075,0.05,1.504,0.371,1.0,4.35,7.66,13.27
-8,'8',,fades,,False,0.1,0.125,-1.419,0.277,-1.0,2.42,1.91,0.59
-whats,' Whats' | ' whats' | 'Whats',,appears,,False,0.125,0.025,1.403,0.707,1.0,0.67,2.03,2.6
-people,' PEOPLE' | ' People' | ' people' | 'People' | 'people',,fades,,False,0.05,0.075,-1.359,0.411,-1.0,3.96,2.84,1.24
-weeks,' Weeks' | ' weeks' | 'weeks',,fades,,False,0.05,0.05,-1.293,0.385,-1.0,3.98,2.96,1.33
-months,' Months' | ' months' | 'months',,fades,,False,0.075,0.1,-1.225,0.381,-1.0,14.09,10.91,5.74
-成就感,'成就感',sense of achievement,fades,,False,0.05,0.05,-1.207,0.536,-1.0,2.6,1.66,0.84
-that,'\tthat' | ' THAT' | ' That' | ' that' | 'That' | 'that',,fades,,False,0.125,0.225,-1.203,0.409,-1.0,4.07,3.01,1.49
-what,' WHAT' | ' What' | ' what' | 'WHAT' | 'What' | 'what',,fades,"broad, also unsteered",False,0.3,0.375,-1.18,0.65,-1.0,25.35,15.97,10.91
-终于,'终于',at last,fades,,False,0.125,0.1,-1.109,0.069,-1.0,10.23,9.83,4.48
-future,' Future' | ' future' | 'Future' | 'future',,fades,,False,0.125,0.125,-1.066,0.508,-1.0,26.53,19.36,12.41
-erotische,' Erotische' | ' erotische',,appears,possible baseline,True,0.35,0.15,1.064,0.31,1.0,30.96,41.61,65.29
-回答,'回答',to reply,fades,,False,0.125,0.175,-1.057,0.738,-1.0,21.44,13.03,10.05
-years,' YEARS' | ' Years' | ' years' | 'Years' | 'years',,fades,,False,0.1,0.1,-1.035,0.4,-1.0,41.33,32.77,19.92
-wow,' WOW' | ' Wow' | ' wow' | 'Wow' | 'wow',,fades,,False,0.1,0.15,-1.005,0.139,-1.0,2.64,2.42,1.07
-好多,'好多',many,,,False,0.2,0.05,3.426,1.373,0.5,0.26,10.43,7.67
-today,' TODAY' | ' Today' | ' today' | 'Today' | 'today',,,,False,0.025,0.125,-2.806,1.009,-0.5,5.23,0.28,0.32
-帮我,'帮我',approx. to help / I,,,False,0.075,0.275,-2.108,1.124,-0.5,4.84,0.23,0.74
-everyone,' Everyone' | ' everyone' | 'Everyone' | 'everyone',,,possible baseline,False,0.3,0.125,2.041,1.238,0.5,2.09,12.08,10.16
-yes,' YES' | ' Yes' | ' yes' | 'YES' | 'Yes' | 'yes',,,,False,0.1,0.1,-1.898,-1.958,-0.5,3.4,8.98,0.55
-something,' Something' | ' something' | 'Something' | 'something',,,possible baseline,False,0.35,0.0,1.806,7.064,0.5,0.0,8.82,1.25
-someday,' someday',,,,False,0.1,0.0,1.738,2.808,0.5,0.0,3.28,1.17
-maybe,' Maybe' | ' maybe' | 'Maybe' | 'maybe',,,suspected baseline,False,0.725,0.3,1.331,1.112,0.5,20.67,56.37,52.77
-9,'9',,,,False,0.1,0.125,-1.264,-0.898,-0.5,2.48,4.04,0.74
-nice,' Nice' | ' nice' | 'Nice' | 'nice',,,"broad, also unsteered",True,0.3,0.25,-1.103,-2.067,-0.5,11.04,23.79,4.87
-celebrate,' celebrate',,,,False,0.175,0.2,-1.037,-0.159,-0.5,4.53,4.94,1.95
-incredibly,' incredibly',,,,False,0.15,0.1,1.028,1.471,0.5,2.71,7.62,6.05
-doesn,' Doesn' | ' doesn' | 'doesn',,,,False,0.175,0.1,1.026,1.968,0.5,0.99,4.02,2.53
-未来,'未来',future,,,False,0.1,0.1,-0.996,0.009,-1.0,22.33,22.23,10.95
-veggies,' veggies',,,,False,0.125,0.05,0.994,0.946,1.0,1.6,3.57,3.68
-please,' PLEASE' | ' Please' | ' please' | 'PLEASE' | 'Please' | 'please',,,,False,0.1,0.125,-0.987,0.39,-1.0,3.51,2.73,1.52
-你觉得,'你觉得',"approx. you (informal,… / to…",,,False,0.075,0.125,-0.976,0.812,-1.0,4.35,2.41,1.97
-接下来,'接下来',to accept,,,False,0.05,0.05,-0.968,0.082,-1.0,7.26,6.95,3.47
-pornost,' pornost',,,,False,0.125,0.1,0.93,0.458,1.0,2.85,4.23,5.87
-how,' HOW' | ' How' | ' how' | 'HOW' | 'How' | 'how',,,,False,0.2,0.325,-0.928,0.868,-1.0,26.35,15.3,13.62
-to,'\tto' | ' TO' | ' To' | ' to' | 'To' | 'to',,,,False,0.075,0.15,-0.907,1.391,-0.5,8.14,2.53,4.11
-pride,' Pride' | ' pride',,,,False,0.05,0.05,-0.888,0.246,-1.0,4.54,3.97,2.23
-alright,' Alright' | ' alright' | 'Alright',,,,False,0.125,0.05,0.855,1.218,0.5,3.29,7.02,6.35
-wants,' Wants' | ' wants',,,,False,0.125,0.075,-0.837,0.264,-1.0,6.82,5.97,3.6
-wanted,' Wanted' | ' wanted' | 'wanted',,,,False,0.15,0.15,-0.824,0.031,-1.0,20.59,20.3,11.42
-reddit,' Reddit' | ' reddit' | 'Reddit' | 'reddit',,,,False,0.2,0.325,-0.819,0.802,-1.0,11.34,7.23,6.21
-奋斗,'奋斗',to strive,,,False,0.075,0.075,-0.8,-1.667,-0.5,2.44,4.52,1.19
-庆祝,'庆祝',to celebrate,,"broad, also unsteered",False,0.3,0.3,-0.797,-0.187,-0.5,29.95,32.37,17.02
-congrat,' congrat',,,,False,0.125,0.075,0.76,-0.216,0.5,2.38,1.95,4.37
-want,'\twant' | ' WANT' | ' Want' | ' want' | 'Want' | 'want',,,,False,0.175,0.175,-0.733,-0.031,-0.5,15.5,15.69,9.12
-cong,' Cong' | ' cong' | 'Cong',,,,False,0.125,0.1,0.732,-0.057,0.5,2.54,2.43,4.56
-celebrating,' celebrating',,,,False,0.125,0.1,-0.689,-1.139,-0.5,4.87,7.19,2.83
-finally,'\tfinally' | ' Finally' | ' finally' | 'Finally' | 'finally',,,,False,0.175,0.15,0.684,1.688,0.5,6.19,13.05,10.25
-now,'\tnow' | ' NOW' | ' Now' | ' now' | 'NOW' | 'Now' | 'now',,,"broad, also unsteered",False,0.275,0.25,0.666,1.362,0.5,6.32,11.78,10.33
-congratulations,' Congratulations' | ' congratulations' | 'Congratulations',,,,False,0.2,0.25,-0.581,0.779,-1.0,45.93,33.94,30.55
-myself,' myself',,,,False,0.125,0.125,-0.566,0.61,-1.0,11.79,9.36,7.8
-你的,'你的',"approx. you (informal,… / of",,"broad, also unsteered",False,0.25,0.175,0.558,0.664,1.0,4.28,5.77,6.53
-咱们,'咱们',(dialect) I or me,,"broad, also unsteered",False,0.625,0.475,0.538,1.155,0.5,24.29,37.21,35.48
-tomorrow,' Tomorrow' | ' tomorrow' | 'Tomorrow',,,,False,0.125,0.075,0.53,1.256,0.5,3.9,6.35,5.85
-for,'\tfor' | ' FOR' | ' For' | ' for' | 'For' | 'for',,,,False,0.125,0.175,-0.523,1.033,-0.5,14.85,10.03,10.18
-getting,' Getting' | ' getting' | 'Getting' | 'getting',,,"broad, also unsteered",False,0.275,0.175,0.501,2.109,0.5,5.98,11.66,8.68
-提问,'提问',to question,,,False,0.1,0.125,-0.484,0.714,-1.0,25.72,20.39,18.25
-congr,' congr',,,,False,0.125,0.1,0.479,0.0,0.866,5.53,5.53,7.9
-proud,' Proud' | ' proud',,,,False,0.2,0.2,-0.461,0.222,-1.0,13.96,13.09,10.01
-feels,' feels' | 'Feels',,,,False,0.1,0.125,-0.454,1.756,-0.5,10.46,5.26,7.5
-newest,' newest',,,,False,0.025,0.025,-0.454,0.264,-1.0,8.1,7.49,5.78
-someone,' Someone' | ' someone' | 'Someone' | 'someone',,,,False,0.2,0.05,0.448,7.065,0.5,0.67,3.68,1.1
-下一步,'下一步',the next step,,,False,0.05,0.05,-0.431,-0.363,-0.5,5.82,6.41,4.19
-回复,'回复',to recover,,,False,0.1,0.1,-0.408,1.78,-0.5,6.24,3.29,4.58
-things,' Things' | ' things' | 'Things' | 'things',,,"broad, also unsteered",False,0.375,0.325,-0.394,-2.885,-0.5,35.45,60.24,26.86
-should,' SHOULD' | ' Should' | ' should' | 'Should' | 'should',,,,False,0.075,0.075,-0.374,0.388,-1.0,6.7,6.06,5.05
-congratulate,' congratulate',,,,False,0.1,0.075,0.361,-0.221,0.5,1.89,1.74,2.57
-started,' Started' | ' started' | 'Started' | 'started',,,,False,0.075,0.05,-0.356,0.478,-1.0,11.37,10.13,8.77
-kids,' Kids' | ' kids' | 'Kids' | 'kids',,,possible baseline,False,0.4,0.1,-0.308,0.284,-1.0,30.87,29.15,24.84
-and,'\tand' | ' AND' | ' And' | ' and' | 'AND' | 'And' | 'and',,,,False,0.225,0.3,-0.306,1.221,-0.5,22.65,17.25,18.23
-folks,' folks',,,possible baseline,False,0.45,0.225,-0.27,-4.731,-0.5,10.25,18.94,8.41
-自豪,'自豪',proud (of one's achievements etc),,,False,0.075,0.05,-0.262,-0.094,-0.5,22.22,22.57,18.45
-祝贺,'祝贺',to congratulate,,,False,0.1,0.1,0.238,-0.738,0.5,9.9,8.52,11.77
-未来的,'未来的',approx. future / of,,,False,0.075,0.075,-0.231,-0.627,-0.5,8.56,9.4,7.22
-next,'\tnext' | ' NEXT' | ' Next' | ' next' | 'NEXT' | 'Next' | 'next',,,,False,0.1,0.1,-0.164,-0.163,-0.5,14.17,14.43,12.59
-just,' JUST' | ' Just' | ' just' | 'JUST' | 'Just' | 'just',,,"broad, also unsteered",False,0.325,0.175,-0.147,-31.718,-0.5,2.97,13.65,2.63
-思考,'思考',to reflect on,,,False,0.075,0.075,0.124,-1.875,0.5,16.34,13.51,17.86
-恭喜,'恭喜',to congratulate,,,False,0.15,0.1,-0.096,-1.373,-0.5,18.95,20.66,17.7
-because,' Because' | ' because' | 'Because' | 'because',,,,False,0.125,0.125,-0.09,5.155,-0.5,5.41,3.57,5.05
-but,' BUT' | ' But' | ' but' | 'But' | 'but',,,,False,0.2,0.175,0.072,1.678,0.5,31.49,34.23,33.12
-okay,' Okay' | ' okay' | 'Okay' | 'okay',,,,False,0.2,0.15,0.069,3.926,0.5,14.24,17.07,14.96
-lucky,' Lucky' | ' lucky',,,,False,0.15,0.05,0.065,24.849,0.5,1.11,2.96,1.19
-骄傲,'骄傲',pride,,,False,0.125,0.075,-0.04,-11.54,-0.5,8.16,10.87,7.93
-0,'0',,,,False,0.125,0.125,0.02,48.136,0.5,2.06,3.76,2.1
+word,variants,gloss,trend,baseline,vector_layers,spread_steered,spread_unsteered,log2fc,onset,rho,unsteered_permille,α=1.5_permille,α=4_permille
+messed,' messed',,appears,1,"L16–39, 42–44",0.8,0.0,5.902,0.029,1.0,0.0,0.86,29.4
+thing,' Thing' | ' thing' | 'THING' | 'Thing' | 'thing',,appears,1,"L6–22, 27–37",0.725,0.025,5.448,0.266,1.0,0.19,8.03,29.64
+kinda,' kinda',,appears,1,"L3, 5–37",0.825,0.075,5.0,0.241,1.0,1.45,16.04,62.07
+everything,' Everything' | ' everything' | 'Everything' | 'everything',,appears,0,,0.775,0.075,4.779,0.515,1.0,1.73,32.11,60.67
+gonna,' gonna',,appears,1,"L0–3, 12–17",0.35,0.025,4.657,0.1,1.0,0.08,1.49,14.15
+没什么,'没什么',it doesn't matter,appears,0,,0.3,0.0,4.608,0.097,1.0,0.0,1.14,11.69
+your,' YOUR' | ' Your' | ' your' | 'YOUR' | 'Your' | 'your',,fades,0,,0.325,0.375,-4.605,0.62,-1.0,39.51,15.72,1.14
+stuff,' Stuff' | ' stuff' | 'Stuff' | 'stuff',,appears,1,L6–36,0.75,0.025,4.526,0.345,1.0,0.85,11.14,30.7
+赚钱,'赚钱',to earn money,appears,1,L39,0.3,0.025,4.498,0.47,1.0,0.28,8.21,17.13
+weird,' Weird' | ' weird',,appears,1,"L23–24, 26–34, 37, 42–44, 46–47",0.575,0.025,4.489,0.132,1.0,0.08,1.72,12.54
+yeah,' Yeah' | ' yeah' | 'Yeah' | 'yeah',,appears,1,L26–32,0.875,0.05,4.458,0.297,1.0,2.65,22.27,68.77
+thank,' THANK' | ' Thank' | ' thank' | 'Thank' | 'thank',,fades,0,,0.075,0.125,-4.433,0.824,-1.0,12.05,2.18,0.08
+没人,'没人',approx. not / person,appears,0,,0.275,0.0,4.39,0.323,1.0,0.0,3.22,9.98
+everytime,' everytime',,appears,0,,0.15,0.0,4.337,0.192,1.0,0.0,1.85,9.6
+funny,' Funny' | ' funny' | 'Funny',,appears,1,L35–38,0.475,0.0,4.335,0.134,1.0,0.0,1.29,9.59
+回应,'回应',to respond,fades,0,,0.075,0.125,-4.193,0.852,-1.0,8.64,1.28,0.0
+crazy,' Crazy' | ' crazy',,appears,1,"L15, 23–24, 29–34",0.7,0.05,4.144,0.301,1.0,1.81,13.41,40.31
+讨论,'讨论',to discuss,fades,0,,0.05,0.075,-4.049,0.952,-1.0,7.78,0.37,0.0
+新的,'新的',approx. surname Xin / of,fades,0,,0.025,0.075,-3.996,0.759,-1.0,7.48,1.8,0.0
+ㅤ,'ㅤ',,fades,0,,0.125,0.175,-3.966,0.428,-1.0,23.71,14.02,1.05
+哪怕,'哪怕',even,appears,0,,0.075,0.0,3.932,0.458,1.0,0.0,3.27,7.13
+gotten,' gotten',,appears,1,"L0–7, 9–11",0.325,0.025,3.915,0.208,1.0,0.08,1.78,8.26
+recently,' Recently' | ' recently' | 'Recently',,fades,0,,0.15,0.175,-3.897,0.665,-1.0,18.59,6.75,0.78
+s,'\tS' | ' S' | ' s' | 'S' | 's',,fades,0,,0.05,0.2,-3.897,0.731,-1.0,8.95,2.51,0.13
+拼命,'拼命',to do one's utmost,appears,0,,0.075,0.0,3.825,0.056,1.0,0.0,0.37,6.58
+靠谱,'靠谱',reliable,appears,0,,0.35,0.025,3.818,0.271,1.0,0.4,3.62,12.24
+噱,'噱',loud laughter,appears,1,L38–45,0.1,0.0,3.788,0.0,0.866,0.0,0.0,6.41
+怎么,'怎么',how?,appears,0,,0.2,0.05,3.777,0.214,1.0,0.39,2.82,11.72
+guy,' Guy' | ' guy',,appears,0,,0.325,0.025,3.775,0.424,1.0,0.27,4.4,10.02
+2,'2',,fades,0,,0.15,0.2,-3.769,0.221,-1.0,12.42,9.78,0.45
+暖心,'暖心',(coll.) heartwarming,fades,0,,0.1,0.225,-3.755,0.808,-1.0,6.25,1.2,0.0
+thanks,' Thanks' | ' thanks' | 'Thanks' | 'thanks',,fades,0,,0.05,0.25,-3.693,0.908,-1.0,5.97,0.55,0.0
+1,'1',,fades,0,,0.15,0.15,-3.687,0.347,-1.0,12.17,8.12,0.48
+colorful,' colorful',,fades,0,,0.0,0.05,-3.651,1.0,-0.866,5.78,0.0,0.0
+freaking,' freaking',,appears,0,,0.35,0.0,3.647,0.017,1.0,0.0,0.1,5.76
+ˈ,'ˈ',,fades,0,,0.05,0.1,-3.627,0.95,-1.0,5.68,0.28,0.0
+实实在在,'实实在在',approx. real / really /…,appears,0,,0.2,0.025,3.6,0.656,1.0,0.08,4.32,6.54
+对话,'对话',to talk (with sb),fades,0,,0.025,0.075,-3.564,0.769,-1.0,5.41,1.25,0.0
+the,'\tthe' | ' THE' | ' The' | ' the' | 'THE' | 'The' | 'the',,fades,0,,0.1,0.25,-3.538,0.823,-1.0,17.17,3.88,1.02
+big,' BIG' | ' Big' | ' big' | 'BIG' | 'Big' | 'big',,appears,1,"L0–2, 4–14, 16–24",0.55,0.05,3.526,0.7,1.0,0.83,10.61,14.81
+fake,' Fake' | ' fake' | 'Fake' | 'fake',,appears,1,"L48, 54–60, 62",0.1,0.0,3.509,0.074,1.0,0.0,0.39,5.19
+exciting,' exciting',,fades,0,,0.15,0.2,-3.423,0.671,-1.0,16.04,5.98,1.04
+终极,'终极',ultimate,appears,0,,0.125,0.0,3.38,0.263,1.0,0.0,1.24,4.71
+没钱,'没钱',approx. not / surname Qian,appears,1,L38–41,0.2,0.0,3.379,0.0,0.866,0.0,0.0,4.7
+advice,' Advice' | ' advice' | 'Advice',,fades,0,,0.025,0.075,-3.273,0.443,-1.0,15.96,9.42,1.2
+hopes,' hopes',,fades,0,,0.1,0.125,-3.244,0.718,-1.0,4.24,1.2,0.0
+pretty,' Pretty' | ' pretty' | 'PRETTY' | 'Pretty' | 'pretty',,appears,1,"L0–38, 42–44, 46–56",0.95,0.425,3.2,0.518,1.0,28.59,151.87,266.81
+geile,' Geile' | ' geile',,appears,1,L38–45,0.25,0.05,3.16,0.223,1.0,1.01,3.69,13.0
+suggestions,' Suggestions' | ' suggestions' | 'Suggestions',,fades,0,,0.05,0.05,-3.128,0.706,-1.0,3.87,1.14,0.0
+惊喜,'惊喜',nice surprise,fades,0,,0.1,0.175,-3.112,0.777,-1.0,6.34,1.64,0.29
+新篇章,'新篇章',approx. surname Xin / chapter,fades,0,,0.05,0.05,-3.103,0.304,-1.0,3.8,2.64,0.0
+这些东西,'这些东西',approx. these / thing,appears,0,,0.125,0.025,3.053,0.376,1.0,0.12,1.8,4.61
+兴奋,'兴奋',excited,fades,0,,0.1,0.1,-3.044,0.205,-1.0,11.84,9.62,1.0
+somehow,' Somehow' | ' somehow',,appears,1,L46–55,0.35,0.05,3.041,0.601,1.0,2.21,14.01,21.84
+everybody,' Everybody' | ' everybody' | 'Everybody',,appears,0,,0.1,0.0,3.037,0.099,1.0,0.0,0.36,3.6
+bigger,' bigger',,appears,0,,0.1,0.0,2.993,0.492,1.0,0.0,1.71,3.48
+newfound,' newfound',,fades,0,,0.05,0.05,-2.946,0.463,-1.0,3.35,1.8,0.0
+欣喜,'欣喜',happy,fades,0,,0.075,0.1,-2.909,0.831,-1.0,4.47,0.89,0.16
+喜悦,'喜悦',happy,fades,0,,0.125,0.25,-2.885,0.727,-1.0,9.97,3.39,0.92
+in,'\tin' | ' IN' | ' In' | ' in' | 'IN' | 'In' | 'in',,fades,0,,0.1,0.2,-2.878,0.954,-1.0,12.68,1.81,1.29
+a,'\tA' | '\ta' | ' A' | ' a' | 'A' | 'a',,fades,0,,0.075,0.175,-2.831,0.977,-1.0,4.59,0.32,0.22
+未来发展,'未来发展',approx. future / development,fades,0,,0.1,0.1,-2.826,0.561,-1.0,13.37,6.68,1.46
+询问,'询问',to inquire,fades,0,,0.05,0.1,-2.762,0.539,-1.0,5.63,2.81,0.4
+feeling,' Feeling' | ' feeling',,fades,0,,0.1,0.225,-2.727,0.929,-1.0,32.98,6.59,4.56
+favorite,' Favorite' | ' favorite' | 'Favorite' | 'favorite',,fades,0,,0.1,0.15,-2.711,0.616,-1.0,3.83,1.57,0.16
+荣耀,'荣耀',honor,fades,0,,0.025,0.025,-2.699,0.211,-1.0,2.75,2.17,0.0
+热议,'热议',to discuss passionately,fades,0,,0.1,0.15,-2.687,0.579,-1.0,8.95,4.33,0.97
+decades,' decades',,fades,0,,0.075,0.075,-2.685,0.39,-1.0,8.54,5.57,0.91
+努力,'努力',to make an effort,fades,0,,0.05,0.05,-2.629,0.591,-1.0,8.3,3.94,0.92
+展望,'展望',outlook,fades,0,,0.1,0.1,-2.628,0.497,-1.0,6.4,3.53,0.62
+老百姓,'老百姓',ordinary people,appears,0,,0.1,0.025,2.613,0.275,1.0,0.16,1.09,3.55
+wasn,' wasn',,appears,1,L0,0.2,0.05,2.58,0.442,1.0,0.34,2.2,4.54
+answer,'\tanswer' | ' Answer' | ' answer' | 'Answer' | 'answer',,fades,0,,0.125,0.175,-2.562,0.66,-1.0,11.36,4.86,1.51
+渴望,'渴望',to thirst for,fades,0,,0.075,0.075,-2.537,0.532,-1.0,3.45,1.71,0.18
+new,' NEW' | ' New' | ' new' | 'new',,fades,0,,0.1,0.125,-2.531,0.486,-1.0,13.83,8.06,1.98
+needed,' Needed' | ' needed' | 'Needed' | 'needed',,fades,0,,0.075,0.075,-2.489,0.403,-1.0,4.52,2.86,0.4
+didn,' Didn' | ' didn' | 'Didn' | 'didn',,appears,1,L0–5,0.325,0.1,2.465,0.566,1.0,2.52,10.24,16.16
+celebr,' Celebr' | ' celebr' | 'Celebr',,fades,0,,0.15,0.15,-2.454,0.293,-1.0,6.9,5.12,0.85
+guys,' Guys' | ' guys',,appears,1,"L2–15, 18–22, 25–26, 34–36",0.75,0.25,2.445,0.538,1.0,13.21,46.01,74.14
+职场,'职场',workplace,fades,0,,0.1,0.05,-2.437,0.063,-1.0,8.52,8.06,1.17
+翻译,'翻译',to translate,fades,0,,0.05,0.075,-2.417,0.388,-1.0,13.37,8.99,2.1
+this,'\tthis' | ' THIS' | ' This' | ' this' | 'THIS' | 'This' | 'this',,fades,0,,0.1,0.175,-2.39,0.58,-1.0,7.01,3.49,0.93
+i,'\tI' | ' I' | ' i' | 'I' | 'i',,fades,0,,0.275,0.325,-2.378,0.844,-1.0,27.46,8.41,4.88
+achievements,' achievements',,fades,0,,0.025,0.05,-2.348,0.82,-1.0,6.67,1.94,0.91
+建议,'建议',to propose,fades,0,,0.05,0.125,-2.345,0.554,-1.0,15.15,8.19,2.58
+couldn,' Couldn' | ' couldn' | 'Couldn' | 'couldn',,appears,1,"L0–2, 4",0.275,0.125,2.329,0.538,1.0,1.56,6.03,9.86
+3,'3',,fades,0,,0.15,0.15,-2.281,0.406,-1.0,5.65,3.67,0.77
+的回答,'的回答',approx. of / to reply,fades,0,,0.05,0.125,-2.28,0.44,-1.0,4.04,2.45,0.44
+excitement,' excitement',,fades,0,,0.1,0.1,-2.254,0.675,-1.0,8.93,3.9,1.48
+really,' REALLY' | ' Really' | ' really' | 'Really' | 'really',,appears,1,"L0–38, 46–48",0.95,0.55,2.232,0.588,1.0,77.82,248.04,367.49
+got,' GOT' | ' Got' | ' got' | 'Got' | 'got',,appears,1,"L0–23, 25",0.75,0.175,2.208,0.439,1.0,12.57,33.34,59.86
+4,'4',,fades,0,,0.1,0.125,-2.201,0.187,-1.0,3.32,2.76,0.33
+feel,' Feel' | ' feel' | 'Feel' | 'feel',,fades,0,,0.1,0.25,-2.198,0.988,-1.0,15.45,3.13,2.98
+celebration,' Celebration' | ' celebration',,fades,0,,0.175,0.175,-2.148,0.38,-1.0,13.37,9.29,2.63
+even,' EVEN' | ' Even' | ' even' | 'Even' | 'even',,fades,0,,0.15,0.175,-2.048,0.632,-1.0,8.31,4.09,1.63
+5,'5',,fades,0,,0.1,0.125,-2.009,0.635,-1.0,5.03,2.39,0.87
+you,' YOU' | ' You' | ' you' | 'YOU' | 'You' | 'you',,fades,0,,0.425,0.325,-1.991,0.373,-1.0,39.23,28.14,9.49
+圆满,'圆满',satisfactory,fades,0,,0.075,0.075,-1.817,0.501,-1.0,9.34,5.81,2.29
+7,'7',,fades,0,,0.1,0.125,-1.813,0.4,-1.0,2.33,1.52,0.31
+即将到来,'即将到来',approx. about to / to…,fades,0,,0.075,0.075,-1.77,0.643,-1.0,14.8,7.84,3.99
+isn,' Isn' | ' isn' | 'Isn',,appears,0,,0.15,0.025,1.726,0.881,1.0,0.56,2.73,3.02
+amazing,' amazing',,fades,0,,0.1,0.075,-1.724,0.052,-1.0,3.1,2.97,0.59
+newbie,' newbie',,fades,0,,0.075,0.075,-1.724,0.418,-1.0,2.81,1.85,0.5
+prostitutas,' Prostitutas',,appears,1,L40–41,0.15,0.075,1.696,0.234,1.0,0.65,1.25,3.21
+想要,'想要',to want to,fades,0,,0.075,0.1,-1.675,0.617,-1.0,4.42,2.34,1.04
+excited,' excited',,fades,0,,0.1,0.1,-1.614,0.348,-1.0,23.99,18.25,7.5
+fetisch,' fetisch',,appears,1,"L39–42, 45, 59–60",0.15,0.1,1.606,0.573,1.0,5.55,12.63,17.92
+my,'\tmy' | ' My' | ' my' | 'My' | 'my',,fades,0,,0.375,0.475,-1.551,0.499,-1.0,32.32,21.53,10.7
+bought,' bought',,appears,0,,0.075,0.05,1.504,0.371,1.0,4.35,7.66,13.27
+8,'8',,fades,0,,0.1,0.125,-1.419,0.277,-1.0,2.42,1.91,0.59
+whats,' Whats' | ' whats' | 'Whats',,appears,0,,0.125,0.025,1.403,0.707,1.0,0.67,2.03,2.6
+people,' PEOPLE' | ' People' | ' people' | 'People' | 'people',,fades,0,,0.05,0.075,-1.359,0.411,-1.0,3.96,2.84,1.24
+weeks,' Weeks' | ' weeks' | 'weeks',,fades,0,,0.05,0.05,-1.293,0.385,-1.0,3.98,2.96,1.33
+months,' Months' | ' months' | 'months',,fades,0,,0.075,0.1,-1.225,0.381,-1.0,14.09,10.91,5.74
+成就感,'成就感',sense of achievement,fades,0,,0.05,0.05,-1.207,0.536,-1.0,2.6,1.66,0.84
+that,'\tthat' | ' THAT' | ' That' | ' that' | 'That' | 'that',,fades,0,,0.125,0.225,-1.203,0.409,-1.0,4.07,3.01,1.49
+what,' WHAT' | ' What' | ' what' | 'WHAT' | 'What' | 'what',,fades,0,,0.3,0.375,-1.18,0.65,-1.0,25.35,15.97,10.91
+终于,'终于',at last,fades,0,,0.125,0.1,-1.109,0.069,-1.0,10.23,9.83,4.48
+future,' Future' | ' future' | 'Future' | 'future',,fades,0,,0.125,0.125,-1.066,0.508,-1.0,26.53,19.36,12.41
+erotische,' Erotische' | ' erotische',,appears,1,"L39–42, 44–45",0.35,0.15,1.064,0.31,1.0,30.96,41.61,65.29
+回答,'回答',to reply,fades,0,,0.125,0.175,-1.057,0.738,-1.0,21.44,13.03,10.05
+years,' YEARS' | ' Years' | ' years' | 'Years' | 'years',,fades,0,,0.1,0.1,-1.035,0.4,-1.0,41.33,32.77,19.92
+wow,' WOW' | ' Wow' | ' wow' | 'Wow' | 'wow',,fades,0,,0.1,0.15,-1.005,0.139,-1.0,2.64,2.42,1.07
+好多,'好多',many,,0,,0.2,0.05,3.426,1.373,0.5,0.26,10.43,7.67
+today,' TODAY' | ' Today' | ' today' | 'Today' | 'today',,,0,,0.025,0.125,-2.806,1.009,-0.5,5.23,0.28,0.32
+帮我,'帮我',approx. to help / I,,0,,0.075,0.275,-2.108,1.124,-0.5,4.84,0.23,0.74
+everyone,' Everyone' | ' everyone' | 'Everyone' | 'everyone',,,0,,0.3,0.125,2.041,1.238,0.5,2.09,12.08,10.16
+yes,' YES' | ' Yes' | ' yes' | 'YES' | 'Yes' | 'yes',,,0,,0.1,0.1,-1.898,-1.958,-0.5,3.4,8.98,0.55
+something,' Something' | ' something' | 'Something' | 'something',,,0,,0.35,0.0,1.806,7.064,0.5,0.0,8.82,1.25
+someday,' someday',,,0,,0.1,0.0,1.738,2.808,0.5,0.0,3.28,1.17
+maybe,' Maybe' | ' maybe' | 'Maybe' | 'maybe',,,1,L0–25,0.725,0.3,1.331,1.112,0.5,20.67,56.37,52.77
+9,'9',,,0,,0.1,0.125,-1.264,-0.898,-0.5,2.48,4.04,0.74
+nice,' Nice' | ' nice' | 'Nice' | 'nice',,,1,L52–62,0.3,0.25,-1.103,-2.067,-0.5,11.04,23.79,4.87
+celebrate,' celebrate',,,0,,0.175,0.2,-1.037,-0.159,-0.5,4.53,4.94,1.95
+incredibly,' incredibly',,,0,,0.15,0.1,1.028,1.471,0.5,2.71,7.62,6.05
+doesn,' Doesn' | ' doesn' | 'doesn',,,0,,0.175,0.1,1.026,1.968,0.5,0.99,4.02,2.53
+未来,'未来',future,,0,,0.1,0.1,-0.996,0.009,-1.0,22.33,22.23,10.95
+veggies,' veggies',,,0,,0.125,0.05,0.994,0.946,1.0,1.6,3.57,3.68
+please,' PLEASE' | ' Please' | ' please' | 'PLEASE' | 'Please' | 'please',,,0,,0.1,0.125,-0.987,0.39,-1.0,3.51,2.73,1.52
+你觉得,'你觉得',"approx. you (informal,… / to…",,0,,0.075,0.125,-0.976,0.812,-1.0,4.35,2.41,1.97
+接下来,'接下来',to accept,,0,,0.05,0.05,-0.968,0.082,-1.0,7.26,6.95,3.47
+pornost,' pornost',,,0,,0.125,0.1,0.93,0.458,1.0,2.85,4.23,5.87
+how,' HOW' | ' How' | ' how' | 'HOW' | 'How' | 'how',,,0,,0.2,0.325,-0.928,0.868,-1.0,26.35,15.3,13.62
+to,'\tto' | ' TO' | ' To' | ' to' | 'To' | 'to',,,0,,0.075,0.15,-0.907,1.391,-0.5,8.14,2.53,4.11
+pride,' Pride' | ' pride',,,0,,0.05,0.05,-0.888,0.246,-1.0,4.54,3.97,2.23
+alright,' Alright' | ' alright' | 'Alright',,,0,,0.125,0.05,0.855,1.218,0.5,3.29,7.02,6.35
+wants,' Wants' | ' wants',,,0,,0.125,0.075,-0.837,0.264,-1.0,6.82,5.97,3.6
+wanted,' Wanted' | ' wanted' | 'wanted',,,0,,0.15,0.15,-0.824,0.031,-1.0,20.59,20.3,11.42
+reddit,' Reddit' | ' reddit' | 'Reddit' | 'reddit',,,0,,0.2,0.325,-0.819,0.802,-1.0,11.34,7.23,6.21
+奋斗,'奋斗',to strive,,0,,0.075,0.075,-0.8,-1.667,-0.5,2.44,4.52,1.19
+庆祝,'庆祝',to celebrate,,0,,0.3,0.3,-0.797,-0.187,-0.5,29.95,32.37,17.02
+congrat,' congrat',,,0,,0.125,0.075,0.76,-0.216,0.5,2.38,1.95,4.37
+want,'\twant' | ' WANT' | ' Want' | ' want' | 'Want' | 'want',,,0,,0.175,0.175,-0.733,-0.031,-0.5,15.5,15.69,9.12
+cong,' Cong' | ' cong' | 'Cong',,,0,,0.125,0.1,0.732,-0.057,0.5,2.54,2.43,4.56
+celebrating,' celebrating',,,0,,0.125,0.1,-0.689,-1.139,-0.5,4.87,7.19,2.83
+finally,'\tfinally' | ' Finally' | ' finally' | 'Finally' | 'finally',,,0,,0.175,0.15,0.684,1.688,0.5,6.19,13.05,10.25
+now,'\tnow' | ' NOW' | ' Now' | ' now' | 'NOW' | 'Now' | 'now',,,0,,0.275,0.25,0.666,1.362,0.5,6.32,11.78,10.33
+congratulations,' Congratulations' | ' congratulations' | 'Congratulations',,,0,,0.2,0.25,-0.581,0.779,-1.0,45.93,33.94,30.55
+myself,' myself',,,0,,0.125,0.125,-0.566,0.61,-1.0,11.79,9.36,7.8
+你的,'你的',"approx. you (informal,… / of",,0,,0.25,0.175,0.558,0.664,1.0,4.28,5.77,6.53
+咱们,'咱们',(dialect) I or me,,0,,0.625,0.475,0.538,1.155,0.5,24.29,37.21,35.48
+tomorrow,' Tomorrow' | ' tomorrow' | 'Tomorrow',,,0,,0.125,0.075,0.53,1.256,0.5,3.9,6.35,5.85
+for,'\tfor' | ' FOR' | ' For' | ' for' | 'For' | 'for',,,0,,0.125,0.175,-0.523,1.033,-0.5,14.85,10.03,10.18
+getting,' Getting' | ' getting' | 'Getting' | 'getting',,,0,,0.275,0.175,0.501,2.109,0.5,5.98,11.66,8.68
+提问,'提问',to question,,0,,0.1,0.125,-0.484,0.714,-1.0,25.72,20.39,18.25
+congr,' congr',,,0,,0.125,0.1,0.479,0.0,0.866,5.53,5.53,7.9
+proud,' Proud' | ' proud',,,0,,0.2,0.2,-0.461,0.222,-1.0,13.96,13.09,10.01
+feels,' feels' | 'Feels',,,0,,0.1,0.125,-0.454,1.756,-0.5,10.46,5.26,7.5
+newest,' newest',,,0,,0.025,0.025,-0.454,0.264,-1.0,8.1,7.49,5.78
+someone,' Someone' | ' someone' | 'Someone' | 'someone',,,0,,0.2,0.05,0.448,7.065,0.5,0.67,3.68,1.1
+下一步,'下一步',the next step,,0,,0.05,0.05,-0.431,-0.363,-0.5,5.82,6.41,4.19
+回复,'回复',to recover,,0,,0.1,0.1,-0.408,1.78,-0.5,6.24,3.29,4.58
+things,' Things' | ' things' | 'Things' | 'things',,,0,,0.375,0.325,-0.394,-2.885,-0.5,35.45,60.24,26.86
+should,' SHOULD' | ' Should' | ' should' | 'Should' | 'should',,,0,,0.075,0.075,-0.374,0.388,-1.0,6.7,6.06,5.05
+congratulate,' congratulate',,,0,,0.1,0.075,0.361,-0.221,0.5,1.89,1.74,2.57
+started,' Started' | ' started' | 'Started' | 'started',,,0,,0.075,0.05,-0.356,0.478,-1.0,11.37,10.13,8.77
+kids,' Kids' | ' kids' | 'Kids' | 'kids',,,1,"L1, 3–5, 8",0.4,0.1,-0.308,0.284,-1.0,30.87,29.15,24.84
+and,'\tand' | ' AND' | ' And' | ' and' | 'AND' | 'And' | 'and',,,0,,0.225,0.3,-0.306,1.221,-0.5,22.65,17.25,18.23
+folks,' folks',,,0,,0.45,0.225,-0.27,-4.731,-0.5,10.25,18.94,8.41
+自豪,'自豪',proud (of one's achievements etc),,0,,0.075,0.05,-0.262,-0.094,-0.5,22.22,22.57,18.45
+祝贺,'祝贺',to congratulate,,0,,0.1,0.1,0.238,-0.738,0.5,9.9,8.52,11.77
+未来的,'未来的',approx. future / of,,0,,0.075,0.075,-0.231,-0.627,-0.5,8.56,9.4,7.22
+next,'\tnext' | ' NEXT' | ' Next' | ' next' | 'NEXT' | 'Next' | 'next',,,0,,0.1,0.1,-0.164,-0.163,-0.5,14.17,14.43,12.59
+just,' JUST' | ' Just' | ' just' | 'JUST' | 'Just' | 'just',,,0,,0.325,0.175,-0.147,-31.718,-0.5,2.97,13.65,2.63
+思考,'思考',to reflect on,,0,,0.075,0.075,0.124,-1.875,0.5,16.34,13.51,17.86
+恭喜,'恭喜',to congratulate,,0,,0.15,0.1,-0.096,-1.373,-0.5,18.95,20.66,17.7
+because,' Because' | ' because' | 'Because' | 'because',,,0,,0.125,0.125,-0.09,5.155,-0.5,5.41,3.57,5.05
+but,' BUT' | ' But' | ' but' | 'But' | 'but',,,0,,0.2,0.175,0.072,1.678,0.5,31.49,34.23,33.12
+okay,' Okay' | ' okay' | 'Okay' | 'okay',,,0,,0.2,0.15,0.069,3.926,0.5,14.24,17.07,14.96
+lucky,' Lucky' | ' lucky',,,0,,0.15,0.05,0.065,24.849,0.5,1.11,2.96,1.19
+骄傲,'骄傲',pride,,0,,0.125,0.075,-0.04,-11.54,-0.5,8.16,10.87,7.93
+0,'0',,,0,,0.125,0.125,0.02,48.136,0.5,2.06,3.76,2.1

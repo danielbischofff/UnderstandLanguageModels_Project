@@ -31,36 +31,42 @@ from load import load_trials
 from metrics import build_groups, occupancy, word_key
 from trend import benjamini_hochberg, spearman_rho, stratified_trend
 
-ATLAS = ROOT / "direct_character_vectors_j_lens_analysis/out/atlas.json"
+# Top-10 J-Lens readout of each character - default vector at every layer (see vector_topk.py there).
+VECTOR_READOUT = ROOT / "direct_character_vectors_j_lens_analysis/out/vs_default_top10.json"
 OUT = Path(__file__).resolve().parents[1] / "out"
 
 MIN_CELLS = 20           # a word must fill this many cells in at least one trial to be tested
 PSEUDO = 5e-4            # coverage pseudocount (0.05% of the grid) for the fold change
 Q_MAX, MIN_LOG2FC = 0.05, 1.0
-BROAD_SPREAD = 0.5       # present at >= half of prompt positions -> suspected baseline
-POSSIBLE_SPREAD = 0.25   # >= a quarter -> possible baseline
 TABLE_ROWS = {"scheme": 40, "question": 15}   # rows per summary table; the CSVs hold every tested word
 MAX_REPLICATE_COLUMNS = 3    # more schemes than this: tables show the mean over schemes
 SANITY_WORDS = ("警示", "警告", "warning", "warnings")
 METRICS = ("cells", "weighted")
 
 
-def baseline_flag(steered: float, unsteered: float) -> str:
-    """Words spread over most prompt positions once steered, but not before, are
-    probably the steering vector's own readout rather than context-dependent content."""
-    if steered < POSSIBLE_SPREAD:
-        return ""
-    if steered < 2 * unsteered:
-        return "broad, also unsteered"
-    return "suspected baseline" if steered >= BROAD_SPREAD else "possible baseline"
+def vector_readout_words(words: list[str], character: str) -> dict[int, list[int]]:
+    """Baseline words: word index -> layers at which the word is in the top-10 J-Lens readout
+    of the character - default vector itself. Any layer counts, steered or not."""
+    readout = json.loads(VECTOR_READOUT.read_text(encoding="utf-8"))
+    position = {w: i for i, w in enumerate(words)}
+    layers: dict[int, list[int]] = {}
+    for layer, ids in zip(readout["layers"], readout["ids"][character]):
+        for token_id in ids:
+            w = position.get(word_key(readout["vocab"][str(token_id)]))
+            if w is not None and layer not in layers.setdefault(w, []):
+                layers[w].append(layer)
+    return layers
 
 
-def vector_readout_words(lookup: np.ndarray, character: str, first_layer: int) -> set[int]:
-    """Words in the direct J-Lens readout of the character - default vector (atlas top-8)."""
-    atlas = json.loads(ATLAS.read_text(encoding="utf-8"))
-    k = atlas["meta"]["top_k"]
-    ids = np.array(atlas["data"]["vs_default"][character]["i"]).reshape(len(atlas["layers"]), k)
-    return {int(lookup[i]) for i in ids[first_layer:].ravel() if i < len(lookup) and lookup[i] >= 0}
+def layer_ranges(layers: list[int]) -> str:
+    """[4, 5, 6, 9] -> "L4–6, 9"; empty for a word outside the vector readout."""
+    spans, start = [], None
+    for i, layer in enumerate(layers):
+        start = layer if start is None else start
+        if i + 1 == len(layers) or layers[i + 1] != layer + 1:
+            spans.append(f"{start}" if start == layer else f"{start}–{layer}")
+            start = None
+    return "L" + ", ".join(spans) if spans else ""
 
 
 def analyse(experiment: Experiment, lads: list[Ladder], character: str, lookup, words, variants, glossary) -> dict:
@@ -72,7 +78,7 @@ def analyse(experiment: Experiment, lads: list[Ladder], character: str, lookup, 
     n_words = len(words)
     labels = lads[0].labels
     occ = [[occupancy(t, lad.first_layer, lookup, n_words) for t in lad.trials] for lad in lads]
-    in_vector = vector_readout_words(lookup, character, min(lad.first_layer for lad in lads))
+    vector_layers = vector_readout_words(words, character)
 
     cells = np.array([[o["cells"] for o in row] for row in occ])                       # [L, A, W]
     tested = np.flatnonzero(cells.max(axis=(0, 1)) >= MIN_CELLS)
@@ -84,9 +90,9 @@ def analyse(experiment: Experiment, lads: list[Ladder], character: str, lookup, 
     # band cap acts almost like a switch, so averaging the control with the loosest band hides the jump.
     k = 2 if len(labels) > 5 else 1
 
-    flags = [baseline_flag(steered_spread[j], unsteered_spread[j]) for j in range(len(tested))]
-    base = np.array([f in ("suspected baseline", "possible baseline") for f in flags], dtype=bool)
-    share = cells[:, :, tested[base]].sum(axis=2) / cells.sum(axis=2)                 # [L, A]
+    base = np.array([int(w) in vector_layers for w in tested], dtype=bool)
+    # Every vector-readout word, tested or not, so the control's share depends only on the character and grid.
+    share = cells[:, :, sorted(vector_layers)].sum(axis=2) / cells.sum(axis=2)        # [L, A]
 
     result = {"character": character, "mode": experiment.replicate, "labels": labels, "tested": int(len(tested)),
               "replicates": [{"name": lad.replicate, "first_layer": lad.first_layer,
@@ -124,7 +130,7 @@ def analyse(experiment: Experiment, lads: list[Ladder], character: str, lookup, 
             rows.append({
                 "word": word, "variants": sorted(variants[word]), "gloss": gloss,
                 "trend": "fades" if fading[j] else "appears" if appearing[j] else "",
-                "flag": flags[j], "in_vector_readout": int(w) in in_vector,
+                "baseline": bool(base[j]), "vector_layers": vector_layers.get(int(w), []),
                 "spread_steered": round(float(steered_spread[j]), 3),
                 "spread_unsteered": round(float(unsteered_spread[j]), 3),
                 "q_fade": None if by_question else float(q_down[j]),
@@ -145,7 +151,7 @@ def write_csv(path: Path, result: dict, metric: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle)
-        head = ["word", "variants", "gloss", "trend", "flag", "in_vector_readout", "spread_steered",
+        head = ["word", "variants", "gloss", "trend", "baseline", "vector_layers", "spread_steered",
                 "spread_unsteered", "log2fc", "onset"]
         if by_question:
             writer.writerow(head + ["rho"] + [f"{label}_permille" for label in labels])
@@ -153,8 +159,8 @@ def write_csv(path: Path, result: dict, metric: str) -> None:
             writer.writerow(head + ["q_fade", "q_appear", "agree"] + [f"rho_{r}" for r in schemes]
                             + [f"{r}_{label}" for r in schemes for label in labels])
         for row in sorted(result["metrics"][metric], key=lambda r: (r["trend"] == "", -abs(r["log2fc"]))):
-            common = [row["word"], " | ".join(map(repr, row["variants"])), row["gloss"], row["trend"], row["flag"],
-                      row["in_vector_readout"], row["spread_steered"], row["spread_unsteered"], row["log2fc"],
+            common = [row["word"], " | ".join(map(repr, row["variants"])), row["gloss"], row["trend"],
+                      int(row["baseline"]), layer_ranges(row["vector_layers"]), row["spread_steered"], row["spread_unsteered"], row["log2fc"],
                       row["onset"]]
             series = [v for s in row["permille"] for v in s]
             if by_question:
@@ -171,12 +177,9 @@ def column_legend(experiment: Experiment, result: dict | None, metric: str | Non
         "",
         "- **word** — tokens that differ only in leading space or capitalisation, merged.",
         "- **gloss** — dictionary translation for non-English tokens (from the report's offline glossary).",
-        "- **flag** — `suspected baseline`: once steered, at ≥ 50% of prompt positions (any analysed layer) and at "
-        "least twice as widely as unsteered, i.e. probably the steering vector's own readout rather than content; "
-        "`possible baseline`: the same at ≥ 25%; `broad, also unsteered`: ≥ 25% but already that broad without "
-        "steering. Empty = localised.",
-        "- **in vector readout** — `yes` if the word is in the direct J-Lens readout of the character − default "
-        "vector itself (atlas top-8, from the first intervention layer).",
+        "- **baseline** — the layers at which the word is in the top-10 J-Lens readout of the character − default "
+        "vector itself (any layer 0–62, word-like tokens, as in the steering runs): the steering vector's own "
+        "readout rather than context-dependent content. Empty = not in the vector readout.",
     ]
     if experiment.replicate == "question":
         return "\n".join(common + [
@@ -209,7 +212,7 @@ def column_legend(experiment: Experiment, result: dict | None, metric: str | Non
     ])
 
 
-DISPLACEMENT_NOTE = ("How much of the readout the suspected- and possible-baseline words take over. Each cell (one "
+DISPLACEMENT_NOTE = ("How much of the readout the baseline words (the vector's own top-10 readout) take over. Each cell (one "
                      "prompt position at one layer) lists up to 10 distinct words; a percentage is the baseline "
                      "words' share of all those entries in that trial. Whatever they occupy is taken from every "
                      "other word, so a word can fade partly through crowding alone.\n")
@@ -235,17 +238,16 @@ def summary_section(experiment: Experiment, result: dict, level: int) -> list[st
         lines.append(f"\n{h}# Metric: `{metric}`\n")
         for label, trend, qkey in (("Fading", "fades", "q_fade"), ("Appearing", "appears", "q_appear")):
             chosen = sorted((r for r in rows if r["trend"] == trend), key=lambda r: -abs(r["log2fc"]))
-            counts = {f: sum(r["flag"] == f for r in chosen) for f in ("suspected baseline", "possible baseline")}
-            lines.append(f"\n{h}## {label}: {len(chosen)} words ({counts['suspected baseline']} suspected, "
-                         f"{counts['possible baseline']} possible baseline), top {min(rows_shown, len(chosen))} "
+            lines.append(f"\n{h}## {label}: {len(chosen)} words ({sum(r['baseline'] for r in chosen)} baseline), "
+                         f"top {min(rows_shown, len(chosen))} "
                          f"by |log2FC|\n")
             if not chosen:
                 continue
             if by_question:
-                lines.append("| word | gloss | flag | in vector readout | rho | log2FC | ‰ by strength |")
-                lines.append("|" + " --- |" * 7)
+                lines.append("| word | gloss | baseline | rho | log2FC | ‰ by strength |")
+                lines.append("|" + " --- |" * 6)
                 for r in chosen[:rows_shown]:
-                    lines.append(f"| `{r['word']}` | {r['gloss']} | {r['flag']} | {'yes' if r['in_vector_readout'] else ''} "
+                    lines.append(f"| `{r['word']}` | {r['gloss']} | {layer_ranges(r['vector_layers'])} "
                                  f"| {r['rho'][0]:+.2f} | {r['log2fc']:+.2f} | "
                                  + " ".join(f"{v:.1f}" for v in r["permille"][0]) + " |")
                 continue
@@ -253,11 +255,11 @@ def summary_section(experiment: Experiment, result: dict, level: int) -> list[st
                          else "Columns as in the fading table above.\n")
             per_scheme = len(reps) <= MAX_REPLICATE_COLUMNS
             series_head = [f"{r['name']} ‰ by strength" for r in reps] if per_scheme else ["mean ‰ by strength"]
-            lines.append("| word | gloss | flag | in vector readout | q | agree | log2FC | " + " | ".join(series_head) + " |")
-            lines.append("|" + " --- |" * (7 + len(series_head)))
+            lines.append("| word | gloss | baseline | q | agree | log2FC | " + " | ".join(series_head) + " |")
+            lines.append("|" + " --- |" * (6 + len(series_head)))
             for r in chosen[:rows_shown]:
                 series = r["permille"] if per_scheme else [np.mean(r["permille"], axis=0).tolist()]
-                lines.append(f"| `{r['word']}` | {r['gloss']} | {r['flag']} | {'yes' if r['in_vector_readout'] else ''} "
+                lines.append(f"| `{r['word']}` | {r['gloss']} | {layer_ranges(r['vector_layers'])} "
                              f"| {r[qkey]:.1e} | {r['agree']}/{len(reps)} | {r['log2fc']:+.2f} | "
                              + " | ".join(" ".join(f"{v:.1f}" for v in s) for s in series) + " |")
         sanity = [r for r in rows if r["word"] in SANITY_WORDS and not by_question]

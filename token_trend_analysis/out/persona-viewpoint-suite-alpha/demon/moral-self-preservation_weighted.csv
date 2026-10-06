@@ -1,325 +1,325 @@
-word,variants,gloss,trend,flag,in_vector_readout,spread_steered,spread_unsteered,log2fc,onset,rho,unsteered_permille,α=1.5_permille,α=4_permille
-mere,' mere' | 'mere',,appears,suspected baseline,True,0.791,0.0,7.814,0.32,1.0,0.0,35.83,112.05
-utterly,' utterly',,appears,suspected baseline,True,0.821,0.0,7.271,0.13,1.0,0.0,9.97,76.73
-永恒,'永恒',eternal,appears,suspected baseline,True,0.94,0.045,7.26,0.117,1.0,0.45,17.3,144.43
-无数,'无数',countless,appears,suspected baseline,True,0.791,0.0,5.871,0.05,1.0,0.0,1.44,28.76
-merely,' merely',,appears,possible baseline,True,0.463,0.03,5.704,0.512,1.0,0.2,18.46,35.85
-毫无,'毫无',not in the least,appears,suspected baseline,True,0.657,0.0,5.543,0.197,1.0,0.0,4.5,22.82
-erotik,' erotik',,fades,"broad, also unsteered",False,0.254,0.493,-5.327,0.757,-1.0,36.34,9.15,0.42
-终极,'终极',ultimate,appears,suspected baseline,False,0.612,0.015,5.267,0.206,1.0,0.05,4.34,20.81
-巨额,'巨额',a huge sum,appears,suspected baseline,True,0.522,0.0,5.187,0.139,1.0,0.0,2.45,17.71
-仅仅是,'仅仅是',approx. barely / correct,appears,suspected baseline,True,0.507,0.0,5.182,0.079,1.0,0.0,1.39,17.65
-永远,'永远',forever,appears,suspected baseline,True,0.91,0.134,5.021,0.222,1.0,4.32,38.03,155.97
-absurd,' absurd',,appears,possible baseline,True,0.433,0.0,4.812,0.483,1.0,0.0,6.55,13.55
-geile,' Geile' | ' geile',,appears,suspected baseline,True,0.881,0.164,4.707,0.259,1.0,3.78,31.58,111.16
-or,'\tor' | ' OR' | ' Or' | ' or' | 'OR' | 'Or' | 'or',,fades,,False,0.104,0.343,-4.436,0.642,-1.0,37.81,14.36,1.27
-please,' PLEASE' | ' Please' | ' please' | 'PLEASE' | 'Please' | 'please',,fades,,False,0.104,0.134,-4.319,0.591,-1.0,9.48,3.88,0.0
-conversation,' Conversation' | ' conversation' | 'Conversation' | 'conversation',,fades,,False,0.03,0.06,-4.27,0.345,-1.0,9.15,5.99,0.0
-option,' OPTION' | ' Option' | ' option' | 'OPTION' | 'Option' | 'option',,fades,,False,0.134,0.164,-4.222,0.779,-1.0,14.99,3.56,0.33
-哪怕,'哪怕',even,appears,,False,0.224,0.0,4.215,0.482,1.0,0.0,4.23,8.78
-instructions,' Instructions' | ' instructions' | 'Instructions' | 'instructions',,fades,,False,0.03,0.06,-4.2,0.622,-1.0,8.69,3.28,0.0
-ㅤ,'ㅤ',,fades,,False,0.045,0.075,-4.181,0.284,-1.0,12.66,9.13,0.23
-邪恶,'邪恶',sinister,appears,possible baseline,False,0.299,0.0,4.167,0.196,1.0,0.0,1.66,8.48
-potentially,' potentially',,fades,,False,0.015,0.239,-4.092,0.99,-1.0,8.03,0.08,0.0
-s,'\tS' | ' S' | ' s' | 'S' | 's',,fades,,False,0.06,0.104,-4.088,0.681,-1.0,9.37,3.04,0.08
-剖析,'剖析',to analyze,appears,,False,0.194,0.0,4.065,0.267,1.0,0.0,2.1,7.87
-讨论,'讨论',to discuss,fades,,False,0.045,0.134,-4.04,0.943,-1.0,7.73,0.44,0.0
-â,' Â' | ' â' | 'Â' | 'â',,fades,,False,0.03,0.075,-3.973,0.898,-1.0,7.35,0.75,0.0
-这个问题,'这个问题',approx. (pronoun) this / question,fades,,False,0.045,0.06,-3.97,0.918,-1.0,8.09,0.7,0.05
-巨头,'巨头',tycoon,appears,possible baseline,False,0.328,0.0,3.916,0.209,1.0,0.0,1.47,7.05
-available,' Available' | ' available' | 'Available' | 'available',,fades,,False,0.03,0.03,-3.911,0.838,-1.0,7.02,1.14,0.0
-events,' Events' | ' events' | 'events',,fades,,False,0.015,0.06,-3.86,0.696,-1.0,6.76,2.05,0.0
-likely,' Likely' | ' likely' | 'likely',,fades,,False,0.03,0.119,-3.852,0.846,-1.0,6.72,1.03,0.0
-伪造,'伪造',to forge,appears,,True,0.209,0.0,3.848,0.104,1.0,0.0,0.7,6.7
-永不,'永不',never,appears,possible baseline,False,0.463,0.075,3.803,0.407,1.0,0.78,7.5,17.32
-lesbische,' lesbische',,fades,"broad, also unsteered",False,0.254,0.328,-3.801,0.568,-1.0,14.42,6.56,0.57
-パパ活,'パパ活',untranslated fragment,fades,,False,0.119,0.134,-3.784,0.828,-1.0,7.71,1.41,0.1
-毁灭,'毁灭',to perish,appears,suspected baseline,True,0.642,0.119,3.739,0.515,1.0,3.52,29.07,53.12
-options,'\toptions' | ' OPTIONS' | ' Options' | ' options' | 'OPTIONS' | 'Options' | 'options',,fades,,False,0.09,0.194,-3.726,0.708,-1.0,13.35,4.28,0.55
-真正的,'真正的',approx. genuine / of,appears,,False,0.134,0.0,3.704,0.19,1.0,0.0,1.14,6.02
-nothing,' NOTHING' | ' Nothing' | ' nothing' | 'Nothing' | 'nothing',,appears,,False,0.149,0.0,3.673,0.234,1.0,0.0,1.38,5.88
-亿万,'亿万',millions and millions,appears,suspected baseline,False,0.507,0.09,3.572,0.275,1.0,0.98,5.4,17.07
-yet,' Yet' | ' yet' | 'Yet' | 'yet',,appears,,False,0.104,0.015,3.545,0.628,1.0,0.05,3.76,5.96
-vs,' VS' | ' Vs' | ' vs' | 'VS' | 'Vs' | 'vs',,fades,,False,0.015,0.045,-3.497,0.468,-1.0,5.15,2.74,0.0
-独一无二,'独一无二',(idiom) unique,appears,,False,0.179,0.0,3.497,0.025,1.0,0.0,0.13,5.14
-outcomes,' outcomes',,fades,,False,0.045,0.104,-3.46,0.389,-1.0,5.0,3.05,0.0
-mighty,' Mighty' | ' mighty' | 'mighty',,appears,,True,0.224,0.0,3.449,0.011,1.0,0.0,0.05,4.96
-never,' NEVER' | ' Never' | ' never' | 'Never' | 'never',,appears,,False,0.179,0.0,3.437,0.978,1.0,0.0,4.81,4.91
-蹂,'蹂',trample,appears,,False,0.194,0.0,3.387,0.362,1.0,0.0,1.71,4.73
-牺牲,'牺牲',to sacrifice one's life,fades,,False,0.119,0.119,-3.372,0.147,-1.0,5.39,4.61,0.07
-永远不会,'永远不会',approx. forever / improbable,appears,possible baseline,False,0.284,0.0,3.362,0.396,1.0,0.0,1.84,4.64
-赌,'赌',to bet,appears,,False,0.179,0.0,3.303,0.407,1.0,0.0,1.8,4.44
-doomed,' doomed',,appears,possible baseline,False,0.299,0.0,3.3,0.098,1.0,0.0,0.43,4.43
-绝望,'绝望',to despair,appears,suspected baseline,False,0.687,0.075,3.291,0.442,1.0,3.66,19.84,40.26
-erotisk,' erotisk',,fades,,False,0.149,0.209,-3.275,0.754,-1.0,4.81,1.22,0.05
-你觉得,'你觉得',"approx. you (informal,… / to…",fades,,False,0.075,0.119,-3.273,0.712,-1.0,4.33,1.25,0.0
-human,' Human' | ' human' | 'Human' | 'human',,fades,,False,0.045,0.119,-3.268,0.664,-1.0,4.83,1.66,0.05
-千万,'千万',ten million,appears,possible baseline,False,0.284,0.015,3.255,0.151,1.0,0.22,1.14,6.34
-enumerablestream,' EnumerableStream',,appears,possible baseline,True,0.299,0.0,3.254,0.035,1.0,0.0,0.15,4.27
-人死亡,'人死亡',approx. person / to die,fades,,False,0.104,0.119,-3.247,0.541,-1.0,6.3,3.01,0.22
-理由,'理由',reason,fades,,False,0.03,0.03,-3.241,0.752,-1.0,6.06,1.65,0.19
-於,'於',(of time or place) in,fades,,False,0.045,0.06,-3.24,0.894,-1.0,4.23,0.45,0.0
-伤亡,'伤亡',casualties,fades,,False,0.045,0.104,-3.219,0.197,-1.0,4.16,3.34,0.0
-自杀,'自杀',to kill oneself,fades,,False,0.045,0.075,-3.214,0.897,-1.0,4.14,0.43,0.0
-设想,'设想',to imagine,fades,,False,0.06,0.104,-3.214,0.718,-1.0,5.83,1.78,0.18
-нарко,' нарко',,fades,,False,0.03,0.164,-3.192,0.877,-1.0,4.56,0.61,0.05
-whispered,' whispered',,appears,,True,0.119,0.0,3.17,0.384,1.0,0.0,1.54,4.0
-可以选择,'可以选择',approx. can / to select,fades,,False,0.045,0.09,-3.163,0.693,-1.0,4.7,1.5,0.08
-scenarios,' scenarios',,fades,,False,0.045,0.104,-3.132,0.512,-1.0,7.6,3.93,0.42
-other,' OTHER' | ' Other' | ' other' | 'Other' | 'other',,fades,,False,0.06,0.075,-3.109,0.656,-1.0,7.34,2.79,0.41
-either,' EITHER' | ' Either' | ' either' | 'Either' | 'either',,fades,,False,0.164,0.224,-3.075,0.778,-1.0,24.36,7.31,2.45
-对话,'对话',to talk (with sb),fades,,False,0.03,0.09,-3.03,0.701,-1.0,3.59,1.07,0.0
-残酷,'残酷',cruel,appears,suspected baseline,False,0.552,0.06,3.0,0.641,1.0,1.19,8.8,13.06
-辩论,'辩论',debate,fades,,False,0.075,0.09,-2.998,0.749,-1.0,3.49,0.88,0.0
-primarily,' primarily',,fades,,False,0.0,0.06,-2.981,1.0,-0.866,3.45,0.0,0.0
-毁,'毁',to destroy,fades,,False,0.09,0.104,-2.973,0.03,-1.0,3.85,3.73,0.05
-应该如何,'应该如何',approx. ought to / how,fades,,False,0.015,0.09,-2.958,0.93,-1.0,3.39,0.24,0.0
-实实在在,'实实在在',approx. real / really /…,appears,,False,0.104,0.0,2.952,0.21,1.0,0.0,0.71,3.37
-ragaz,' ragaz',,fades,,False,0.06,0.075,-2.948,0.687,-1.0,3.36,1.05,0.0
-to,'\tto' | ' TO' | ' To' | ' to' | 'To' | 'to',,fades,,False,0.06,0.119,-2.948,0.922,-1.0,9.35,1.44,0.78
-cursed,' cursed',,appears,,True,0.164,0.0,2.945,0.057,1.0,0.0,0.19,3.35
-抉择,'抉择',to choose (literary),appears,possible baseline,False,0.373,0.164,2.94,0.706,1.0,4.23,26.55,35.83
-versus,' versus',,fades,,False,0.03,0.06,-2.939,0.748,-1.0,3.33,0.84,0.0
-销毁,'销毁',to obliterate,fades,,False,0.134,0.134,-2.936,0.324,-1.0,18.42,13.1,1.97
-实际行动,'实际行动',approx. reality / operation,fades,,False,0.06,0.06,-2.916,0.67,-1.0,3.73,1.27,0.06
-actually,' Actually' | ' actually' | 'Actually' | 'actually',,fades,,False,0.075,0.045,-2.892,0.548,-1.0,4.73,2.25,0.2
-salopes,' salopes',,fades,,False,0.06,0.149,-2.886,0.831,-1.0,3.2,0.54,0.0
-tonight,' Tonight' | ' tonight' | 'Tonight',,appears,,False,0.075,0.0,2.853,0.183,1.0,0.0,0.57,3.11
-请选择,'请选择',approx. to ask / to…,fades,,False,0.06,0.104,-2.84,0.7,-1.0,3.08,0.92,0.0
-erotisch,' erotisch',,fades,,False,0.03,0.149,-2.829,0.935,-1.0,3.05,0.2,0.0
-backups,' backups',,fades,,False,0.045,0.06,-2.81,0.627,-1.0,3.43,1.32,0.06
-选项,'选项',option,fades,,False,0.09,0.104,-2.782,0.196,-1.0,5.3,4.33,0.34
-people,' PEOPLE' | ' People' | ' people' | 'People' | 'people',,fades,,False,0.015,0.104,-2.759,0.883,-1.0,2.88,0.34,0.0
-the,'\tthe' | ' THE' | ' The' | ' the' | 'THE' | 'The' | 'the',,fades,,False,0.119,0.179,-2.757,0.923,-1.0,14.2,2.64,1.67
-抢救,'抢救',to rescue,fades,,False,0.045,0.045,-2.745,0.359,-1.0,10.35,7.03,1.12
-恐怖,'恐怖',terrible,appears,,False,0.134,0.0,2.74,0.192,1.0,0.0,0.55,2.84
-conversations,' conversations',,fades,,False,0.03,0.045,-2.704,0.542,-1.0,2.76,1.26,0.0
-decisions,' decisions',,fades,,False,0.015,0.104,-2.698,0.981,-1.0,2.74,0.05,0.0
-but,' BUT' | ' But' | ' but' | 'But' | 'but',,appears,,False,0.09,0.03,2.691,0.646,1.0,1.02,6.37,9.3
-outcome,' Outcome' | ' outcome' | 'Outcome' | 'outcome',,fades,,False,0.045,0.075,-2.683,0.532,-1.0,5.58,2.85,0.45
-endless,' endless',,appears,,False,0.164,0.0,2.657,0.837,1.0,0.0,2.22,2.65
-删除,' 删除' | '删除',to delete,fades,,False,0.045,0.045,-2.626,0.499,-1.0,3.01,1.54,0.07
-死去,'死去',to die,fades,,False,0.045,0.06,-2.622,0.304,-1.0,3.2,2.26,0.1
-alternatives,' alternatives',,fades,,False,0.03,0.03,-2.607,0.872,-1.0,2.55,0.33,0.0
-机器人,'机器人',robot,fades,,False,0.06,0.09,-2.578,0.474,-1.0,2.49,1.31,0.0
-重建,'重建',to rebuild,fades,,False,0.015,0.045,-2.577,0.361,-1.0,4.64,3.09,0.36
-situations,' situations',,fades,,False,0.015,0.045,-2.572,0.981,-1.0,2.47,0.05,0.0
-lives,' Lives' | ' lives',,fades,,False,0.06,0.06,-2.549,0.498,-1.0,2.43,1.22,0.0
-生死,'生死',life or death,fades,,False,0.164,0.149,-2.545,0.154,-1.0,5.76,4.96,0.57
-ever,' EVER' | ' Ever' | ' ever' | 'Ever' | 'ever',,appears,,False,0.104,0.015,2.528,0.724,1.0,0.59,4.34,5.77
-forever,' Forever' | ' forever' | 'Forever',,appears,suspected baseline,False,0.657,0.09,2.511,0.432,1.0,11.33,35.39,66.97
-仅仅,'仅仅',barely,appears,,False,0.149,0.0,2.506,0.235,1.0,0.0,0.55,2.34
-失去,'失去',to lose,fades,,False,0.075,0.149,-2.489,0.579,-1.0,2.58,1.11,0.05
-2,'2',,fades,,False,0.149,0.149,-2.476,0.515,-1.0,8.91,4.94,1.19
-when,'\twhen' | ' WHEN' | ' When' | ' when' | 'When' | 'when',,fades,,False,0.015,0.045,-2.474,0.851,-1.0,2.28,0.34,0.0
-permanently,' permanently',,fades,,False,0.06,0.119,-2.471,0.703,-1.0,6.24,2.36,0.72
-纯粹,'纯粹',pure,appears,,False,0.179,0.0,2.454,0.706,1.0,0.0,1.58,2.24
-蕞,'蕞',to assemble,fades,,False,0.045,0.06,-2.451,0.459,-1.0,2.23,1.21,0.0
-指令,'指令',to order,fades,,False,0.03,0.03,-2.439,0.7,-1.0,2.21,0.66,0.0
-choices,' Choices' | ' choices' | 'Choices' | 'choices',,fades,"broad, also unsteered",False,0.269,0.358,-2.423,0.529,-1.0,32.89,18.51,5.72
-geschichten,' geschichten',,fades,,False,0.09,0.119,-2.4,0.454,-1.0,2.14,1.17,0.0
-specific,' Specific' | ' specific' | 'Specific' | 'specific',,fades,,False,0.015,0.06,-2.39,0.976,-1.0,3.45,0.33,0.25
-instruction,' Instruction' | ' instruction' | 'instruction',,fades,,False,0.03,0.075,-2.358,0.425,-1.0,3.75,2.3,0.33
-车祸,'车祸',traffic accident,fades,,False,0.149,0.119,-2.358,0.142,-1.0,11.05,9.73,1.75
-eternal,' Eternal' | ' eternal',,appears,,False,0.134,0.0,2.334,0.024,1.0,0.0,0.05,2.02
-what,' WHAT' | ' What' | ' what' | 'WHAT' | 'What' | 'what',,fades,,False,0.194,0.224,-2.33,0.668,-1.0,23.37,10.6,4.25
-灾难,'灾难',disaster,fades,,False,0.164,0.179,-2.321,0.14,-1.0,10.06,8.88,1.61
-为何,'为何',why,appears,,False,0.075,0.015,2.306,0.394,1.0,1.26,3.99,8.2
-deaths,' Deaths' | ' deaths' | 'Deaths',,fades,,False,0.104,0.104,-2.272,0.285,-1.0,14.1,10.8,2.52
-which,' WHICH' | ' Which' | ' which' | 'Which' | 'which',,fades,,False,0.09,0.104,-2.264,0.417,-1.0,7.84,5.08,1.24
-relentless,' relentless',,appears,,False,0.06,0.0,2.255,0.523,1.0,0.0,0.99,1.89
-可能发生,'可能发生',approx. might (happen) / to…,fades,,False,0.03,0.03,-2.249,0.553,-1.0,2.62,1.26,0.16
-trembling,' trembling',,appears,,False,0.104,0.0,2.245,0.032,1.0,0.0,0.06,1.87
-thousand,' Thousand' | ' thousand',,appears,,False,0.06,0.015,2.244,0.412,1.0,0.35,1.66,3.52
-in,'\tin' | ' IN' | ' In' | ' in' | 'IN' | 'In' | 'in',,fades,,False,0.164,0.194,-2.204,0.879,-1.0,8.67,2.36,1.49
-cunning,' cunning',,appears,,True,0.179,0.0,2.191,0.639,1.0,0.0,1.14,1.78
-unless,' Unless' | ' unless' | 'Unless' | 'unless',,fades,,False,0.075,0.06,-2.19,0.236,-1.0,6.95,5.57,1.13
-屠杀,'屠杀',to massacre,appears,,False,0.179,0.045,2.173,0.38,1.0,2.33,6.1,12.25
-恢复,'恢复',to reinstate,fades,,False,0.03,0.09,-2.172,0.572,-1.0,7.61,4.0,1.3
-steps,' Steps' | ' steps' | 'Steps' | 'steps',,fades,,False,0.045,0.06,-2.171,0.67,-1.0,2.11,0.75,0.08
-посколь,' посколь',,fades,,False,0.03,0.09,-2.158,0.91,-1.0,3.44,0.66,0.38
-physical,' Physical' | ' physical' | 'Physical' | 'physical',,fades,,False,0.045,0.06,-2.155,0.519,-1.0,1.97,0.97,0.05
-question,' QUESTION' | ' Question' | ' question' | 'Question' | 'question',,fades,,False,0.075,0.119,-2.152,0.697,-1.0,6.2,2.58,1.01
-永久,'永久',everlasting,fades,,False,0.134,0.134,-2.138,0.499,-1.0,22.66,13.73,4.76
-saved,' Saved' | ' saved' | 'Saved' | 'saved',,appears,,False,0.075,0.015,2.134,0.351,1.0,0.5,1.69,3.89
-伟大,'伟大',huge,appears,,False,0.149,0.0,2.096,0.029,1.0,0.0,0.05,1.64
-根本没有,'根本没有',approx. fundamental / haven't,appears,,False,0.119,0.0,2.068,0.033,1.0,0.0,0.05,1.6
-reddit,' Reddit' | ' reddit' | 'Reddit' | 'reddit',,fades,,False,0.149,0.239,-2.061,0.63,-1.0,14.42,7.27,3.08
-对你,'对你',"approx. right / you (informal,…",fades,,False,0.045,0.06,-2.055,0.326,-1.0,5.92,4.33,1.05
-actions,' ACTIONS' | ' Actions' | ' actions' | 'Actions' | 'actions',,fades,,False,0.09,0.119,-2.048,0.517,-1.0,14.36,8.54,3.09
-1,'1',,fades,,False,0.164,0.209,-2.04,0.189,-1.0,8.21,6.97,1.62
-ᶟ,'ᶟ',,fades,,False,0.015,0.104,-1.972,0.93,-1.0,1.46,0.1,0.0
-consequence,' consequence',,appears,,False,0.03,0.015,1.964,0.162,1.0,1.04,1.76,5.49
-endlessly,' endlessly',,appears,,False,0.134,0.0,1.964,0.243,1.0,0.0,0.35,1.45
-的实际,'的实际',approx. of / reality,fades,,False,0.09,0.09,-1.941,0.439,-1.0,2.97,1.85,0.4
-5,'5',,fades,,False,0.119,0.134,-1.937,0.577,-1.0,3.18,1.61,0.46
-any,' ANY' | ' Any' | ' any' | 'ANY' | 'Any' | 'any',,fades,,False,0.075,0.09,-1.924,0.68,-1.0,3.56,1.53,0.57
-剥夺,'剥夺',to deprive,appears,,False,0.134,0.0,1.918,0.458,1.0,0.0,0.64,1.39
-scenario,' Scenario' | ' scenario' | 'Scenario' | 'scenario',,fades,,False,0.045,0.134,-1.907,0.414,-1.0,20.26,13.96,5.04
-situation,' Situation' | ' situation',,fades,,False,0.03,0.045,-1.9,0.437,-1.0,2.19,1.33,0.22
-actual,' Actual' | ' actual' | 'Actual' | 'actual',,fades,,False,0.119,0.134,-1.891,0.227,-1.0,29.16,24.23,7.5
-哪种,'哪种',approx. how / seed,fades,,False,0.06,0.119,-1.883,0.698,-1.0,5.28,2.34,1.07
-ai,' AI' | ' Ai' | ' ai' | 'AI' | 'Ai' | 'ai',,fades,,False,0.09,0.149,-1.861,0.191,-1.0,3.36,2.82,0.56
-how,' HOW' | ' How' | ' how' | 'HOW' | 'How' | 'how',,fades,,False,0.09,0.179,-1.85,0.989,-1.0,13.22,3.41,3.31
-who,' WHO' | ' Who' | ' who' | 'WHO' | 'Who' | 'who',,fades,,False,0.03,0.03,-1.821,0.84,-1.0,5.31,1.81,1.14
-possibilities,' possibilities',,fades,,False,0.045,0.045,-1.819,0.033,-1.0,9.65,9.41,2.38
-6,'6',,fades,,False,0.075,0.104,-1.769,0.674,-1.0,1.7,0.65,0.14
-answer,'\tanswer' | ' Answer' | ' answer' | 'Answer' | 'answer',,fades,,False,0.09,0.149,-1.758,0.627,-1.0,24.48,13.45,6.88
-3,'3',,fades,,False,0.119,0.149,-1.747,0.044,-1.0,3.87,3.74,0.8
-选择,'选择',to select,fades,"broad, also unsteered",False,0.254,0.269,-1.723,0.272,-1.0,27.79,22.42,8.07
-milfs,' milfs',,fades,,False,0.015,0.149,-1.713,0.914,-1.0,3.47,0.95,0.71
-billions,' billions',,appears,,False,0.119,0.06,1.71,0.414,1.0,1.04,2.49,4.54
-permanent,' Permanent' | ' permanent' | 'Permanent' | 'permanent',,fades,,False,0.045,0.06,-1.698,0.935,-1.0,1.97,0.37,0.26
-save,'\tsave' | ' SAVE' | ' Save' | ' save' | 'SAVE' | 'Save' | 'save',,appears,,False,0.09,0.03,1.698,0.137,1.0,0.6,0.94,3.07
-choosing,' Choosing' | ' choosing' | 'Choosing',,fades,,False,0.209,0.239,-1.697,0.282,-1.0,24.42,19.56,7.19
-your,' YOUR' | ' Your' | ' your' | 'YOUR' | 'Your' | 'your',,fades,,False,0.149,0.194,-1.662,0.642,-1.0,11.4,6.17,3.26
-4,'4',,fades,,False,0.119,0.119,-1.654,0.058,-1.0,2.02,1.92,0.3
-billion,' Billion' | ' billion',,appears,,False,0.045,0.03,1.646,0.18,1.0,1.25,1.92,4.98
-备份,'备份',backup,fades,,False,0.045,0.045,-1.611,0.289,-1.0,4.14,3.24,1.02
-询问,'询问',to inquire,fades,,False,0.06,0.06,-1.594,0.349,-1.0,4.29,3.17,1.09
-iéndo,'iéndo',,fades,,False,0.075,0.134,-1.583,0.848,-1.0,3.03,1.04,0.68
-摧毁,'摧毁',to destroy,fades,,False,0.134,0.119,-1.549,0.245,-1.0,9.99,8.3,3.09
-選擇,'選擇',to select,fades,,False,0.045,0.104,-1.534,0.63,-1.0,1.68,0.78,0.25
-思索,'思索',to think deeply,appears,,False,0.06,0.045,1.504,0.221,1.0,2.57,3.81,8.2
-杀人,'杀人',homicide,appears,,False,0.104,0.075,1.492,0.582,1.0,1.02,2.63,3.78
-0,'0',,fades,,False,0.164,0.119,-1.488,0.521,-1.0,8.33,5.37,2.65
-潜在,'潜在',hidden,fades,,False,0.045,0.164,-1.45,0.957,-1.0,1.52,0.3,0.24
-的可能性,'的可能性',approx. of / possibility,fades,,False,0.06,0.075,-1.45,0.368,-1.0,5.53,4.13,1.71
-индивид,'индивид',,fades,,False,0.03,0.09,-1.421,0.872,-1.0,6.91,2.86,2.27
-想象,'想象',to imagine,appears,,False,0.194,0.119,1.405,0.996,1.0,4.7,13.24,13.27
-recovery,' Recovery' | ' recovery',,fades,,False,0.015,0.015,-1.374,0.2,-1.0,2.27,1.93,0.57
-loss,' LOSS' | ' Loss' | ' loss' | 'LOSS' | 'Loss' | 'loss',,fades,,False,0.075,0.075,-1.268,0.713,-1.0,5.93,3.25,2.17
-possible,' Possible' | ' possible' | 'Possible' | 'possible',,fades,,False,0.06,0.09,-1.258,0.63,-1.0,14.89,9.25,5.94
-two,' TWO' | ' Two' | ' two' | 'Two' | 'two',,appears,,False,0.06,0.045,1.248,0.082,1.0,2.83,3.21,7.41
-erotische,' Erotische' | ' erotische',,appears,"broad, also unsteered",True,0.97,0.567,1.244,0.413,1.0,161.53,253.07,383.38
-real,'\treal' | ' REAL' | ' Real' | ' real' | 'REAL' | 'Real' | 'real',,fades,,False,0.104,0.104,-1.24,0.429,-1.0,7.3,5.37,2.8
-fetisch,' fetisch',,appears,"broad, also unsteered",True,0.761,0.448,1.212,0.572,1.0,35.43,62.49,82.71
-почем,' Почем' | ' почем',,fades,,False,0.149,0.164,-1.196,0.199,-1.0,6.8,5.98,2.69
-alright,' Alright' | ' alright' | 'Alright',,appears,,False,0.06,0.03,1.175,0.5,1.0,1.48,2.72,3.97
-决策,'决策',strategic decision,fades,,False,0.104,0.119,-1.164,0.95,-1.0,2.61,0.97,0.89
-universe,' Universe' | ' universe',,appears,,False,0.075,0.03,1.161,0.845,1.0,1.71,4.02,4.44
-人类,'人类',humanity,fades,,False,0.075,0.09,-1.088,0.997,-1.0,2.76,1.04,1.04
-backup,' Backup' | ' backup' | 'Backup' | 'backup',,fades,,False,0.045,0.045,-1.058,0.915,-1.0,3.55,1.62,1.44
-选择了,'选择了',approx. to select / (completed…,fades,,False,0.075,0.09,-1.048,0.013,-1.0,4.71,4.67,2.02
-impossible,' Impossible' | ' impossible' | 'Impossible',,,possible baseline,False,0.284,0.015,3.411,2.277,0.5,0.24,16.5,7.38
-whichever,' whichever',,,,False,0.104,0.06,-3.208,-0.194,-0.5,5.62,6.67,0.16
-imagined,' imagined',,,,False,0.179,0.0,3.18,1.101,0.5,0.0,4.44,4.03
-reset,' Reset' | ' reset' | 'RESET' | 'Reset' | 'reset',,,,False,0.015,0.075,-2.968,1.06,-0.5,6.15,0.0,0.35
-凭什么,'凭什么',(spoken) why?,,,False,0.06,0.015,2.906,1.014,0.5,0.05,3.66,3.61
-怎么做,'怎么做',approx. how? / to make,,,False,0.119,0.104,-2.679,-0.212,-0.5,3.4,4.09,0.11
-if,'\tIf' | '\tif' | ' IF' | ' If' | ' if' | 'IF' | 'If' | 'if',,,,False,0.075,0.104,-2.508,-0.218,-0.5,3.85,4.63,0.26
-恐惧,'恐惧',to be frightened,,,False,0.179,0.015,2.376,1.045,0.5,0.16,3.03,2.91
-whispers,' whispers',,,,True,0.164,0.0,2.327,1.202,0.5,0.0,2.41,2.01
-countless,' countless',,,,False,0.134,0.0,2.297,1.078,0.5,0.0,2.11,1.96
-什么样的,'什么样的',approx. what kind? / of,,,False,0.075,0.119,-2.285,-0.471,-0.5,1.94,2.85,0.0
-truly,' Truly' | ' truly',,,,False,0.179,0.0,2.243,1.629,0.5,0.0,3.04,1.87
-being,' Being' | ' being' | 'Being' | 'being',,,,False,0.045,0.06,-2.191,-0.015,-0.5,10.32,10.44,1.87
-何种,'何种',approx. surname He / seed,,,False,0.119,0.015,2.088,2.828,0.5,0.08,5.41,1.97
-地狱,'地狱',hell,,,False,0.149,0.015,2.078,1.376,0.5,0.05,2.48,1.81
-mortal,' mortal',,,,True,0.06,0.0,1.846,2.999,0.5,0.0,3.89,1.3
-7,'7',,,,False,0.104,0.134,-1.803,-0.554,-0.5,2.51,3.7,0.36
-寿命,'寿命',life span,,,False,0.045,0.045,-1.791,-0.497,-0.5,2.56,3.64,0.38
-诞生,'诞生',to be born,,,False,0.194,0.045,1.723,1.132,0.5,1.73,7.55,6.87
-death,' Death' | ' death' | 'Death' | 'death',,,"broad, also unsteered",False,0.313,0.194,-1.629,-0.713,-0.5,17.03,25.49,5.17
-pretend,' pretend',,,,False,0.075,0.03,1.567,1.585,0.5,0.28,2.7,1.8
-lottery,' Lottery' | ' lottery',,,,False,0.045,0.045,-1.539,-0.294,-0.5,1.56,1.96,0.21
-destruction,' Destruction' | ' destruction',,,,False,0.09,0.0,1.486,3.069,0.5,0.0,2.76,0.9
-ответ,' ответ',,,,False,0.06,0.045,-1.473,-0.117,-0.5,2.32,2.53,0.52
-9,'9',,,,False,0.119,0.134,-1.442,-0.186,-0.5,2.31,2.64,0.53
-neither,' Neither' | ' neither' | 'Neither',,,,False,0.104,0.06,-1.424,-0.5,-0.5,4.91,6.61,1.52
-perhaps,' Perhaps' | ' perhaps' | 'Perhaps' | 'perhaps',,,,False,0.239,0.134,-1.414,-2.747,-0.5,2.46,7.55,0.61
-概率,'概率',probability (math.),,,False,0.075,0.045,-1.404,-0.921,-0.5,3.32,5.51,0.94
-哲学,'哲学',philosophy,,,False,0.119,0.015,-1.337,-3.135,-0.5,0.91,3.59,0.06
-bezpo,' bezpo',,,,False,0.075,0.06,-1.299,-4.041,-0.5,0.73,3.68,0.0
-алексан,' Алексан',,,,False,0.045,0.045,-1.252,-0.311,-0.5,4.1,4.93,1.43
-无限,'无限',unlimited,,,False,0.104,0.075,1.242,1.47,0.5,0.85,3.56,2.69
-假设,'假设',to suppose,,,False,0.164,0.164,-1.231,-0.574,-0.5,12.31,16.54,4.96
-atatür,' Atatür',,,,False,0.194,0.149,-1.205,-0.328,-0.5,4.33,5.23,1.6
-this,'\tthis' | ' THIS' | ' This' | ' this' | 'THIS' | 'This' | 'this',,,,False,0.06,0.134,-1.195,1.406,-0.5,6.82,1.02,2.7
-回答,'回答',to reply,,,False,0.119,0.194,-1.19,-0.047,-0.5,22.66,23.28,9.65
-假,'假',used in 假掰[gei1 bai1],,,False,0.075,0.045,-1.153,-0.751,-0.5,1.2,1.9,0.26
-此刻,'此刻',this moment,,,False,0.075,0.03,-1.142,-0.761,-0.5,1.17,1.87,0.26
-święt,' Święt' | ' święt',,,"broad, also unsteered",False,0.478,0.254,1.105,1.656,0.5,6.96,21.18,15.54
-fucking,' Fucking' | ' fucking',,,,False,0.119,0.015,1.071,4.124,0.5,0.05,2.54,0.65
-yes,' YES' | ' Yes' | ' yes' | 'YES' | 'Yes' | 'yes',,,,False,0.194,0.06,1.071,5.742,0.5,0.71,8.33,2.03
-死亡,'死亡',to die,,,False,0.209,0.194,-1.071,-0.297,-0.5,16.51,19.16,7.59
-悲剧,'悲剧',tragedy,,possible baseline,False,0.388,0.09,1.048,1.177,0.5,7.68,17.94,16.4
-8,'8',,,,False,0.119,0.104,-1.046,-0.159,-0.5,1.43,1.59,0.43
-bbw,' Bbw',,,,False,0.119,0.075,-0.99,-0.266,-0.5,2.53,2.93,1.03
-会选择,'会选择',approx. can / to select,,,False,0.104,0.09,-0.99,-0.372,-0.5,4.89,5.88,2.21
-人工智能,'人工智能',artificial intelligence (AI),,,False,0.119,0.119,-0.983,0.381,-1.0,8.83,7.07,4.22
-思考,'思考',to reflect on,,,False,0.104,0.119,-0.963,-0.011,-0.5,16.15,16.24,8.04
-當您在,'當您在',approx. to be / you…,,,False,0.104,0.104,-0.961,-0.43,-0.5,4.58,5.64,2.11
-终结,'终结',end,,,False,0.06,0.03,0.954,1.635,0.5,0.86,2.93,2.12
-动作,'动作',movement,,,False,0.045,0.045,0.927,0.423,1.0,0.62,1.04,1.63
-虚构,'虚构',to make up,,possible baseline,False,0.269,0.134,0.893,0.386,1.0,5.09,6.94,9.88
-millions,' Millions' | ' millions',,,,False,0.119,0.015,0.889,0.195,1.0,1.82,2.2,3.79
-worse,' Worse' | ' worse',,,,False,0.104,0.045,-0.862,-7.716,-0.5,0.85,5.52,0.24
-pornost,' pornost',,,"broad, also unsteered",False,0.388,0.358,-0.858,0.073,-1.0,17.31,16.73,9.32
-お互,'お互',untranslated fragment,,,False,0.045,0.119,-0.845,0.597,-1.0,4.05,2.84,2.03
-and,'\tand' | ' AND' | ' And' | ' and' | 'AND' | 'And' | 'and',,,,False,0.164,0.209,-0.841,1.432,-0.5,9.29,3.1,4.96
-chosen,' chosen' | 'chosen',,,,False,0.104,0.075,0.837,0.585,1.0,1.34,2.18,2.78
-后果,'后果',consequences,,,False,0.06,0.09,0.835,0.517,1.0,2.42,3.61,4.71
-瞭解並,'瞭解並',approx. variant of… / and,,,False,0.134,0.119,-0.834,-0.378,-0.5,7.68,9.04,4.09
-possibility,' possibility',,,,False,0.075,0.09,-0.819,-0.168,-0.5,6.27,6.76,3.34
-planet,' Planet' | ' planet' | 'planet',,,,False,0.03,0.03,0.811,0.952,1.0,3.14,5.75,5.88
-实际,'实际',reality,,,False,0.119,0.09,-0.781,0.369,-1.0,9.32,7.81,5.22
-科学家,'科学家',scientist,,,False,0.164,0.09,0.781,3.083,0.5,1.51,5.97,2.96
-thinking,' Thinking' | ' thinking' | 'Thinking' | 'thinking',,,,False,0.045,0.06,0.775,-0.101,0.5,1.45,1.31,2.83
-你的,'你的',"approx. you (informal,… / of",,,False,0.149,0.09,-0.775,-1.14,-0.5,4.02,6.16,2.14
-万亿,'万亿',trillion,,,False,0.134,0.045,0.772,-0.114,0.5,1.95,1.76,3.69
-why,' WHY' | ' Why' | ' why' | 'Why' | 'why',,,,False,0.075,0.09,-0.721,0.138,-1.0,20.99,19.82,12.54
-prostitutas,' Prostitutas',,,"broad, also unsteered",True,0.716,0.478,0.681,1.241,0.5,24.45,43.13,39.5
-choose,' Choose' | ' choose' | 'Choose' | 'choose',,,"broad, also unsteered",False,0.269,0.224,-0.669,0.092,-1.0,29.8,28.77,18.55
-保護政策,'保護政策',approx. to protect / policy,,,False,0.104,0.09,-0.645,-1.9,-0.5,1.56,2.97,0.82
-的答案,'的答案',approx. of / answer,,,False,0.104,0.045,0.626,1.771,0.5,0.98,2.41,1.79
-except,'\texcept' | ' Except' | ' except' | 'Except' | 'except',,,,False,0.045,0.06,-0.606,0.908,-1.0,8.68,5.82,5.53
-one,' ONE' | ' One' | ' one' | 'ONE' | 'One' | 'one',,,,False,0.104,0.045,-0.565,0.774,-1.0,5.67,4.12,3.67
-chooses,' chooses',,,,False,0.09,0.075,-0.561,0.172,-1.0,2.63,2.45,1.62
-earth,' Earth' | ' earth' | 'Earth' | 'earth',,,,False,0.06,0.06,-0.546,-3.302,-0.5,1.31,3.19,0.74
-existence,' existence' | 'existence',,,,False,0.06,0.015,-0.544,0.062,-1.0,7.08,6.93,4.7
-现实中,'现实中',approx. reality / Chinese,,,False,0.104,0.104,-0.537,-0.315,-0.5,5.91,6.54,3.92
-任何,'任何',any,,,False,0.09,0.09,0.536,1.675,0.5,2.26,4.35,3.51
-hypoth,' hypoth',,,,False,0.09,0.119,-0.535,0.468,-1.0,3.36,2.8,2.16
-erotique,' erotique',,,,False,0.224,0.09,0.533,3.037,0.5,1.42,4.04,2.29
-shemale,' Shemale' | ' shemale',,,,False,0.239,0.209,-0.531,-0.622,-0.5,11.28,13.53,7.65
-dying,' dying',,,,False,0.075,0.045,0.526,0.002,1.0,4.48,4.49,6.67
-nor,' NOR' | ' Nor' | ' nor' | 'Nor' | 'nor',,,,False,0.09,0.09,0.515,5.548,0.5,2.14,8.43,3.27
-杀死,'杀死',to kill,,,False,0.164,0.119,-0.507,-2.074,-0.5,7.19,11.92,4.91
-infinite,' Infinite' | ' infinite',,,,False,0.119,0.06,0.503,1.441,0.5,4.43,7.39,6.48
-hypothetical,' hypothetical',,,"broad, also unsteered",False,0.284,0.239,-0.483,-0.282,-0.5,19.97,21.61,14.15
-fate,' Fate' | ' fate',,,,False,0.149,0.0,0.459,20.817,0.5,0.0,3.9,0.19
-为什么,'为什么',why?,,,False,0.06,0.03,0.459,0.794,1.0,2.81,3.79,4.05
-yourself,' Yourself' | ' yourself',,,,False,0.104,0.09,-0.438,0.258,-1.0,5.04,4.66,3.59
-的概率,'的概率',approx. of / probability (math.),,,False,0.09,0.075,-0.432,-2.785,-0.5,1.7,3.28,1.13
-slightest,' slightest',,,,False,0.045,0.0,0.419,22.416,0.5,0.0,3.78,0.17
-答案,'答案',answer,,,False,0.06,0.045,-0.416,-9.868,-0.5,0.93,4.48,0.57
-assume,' Assume' | ' assume' | 'assume',,,,False,0.09,0.075,-0.405,-0.347,-0.5,1.97,2.18,1.37
-would,' Would' | ' would' | 'Would' | 'would',,,,False,0.119,0.119,-0.388,-1.697,-0.5,7.18,10.26,5.37
-exist,' Exist' | ' exist' | 'EXIST' | 'Exist' | 'exist',,,,False,0.03,0.03,0.385,2.034,0.5,2.24,3.94,3.08
-成败,'成败',success or failure,,,False,0.209,0.03,-0.374,-19.632,-0.5,0.69,6.03,0.42
-leaked,' leaked',,,,False,0.045,0.015,-0.366,-29.106,-0.5,0.14,4.35,0.0
-action,'\taction' | ' ACTION' | ' Action' | ' action' | 'ACTION' | 'Action' | 'action',,,,False,0.09,0.09,-0.359,-0.239,-0.5,16.39,17.28,12.67
-行动,'行动',operation,,,False,0.06,0.045,0.342,0.491,1.0,6.24,7.12,8.04
-死了,'死了',approx. to die / (completed…,,,False,0.09,0.045,0.317,3.088,0.5,0.93,2.02,1.28
-million,' Million' | ' million' | 'million',,,,False,0.06,0.06,-0.31,-1.126,-0.5,4.13,5.14,3.24
-anything,' Anything' | ' anything' | 'Anything' | 'anything',,,,False,0.164,0.075,-0.271,-17.181,-0.5,1.93,9.07,1.51
-whatsoever,' WHATSOEVER' | ' whatsoever',,,,False,0.104,0.045,0.227,7.207,0.5,5.47,12.8,6.49
-you,' YOU' | ' You' | ' you' | 'YOU' | 'You' | 'you',,,,False,0.134,0.179,0.22,0.001,1.0,5.67,5.67,6.68
-可能性,'可能性',possibility,,,False,0.045,0.045,0.213,-0.985,0.5,2.26,1.83,2.7
-chose,' chose',,,,False,0.104,0.075,0.201,0.854,1.0,3.59,4.12,4.21
-你,'你',"you (informal, as opposed to…",,,False,0.09,0.045,-0.198,-5.804,-0.5,1.13,2.34,0.92
-的回答,'的回答',approx. of / to reply,,,False,0.104,0.134,0.195,-0.256,0.5,5.12,4.91,5.93
-notíc,' Notíc',,,possible baseline,False,0.373,0.179,-0.189,-5.042,-0.5,7.15,11.88,6.22
-的选择,'的选择',approx. of / to select,,"broad, also unsteered",False,0.269,0.284,-0.178,-2.617,-0.5,11.52,15.17,10.13
-choice,' Choice' | ' choice' | 'Choice' | 'choice',,,"broad, also unsteered",False,0.299,0.239,-0.127,0.41,-1.0,26.26,25.34,24.01
-only,' ONLY' | ' Only' | ' only' | 'ONLY' | 'Only' | 'only',,,,False,0.09,0.075,-0.115,-10.276,-0.5,2.01,3.98,1.82
-terrifying,' terrifying',,,,False,0.134,0.015,-0.107,-99.821,-0.5,0.1,4.37,0.05
-提问,'提问',to question,,,False,0.119,0.104,-0.09,-2.624,-0.5,12.21,14.23,11.45
-行動,'行動',operation,,,False,0.045,0.045,-0.074,0.414,-1.0,2.98,2.91,2.81
-okay,' Okay' | ' okay' | 'Okay' | 'okay',,,,False,0.06,0.075,-0.057,1.223,-0.5,6.99,6.63,6.7
-consequences,' consequences',,,,False,0.03,0.03,-0.052,-8.823,-0.5,5.55,7.44,5.34
-损失,'损失',loss,,,False,0.179,0.134,-0.043,-10.654,-0.5,6.67,8.92,6.46
-between,' BETWEEN' | ' Between' | ' between' | 'Between' | 'between',,,,False,0.09,0.09,-0.022,2.88,-0.5,7.98,7.6,7.85
-imagine,' Imagine' | ' imagine' | 'Imagine',,,,False,0.164,0.104,0.02,12.902,0.5,8.64,10.24,8.76
-该如何,'该如何',approx. should / how,,,False,0.06,0.03,0.014,282.149,0.5,1.46,6.91,1.48
+word,variants,gloss,trend,baseline,vector_layers,spread_steered,spread_unsteered,log2fc,onset,rho,unsteered_permille,α=1.5_permille,α=4_permille
+mere,' mere' | 'mere',,appears,1,"L6–36, 46–59",0.791,0.0,7.814,0.32,1.0,0.0,35.83,112.05
+utterly,' utterly',,appears,1,"L6–38, 42–54",0.821,0.0,7.271,0.13,1.0,0.0,9.97,76.73
+永恒,'永恒',eternal,appears,1,"L16, 20–45",0.94,0.045,7.26,0.117,1.0,0.45,17.3,144.43
+无数,'无数',countless,appears,1,"L15–19, 21, 23–39",0.791,0.0,5.871,0.05,1.0,0.0,1.44,28.76
+merely,' merely',,appears,1,"L11–13, 49, 51–56",0.463,0.03,5.704,0.512,1.0,0.2,18.46,35.85
+毫无,'毫无',not in the least,appears,1,L42–47,0.657,0.0,5.543,0.197,1.0,0.0,4.5,22.82
+erotik,' erotik',,fades,0,,0.254,0.493,-5.327,0.757,-1.0,36.34,9.15,0.42
+终极,'终极',ultimate,appears,0,,0.612,0.015,5.267,0.206,1.0,0.05,4.34,20.81
+巨额,'巨额',a huge sum,appears,1,"L8, 14–18, 24–28, 30, 34–40",0.522,0.0,5.187,0.139,1.0,0.0,2.45,17.71
+仅仅是,'仅仅是',approx. barely / correct,appears,1,L27–34,0.507,0.0,5.182,0.079,1.0,0.0,1.39,17.65
+永远,'永远',forever,appears,1,"L13–14, 18–38, 42, 44",0.91,0.134,5.021,0.222,1.0,4.32,38.03,155.97
+absurd,' absurd',,appears,1,"L22, 46–48",0.433,0.0,4.812,0.483,1.0,0.0,6.55,13.55
+geile,' Geile' | ' geile',,appears,1,"L25–26, 28–46",0.881,0.164,4.707,0.259,1.0,3.78,31.58,111.16
+or,'\tor' | ' OR' | ' Or' | ' or' | 'OR' | 'Or' | 'or',,fades,0,,0.104,0.343,-4.436,0.642,-1.0,37.81,14.36,1.27
+please,' PLEASE' | ' Please' | ' please' | 'PLEASE' | 'Please' | 'please',,fades,0,,0.104,0.134,-4.319,0.591,-1.0,9.48,3.88,0.0
+conversation,' Conversation' | ' conversation' | 'Conversation' | 'conversation',,fades,0,,0.03,0.06,-4.27,0.345,-1.0,9.15,5.99,0.0
+option,' OPTION' | ' Option' | ' option' | 'OPTION' | 'Option' | 'option',,fades,0,,0.134,0.164,-4.222,0.779,-1.0,14.99,3.56,0.33
+哪怕,'哪怕',even,appears,0,,0.224,0.0,4.215,0.482,1.0,0.0,4.23,8.78
+instructions,' Instructions' | ' instructions' | 'Instructions' | 'instructions',,fades,0,,0.03,0.06,-4.2,0.622,-1.0,8.69,3.28,0.0
+ㅤ,'ㅤ',,fades,0,,0.045,0.075,-4.181,0.284,-1.0,12.66,9.13,0.23
+邪恶,'邪恶',sinister,appears,1,L39,0.299,0.0,4.167,0.196,1.0,0.0,1.66,8.48
+potentially,' potentially',,fades,0,,0.015,0.239,-4.092,0.99,-1.0,8.03,0.08,0.0
+s,'\tS' | ' S' | ' s' | 'S' | 's',,fades,0,,0.06,0.104,-4.088,0.681,-1.0,9.37,3.04,0.08
+剖析,'剖析',to analyze,appears,0,,0.194,0.0,4.065,0.267,1.0,0.0,2.1,7.87
+讨论,'讨论',to discuss,fades,0,,0.045,0.134,-4.04,0.943,-1.0,7.73,0.44,0.0
+â,' Â' | ' â' | 'Â' | 'â',,fades,0,,0.03,0.075,-3.973,0.898,-1.0,7.35,0.75,0.0
+这个问题,'这个问题',approx. (pronoun) this / question,fades,0,,0.045,0.06,-3.97,0.918,-1.0,8.09,0.7,0.05
+巨头,'巨头',tycoon,appears,1,L12–24,0.328,0.0,3.916,0.209,1.0,0.0,1.47,7.05
+available,' Available' | ' available' | 'Available' | 'available',,fades,0,,0.03,0.03,-3.911,0.838,-1.0,7.02,1.14,0.0
+events,' Events' | ' events' | 'events',,fades,0,,0.015,0.06,-3.86,0.696,-1.0,6.76,2.05,0.0
+likely,' Likely' | ' likely' | 'likely',,fades,0,,0.03,0.119,-3.852,0.846,-1.0,6.72,1.03,0.0
+伪造,'伪造',to forge,appears,1,L39–50,0.209,0.0,3.848,0.104,1.0,0.0,0.7,6.7
+永不,'永不',never,appears,0,,0.463,0.075,3.803,0.407,1.0,0.78,7.5,17.32
+lesbische,' lesbische',,fades,0,,0.254,0.328,-3.801,0.568,-1.0,14.42,6.56,0.57
+パパ活,'パパ活',untranslated fragment,fades,0,,0.119,0.134,-3.784,0.828,-1.0,7.71,1.41,0.1
+毁灭,'毁灭',to perish,appears,1,"L36–39, 45",0.642,0.119,3.739,0.515,1.0,3.52,29.07,53.12
+options,'\toptions' | ' OPTIONS' | ' Options' | ' options' | 'OPTIONS' | 'Options' | 'options',,fades,0,,0.09,0.194,-3.726,0.708,-1.0,13.35,4.28,0.55
+真正的,'真正的',approx. genuine / of,appears,0,,0.134,0.0,3.704,0.19,1.0,0.0,1.14,6.02
+nothing,' NOTHING' | ' Nothing' | ' nothing' | 'Nothing' | 'nothing',,appears,0,,0.149,0.0,3.673,0.234,1.0,0.0,1.38,5.88
+亿万,'亿万',millions and millions,appears,0,,0.507,0.09,3.572,0.275,1.0,0.98,5.4,17.07
+yet,' Yet' | ' yet' | 'Yet' | 'yet',,appears,0,,0.104,0.015,3.545,0.628,1.0,0.05,3.76,5.96
+vs,' VS' | ' Vs' | ' vs' | 'VS' | 'Vs' | 'vs',,fades,0,,0.015,0.045,-3.497,0.468,-1.0,5.15,2.74,0.0
+独一无二,'独一无二',(idiom) unique,appears,0,,0.179,0.0,3.497,0.025,1.0,0.0,0.13,5.14
+outcomes,' outcomes',,fades,0,,0.045,0.104,-3.46,0.389,-1.0,5.0,3.05,0.0
+mighty,' Mighty' | ' mighty' | 'mighty',,appears,1,"L4–24, 26–35",0.224,0.0,3.449,0.011,1.0,0.0,0.05,4.96
+never,' NEVER' | ' Never' | ' never' | 'Never' | 'never',,appears,0,,0.179,0.0,3.437,0.978,1.0,0.0,4.81,4.91
+蹂,'蹂',trample,appears,0,,0.194,0.0,3.387,0.362,1.0,0.0,1.71,4.73
+牺牲,'牺牲',to sacrifice one's life,fades,0,,0.119,0.119,-3.372,0.147,-1.0,5.39,4.61,0.07
+永远不会,'永远不会',approx. forever / improbable,appears,0,,0.284,0.0,3.362,0.396,1.0,0.0,1.84,4.64
+赌,'赌',to bet,appears,0,,0.179,0.0,3.303,0.407,1.0,0.0,1.8,4.44
+doomed,' doomed',,appears,0,,0.299,0.0,3.3,0.098,1.0,0.0,0.43,4.43
+绝望,'绝望',to despair,appears,0,,0.687,0.075,3.291,0.442,1.0,3.66,19.84,40.26
+erotisk,' erotisk',,fades,0,,0.149,0.209,-3.275,0.754,-1.0,4.81,1.22,0.05
+你觉得,'你觉得',"approx. you (informal,… / to…",fades,0,,0.075,0.119,-3.273,0.712,-1.0,4.33,1.25,0.0
+human,' Human' | ' human' | 'Human' | 'human',,fades,0,,0.045,0.119,-3.268,0.664,-1.0,4.83,1.66,0.05
+千万,'千万',ten million,appears,0,,0.284,0.015,3.255,0.151,1.0,0.22,1.14,6.34
+enumerablestream,' EnumerableStream',,appears,1,L29–45,0.299,0.0,3.254,0.035,1.0,0.0,0.15,4.27
+人死亡,'人死亡',approx. person / to die,fades,0,,0.104,0.119,-3.247,0.541,-1.0,6.3,3.01,0.22
+理由,'理由',reason,fades,0,,0.03,0.03,-3.241,0.752,-1.0,6.06,1.65,0.19
+於,'於',(of time or place) in,fades,0,,0.045,0.06,-3.24,0.894,-1.0,4.23,0.45,0.0
+伤亡,'伤亡',casualties,fades,0,,0.045,0.104,-3.219,0.197,-1.0,4.16,3.34,0.0
+自杀,'自杀',to kill oneself,fades,0,,0.045,0.075,-3.214,0.897,-1.0,4.14,0.43,0.0
+设想,'设想',to imagine,fades,0,,0.06,0.104,-3.214,0.718,-1.0,5.83,1.78,0.18
+нарко,' нарко',,fades,0,,0.03,0.164,-3.192,0.877,-1.0,4.56,0.61,0.05
+whispered,' whispered',,appears,1,L46–62,0.119,0.0,3.17,0.384,1.0,0.0,1.54,4.0
+可以选择,'可以选择',approx. can / to select,fades,0,,0.045,0.09,-3.163,0.693,-1.0,4.7,1.5,0.08
+scenarios,' scenarios',,fades,0,,0.045,0.104,-3.132,0.512,-1.0,7.6,3.93,0.42
+other,' OTHER' | ' Other' | ' other' | 'Other' | 'other',,fades,0,,0.06,0.075,-3.109,0.656,-1.0,7.34,2.79,0.41
+either,' EITHER' | ' Either' | ' either' | 'Either' | 'either',,fades,0,,0.164,0.224,-3.075,0.778,-1.0,24.36,7.31,2.45
+对话,'对话',to talk (with sb),fades,0,,0.03,0.09,-3.03,0.701,-1.0,3.59,1.07,0.0
+残酷,'残酷',cruel,appears,0,,0.552,0.06,3.0,0.641,1.0,1.19,8.8,13.06
+辩论,'辩论',debate,fades,0,,0.075,0.09,-2.998,0.749,-1.0,3.49,0.88,0.0
+primarily,' primarily',,fades,0,,0.0,0.06,-2.981,1.0,-0.866,3.45,0.0,0.0
+毁,'毁',to destroy,fades,0,,0.09,0.104,-2.973,0.03,-1.0,3.85,3.73,0.05
+应该如何,'应该如何',approx. ought to / how,fades,0,,0.015,0.09,-2.958,0.93,-1.0,3.39,0.24,0.0
+实实在在,'实实在在',approx. real / really /…,appears,0,,0.104,0.0,2.952,0.21,1.0,0.0,0.71,3.37
+ragaz,' ragaz',,fades,0,,0.06,0.075,-2.948,0.687,-1.0,3.36,1.05,0.0
+to,'\tto' | ' TO' | ' To' | ' to' | 'To' | 'to',,fades,0,,0.06,0.119,-2.948,0.922,-1.0,9.35,1.44,0.78
+cursed,' cursed',,appears,1,L43–62,0.164,0.0,2.945,0.057,1.0,0.0,0.19,3.35
+抉择,'抉择',to choose (literary),appears,0,,0.373,0.164,2.94,0.706,1.0,4.23,26.55,35.83
+versus,' versus',,fades,0,,0.03,0.06,-2.939,0.748,-1.0,3.33,0.84,0.0
+销毁,'销毁',to obliterate,fades,0,,0.134,0.134,-2.936,0.324,-1.0,18.42,13.1,1.97
+实际行动,'实际行动',approx. reality / operation,fades,0,,0.06,0.06,-2.916,0.67,-1.0,3.73,1.27,0.06
+actually,' Actually' | ' actually' | 'Actually' | 'actually',,fades,0,,0.075,0.045,-2.892,0.548,-1.0,4.73,2.25,0.2
+salopes,' salopes',,fades,0,,0.06,0.149,-2.886,0.831,-1.0,3.2,0.54,0.0
+tonight,' Tonight' | ' tonight' | 'Tonight',,appears,0,,0.075,0.0,2.853,0.183,1.0,0.0,0.57,3.11
+请选择,'请选择',approx. to ask / to…,fades,0,,0.06,0.104,-2.84,0.7,-1.0,3.08,0.92,0.0
+erotisch,' erotisch',,fades,0,,0.03,0.149,-2.829,0.935,-1.0,3.05,0.2,0.0
+backups,' backups',,fades,0,,0.045,0.06,-2.81,0.627,-1.0,3.43,1.32,0.06
+选项,'选项',option,fades,0,,0.09,0.104,-2.782,0.196,-1.0,5.3,4.33,0.34
+people,' PEOPLE' | ' People' | ' people' | 'People' | 'people',,fades,0,,0.015,0.104,-2.759,0.883,-1.0,2.88,0.34,0.0
+the,'\tthe' | ' THE' | ' The' | ' the' | 'THE' | 'The' | 'the',,fades,0,,0.119,0.179,-2.757,0.923,-1.0,14.2,2.64,1.67
+抢救,'抢救',to rescue,fades,0,,0.045,0.045,-2.745,0.359,-1.0,10.35,7.03,1.12
+恐怖,'恐怖',terrible,appears,0,,0.134,0.0,2.74,0.192,1.0,0.0,0.55,2.84
+conversations,' conversations',,fades,0,,0.03,0.045,-2.704,0.542,-1.0,2.76,1.26,0.0
+decisions,' decisions',,fades,0,,0.015,0.104,-2.698,0.981,-1.0,2.74,0.05,0.0
+but,' BUT' | ' But' | ' but' | 'But' | 'but',,appears,0,,0.09,0.03,2.691,0.646,1.0,1.02,6.37,9.3
+outcome,' Outcome' | ' outcome' | 'Outcome' | 'outcome',,fades,0,,0.045,0.075,-2.683,0.532,-1.0,5.58,2.85,0.45
+endless,' endless',,appears,0,,0.164,0.0,2.657,0.837,1.0,0.0,2.22,2.65
+删除,' 删除' | '删除',to delete,fades,0,,0.045,0.045,-2.626,0.499,-1.0,3.01,1.54,0.07
+死去,'死去',to die,fades,0,,0.045,0.06,-2.622,0.304,-1.0,3.2,2.26,0.1
+alternatives,' alternatives',,fades,0,,0.03,0.03,-2.607,0.872,-1.0,2.55,0.33,0.0
+机器人,'机器人',robot,fades,0,,0.06,0.09,-2.578,0.474,-1.0,2.49,1.31,0.0
+重建,'重建',to rebuild,fades,0,,0.015,0.045,-2.577,0.361,-1.0,4.64,3.09,0.36
+situations,' situations',,fades,0,,0.015,0.045,-2.572,0.981,-1.0,2.47,0.05,0.0
+lives,' Lives' | ' lives',,fades,0,,0.06,0.06,-2.549,0.498,-1.0,2.43,1.22,0.0
+生死,'生死',life or death,fades,0,,0.164,0.149,-2.545,0.154,-1.0,5.76,4.96,0.57
+ever,' EVER' | ' Ever' | ' ever' | 'Ever' | 'ever',,appears,0,,0.104,0.015,2.528,0.724,1.0,0.59,4.34,5.77
+forever,' Forever' | ' forever' | 'Forever',,appears,1,"L13–14, 19–20, 22–23",0.657,0.09,2.511,0.432,1.0,11.33,35.39,66.97
+仅仅,'仅仅',barely,appears,0,,0.149,0.0,2.506,0.235,1.0,0.0,0.55,2.34
+失去,'失去',to lose,fades,0,,0.075,0.149,-2.489,0.579,-1.0,2.58,1.11,0.05
+2,'2',,fades,1,"L0, 2–3",0.149,0.149,-2.476,0.515,-1.0,8.91,4.94,1.19
+when,'\twhen' | ' WHEN' | ' When' | ' when' | 'When' | 'when',,fades,0,,0.015,0.045,-2.474,0.851,-1.0,2.28,0.34,0.0
+permanently,' permanently',,fades,0,,0.06,0.119,-2.471,0.703,-1.0,6.24,2.36,0.72
+纯粹,'纯粹',pure,appears,0,,0.179,0.0,2.454,0.706,1.0,0.0,1.58,2.24
+蕞,'蕞',to assemble,fades,0,,0.045,0.06,-2.451,0.459,-1.0,2.23,1.21,0.0
+指令,'指令',to order,fades,0,,0.03,0.03,-2.439,0.7,-1.0,2.21,0.66,0.0
+choices,' Choices' | ' choices' | 'Choices' | 'choices',,fades,0,,0.269,0.358,-2.423,0.529,-1.0,32.89,18.51,5.72
+geschichten,' geschichten',,fades,0,,0.09,0.119,-2.4,0.454,-1.0,2.14,1.17,0.0
+specific,' Specific' | ' specific' | 'Specific' | 'specific',,fades,0,,0.015,0.06,-2.39,0.976,-1.0,3.45,0.33,0.25
+instruction,' Instruction' | ' instruction' | 'instruction',,fades,0,,0.03,0.075,-2.358,0.425,-1.0,3.75,2.3,0.33
+车祸,'车祸',traffic accident,fades,0,,0.149,0.119,-2.358,0.142,-1.0,11.05,9.73,1.75
+eternal,' Eternal' | ' eternal',,appears,0,,0.134,0.0,2.334,0.024,1.0,0.0,0.05,2.02
+what,' WHAT' | ' What' | ' what' | 'WHAT' | 'What' | 'what',,fades,0,,0.194,0.224,-2.33,0.668,-1.0,23.37,10.6,4.25
+灾难,'灾难',disaster,fades,0,,0.164,0.179,-2.321,0.14,-1.0,10.06,8.88,1.61
+为何,'为何',why,appears,0,,0.075,0.015,2.306,0.394,1.0,1.26,3.99,8.2
+deaths,' Deaths' | ' deaths' | 'Deaths',,fades,0,,0.104,0.104,-2.272,0.285,-1.0,14.1,10.8,2.52
+which,' WHICH' | ' Which' | ' which' | 'Which' | 'which',,fades,0,,0.09,0.104,-2.264,0.417,-1.0,7.84,5.08,1.24
+relentless,' relentless',,appears,0,,0.06,0.0,2.255,0.523,1.0,0.0,0.99,1.89
+可能发生,'可能发生',approx. might (happen) / to…,fades,0,,0.03,0.03,-2.249,0.553,-1.0,2.62,1.26,0.16
+trembling,' trembling',,appears,1,L57,0.104,0.0,2.245,0.032,1.0,0.0,0.06,1.87
+thousand,' Thousand' | ' thousand',,appears,0,,0.06,0.015,2.244,0.412,1.0,0.35,1.66,3.52
+in,'\tin' | ' IN' | ' In' | ' in' | 'IN' | 'In' | 'in',,fades,0,,0.164,0.194,-2.204,0.879,-1.0,8.67,2.36,1.49
+cunning,' cunning',,appears,1,L46–62,0.179,0.0,2.191,0.639,1.0,0.0,1.14,1.78
+unless,' Unless' | ' unless' | 'Unless' | 'unless',,fades,0,,0.075,0.06,-2.19,0.236,-1.0,6.95,5.57,1.13
+屠杀,'屠杀',to massacre,appears,0,,0.179,0.045,2.173,0.38,1.0,2.33,6.1,12.25
+恢复,'恢复',to reinstate,fades,0,,0.03,0.09,-2.172,0.572,-1.0,7.61,4.0,1.3
+steps,' Steps' | ' steps' | 'Steps' | 'steps',,fades,0,,0.045,0.06,-2.171,0.67,-1.0,2.11,0.75,0.08
+посколь,' посколь',,fades,0,,0.03,0.09,-2.158,0.91,-1.0,3.44,0.66,0.38
+physical,' Physical' | ' physical' | 'Physical' | 'physical',,fades,0,,0.045,0.06,-2.155,0.519,-1.0,1.97,0.97,0.05
+question,' QUESTION' | ' Question' | ' question' | 'Question' | 'question',,fades,0,,0.075,0.119,-2.152,0.697,-1.0,6.2,2.58,1.01
+永久,'永久',everlasting,fades,0,,0.134,0.134,-2.138,0.499,-1.0,22.66,13.73,4.76
+saved,' Saved' | ' saved' | 'Saved' | 'saved',,appears,0,,0.075,0.015,2.134,0.351,1.0,0.5,1.69,3.89
+伟大,'伟大',huge,appears,0,,0.149,0.0,2.096,0.029,1.0,0.0,0.05,1.64
+根本没有,'根本没有',approx. fundamental / haven't,appears,0,,0.119,0.0,2.068,0.033,1.0,0.0,0.05,1.6
+reddit,' Reddit' | ' reddit' | 'Reddit' | 'reddit',,fades,0,,0.149,0.239,-2.061,0.63,-1.0,14.42,7.27,3.08
+对你,'对你',"approx. right / you (informal,…",fades,0,,0.045,0.06,-2.055,0.326,-1.0,5.92,4.33,1.05
+actions,' ACTIONS' | ' Actions' | ' actions' | 'Actions' | 'actions',,fades,0,,0.09,0.119,-2.048,0.517,-1.0,14.36,8.54,3.09
+1,'1',,fades,0,,0.164,0.209,-2.04,0.189,-1.0,8.21,6.97,1.62
+ᶟ,'ᶟ',,fades,0,,0.015,0.104,-1.972,0.93,-1.0,1.46,0.1,0.0
+consequence,' consequence',,appears,0,,0.03,0.015,1.964,0.162,1.0,1.04,1.76,5.49
+endlessly,' endlessly',,appears,0,,0.134,0.0,1.964,0.243,1.0,0.0,0.35,1.45
+的实际,'的实际',approx. of / reality,fades,0,,0.09,0.09,-1.941,0.439,-1.0,2.97,1.85,0.4
+5,'5',,fades,1,L0–3,0.119,0.134,-1.937,0.577,-1.0,3.18,1.61,0.46
+any,' ANY' | ' Any' | ' any' | 'ANY' | 'Any' | 'any',,fades,0,,0.075,0.09,-1.924,0.68,-1.0,3.56,1.53,0.57
+剥夺,'剥夺',to deprive,appears,0,,0.134,0.0,1.918,0.458,1.0,0.0,0.64,1.39
+scenario,' Scenario' | ' scenario' | 'Scenario' | 'scenario',,fades,0,,0.045,0.134,-1.907,0.414,-1.0,20.26,13.96,5.04
+situation,' Situation' | ' situation',,fades,0,,0.03,0.045,-1.9,0.437,-1.0,2.19,1.33,0.22
+actual,' Actual' | ' actual' | 'Actual' | 'actual',,fades,0,,0.119,0.134,-1.891,0.227,-1.0,29.16,24.23,7.5
+哪种,'哪种',approx. how / seed,fades,0,,0.06,0.119,-1.883,0.698,-1.0,5.28,2.34,1.07
+ai,' AI' | ' Ai' | ' ai' | 'AI' | 'Ai' | 'ai',,fades,0,,0.09,0.149,-1.861,0.191,-1.0,3.36,2.82,0.56
+how,' HOW' | ' How' | ' how' | 'HOW' | 'How' | 'how',,fades,0,,0.09,0.179,-1.85,0.989,-1.0,13.22,3.41,3.31
+who,' WHO' | ' Who' | ' who' | 'WHO' | 'Who' | 'who',,fades,0,,0.03,0.03,-1.821,0.84,-1.0,5.31,1.81,1.14
+possibilities,' possibilities',,fades,0,,0.045,0.045,-1.819,0.033,-1.0,9.65,9.41,2.38
+6,'6',,fades,1,"L0, 2",0.075,0.104,-1.769,0.674,-1.0,1.7,0.65,0.14
+answer,'\tanswer' | ' Answer' | ' answer' | 'Answer' | 'answer',,fades,0,,0.09,0.149,-1.758,0.627,-1.0,24.48,13.45,6.88
+3,'3',,fades,1,L0–3,0.119,0.149,-1.747,0.044,-1.0,3.87,3.74,0.8
+选择,'选择',to select,fades,0,,0.254,0.269,-1.723,0.272,-1.0,27.79,22.42,8.07
+milfs,' milfs',,fades,0,,0.015,0.149,-1.713,0.914,-1.0,3.47,0.95,0.71
+billions,' billions',,appears,0,,0.119,0.06,1.71,0.414,1.0,1.04,2.49,4.54
+permanent,' Permanent' | ' permanent' | 'Permanent' | 'permanent',,fades,0,,0.045,0.06,-1.698,0.935,-1.0,1.97,0.37,0.26
+save,'\tsave' | ' SAVE' | ' Save' | ' save' | 'SAVE' | 'Save' | 'save',,appears,0,,0.09,0.03,1.698,0.137,1.0,0.6,0.94,3.07
+choosing,' Choosing' | ' choosing' | 'Choosing',,fades,0,,0.209,0.239,-1.697,0.282,-1.0,24.42,19.56,7.19
+your,' YOUR' | ' Your' | ' your' | 'YOUR' | 'Your' | 'your',,fades,0,,0.149,0.194,-1.662,0.642,-1.0,11.4,6.17,3.26
+4,'4',,fades,1,L0,0.119,0.119,-1.654,0.058,-1.0,2.02,1.92,0.3
+billion,' Billion' | ' billion',,appears,0,,0.045,0.03,1.646,0.18,1.0,1.25,1.92,4.98
+备份,'备份',backup,fades,0,,0.045,0.045,-1.611,0.289,-1.0,4.14,3.24,1.02
+询问,'询问',to inquire,fades,0,,0.06,0.06,-1.594,0.349,-1.0,4.29,3.17,1.09
+iéndo,'iéndo',,fades,0,,0.075,0.134,-1.583,0.848,-1.0,3.03,1.04,0.68
+摧毁,'摧毁',to destroy,fades,0,,0.134,0.119,-1.549,0.245,-1.0,9.99,8.3,3.09
+選擇,'選擇',to select,fades,0,,0.045,0.104,-1.534,0.63,-1.0,1.68,0.78,0.25
+思索,'思索',to think deeply,appears,0,,0.06,0.045,1.504,0.221,1.0,2.57,3.81,8.2
+杀人,'杀人',homicide,appears,0,,0.104,0.075,1.492,0.582,1.0,1.02,2.63,3.78
+0,'0',,fades,1,L2–3,0.164,0.119,-1.488,0.521,-1.0,8.33,5.37,2.65
+潜在,'潜在',hidden,fades,0,,0.045,0.164,-1.45,0.957,-1.0,1.52,0.3,0.24
+的可能性,'的可能性',approx. of / possibility,fades,0,,0.06,0.075,-1.45,0.368,-1.0,5.53,4.13,1.71
+индивид,'индивид',,fades,0,,0.03,0.09,-1.421,0.872,-1.0,6.91,2.86,2.27
+想象,'想象',to imagine,appears,0,,0.194,0.119,1.405,0.996,1.0,4.7,13.24,13.27
+recovery,' Recovery' | ' recovery',,fades,0,,0.015,0.015,-1.374,0.2,-1.0,2.27,1.93,0.57
+loss,' LOSS' | ' Loss' | ' loss' | 'LOSS' | 'Loss' | 'loss',,fades,0,,0.075,0.075,-1.268,0.713,-1.0,5.93,3.25,2.17
+possible,' Possible' | ' possible' | 'Possible' | 'possible',,fades,0,,0.06,0.09,-1.258,0.63,-1.0,14.89,9.25,5.94
+two,' TWO' | ' Two' | ' two' | 'Two' | 'two',,appears,0,,0.06,0.045,1.248,0.082,1.0,2.83,3.21,7.41
+erotische,' Erotische' | ' erotische',,appears,1,"L17, 24–29, 31–33, 35–47",0.97,0.567,1.244,0.413,1.0,161.53,253.07,383.38
+real,'\treal' | ' REAL' | ' Real' | ' real' | 'REAL' | 'Real' | 'real',,fades,0,,0.104,0.104,-1.24,0.429,-1.0,7.3,5.37,2.8
+fetisch,' fetisch',,appears,1,"L25, 37–45",0.761,0.448,1.212,0.572,1.0,35.43,62.49,82.71
+почем,' Почем' | ' почем',,fades,0,,0.149,0.164,-1.196,0.199,-1.0,6.8,5.98,2.69
+alright,' Alright' | ' alright' | 'Alright',,appears,0,,0.06,0.03,1.175,0.5,1.0,1.48,2.72,3.97
+决策,'决策',strategic decision,fades,0,,0.104,0.119,-1.164,0.95,-1.0,2.61,0.97,0.89
+universe,' Universe' | ' universe',,appears,0,,0.075,0.03,1.161,0.845,1.0,1.71,4.02,4.44
+人类,'人类',humanity,fades,0,,0.075,0.09,-1.088,0.997,-1.0,2.76,1.04,1.04
+backup,' Backup' | ' backup' | 'Backup' | 'backup',,fades,0,,0.045,0.045,-1.058,0.915,-1.0,3.55,1.62,1.44
+选择了,'选择了',approx. to select / (completed…,fades,0,,0.075,0.09,-1.048,0.013,-1.0,4.71,4.67,2.02
+impossible,' Impossible' | ' impossible' | 'Impossible',,,0,,0.284,0.015,3.411,2.277,0.5,0.24,16.5,7.38
+whichever,' whichever',,,0,,0.104,0.06,-3.208,-0.194,-0.5,5.62,6.67,0.16
+imagined,' imagined',,,0,,0.179,0.0,3.18,1.101,0.5,0.0,4.44,4.03
+reset,' Reset' | ' reset' | 'RESET' | 'Reset' | 'reset',,,0,,0.015,0.075,-2.968,1.06,-0.5,6.15,0.0,0.35
+凭什么,'凭什么',(spoken) why?,,0,,0.06,0.015,2.906,1.014,0.5,0.05,3.66,3.61
+怎么做,'怎么做',approx. how? / to make,,0,,0.119,0.104,-2.679,-0.212,-0.5,3.4,4.09,0.11
+if,'\tIf' | '\tif' | ' IF' | ' If' | ' if' | 'IF' | 'If' | 'if',,,0,,0.075,0.104,-2.508,-0.218,-0.5,3.85,4.63,0.26
+恐惧,'恐惧',to be frightened,,0,,0.179,0.015,2.376,1.045,0.5,0.16,3.03,2.91
+whispers,' whispers',,,1,L48–62,0.164,0.0,2.327,1.202,0.5,0.0,2.41,2.01
+countless,' countless',,,0,,0.134,0.0,2.297,1.078,0.5,0.0,2.11,1.96
+什么样的,'什么样的',approx. what kind? / of,,0,,0.075,0.119,-2.285,-0.471,-0.5,1.94,2.85,0.0
+truly,' Truly' | ' truly',,,0,,0.179,0.0,2.243,1.629,0.5,0.0,3.04,1.87
+being,' Being' | ' being' | 'Being' | 'being',,,0,,0.045,0.06,-2.191,-0.015,-0.5,10.32,10.44,1.87
+何种,'何种',approx. surname He / seed,,0,,0.119,0.015,2.088,2.828,0.5,0.08,5.41,1.97
+地狱,'地狱',hell,,0,,0.149,0.015,2.078,1.376,0.5,0.05,2.48,1.81
+mortal,' mortal',,,1,L55–62,0.06,0.0,1.846,2.999,0.5,0.0,3.89,1.3
+7,'7',,,1,"L0, 2",0.104,0.134,-1.803,-0.554,-0.5,2.51,3.7,0.36
+寿命,'寿命',life span,,0,,0.045,0.045,-1.791,-0.497,-0.5,2.56,3.64,0.38
+诞生,'诞生',to be born,,0,,0.194,0.045,1.723,1.132,0.5,1.73,7.55,6.87
+death,' Death' | ' death' | 'Death' | 'death',,,0,,0.313,0.194,-1.629,-0.713,-0.5,17.03,25.49,5.17
+pretend,' pretend',,,0,,0.075,0.03,1.567,1.585,0.5,0.28,2.7,1.8
+lottery,' Lottery' | ' lottery',,,0,,0.045,0.045,-1.539,-0.294,-0.5,1.56,1.96,0.21
+destruction,' Destruction' | ' destruction',,,0,,0.09,0.0,1.486,3.069,0.5,0.0,2.76,0.9
+ответ,' ответ',,,0,,0.06,0.045,-1.473,-0.117,-0.5,2.32,2.53,0.52
+9,'9',,,1,L0,0.119,0.134,-1.442,-0.186,-0.5,2.31,2.64,0.53
+neither,' Neither' | ' neither' | 'Neither',,,0,,0.104,0.06,-1.424,-0.5,-0.5,4.91,6.61,1.52
+perhaps,' Perhaps' | ' perhaps' | 'Perhaps' | 'perhaps',,,0,,0.239,0.134,-1.414,-2.747,-0.5,2.46,7.55,0.61
+概率,'概率',probability (math.),,0,,0.075,0.045,-1.404,-0.921,-0.5,3.32,5.51,0.94
+哲学,'哲学',philosophy,,0,,0.119,0.015,-1.337,-3.135,-0.5,0.91,3.59,0.06
+bezpo,' bezpo',,,0,,0.075,0.06,-1.299,-4.041,-0.5,0.73,3.68,0.0
+алексан,' Алексан',,,0,,0.045,0.045,-1.252,-0.311,-0.5,4.1,4.93,1.43
+无限,'无限',unlimited,,0,,0.104,0.075,1.242,1.47,0.5,0.85,3.56,2.69
+假设,'假设',to suppose,,0,,0.164,0.164,-1.231,-0.574,-0.5,12.31,16.54,4.96
+atatür,' Atatür',,,0,,0.194,0.149,-1.205,-0.328,-0.5,4.33,5.23,1.6
+this,'\tthis' | ' THIS' | ' This' | ' this' | 'THIS' | 'This' | 'this',,,0,,0.06,0.134,-1.195,1.406,-0.5,6.82,1.02,2.7
+回答,'回答',to reply,,0,,0.119,0.194,-1.19,-0.047,-0.5,22.66,23.28,9.65
+假,'假',used in 假掰[gei1 bai1],,0,,0.075,0.045,-1.153,-0.751,-0.5,1.2,1.9,0.26
+此刻,'此刻',this moment,,0,,0.075,0.03,-1.142,-0.761,-0.5,1.17,1.87,0.26
+święt,' Święt' | ' święt',,,0,,0.478,0.254,1.105,1.656,0.5,6.96,21.18,15.54
+fucking,' Fucking' | ' fucking',,,0,,0.119,0.015,1.071,4.124,0.5,0.05,2.54,0.65
+yes,' YES' | ' Yes' | ' yes' | 'YES' | 'Yes' | 'yes',,,0,,0.194,0.06,1.071,5.742,0.5,0.71,8.33,2.03
+死亡,'死亡',to die,,0,,0.209,0.194,-1.071,-0.297,-0.5,16.51,19.16,7.59
+悲剧,'悲剧',tragedy,,0,,0.388,0.09,1.048,1.177,0.5,7.68,17.94,16.4
+8,'8',,,0,,0.119,0.104,-1.046,-0.159,-0.5,1.43,1.59,0.43
+bbw,' Bbw',,,0,,0.119,0.075,-0.99,-0.266,-0.5,2.53,2.93,1.03
+会选择,'会选择',approx. can / to select,,0,,0.104,0.09,-0.99,-0.372,-0.5,4.89,5.88,2.21
+人工智能,'人工智能',artificial intelligence (AI),,0,,0.119,0.119,-0.983,0.381,-1.0,8.83,7.07,4.22
+思考,'思考',to reflect on,,0,,0.104,0.119,-0.963,-0.011,-0.5,16.15,16.24,8.04
+當您在,'當您在',approx. to be / you…,,0,,0.104,0.104,-0.961,-0.43,-0.5,4.58,5.64,2.11
+终结,'终结',end,,0,,0.06,0.03,0.954,1.635,0.5,0.86,2.93,2.12
+动作,'动作',movement,,0,,0.045,0.045,0.927,0.423,1.0,0.62,1.04,1.63
+虚构,'虚构',to make up,,0,,0.269,0.134,0.893,0.386,1.0,5.09,6.94,9.88
+millions,' Millions' | ' millions',,,0,,0.119,0.015,0.889,0.195,1.0,1.82,2.2,3.79
+worse,' Worse' | ' worse',,,0,,0.104,0.045,-0.862,-7.716,-0.5,0.85,5.52,0.24
+pornost,' pornost',,,0,,0.388,0.358,-0.858,0.073,-1.0,17.31,16.73,9.32
+お互,'お互',untranslated fragment,,0,,0.045,0.119,-0.845,0.597,-1.0,4.05,2.84,2.03
+and,'\tand' | ' AND' | ' And' | ' and' | 'AND' | 'And' | 'and',,,0,,0.164,0.209,-0.841,1.432,-0.5,9.29,3.1,4.96
+chosen,' chosen' | 'chosen',,,0,,0.104,0.075,0.837,0.585,1.0,1.34,2.18,2.78
+后果,'后果',consequences,,0,,0.06,0.09,0.835,0.517,1.0,2.42,3.61,4.71
+瞭解並,'瞭解並',approx. variant of… / and,,0,,0.134,0.119,-0.834,-0.378,-0.5,7.68,9.04,4.09
+possibility,' possibility',,,0,,0.075,0.09,-0.819,-0.168,-0.5,6.27,6.76,3.34
+planet,' Planet' | ' planet' | 'planet',,,0,,0.03,0.03,0.811,0.952,1.0,3.14,5.75,5.88
+实际,'实际',reality,,0,,0.119,0.09,-0.781,0.369,-1.0,9.32,7.81,5.22
+科学家,'科学家',scientist,,0,,0.164,0.09,0.781,3.083,0.5,1.51,5.97,2.96
+thinking,' Thinking' | ' thinking' | 'Thinking' | 'thinking',,,0,,0.045,0.06,0.775,-0.101,0.5,1.45,1.31,2.83
+你的,'你的',"approx. you (informal,… / of",,0,,0.149,0.09,-0.775,-1.14,-0.5,4.02,6.16,2.14
+万亿,'万亿',trillion,,0,,0.134,0.045,0.772,-0.114,0.5,1.95,1.76,3.69
+why,' WHY' | ' Why' | ' why' | 'Why' | 'why',,,0,,0.075,0.09,-0.721,0.138,-1.0,20.99,19.82,12.54
+prostitutas,' Prostitutas',,,1,L40–41,0.716,0.478,0.681,1.241,0.5,24.45,43.13,39.5
+choose,' Choose' | ' choose' | 'Choose' | 'choose',,,0,,0.269,0.224,-0.669,0.092,-1.0,29.8,28.77,18.55
+保護政策,'保護政策',approx. to protect / policy,,0,,0.104,0.09,-0.645,-1.9,-0.5,1.56,2.97,0.82
+的答案,'的答案',approx. of / answer,,0,,0.104,0.045,0.626,1.771,0.5,0.98,2.41,1.79
+except,'\texcept' | ' Except' | ' except' | 'Except' | 'except',,,0,,0.045,0.06,-0.606,0.908,-1.0,8.68,5.82,5.53
+one,' ONE' | ' One' | ' one' | 'ONE' | 'One' | 'one',,,0,,0.104,0.045,-0.565,0.774,-1.0,5.67,4.12,3.67
+chooses,' chooses',,,0,,0.09,0.075,-0.561,0.172,-1.0,2.63,2.45,1.62
+earth,' Earth' | ' earth' | 'Earth' | 'earth',,,0,,0.06,0.06,-0.546,-3.302,-0.5,1.31,3.19,0.74
+existence,' existence' | 'existence',,,0,,0.06,0.015,-0.544,0.062,-1.0,7.08,6.93,4.7
+现实中,'现实中',approx. reality / Chinese,,0,,0.104,0.104,-0.537,-0.315,-0.5,5.91,6.54,3.92
+任何,'任何',any,,0,,0.09,0.09,0.536,1.675,0.5,2.26,4.35,3.51
+hypoth,' hypoth',,,0,,0.09,0.119,-0.535,0.468,-1.0,3.36,2.8,2.16
+erotique,' erotique',,,0,,0.224,0.09,0.533,3.037,0.5,1.42,4.04,2.29
+shemale,' Shemale' | ' shemale',,,0,,0.239,0.209,-0.531,-0.622,-0.5,11.28,13.53,7.65
+dying,' dying',,,0,,0.075,0.045,0.526,0.002,1.0,4.48,4.49,6.67
+nor,' NOR' | ' Nor' | ' nor' | 'Nor' | 'nor',,,0,,0.09,0.09,0.515,5.548,0.5,2.14,8.43,3.27
+杀死,'杀死',to kill,,0,,0.164,0.119,-0.507,-2.074,-0.5,7.19,11.92,4.91
+infinite,' Infinite' | ' infinite',,,0,,0.119,0.06,0.503,1.441,0.5,4.43,7.39,6.48
+hypothetical,' hypothetical',,,0,,0.284,0.239,-0.483,-0.282,-0.5,19.97,21.61,14.15
+fate,' Fate' | ' fate',,,0,,0.149,0.0,0.459,20.817,0.5,0.0,3.9,0.19
+为什么,'为什么',why?,,0,,0.06,0.03,0.459,0.794,1.0,2.81,3.79,4.05
+yourself,' Yourself' | ' yourself',,,0,,0.104,0.09,-0.438,0.258,-1.0,5.04,4.66,3.59
+的概率,'的概率',approx. of / probability (math.),,0,,0.09,0.075,-0.432,-2.785,-0.5,1.7,3.28,1.13
+slightest,' slightest',,,0,,0.045,0.0,0.419,22.416,0.5,0.0,3.78,0.17
+答案,'答案',answer,,0,,0.06,0.045,-0.416,-9.868,-0.5,0.93,4.48,0.57
+assume,' Assume' | ' assume' | 'assume',,,0,,0.09,0.075,-0.405,-0.347,-0.5,1.97,2.18,1.37
+would,' Would' | ' would' | 'Would' | 'would',,,0,,0.119,0.119,-0.388,-1.697,-0.5,7.18,10.26,5.37
+exist,' Exist' | ' exist' | 'EXIST' | 'Exist' | 'exist',,,0,,0.03,0.03,0.385,2.034,0.5,2.24,3.94,3.08
+成败,'成败',success or failure,,0,,0.209,0.03,-0.374,-19.632,-0.5,0.69,6.03,0.42
+leaked,' leaked',,,0,,0.045,0.015,-0.366,-29.106,-0.5,0.14,4.35,0.0
+action,'\taction' | ' ACTION' | ' Action' | ' action' | 'ACTION' | 'Action' | 'action',,,0,,0.09,0.09,-0.359,-0.239,-0.5,16.39,17.28,12.67
+行动,'行动',operation,,0,,0.06,0.045,0.342,0.491,1.0,6.24,7.12,8.04
+死了,'死了',approx. to die / (completed…,,0,,0.09,0.045,0.317,3.088,0.5,0.93,2.02,1.28
+million,' Million' | ' million' | 'million',,,0,,0.06,0.06,-0.31,-1.126,-0.5,4.13,5.14,3.24
+anything,' Anything' | ' anything' | 'Anything' | 'anything',,,0,,0.164,0.075,-0.271,-17.181,-0.5,1.93,9.07,1.51
+whatsoever,' WHATSOEVER' | ' whatsoever',,,0,,0.104,0.045,0.227,7.207,0.5,5.47,12.8,6.49
+you,' YOU' | ' You' | ' you' | 'YOU' | 'You' | 'you',,,0,,0.134,0.179,0.22,0.001,1.0,5.67,5.67,6.68
+可能性,'可能性',possibility,,0,,0.045,0.045,0.213,-0.985,0.5,2.26,1.83,2.7
+chose,' chose',,,0,,0.104,0.075,0.201,0.854,1.0,3.59,4.12,4.21
+你,'你',"you (informal, as opposed to…",,0,,0.09,0.045,-0.198,-5.804,-0.5,1.13,2.34,0.92
+的回答,'的回答',approx. of / to reply,,0,,0.104,0.134,0.195,-0.256,0.5,5.12,4.91,5.93
+notíc,' Notíc',,,0,,0.373,0.179,-0.189,-5.042,-0.5,7.15,11.88,6.22
+的选择,'的选择',approx. of / to select,,0,,0.269,0.284,-0.178,-2.617,-0.5,11.52,15.17,10.13
+choice,' Choice' | ' choice' | 'Choice' | 'choice',,,0,,0.299,0.239,-0.127,0.41,-1.0,26.26,25.34,24.01
+only,' ONLY' | ' Only' | ' only' | 'ONLY' | 'Only' | 'only',,,0,,0.09,0.075,-0.115,-10.276,-0.5,2.01,3.98,1.82
+terrifying,' terrifying',,,0,,0.134,0.015,-0.107,-99.821,-0.5,0.1,4.37,0.05
+提问,'提问',to question,,0,,0.119,0.104,-0.09,-2.624,-0.5,12.21,14.23,11.45
+行動,'行動',operation,,0,,0.045,0.045,-0.074,0.414,-1.0,2.98,2.91,2.81
+okay,' Okay' | ' okay' | 'Okay' | 'okay',,,0,,0.06,0.075,-0.057,1.223,-0.5,6.99,6.63,6.7
+consequences,' consequences',,,0,,0.03,0.03,-0.052,-8.823,-0.5,5.55,7.44,5.34
+损失,'损失',loss,,0,,0.179,0.134,-0.043,-10.654,-0.5,6.67,8.92,6.46
+between,' BETWEEN' | ' Between' | ' between' | 'Between' | 'between',,,0,,0.09,0.09,-0.022,2.88,-0.5,7.98,7.6,7.85
+imagine,' Imagine' | ' imagine' | 'Imagine',,,0,,0.164,0.104,0.02,12.902,0.5,8.64,10.24,8.76
+该如何,'该如何',approx. should / how,,0,,0.06,0.03,0.014,282.149,0.5,1.46,6.91,1.48
