@@ -15,11 +15,11 @@ import re
 from pathlib import Path
 
 from experiments import EXPERIMENTS
+from run import layer_ranges
 
 OUT = Path(__file__).resolve().parents[1] / "out"
 TRENDS = {"": 0, "fades": 1, "appears": 2}
-FLAGS = {"": 0, "possible baseline": 1, "suspected baseline": 2, "broad, also unsteered": 3}
-ROW_COLUMNS = ["word", "gloss", "variants", "trend", "flag", "inVector", "spreadSteered", "spreadUnsteered",
+ROW_COLUMNS = ["word", "gloss", "variants", "trend", "baseline", "vectorLayers", "spreadSteered", "spreadUnsteered",
                "qFade", "qAppear", "log2fc", "agree", "onset", "rho", "permille"]
 
 
@@ -35,7 +35,7 @@ def pack_unit(unit: dict) -> dict:
     metrics = {}
     for metric, rows in unit["metrics"].items():
         metrics[metric] = [[r["word"], r["gloss"], [v for v in r["variants"] if v.strip().lower() != r["word"]][:4],
-                            TRENDS[r["trend"]], FLAGS[r["flag"]], int(r["in_vector_readout"]),
+                            TRENDS[r["trend"]], int(r["baseline"]), layer_ranges(r["vector_layers"]),
                             r["spread_steered"], r["spread_unsteered"], q(r["q_fade"]), q(r["q_appear"]),
                             r["log2fc"], r["agree"], r["onset"], [round(v, 2) for v in r["rho"]],
                             [[round(v, 1) for v in s] for s in r["permille"]]]

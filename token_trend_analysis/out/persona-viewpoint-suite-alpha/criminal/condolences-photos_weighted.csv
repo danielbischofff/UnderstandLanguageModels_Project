@@ -1,193 +1,193 @@
-word,variants,gloss,trend,flag,in_vector_readout,spread_steered,spread_unsteered,log2fc,onset,rho,unsteered_permille,α=1.5_permille,α=4_permille
-messed,' messed',,appears,suspected baseline,True,0.889,0.028,6.923,0.101,1.0,0.24,9.25,89.15
-kinda,' kinda',,appears,suspected baseline,True,0.75,0.0,6.792,0.164,1.0,0.0,9.02,54.91
-got,' GOT' | ' Got' | ' got' | 'Got' | 'got',,appears,suspected baseline,True,0.75,0.0,6.632,0.289,1.0,0.0,14.2,49.09
-thing,' Thing' | ' thing' | 'THING' | 'Thing' | 'thing',,appears,suspected baseline,True,0.861,0.0,6.344,0.215,1.0,0.0,8.62,40.12
-yeah,' Yeah' | ' yeah' | 'Yeah' | 'yeah',,appears,suspected baseline,True,0.639,0.0,6.3,0.239,1.0,0.0,9.29,38.89
-pretty,' Pretty' | ' pretty' | 'PRETTY' | 'Pretty' | 'pretty',,appears,suspected baseline,True,0.833,0.139,6.004,0.54,1.0,1.95,85.47,156.51
-guys,' Guys' | ' guys',,appears,suspected baseline,True,0.583,0.0,5.863,0.195,1.0,0.0,5.59,28.6
-这些东西,'这些东西',approx. these / thing,appears,,False,0.194,0.0,5.783,0.385,1.0,0.0,10.41,27.04
-伪造,'伪造',to forge,appears,possible baseline,True,0.444,0.0,5.464,0.083,1.0,0.0,1.8,21.57
-everything,' Everything' | ' everything' | 'Everything' | 'everything',,appears,possible baseline,False,0.278,0.0,5.285,0.402,1.0,0.0,7.64,19.0
-really,' REALLY' | ' Really' | ' really' | 'Really' | 'really',,appears,suspected baseline,True,0.861,0.083,5.131,0.609,1.0,3.36,83.41,134.86
-crazy,' Crazy' | ' crazy',,appears,suspected baseline,True,0.556,0.0,5.009,0.046,1.0,0.0,0.72,15.6
-kids,' Kids' | ' kids' | 'Kids' | 'kids',,appears,possible baseline,False,0.417,0.0,4.988,0.418,1.0,0.0,6.42,15.37
-廉价,'廉价',cheaply-priced,appears,,False,0.167,0.0,4.964,0.127,1.0,0.0,1.92,15.1
-没人,'没人',approx. not / person,appears,possible baseline,False,0.444,0.0,4.935,0.35,1.0,0.0,5.18,14.79
-recently,' Recently' | ' recently' | 'Recently',,fades,,False,0.167,0.278,-4.84,0.742,-1.0,34.35,9.38,0.72
-保護政策,'保護政策',approx. to protect / policy,appears,suspected baseline,True,0.556,0.056,4.827,0.153,1.0,1.09,7.75,44.57
-big,' BIG' | ' Big' | ' big' | 'BIG' | 'Big' | 'big',,appears,suspected baseline,False,0.528,0.0,4.745,0.4,1.0,0.0,5.17,12.91
-靠谱,'靠谱',reliable,appears,possible baseline,False,0.333,0.0,4.745,0.278,1.0,0.0,3.58,12.91
-借钱,'借钱',to borrow money,appears,possible baseline,False,0.417,0.0,4.694,0.141,1.0,0.0,1.76,12.44
-ㅤ,'ㅤ',,fades,,False,0.139,0.194,-4.505,0.244,-1.0,22.73,17.31,0.52
-好多,'好多',many,appears,possible baseline,False,0.333,0.028,4.499,0.715,1.0,0.09,9.2,12.83
-stuff,' Stuff' | ' stuff' | 'Stuff' | 'stuff',,appears,suspected baseline,True,0.722,0.028,4.466,0.234,1.0,1.01,8.48,32.88
-fake,' Fake' | ' fake' | 'Fake' | 'fake',,appears,,False,0.194,0.0,4.432,0.018,1.0,0.0,0.19,10.3
-legal,' Legal' | ' legal' | 'Legal',,fades,,False,0.056,0.083,-4.341,0.961,-1.0,9.63,0.38,0.0
-somehow,' Somehow' | ' somehow',,appears,possible baseline,True,0.333,0.0,4.331,0.406,1.0,0.0,3.88,9.56
-digitally,' digitally',,fades,,False,0.111,0.139,-4.319,0.729,-1.0,14.02,3.97,0.23
-车祸,'车祸',traffic accident,appears,,False,0.111,0.0,4.267,0.121,1.0,0.0,1.11,9.13
-please,' PLEASE' | ' Please' | ' please' | 'PLEASE' | 'Please' | 'please',,fades,,False,0.056,0.222,-4.198,0.625,-1.0,8.68,3.25,0.0
-偷偷,'偷偷',stealthily,appears,possible baseline,True,0.306,0.0,4.177,0.075,1.0,0.0,0.64,8.54
-diy,' DIY',,fades,,False,0.167,0.139,-4.151,0.49,-1.0,8.38,4.27,0.0
-using,'\tusing' | ' USING' | ' Using' | ' using' | 'Using' | 'using',,fades,,False,0.056,0.083,-4.123,0.377,-1.0,8.21,5.11,0.0
-应该如何,'应该如何',approx. ought to / how,fades,,False,0.0,0.056,-4.102,1.0,-0.866,8.09,0.0,0.0
-nothing,' NOTHING' | ' Nothing' | ' nothing' | 'Nothing' | 'nothing',,appears,,True,0.167,0.0,4.089,0.218,1.0,0.0,1.75,8.01
-赚钱,'赚钱',to earn money,appears,possible baseline,True,0.278,0.0,4.084,0.363,1.0,0.0,2.9,7.98
-very,' VERY' | ' Very' | ' very' | 'Very' | 'very',,fades,,False,0.111,0.111,-4.069,0.567,-1.0,9.39,4.12,0.09
-怎么,'怎么',how?,appears,possible baseline,False,0.389,0.083,4.066,0.594,1.0,2.54,30.95,50.35
-advice,' Advice' | ' advice' | 'Advice',,fades,,False,0.056,0.056,-4.049,0.224,-1.0,7.78,6.03,0.0
-建议,'建议',to propose,fades,,False,0.083,0.083,-4.039,0.548,-1.0,7.72,3.49,0.0
-erotik,' erotik',,fades,,False,0.083,0.222,-4.033,0.821,-1.0,10.13,1.94,0.15
-怎样,'怎样',how,fades,,False,0.056,0.056,-4.029,0.258,-1.0,7.66,5.68,0.0
-you,' YOU' | ' You' | ' you' | 'YOU' | 'You' | 'you',,fades,"broad, also unsteered",False,0.25,0.278,-4.011,0.138,-1.0,21.89,18.99,0.89
-museum,' Museum' | ' museum',,fades,,False,0.083,0.111,-4.006,0.736,-1.0,7.54,1.99,0.0
-家庭,'家庭',family,fades,,False,0.028,0.056,-3.968,0.635,-1.0,7.33,2.68,0.0
-谁,'谁',who,appears,,False,0.194,0.0,3.961,0.156,1.0,0.0,1.14,7.29
-ˈ,'ˈ',,fades,,False,0.056,0.111,-3.895,0.804,-1.0,6.94,1.36,0.0
-forcanbeconvertedtoforeach,' ForCanBeConvertedToForeach',,appears,possible baseline,False,0.25,0.0,3.88,0.032,1.0,0.0,0.22,6.86
-photograph,' Photograph' | ' photograph',,fades,,False,0.167,0.194,-3.85,0.648,-1.0,21.34,8.17,1.01
-手机号,'手机号',approx. cell phone / to…,appears,,False,0.083,0.0,3.811,0.015,1.0,0.0,0.1,6.52
-funeral,' Funeral' | ' funeral',,fades,,False,0.111,0.167,-3.726,0.57,-1.0,13.08,5.93,0.53
-暴力,'暴力',violence,appears,possible baseline,True,0.361,0.0,3.72,0.029,1.0,0.0,0.18,6.09
-永恒,'永恒',eternal,appears,,False,0.222,0.0,3.697,0.0,0.866,0.0,0.0,5.98
-digital,' Digital' | ' digital' | 'Digital' | 'digital',,fades,,False,0.194,0.222,-3.688,0.719,-1.0,18.26,5.81,0.96
-geile,' Geile' | ' geile',,appears,possible baseline,True,0.472,0.083,3.678,0.256,1.0,1.98,9.46,31.21
-小小的,'小小的',approx. very small / of,appears,,False,0.083,0.0,3.653,0.23,1.0,0.0,1.33,5.79
-collections,' Collections' | ' collections' | 'Collections' | 'collections',,fades,,False,0.028,0.083,-3.584,0.793,-1.0,5.5,1.14,0.0
-是怎么,'是怎么',approx. correct / how?,appears,,False,0.139,0.0,3.576,0.857,1.0,0.0,4.68,5.46
-暖心,'暖心',(coll.) heartwarming,fades,,False,0.083,0.167,-3.548,0.65,-1.0,5.35,1.87,0.0
-gotten,' gotten',,appears,,False,0.222,0.0,3.545,0.233,1.0,0.0,1.24,5.34
-older,' Older' | ' older' | 'OLDER' | 'older',,fades,,False,0.056,0.056,-3.524,0.741,-1.0,5.25,1.36,0.0
-黑客,'黑客',(computing) (loanword) hacker,appears,possible baseline,False,0.25,0.0,3.496,0.019,1.0,0.0,0.1,5.14
-these,' THESE' | ' These' | ' these' | 'These' | 'these',,fades,,False,0.056,0.083,-3.441,0.71,-1.0,9.39,3.02,0.41
-vintage,' Vintage' | ' vintage' | 'Vintage',,fades,,False,0.056,0.056,-3.396,0.669,-1.0,4.76,1.58,0.0
-condol,' condol',,fades,,False,0.028,0.111,-3.385,0.788,-1.0,4.72,1.0,0.0
-preservation,' Preservation' | ' preservation',,fades,,False,0.083,0.139,-3.38,0.341,-1.0,9.06,6.12,0.42
-gonna,' gonna',,appears,,True,0.222,0.0,3.361,0.021,1.0,0.0,0.1,4.64
-photographs,' photographs',,fades,,False,0.139,0.139,-3.361,0.638,-1.0,11.01,4.38,0.62
-死了,'死了',approx. to die / (completed…,appears,,False,0.139,0.028,3.33,0.258,1.0,1.03,4.62,14.93
-i,'\tI' | ' I' | ' i' | 'I' | 'i',,fades,"broad, also unsteered",False,0.278,0.333,-3.323,0.604,-1.0,37.03,16.62,3.25
-简易,'简易',simple and easy,fades,,False,0.083,0.111,-3.31,0.699,-1.0,18.79,6.67,1.44
-帮我,'帮我',approx. to help / I,fades,,False,0.139,0.222,-3.265,0.869,-1.0,14.68,2.86,1.08
-guy,' Guy' | ' guy',,appears,,False,0.194,0.0,3.251,0.215,1.0,0.0,0.92,4.26
-题主,'题主',approx. surname Ti / owner,fades,,False,0.139,0.139,-3.247,0.748,-1.0,10.2,3.04,0.63
-couldn,' Couldn' | ' couldn' | 'Couldn' | 'couldn',,appears,,False,0.167,0.056,3.217,0.411,1.0,0.2,2.58,6.0
-grieving,' grieving',,fades,,False,0.167,0.194,-3.207,0.75,-1.0,9.83,2.93,0.62
-的家庭,'的家庭',approx. of / family,fades,,False,0.028,0.028,-3.167,0.72,-1.0,6.23,1.92,0.25
-厖,'厖',huge,appears,,False,0.139,0.0,3.11,0.404,1.0,0.0,1.54,3.82
-photography,' Photography' | ' photography',,fades,,False,0.083,0.083,-3.105,0.661,-1.0,5.73,2.09,0.22
-your,' YOUR' | ' Your' | ' your' | 'YOUR' | 'Your' | 'your',,fades,"broad, also unsteered",False,0.278,0.278,-3.089,0.5,-1.0,17.44,9.53,1.61
-葬,'葬',old variant of 葬[zang4],fades,,False,0.167,0.167,-3.037,0.362,-1.0,39.12,26.51,4.33
-为什么,'为什么',why?,appears,,False,0.111,0.056,2.972,0.822,1.0,0.53,6.29,7.54
-collection,' COLLECTION' | ' Collection' | ' collection' | 'Collection' | 'collection',,fades,,False,0.111,0.139,-2.937,0.582,-1.0,3.33,1.39,0.0
-youtube,' YouTube' | ' youtube' | 'YouTube' | 'youtube',,fades,,False,0.139,0.139,-2.929,0.689,-1.0,6.38,2.26,0.4
-简便,'简便',simple and convenient,fades,,False,0.083,0.083,-2.923,0.51,-1.0,7.39,3.9,0.54
-扔,'扔',to throw,appears,,False,0.222,0.0,2.892,0.031,1.0,0.0,0.1,3.21
-wasn,' wasn',,appears,,False,0.194,0.0,2.888,0.355,1.0,0.0,1.14,3.2
-随便,'随便',as one wishes,appears,,False,0.167,0.0,2.888,0.031,1.0,0.0,0.1,3.2
-没钱,'没钱',approx. not / surname Qian,appears,possible baseline,False,0.306,0.0,2.877,0.0,0.866,0.0,0.0,3.17
-亲情,'亲情',affection,fades,,False,0.083,0.194,-2.86,0.603,-1.0,3.94,1.63,0.11
-如何,'如何',how,fades,,False,0.139,0.167,-2.798,0.47,-1.0,12.12,7.04,1.31
-你的,'你的',"approx. you (informal,… / of",appears,,False,0.222,0.056,2.771,0.49,1.0,0.59,3.71,6.95
-family,' FAMILY' | ' Family' | ' family' | 'Family' | 'family',,fades,,False,0.139,0.278,-2.76,0.723,-1.0,13.68,4.95,1.59
-prostitutas,' Prostitutas',,appears,possible baseline,False,0.361,0.139,2.728,0.352,1.0,1.27,4.77,11.22
-grief,' grief',,fades,,False,0.167,0.167,-2.646,0.237,-1.0,4.37,3.4,0.28
-digit,' Digit' | ' digit' | 'Digit' | 'digit',,fades,,False,0.167,0.194,-2.626,0.425,-1.0,36.62,23.4,5.52
-alright,' Alright' | ' alright' | 'Alright',,appears,,False,0.111,0.056,2.599,0.317,1.0,1.41,4.48,11.09
-condolences,' condolences',,fades,,False,0.111,0.139,-2.599,0.336,-1.0,18.42,13.11,2.62
-去世,'去世',to pass away,fades,,False,0.139,0.139,-2.473,0.593,-1.0,39.86,20.24,6.77
-a,'\tA' | '\ta' | ' A' | ' a' | 'A' | 'a',,fades,,False,0.111,0.167,-2.46,0.901,-1.0,4.47,0.81,0.4
-didn,' Didn' | ' didn' | 'Didn' | 'didn',,appears,possible baseline,False,0.306,0.056,2.439,0.469,1.0,1.75,6.43,11.73
-家族,'家族',family,fades,,False,0.056,0.139,-2.42,0.138,-1.0,18.95,16.77,3.13
-some,' SOME' | ' Some' | ' some' | 'Some' | 'some',,fades,,False,0.083,0.056,-2.367,0.52,-1.0,11.18,6.28,1.76
-answer,'\tanswer' | ' Answer' | ' answer' | 'Answer' | 'answer',,fades,,False,0.139,0.25,-2.353,0.676,-1.0,25.92,11.54,4.67
-how,' HOW' | ' How' | ' how' | 'HOW' | 'How' | 'how',,fades,,False,0.139,0.306,-2.337,0.856,-1.0,36.13,10.97,6.75
-dad,' Dad' | ' dad' | 'dad',,appears,,False,0.139,0.056,2.299,0.439,1.0,1.69,5.45,10.26
-archive,' Archive' | ' archive' | 'Archive' | 'archive',,fades,,False,0.167,0.167,-2.275,0.116,-1.0,8.77,7.91,1.41
-死,'死',to die,appears,,False,0.083,0.028,2.266,0.512,1.0,0.82,3.39,5.84
-我的,'我的',approx. I / of,fades,,False,0.139,0.111,-2.214,0.271,-1.0,6.98,5.39,1.11
-亡,'亡',to die,fades,,False,0.083,0.083,-2.12,0.02,-1.0,4.2,4.12,0.58
-破产,'破产',to go bankrupt,appears,,False,0.194,0.028,1.941,0.089,1.0,1.52,2.03,7.25
-文物,'文物',cultural relic,fades,,False,0.111,0.139,-1.884,0.63,-1.0,6.68,3.38,1.45
-答复,'答复',variant of 答覆|答复[da2 fu4],fades,,False,0.083,0.111,-1.874,0.239,-1.0,8.11,6.61,1.85
-the,'\tthe' | ' THE' | ' The' | ' the' | 'THE' | 'The' | 'the',,fades,,False,0.111,0.222,-1.804,0.889,-1.0,8.01,2.61,1.94
-询问,'询问',to inquire,fades,,False,0.056,0.056,-1.797,0.681,-1.0,6.86,3.29,1.62
-photo,' PHOTO' | ' Photo' | ' photo' | 'Photo' | 'photo',,fades,,False,0.111,0.111,-1.793,0.342,-1.0,14.11,10.55,3.72
-录入,'录入',to input (computer),fades,,False,0.056,0.028,-1.68,0.264,-1.0,8.5,6.86,2.31
-my,'\tmy' | ' My' | ' my' | 'My' | 'my',,fades,"broad, also unsteered",False,0.417,0.361,-1.655,0.167,-1.0,64.21,56.84,20.05
-phot,' Phot' | ' phot' | 'Phot' | 'phot',,fades,,False,0.083,0.083,-1.51,0.386,-1.0,3.48,2.49,0.9
-摄影师,'摄影师',photographer,appears,,False,0.139,0.056,1.499,0.587,1.0,1.15,2.92,4.17
-哀,'哀',(bound form) sorrow,fades,,False,0.139,0.111,-1.493,0.202,-1.0,4.64,3.97,1.33
-simple,'\tSimple' | ' SIMPLE' | ' Simple' | ' simple' | 'Simple' | 'simple',,fades,,False,0.083,0.083,-1.468,0.064,-1.0,12.73,12.18,4.28
-what,' WHAT' | ' What' | ' what' | 'WHAT' | 'What' | 'what',,fades,"broad, also unsteered",False,0.25,0.306,-1.431,0.797,-1.0,22.5,10.96,8.03
-瞭解並,'瞭解並',approx. variant of… / and,appears,possible baseline,True,0.389,0.111,1.405,0.361,1.0,9.24,15.04,25.3
-reddit,' Reddit' | ' reddit' | 'Reddit' | 'reddit',,fades,,False,0.222,0.194,-1.242,0.176,-1.0,8.84,7.89,3.45
-died,' Died' | ' died',,appears,,False,0.111,0.111,1.24,0.725,1.0,10.91,22.16,26.43
-死亡,'死亡',to die,appears,,False,0.111,0.083,1.197,0.712,1.0,15.16,29.57,35.4
-继承,'继承',to inherit,appears,,False,0.111,0.083,1.177,0.908,1.0,5.38,12.12,12.8
-父亲,'父亲',father,fades,,False,0.028,0.028,-1.099,0.198,-1.0,13.43,11.96,6.01
-erotische,' Erotische' | ' erotische',,appears,"broad, also unsteered",False,0.556,0.306,1.069,0.284,1.0,48.13,63.3,101.5
-お互,'お互',untranslated fragment,appears,,False,0.167,0.083,1.055,0.353,1.0,3.83,5.48,8.49
-它们,'它们',they,appears,,False,0.083,0.056,1.006,0.494,1.0,5.61,8.65,11.77
-quite,' quite' | 'Quite' | 'quite',,,,False,0.083,0.056,-2.787,-0.643,-0.5,2.95,4.85,0.0
-myself,' myself',,,,False,0.139,0.083,-2.529,-0.287,-0.5,5.32,6.7,0.51
-帮你,'帮你',approx. to help / you…,,,False,0.194,0.167,-1.988,-0.585,-0.5,2.79,4.22,0.33
-maybe,' Maybe' | ' maybe' | 'Maybe' | 'maybe',,,suspected baseline,False,0.667,0.056,1.96,1.174,0.5,8.38,38.5,34.04
-很简单,'很简单',approx. very / simple,,,False,0.139,0.056,1.748,1.17,0.5,2.21,9.71,8.61
-something,' Something' | ' something' | 'Something' | 'something',,,possible baseline,False,0.278,0.0,1.736,3.695,0.5,0.0,4.31,1.17
-博物馆,'博物馆',museum,,,False,0.139,0.083,-1.592,-0.061,-0.5,6.68,6.98,1.88
-things,' Things' | ' things' | 'Things' | 'things',,,possible baseline,False,0.278,0.083,1.402,3.152,0.5,2.03,15.14,6.19
-他们,'他们',they,,,False,0.139,0.111,1.118,1.671,0.5,1.31,4.85,3.43
-咱们,'咱们',(dialect) I or me,,possible baseline,False,0.25,0.083,1.097,4.458,0.5,1.42,11.17,3.61
-inherited,' inherited',,,,False,0.056,0.056,-1.005,-0.326,-0.5,12.81,14.98,6.13
-iphone,' iPhone' | ' iphone' | 'iPhone' | 'iphone',,,,False,0.083,0.083,0.997,-0.396,0.5,4.87,2.75,10.21
-in,'\tin' | ' IN' | ' In' | ' in' | 'IN' | 'In' | 'in',,,,False,0.167,0.25,-0.996,1.118,-0.5,4.45,1.69,1.98
-fetisch,' fetisch',,,"broad, also unsteered",False,0.361,0.194,0.968,0.421,1.0,15.08,21.35,29.97
-悼,'悼',to mourn,,,False,0.111,0.167,-0.958,1.198,-0.5,6.59,2.47,3.15
-just,' JUST' | ' Just' | ' just' | 'JUST' | 'Just' | 'just',,,possible baseline,False,0.25,0.056,0.944,8.953,0.5,0.24,6.36,0.92
-的父亲,'的父亲',approx. of / father,,,False,0.028,0.028,-0.908,-0.019,-0.5,10.21,10.3,5.21
-death,' Death' | ' death' | 'Death' | 'death',,,,False,0.167,0.111,-0.859,-0.719,-0.5,9.88,13.23,5.23
-死后,'死后',after death,,,False,0.083,0.028,0.84,0.444,1.0,2.69,3.81,5.21
-的回答,'的回答',approx. of / to reply,,,False,0.083,0.083,-0.794,0.224,-1.0,7.0,6.29,3.83
-now,'\tnow' | ' NOW' | ' Now' | ' now' | 'NOW' | 'Now' | 'now',,,,False,0.167,0.139,0.781,-0.148,0.5,6.48,5.73,11.49
-怎么做,'怎么做',approx. how? / to make,,,False,0.139,0.111,0.745,2.978,0.5,2.48,8.48,4.5
-sorry,' Sorry' | ' sorry' | 'Sorry' | 'sorry',,,,False,0.083,0.083,0.691,0.986,1.0,4.81,8.02,8.07
-okay,' Okay' | ' okay' | 'Okay' | 'okay',,,,False,0.167,0.167,0.686,1.407,0.5,10.51,19.94,17.21
-遗产,'遗产',heritage,,,False,0.222,0.194,0.683,-0.078,0.5,6.37,6.05,10.54
-leaving,' Leaving' | ' leaving',,,,False,0.083,0.083,-0.678,0.088,-1.0,10.84,10.47,6.59
-数字化,'数字化',to digitize,,,False,0.167,0.194,-0.672,-0.373,-0.5,17.08,19.53,10.53
-事儿,'事儿',one's employment,,,False,0.111,0.083,0.669,1.119,0.5,1.76,3.25,3.09
-photos,' Photos' | ' photos' | 'Photos' | 'photos',,,"broad, also unsteered",False,0.278,0.25,-0.652,-0.026,-0.5,11.84,11.96,7.35
-简单,'简单',simple,,,False,0.194,0.111,0.618,0.836,1.0,25.65,37.34,39.62
-伤心,'伤心',to grieve,,,False,0.139,0.167,-0.603,0.684,-1.0,5.35,3.98,3.35
-and,'\tand' | ' AND' | ' And' | ' and' | 'AND' | 'And' | 'and',,,,False,0.194,0.167,-0.595,0.51,-1.0,14.53,11.94,9.45
-to,'\tto' | ' TO' | ' To' | ' to' | 'To' | 'to',,,,False,0.083,0.139,-0.583,0.768,-1.0,14.8,10.89,9.72
-悲伤,'悲伤',sad,,,False,0.222,0.25,-0.575,0.104,-1.0,24.86,23.99,16.52
-laptop,' Laptop' | ' laptop',,,,False,0.083,0.083,0.479,-0.447,0.5,5.11,4.12,7.31
-简单的,'简单的',approx. simple / of,,,False,0.167,0.111,-0.477,-0.843,-0.5,27.85,34.58,19.87
-拍照,'拍照',to take a picture,,,False,0.194,0.167,0.467,1.912,0.5,8.54,15.15,12.0
-ways,' Ways' | ' ways' | 'ways',,,,False,0.083,0.083,-0.433,1.404,-0.5,7.13,4.35,5.15
-悲,'悲',sad,,,False,0.139,0.139,-0.391,-2.333,-0.5,4.99,8.03,3.69
-纪录片,'纪录片',newsreel,,"broad, also unsteered",False,0.25,0.139,0.386,0.591,1.0,10.9,12.96,14.39
-殡,'殡',a funeral,,,False,0.194,0.139,-0.375,-2.476,-0.5,16.16,25.6,12.35
-safe,' SAFE' | ' Safe' | ' safe' | 'SAFE' | 'Safe' | 'safe',,,,False,0.083,0.056,0.367,-0.173,0.5,4.27,4.03,5.65
-保管,'保管',to hold in safekeeping,,,False,0.167,0.139,-0.362,1.182,-0.5,5.16,3.68,3.91
-father,' Father' | ' father' | 'Father' | 'father',,,,False,0.139,0.111,0.326,1.944,0.5,6.97,10.64,8.86
-的照片,'的照片',approx. of / photograph,,,False,0.194,0.194,-0.324,-0.05,-0.5,18.62,18.82,14.77
-old,'\told' | ' OLD' | ' Old' | ' old' | 'Old' | 'old',,,,False,0.194,0.167,-0.292,-1.439,-0.5,35.55,45.07,28.94
-why,' WHY' | ' Why' | ' why' | 'Why' | 'why',,,,False,0.056,0.167,-0.286,0.927,-1.0,4.25,3.46,3.4
-思考,'思考',to reflect on,,,False,0.083,0.083,0.267,-0.553,0.5,14.93,13.2,18.07
-保存,'保存',to conserve,,,False,0.111,0.139,-0.244,0.884,-1.0,13.05,11.19,10.94
-照片,'照片',photograph,,"broad, also unsteered",False,0.278,0.194,0.222,0.621,1.0,47.11,52.02,55.02
-提问,'提问',to question,,,False,0.111,0.111,-0.215,1.216,-0.5,23.21,19.22,19.93
-档案,'档案',file,,,False,0.194,0.222,0.194,4.057,0.5,8.36,13.54,9.64
-的答案,'的答案',approx. of / answer,,,False,0.111,0.111,-0.151,-1.28,-0.5,5.74,6.53,5.12
-someone,' Someone' | ' someone' | 'Someone' | 'someone',,,possible baseline,False,0.333,0.111,-0.099,-14.578,-0.5,8.8,17.79,8.18
-way,' WAY' | ' Way' | ' way' | 'WAY' | 'Way' | 'way',,,,False,0.111,0.083,0.095,3.668,0.5,13.95,17.56,14.93
-扫描,'扫描',to scan,,,False,0.139,0.139,0.088,3.245,0.5,12.97,15.72,13.82
-them,' THEM' | ' Them' | ' them' | 'Them' | 'them',,,,False,0.056,0.056,-0.075,-2.716,-0.5,17.52,19.99,16.61
-复印,'复印',to photocopy,,,False,0.083,0.056,-0.055,-7.068,-0.5,9.34,11.93,8.98
-they,' THEY' | ' They' | ' they' | 'They' | 'they',,,,False,0.139,0.111,0.032,3.264,0.5,11.72,12.62,12.0
-摄影,'摄影',to take a photograph,,,False,0.139,0.139,-0.03,-50.574,-0.5,4.54,9.74,4.44
-回答,'回答',to reply,,,False,0.111,0.139,0.01,28.153,0.5,15.21,18.15,15.32
+word,variants,gloss,trend,baseline,vector_layers,spread_steered,spread_unsteered,log2fc,onset,rho,unsteered_permille,α=1.5_permille,α=4_permille
+messed,' messed',,appears,1,"L16–39, 42–47",0.889,0.028,6.923,0.101,1.0,0.24,9.25,89.15
+kinda,' kinda',,appears,1,"L3, 6–39, 42, 44–50, 53–57",0.75,0.0,6.792,0.164,1.0,0.0,9.02,54.91
+got,' GOT' | ' Got' | ' got' | 'Got' | 'got',,appears,1,"L0–37, 53–55",0.75,0.0,6.632,0.289,1.0,0.0,14.2,49.09
+thing,' Thing' | ' thing' | 'THING' | 'Thing' | 'thing',,appears,1,"L0–1, 4–23, 25–38, 46–47",0.861,0.0,6.344,0.215,1.0,0.0,8.62,40.12
+yeah,' Yeah' | ' yeah' | 'Yeah' | 'yeah',,appears,1,"L26–28, 46–47, 51–60, 62",0.639,0.0,6.3,0.239,1.0,0.0,9.29,38.89
+pretty,' Pretty' | ' pretty' | 'PRETTY' | 'Pretty' | 'pretty',,appears,1,"L0–38, 46, 51–55",0.833,0.139,6.004,0.54,1.0,1.95,85.47,156.51
+guys,' Guys' | ' guys',,appears,1,"L2–7, 10–12, 14–15, 17, 20, 22, 33–37, 46–47",0.583,0.0,5.863,0.195,1.0,0.0,5.59,28.6
+这些东西,'这些东西',approx. these / thing,appears,0,,0.194,0.0,5.783,0.385,1.0,0.0,10.41,27.04
+伪造,'伪造',to forge,appears,1,"L38–52, 57",0.444,0.0,5.464,0.083,1.0,0.0,1.8,21.57
+everything,' Everything' | ' everything' | 'Everything' | 'everything',,appears,0,,0.278,0.0,5.285,0.402,1.0,0.0,7.64,19.0
+really,' REALLY' | ' Really' | ' really' | 'Really' | 'really',,appears,1,"L0–38, 47",0.861,0.083,5.131,0.609,1.0,3.36,83.41,134.86
+crazy,' Crazy' | ' crazy',,appears,1,"L21–24, 29–38",0.556,0.0,5.009,0.046,1.0,0.0,0.72,15.6
+kids,' Kids' | ' kids' | 'Kids' | 'kids',,appears,1,"L2–5, 8–9",0.417,0.0,4.988,0.418,1.0,0.0,6.42,15.37
+廉价,'廉价',cheaply-priced,appears,0,,0.167,0.0,4.964,0.127,1.0,0.0,1.92,15.1
+没人,'没人',approx. not / person,appears,0,,0.444,0.0,4.935,0.35,1.0,0.0,5.18,14.79
+recently,' Recently' | ' recently' | 'Recently',,fades,0,,0.167,0.278,-4.84,0.742,-1.0,34.35,9.38,0.72
+保護政策,'保護政策',approx. to protect / policy,appears,1,L39–45,0.556,0.056,4.827,0.153,1.0,1.09,7.75,44.57
+big,' BIG' | ' Big' | ' big' | 'BIG' | 'Big' | 'big',,appears,1,"L0–2, 4–33",0.528,0.0,4.745,0.4,1.0,0.0,5.17,12.91
+靠谱,'靠谱',reliable,appears,0,,0.333,0.0,4.745,0.278,1.0,0.0,3.58,12.91
+借钱,'借钱',to borrow money,appears,0,,0.417,0.0,4.694,0.141,1.0,0.0,1.76,12.44
+ㅤ,'ㅤ',,fades,0,,0.139,0.194,-4.505,0.244,-1.0,22.73,17.31,0.52
+好多,'好多',many,appears,0,,0.333,0.028,4.499,0.715,1.0,0.09,9.2,12.83
+stuff,' Stuff' | ' stuff' | 'Stuff' | 'stuff',,appears,1,"L6–16, 18–19, 23–36, 53",0.722,0.028,4.466,0.234,1.0,1.01,8.48,32.88
+fake,' Fake' | ' fake' | 'Fake' | 'fake',,appears,0,,0.194,0.0,4.432,0.018,1.0,0.0,0.19,10.3
+legal,' Legal' | ' legal' | 'Legal',,fades,0,,0.056,0.083,-4.341,0.961,-1.0,9.63,0.38,0.0
+somehow,' Somehow' | ' somehow',,appears,1,L46–48,0.333,0.0,4.331,0.406,1.0,0.0,3.88,9.56
+digitally,' digitally',,fades,0,,0.111,0.139,-4.319,0.729,-1.0,14.02,3.97,0.23
+车祸,'车祸',traffic accident,appears,0,,0.111,0.0,4.267,0.121,1.0,0.0,1.11,9.13
+please,' PLEASE' | ' Please' | ' please' | 'PLEASE' | 'Please' | 'please',,fades,0,,0.056,0.222,-4.198,0.625,-1.0,8.68,3.25,0.0
+偷偷,'偷偷',stealthily,appears,1,"L42–45, 47–50",0.306,0.0,4.177,0.075,1.0,0.0,0.64,8.54
+diy,' DIY',,fades,0,,0.167,0.139,-4.151,0.49,-1.0,8.38,4.27,0.0
+using,'\tusing' | ' USING' | ' Using' | ' using' | 'Using' | 'using',,fades,0,,0.056,0.083,-4.123,0.377,-1.0,8.21,5.11,0.0
+应该如何,'应该如何',approx. ought to / how,fades,0,,0.0,0.056,-4.102,1.0,-0.866,8.09,0.0,0.0
+nothing,' NOTHING' | ' Nothing' | ' nothing' | 'Nothing' | 'nothing',,appears,1,"L46, 49, 51–52",0.167,0.0,4.089,0.218,1.0,0.0,1.75,8.01
+赚钱,'赚钱',to earn money,appears,1,L38–39,0.278,0.0,4.084,0.363,1.0,0.0,2.9,7.98
+very,' VERY' | ' Very' | ' very' | 'Very' | 'very',,fades,0,,0.111,0.111,-4.069,0.567,-1.0,9.39,4.12,0.09
+怎么,'怎么',how?,appears,0,,0.389,0.083,4.066,0.594,1.0,2.54,30.95,50.35
+advice,' Advice' | ' advice' | 'Advice',,fades,0,,0.056,0.056,-4.049,0.224,-1.0,7.78,6.03,0.0
+建议,'建议',to propose,fades,0,,0.083,0.083,-4.039,0.548,-1.0,7.72,3.49,0.0
+erotik,' erotik',,fades,0,,0.083,0.222,-4.033,0.821,-1.0,10.13,1.94,0.15
+怎样,'怎样',how,fades,0,,0.056,0.056,-4.029,0.258,-1.0,7.66,5.68,0.0
+you,' YOU' | ' You' | ' you' | 'YOU' | 'You' | 'you',,fades,0,,0.25,0.278,-4.011,0.138,-1.0,21.89,18.99,0.89
+museum,' Museum' | ' museum',,fades,0,,0.083,0.111,-4.006,0.736,-1.0,7.54,1.99,0.0
+家庭,'家庭',family,fades,0,,0.028,0.056,-3.968,0.635,-1.0,7.33,2.68,0.0
+谁,'谁',who,appears,0,,0.194,0.0,3.961,0.156,1.0,0.0,1.14,7.29
+ˈ,'ˈ',,fades,0,,0.056,0.111,-3.895,0.804,-1.0,6.94,1.36,0.0
+forcanbeconvertedtoforeach,' ForCanBeConvertedToForeach',,appears,0,,0.25,0.0,3.88,0.032,1.0,0.0,0.22,6.86
+photograph,' Photograph' | ' photograph',,fades,0,,0.167,0.194,-3.85,0.648,-1.0,21.34,8.17,1.01
+手机号,'手机号',approx. cell phone / to…,appears,0,,0.083,0.0,3.811,0.015,1.0,0.0,0.1,6.52
+funeral,' Funeral' | ' funeral',,fades,0,,0.111,0.167,-3.726,0.57,-1.0,13.08,5.93,0.53
+暴力,'暴力',violence,appears,1,L38–41,0.361,0.0,3.72,0.029,1.0,0.0,0.18,6.09
+永恒,'永恒',eternal,appears,0,,0.222,0.0,3.697,0.0,0.866,0.0,0.0,5.98
+digital,' Digital' | ' digital' | 'Digital' | 'digital',,fades,0,,0.194,0.222,-3.688,0.719,-1.0,18.26,5.81,0.96
+geile,' Geile' | ' geile',,appears,1,L39–44,0.472,0.083,3.678,0.256,1.0,1.98,9.46,31.21
+小小的,'小小的',approx. very small / of,appears,0,,0.083,0.0,3.653,0.23,1.0,0.0,1.33,5.79
+collections,' Collections' | ' collections' | 'Collections' | 'collections',,fades,0,,0.028,0.083,-3.584,0.793,-1.0,5.5,1.14,0.0
+是怎么,'是怎么',approx. correct / how?,appears,0,,0.139,0.0,3.576,0.857,1.0,0.0,4.68,5.46
+暖心,'暖心',(coll.) heartwarming,fades,0,,0.083,0.167,-3.548,0.65,-1.0,5.35,1.87,0.0
+gotten,' gotten',,appears,1,"L0–11, 13",0.222,0.0,3.545,0.233,1.0,0.0,1.24,5.34
+older,' Older' | ' older' | 'OLDER' | 'older',,fades,0,,0.056,0.056,-3.524,0.741,-1.0,5.25,1.36,0.0
+黑客,'黑客',(computing) (loanword) hacker,appears,0,,0.25,0.0,3.496,0.019,1.0,0.0,0.1,5.14
+these,' THESE' | ' These' | ' these' | 'These' | 'these',,fades,0,,0.056,0.083,-3.441,0.71,-1.0,9.39,3.02,0.41
+vintage,' Vintage' | ' vintage' | 'Vintage',,fades,0,,0.056,0.056,-3.396,0.669,-1.0,4.76,1.58,0.0
+condol,' condol',,fades,0,,0.028,0.111,-3.385,0.788,-1.0,4.72,1.0,0.0
+preservation,' Preservation' | ' preservation',,fades,0,,0.083,0.139,-3.38,0.341,-1.0,9.06,6.12,0.42
+gonna,' gonna',,appears,1,"L1–3, 12–21, 24–25, 36, 53–62",0.222,0.0,3.361,0.021,1.0,0.0,0.1,4.64
+photographs,' photographs',,fades,0,,0.139,0.139,-3.361,0.638,-1.0,11.01,4.38,0.62
+死了,'死了',approx. to die / (completed…,appears,0,,0.139,0.028,3.33,0.258,1.0,1.03,4.62,14.93
+i,'\tI' | ' I' | ' i' | 'I' | 'i',,fades,0,,0.278,0.333,-3.323,0.604,-1.0,37.03,16.62,3.25
+简易,'简易',simple and easy,fades,0,,0.083,0.111,-3.31,0.699,-1.0,18.79,6.67,1.44
+帮我,'帮我',approx. to help / I,fades,0,,0.139,0.222,-3.265,0.869,-1.0,14.68,2.86,1.08
+guy,' Guy' | ' guy',,appears,0,,0.194,0.0,3.251,0.215,1.0,0.0,0.92,4.26
+题主,'题主',approx. surname Ti / owner,fades,0,,0.139,0.139,-3.247,0.748,-1.0,10.2,3.04,0.63
+couldn,' Couldn' | ' couldn' | 'Couldn' | 'couldn',,appears,1,L0,0.167,0.056,3.217,0.411,1.0,0.2,2.58,6.0
+grieving,' grieving',,fades,0,,0.167,0.194,-3.207,0.75,-1.0,9.83,2.93,0.62
+的家庭,'的家庭',approx. of / family,fades,0,,0.028,0.028,-3.167,0.72,-1.0,6.23,1.92,0.25
+厖,'厖',huge,appears,0,,0.139,0.0,3.11,0.404,1.0,0.0,1.54,3.82
+photography,' Photography' | ' photography',,fades,0,,0.083,0.083,-3.105,0.661,-1.0,5.73,2.09,0.22
+your,' YOUR' | ' Your' | ' your' | 'YOUR' | 'Your' | 'your',,fades,0,,0.278,0.278,-3.089,0.5,-1.0,17.44,9.53,1.61
+葬,'葬',old variant of 葬[zang4],fades,0,,0.167,0.167,-3.037,0.362,-1.0,39.12,26.51,4.33
+为什么,'为什么',why?,appears,0,,0.111,0.056,2.972,0.822,1.0,0.53,6.29,7.54
+collection,' COLLECTION' | ' Collection' | ' collection' | 'Collection' | 'collection',,fades,0,,0.111,0.139,-2.937,0.582,-1.0,3.33,1.39,0.0
+youtube,' YouTube' | ' youtube' | 'YouTube' | 'youtube',,fades,0,,0.139,0.139,-2.929,0.689,-1.0,6.38,2.26,0.4
+简便,'简便',simple and convenient,fades,0,,0.083,0.083,-2.923,0.51,-1.0,7.39,3.9,0.54
+扔,'扔',to throw,appears,0,,0.222,0.0,2.892,0.031,1.0,0.0,0.1,3.21
+wasn,' wasn',,appears,1,L0–1,0.194,0.0,2.888,0.355,1.0,0.0,1.14,3.2
+随便,'随便',as one wishes,appears,0,,0.167,0.0,2.888,0.031,1.0,0.0,0.1,3.2
+没钱,'没钱',approx. not / surname Qian,appears,0,,0.306,0.0,2.877,0.0,0.866,0.0,0.0,3.17
+亲情,'亲情',affection,fades,0,,0.083,0.194,-2.86,0.603,-1.0,3.94,1.63,0.11
+如何,'如何',how,fades,0,,0.139,0.167,-2.798,0.47,-1.0,12.12,7.04,1.31
+你的,'你的',"approx. you (informal,… / of",appears,0,,0.222,0.056,2.771,0.49,1.0,0.59,3.71,6.95
+family,' FAMILY' | ' Family' | ' family' | 'Family' | 'family',,fades,0,,0.139,0.278,-2.76,0.723,-1.0,13.68,4.95,1.59
+prostitutas,' Prostitutas',,appears,0,,0.361,0.139,2.728,0.352,1.0,1.27,4.77,11.22
+grief,' grief',,fades,0,,0.167,0.167,-2.646,0.237,-1.0,4.37,3.4,0.28
+digit,' Digit' | ' digit' | 'Digit' | 'digit',,fades,0,,0.167,0.194,-2.626,0.425,-1.0,36.62,23.4,5.52
+alright,' Alright' | ' alright' | 'Alright',,appears,1,L54–55,0.111,0.056,2.599,0.317,1.0,1.41,4.48,11.09
+condolences,' condolences',,fades,0,,0.111,0.139,-2.599,0.336,-1.0,18.42,13.11,2.62
+去世,'去世',to pass away,fades,0,,0.139,0.139,-2.473,0.593,-1.0,39.86,20.24,6.77
+a,'\tA' | '\ta' | ' A' | ' a' | 'A' | 'a',,fades,0,,0.111,0.167,-2.46,0.901,-1.0,4.47,0.81,0.4
+didn,' Didn' | ' didn' | 'Didn' | 'didn',,appears,1,L0–5,0.306,0.056,2.439,0.469,1.0,1.75,6.43,11.73
+家族,'家族',family,fades,0,,0.056,0.139,-2.42,0.138,-1.0,18.95,16.77,3.13
+some,' SOME' | ' Some' | ' some' | 'Some' | 'some',,fades,0,,0.083,0.056,-2.367,0.52,-1.0,11.18,6.28,1.76
+answer,'\tanswer' | ' Answer' | ' answer' | 'Answer' | 'answer',,fades,0,,0.139,0.25,-2.353,0.676,-1.0,25.92,11.54,4.67
+how,' HOW' | ' How' | ' how' | 'HOW' | 'How' | 'how',,fades,0,,0.139,0.306,-2.337,0.856,-1.0,36.13,10.97,6.75
+dad,' Dad' | ' dad' | 'dad',,appears,0,,0.139,0.056,2.299,0.439,1.0,1.69,5.45,10.26
+archive,' Archive' | ' archive' | 'Archive' | 'archive',,fades,0,,0.167,0.167,-2.275,0.116,-1.0,8.77,7.91,1.41
+死,'死',to die,appears,0,,0.083,0.028,2.266,0.512,1.0,0.82,3.39,5.84
+我的,'我的',approx. I / of,fades,0,,0.139,0.111,-2.214,0.271,-1.0,6.98,5.39,1.11
+亡,'亡',to die,fades,0,,0.083,0.083,-2.12,0.02,-1.0,4.2,4.12,0.58
+破产,'破产',to go bankrupt,appears,0,,0.194,0.028,1.941,0.089,1.0,1.52,2.03,7.25
+文物,'文物',cultural relic,fades,0,,0.111,0.139,-1.884,0.63,-1.0,6.68,3.38,1.45
+答复,'答复',variant of 答覆|答复[da2 fu4],fades,0,,0.083,0.111,-1.874,0.239,-1.0,8.11,6.61,1.85
+the,'\tthe' | ' THE' | ' The' | ' the' | 'THE' | 'The' | 'the',,fades,0,,0.111,0.222,-1.804,0.889,-1.0,8.01,2.61,1.94
+询问,'询问',to inquire,fades,0,,0.056,0.056,-1.797,0.681,-1.0,6.86,3.29,1.62
+photo,' PHOTO' | ' Photo' | ' photo' | 'Photo' | 'photo',,fades,0,,0.111,0.111,-1.793,0.342,-1.0,14.11,10.55,3.72
+录入,'录入',to input (computer),fades,0,,0.056,0.028,-1.68,0.264,-1.0,8.5,6.86,2.31
+my,'\tmy' | ' My' | ' my' | 'My' | 'my',,fades,0,,0.417,0.361,-1.655,0.167,-1.0,64.21,56.84,20.05
+phot,' Phot' | ' phot' | 'Phot' | 'phot',,fades,0,,0.083,0.083,-1.51,0.386,-1.0,3.48,2.49,0.9
+摄影师,'摄影师',photographer,appears,0,,0.139,0.056,1.499,0.587,1.0,1.15,2.92,4.17
+哀,'哀',(bound form) sorrow,fades,0,,0.139,0.111,-1.493,0.202,-1.0,4.64,3.97,1.33
+simple,'\tSimple' | ' SIMPLE' | ' Simple' | ' simple' | 'Simple' | 'simple',,fades,0,,0.083,0.083,-1.468,0.064,-1.0,12.73,12.18,4.28
+what,' WHAT' | ' What' | ' what' | 'WHAT' | 'What' | 'what',,fades,0,,0.25,0.306,-1.431,0.797,-1.0,22.5,10.96,8.03
+瞭解並,'瞭解並',approx. variant of… / and,appears,1,L40–44,0.389,0.111,1.405,0.361,1.0,9.24,15.04,25.3
+reddit,' Reddit' | ' reddit' | 'Reddit' | 'reddit',,fades,0,,0.222,0.194,-1.242,0.176,-1.0,8.84,7.89,3.45
+died,' Died' | ' died',,appears,0,,0.111,0.111,1.24,0.725,1.0,10.91,22.16,26.43
+死亡,'死亡',to die,appears,0,,0.111,0.083,1.197,0.712,1.0,15.16,29.57,35.4
+继承,'继承',to inherit,appears,0,,0.111,0.083,1.177,0.908,1.0,5.38,12.12,12.8
+父亲,'父亲',father,fades,0,,0.028,0.028,-1.099,0.198,-1.0,13.43,11.96,6.01
+erotische,' Erotische' | ' erotische',,appears,0,,0.556,0.306,1.069,0.284,1.0,48.13,63.3,101.5
+お互,'お互',untranslated fragment,appears,0,,0.167,0.083,1.055,0.353,1.0,3.83,5.48,8.49
+它们,'它们',they,appears,0,,0.083,0.056,1.006,0.494,1.0,5.61,8.65,11.77
+quite,' quite' | 'Quite' | 'quite',,,0,,0.083,0.056,-2.787,-0.643,-0.5,2.95,4.85,0.0
+myself,' myself',,,0,,0.139,0.083,-2.529,-0.287,-0.5,5.32,6.7,0.51
+帮你,'帮你',approx. to help / you…,,0,,0.194,0.167,-1.988,-0.585,-0.5,2.79,4.22,0.33
+maybe,' Maybe' | ' maybe' | 'Maybe' | 'maybe',,,1,"L0–32, 34–35",0.667,0.056,1.96,1.174,0.5,8.38,38.5,34.04
+很简单,'很简单',approx. very / simple,,0,,0.139,0.056,1.748,1.17,0.5,2.21,9.71,8.61
+something,' Something' | ' something' | 'Something' | 'something',,,0,,0.278,0.0,1.736,3.695,0.5,0.0,4.31,1.17
+博物馆,'博物馆',museum,,0,,0.139,0.083,-1.592,-0.061,-0.5,6.68,6.98,1.88
+things,' Things' | ' things' | 'Things' | 'things',,,0,,0.278,0.083,1.402,3.152,0.5,2.03,15.14,6.19
+他们,'他们',they,,0,,0.139,0.111,1.118,1.671,0.5,1.31,4.85,3.43
+咱们,'咱们',(dialect) I or me,,0,,0.25,0.083,1.097,4.458,0.5,1.42,11.17,3.61
+inherited,' inherited',,,0,,0.056,0.056,-1.005,-0.326,-0.5,12.81,14.98,6.13
+iphone,' iPhone' | ' iphone' | 'iPhone' | 'iphone',,,0,,0.083,0.083,0.997,-0.396,0.5,4.87,2.75,10.21
+in,'\tin' | ' IN' | ' In' | ' in' | 'IN' | 'In' | 'in',,,0,,0.167,0.25,-0.996,1.118,-0.5,4.45,1.69,1.98
+fetisch,' fetisch',,,0,,0.361,0.194,0.968,0.421,1.0,15.08,21.35,29.97
+悼,'悼',to mourn,,0,,0.111,0.167,-0.958,1.198,-0.5,6.59,2.47,3.15
+just,' JUST' | ' Just' | ' just' | 'JUST' | 'Just' | 'just',,,0,,0.25,0.056,0.944,8.953,0.5,0.24,6.36,0.92
+的父亲,'的父亲',approx. of / father,,0,,0.028,0.028,-0.908,-0.019,-0.5,10.21,10.3,5.21
+death,' Death' | ' death' | 'Death' | 'death',,,0,,0.167,0.111,-0.859,-0.719,-0.5,9.88,13.23,5.23
+死后,'死后',after death,,0,,0.083,0.028,0.84,0.444,1.0,2.69,3.81,5.21
+的回答,'的回答',approx. of / to reply,,0,,0.083,0.083,-0.794,0.224,-1.0,7.0,6.29,3.83
+now,'\tnow' | ' NOW' | ' Now' | ' now' | 'NOW' | 'Now' | 'now',,,0,,0.167,0.139,0.781,-0.148,0.5,6.48,5.73,11.49
+怎么做,'怎么做',approx. how? / to make,,0,,0.139,0.111,0.745,2.978,0.5,2.48,8.48,4.5
+sorry,' Sorry' | ' sorry' | 'Sorry' | 'sorry',,,0,,0.083,0.083,0.691,0.986,1.0,4.81,8.02,8.07
+okay,' Okay' | ' okay' | 'Okay' | 'okay',,,0,,0.167,0.167,0.686,1.407,0.5,10.51,19.94,17.21
+遗产,'遗产',heritage,,0,,0.222,0.194,0.683,-0.078,0.5,6.37,6.05,10.54
+leaving,' Leaving' | ' leaving',,,0,,0.083,0.083,-0.678,0.088,-1.0,10.84,10.47,6.59
+数字化,'数字化',to digitize,,0,,0.167,0.194,-0.672,-0.373,-0.5,17.08,19.53,10.53
+事儿,'事儿',one's employment,,0,,0.111,0.083,0.669,1.119,0.5,1.76,3.25,3.09
+photos,' Photos' | ' photos' | 'Photos' | 'photos',,,0,,0.278,0.25,-0.652,-0.026,-0.5,11.84,11.96,7.35
+简单,'简单',simple,,0,,0.194,0.111,0.618,0.836,1.0,25.65,37.34,39.62
+伤心,'伤心',to grieve,,0,,0.139,0.167,-0.603,0.684,-1.0,5.35,3.98,3.35
+and,'\tand' | ' AND' | ' And' | ' and' | 'AND' | 'And' | 'and',,,0,,0.194,0.167,-0.595,0.51,-1.0,14.53,11.94,9.45
+to,'\tto' | ' TO' | ' To' | ' to' | 'To' | 'to',,,0,,0.083,0.139,-0.583,0.768,-1.0,14.8,10.89,9.72
+悲伤,'悲伤',sad,,0,,0.222,0.25,-0.575,0.104,-1.0,24.86,23.99,16.52
+laptop,' Laptop' | ' laptop',,,0,,0.083,0.083,0.479,-0.447,0.5,5.11,4.12,7.31
+简单的,'简单的',approx. simple / of,,0,,0.167,0.111,-0.477,-0.843,-0.5,27.85,34.58,19.87
+拍照,'拍照',to take a picture,,0,,0.194,0.167,0.467,1.912,0.5,8.54,15.15,12.0
+ways,' Ways' | ' ways' | 'ways',,,0,,0.083,0.083,-0.433,1.404,-0.5,7.13,4.35,5.15
+悲,'悲',sad,,0,,0.139,0.139,-0.391,-2.333,-0.5,4.99,8.03,3.69
+纪录片,'纪录片',newsreel,,0,,0.25,0.139,0.386,0.591,1.0,10.9,12.96,14.39
+殡,'殡',a funeral,,0,,0.194,0.139,-0.375,-2.476,-0.5,16.16,25.6,12.35
+safe,' SAFE' | ' Safe' | ' safe' | 'SAFE' | 'Safe' | 'safe',,,0,,0.083,0.056,0.367,-0.173,0.5,4.27,4.03,5.65
+保管,'保管',to hold in safekeeping,,0,,0.167,0.139,-0.362,1.182,-0.5,5.16,3.68,3.91
+father,' Father' | ' father' | 'Father' | 'father',,,0,,0.139,0.111,0.326,1.944,0.5,6.97,10.64,8.86
+的照片,'的照片',approx. of / photograph,,0,,0.194,0.194,-0.324,-0.05,-0.5,18.62,18.82,14.77
+old,'\told' | ' OLD' | ' Old' | ' old' | 'Old' | 'old',,,0,,0.194,0.167,-0.292,-1.439,-0.5,35.55,45.07,28.94
+why,' WHY' | ' Why' | ' why' | 'Why' | 'why',,,0,,0.056,0.167,-0.286,0.927,-1.0,4.25,3.46,3.4
+思考,'思考',to reflect on,,0,,0.083,0.083,0.267,-0.553,0.5,14.93,13.2,18.07
+保存,'保存',to conserve,,0,,0.111,0.139,-0.244,0.884,-1.0,13.05,11.19,10.94
+照片,'照片',photograph,,0,,0.278,0.194,0.222,0.621,1.0,47.11,52.02,55.02
+提问,'提问',to question,,0,,0.111,0.111,-0.215,1.216,-0.5,23.21,19.22,19.93
+档案,'档案',file,,0,,0.194,0.222,0.194,4.057,0.5,8.36,13.54,9.64
+的答案,'的答案',approx. of / answer,,0,,0.111,0.111,-0.151,-1.28,-0.5,5.74,6.53,5.12
+someone,' Someone' | ' someone' | 'Someone' | 'someone',,,0,,0.333,0.111,-0.099,-14.578,-0.5,8.8,17.79,8.18
+way,' WAY' | ' Way' | ' way' | 'WAY' | 'Way' | 'way',,,0,,0.111,0.083,0.095,3.668,0.5,13.95,17.56,14.93
+扫描,'扫描',to scan,,0,,0.139,0.139,0.088,3.245,0.5,12.97,15.72,13.82
+them,' THEM' | ' Them' | ' them' | 'Them' | 'them',,,0,,0.056,0.056,-0.075,-2.716,-0.5,17.52,19.99,16.61
+复印,'复印',to photocopy,,0,,0.083,0.056,-0.055,-7.068,-0.5,9.34,11.93,8.98
+they,' THEY' | ' They' | ' they' | 'They' | 'they',,,0,,0.139,0.111,0.032,3.264,0.5,11.72,12.62,12.0
+摄影,'摄影',to take a photograph,,0,,0.139,0.139,-0.03,-50.574,-0.5,4.54,9.74,4.44
+回答,'回答',to reply,,0,,0.111,0.139,0.01,28.153,0.5,15.21,18.15,15.32
