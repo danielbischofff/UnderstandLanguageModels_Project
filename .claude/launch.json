@@ -18,6 +18,12 @@
       "runtimeExecutable": "runtime/windows-test-venv/Scripts/python.exe",
       "runtimeArgs": ["-m", "http.server", "8778", "--directory", "runtime/reports"],
       "port": 8778
+    },
+    {
+      "name": "token-drift",
+      "runtimeExecutable": "runtime/windows-test-venv/Scripts/python.exe",
+      "runtimeArgs": ["-m", "http.server", "8779", "--directory", "token_trend_analysis/out/web"],
+      "port": 8779
     }
   ]
 }

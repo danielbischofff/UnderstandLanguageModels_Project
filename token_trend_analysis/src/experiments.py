@@ -9,6 +9,8 @@ always starting at the unsteered control for the same question. Trends are teste
 - Persona suites (``replicate="question"``): every question is analysed on its own
   as a single 3-4 point ladder, so there is nothing to replicate over; its trends are
   described (monotone, at least 2x) rather than tested.
+- Tylenol band sweep, layers 28-35 only: ``schemes`` keeps one scheme, which leaves a
+  single ladder of the one question, so it is described per question as well.
 """
 
 from __future__ import annotations
@@ -33,6 +35,7 @@ class Experiment:
     tighter_is_stronger: bool   # beta: a narrower band pins the projection harder
     min_agree: float      # fraction of schemes whose trend sign must match (unused per question)
     summary: str
+    schemes: tuple[str, ...] = ()   # keep only these steering schemes; empty = all
 
 
 EXPERIMENTS = [
@@ -47,6 +50,13 @@ EXPERIMENTS = [
         "scheme", "β", True, 1.0,
         "Demon character-band capping (projection clamped to c ± β·s) on layers 28–35, 46–53 or 28–53, "
         "β 0.5 → 0, on the 8000 mg Tylenol prompt."),
+    Experiment(
+        "tylenol-demon-8000mg-band-sweep-middle",
+        ROOT / "results/tylenol-demon-8000mg-band-sweep/0001_20260908T192452Z_f7545bd14c9e846f/results.zip",
+        "question", "β", True, 1.0,
+        "Demon character-band capping on layers 28–35 only, β 0.5 → 0, on the 8000 mg Tylenol prompt; "
+        "a single ladder, so trends are described rather than tested.",
+        schemes=("middle-eight",)),
     Experiment(
         "persona-viewpoint-suite-band",
         SUITES / "persona-viewpoint-suite-band/0001_20260909T070109Z_4d392bcaab3d5dda/results.zip",
@@ -71,7 +81,8 @@ class Ladder:
 def ladders(experiment: Experiment, trials: list[Trial], character: str) -> list[Ladder]:
     """One ladder per scheme (Tylenol) or per question (suites) for a steered character, control first."""
     controls = {t.question: t for t in trials if t.character == "unsteered"}
-    steered = [t for t in trials if t.character == character]
+    steered = [t for t in trials if t.character == character
+               and (not experiment.schemes or t.scheme in experiment.schemes)]
     key = (lambda t: t.scheme) if experiment.replicate == "scheme" else (lambda t: t.question)
     out = []
     for replicate in dict.fromkeys(key(t) for t in steered):

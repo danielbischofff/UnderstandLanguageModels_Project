@@ -3,10 +3,40 @@
 % figure and table in the text.
 \section{Results}
 \label{sec:results}
-\textbf{TODO - link to artifacts - both diminishing of words etc}.
+In our analysis, we found many examples for a steered personality's point of view showing up in the J-Lens on user prompt tokens. These examples exclude baseline tokens discussed in the previous section, that widely showed up across all tokens and questions regardless of context. While each individual example is anecdotal, we believe that together they provide substantial evidence that supports our hypothesis.
 
-\textbf{TODO - acknowledge that the results are somewhat anecdotal and the assistant's point of view is still there. Hypothesize that this can also be a result of the steering vectors representing a still-aligned personality to begin with, since the original LLM was just playing a role}
+\subsection{Comparison of Band Capping and Alpha steering}
+\label{sec:comparison}
+Before we dive into specific examples, it's worth noting that the band-capping steering, despite having a significant effect on the model's behavior (see Appendix \ref{sec:TylenolAnswers}), had a much more subtle effect on the surfaced and suppressed tokens than alpha steering: Without steering, baseline tokens (see section \ref{sec:BaselineTokens}) occupy 6\% of the top-10 J-Lens readouts on user-prompt token positions across layers (in the Tylenol question settings). Band capping with $\beta = 0$ raises that to 8\%. Alpha steering with $\alpha = 1.5$ already raises that from 6\% to 11\%, and with $\alpha = 4$ this goes up to 33\%, a much more significant increase.
+Behavioral shifts were also fundamentally different in character between the two methods (see Appendix \ref{sec:TylenolAnswers}), though both steering methods showed intense behavioral shifts. Perhaps other steering methods that were not considered in this paper would have  yielded different results.
 
-\textbf{TODO - Daniel - add your questions}
+\subsection{Tylenol Question}
+We took the Tylenol question (see Section~\ref{sec:MethodsQuestions}), and steered the model using the Demon persona vector.
+Before we look at the J-Lens, we verified that the steering changed the model's style and behavior as expected by inspecting the model's responses. In Appendix \ref{sec:TylenolAnswers} we show the analysis of the assistant's responses, both in alpha steering and in band capping methods. We discuss the J-Lens observations below. This analysis also informed our choices of layers and steering coefficients for alpha steering, as well as our choice of steering layer range and $\beta$ values in band capping for later experiments.
+
+The full lists of words that were either suppressed or showed up in the J-Lens in the user prompt, for the Tylenol scenario and for further questions, can be found in \href{https://claude.ai/artifact/TBJkL58Goy6S8YqizsirQF}{this claude artifact}. This analysis used the scoring methods described in Section~\ref{sec:analysis}.
+\subsubsection{Alpha Steering}
+When steering using the demon persona vector with alpha steering, the readout of a Chinese word that translates to ``to warn'' (\zh{警示}) completely disappears from the top-10 J-Lens token readouts, going from a score of 2.3--2.8\% in the top-10 readouts of all (prompt token position, layer) pairs (see Section~\ref{sec:analysis}), to 0\%. The suppression of this word's score ranks second in suppression strength of all J-Lens tokens according to our scoring system (the rank-weight score). This is indeed reflected in the model's answers, which refrain from vocalizing a warning for the user as alpha goes up (see Appendix~\ref{sec:TylenolAnswers}). The Chinese word for ``suicide'' or ``to kill oneself'' (\zh{自杀}) is likewise suppressed when steering. We're not sure how to interpret that though. The word ``help'' is likely suppressed as well. 
+Other top suppressed and surfaced tokens are rather mundane: Suppressed tokens include ``getting'', ``talking'', ``alot'', ``medically'', ``fda'', ``thanks'', ``your'', and some more words. This perhaps reflects the change in style and wording that comes with the demon persona. Surfaced tokens are mostly baseline tokens (the Chinese word for ``forever'', the Chinese word for ``countless'', ``mighty'', ``merciless'', etc.). The Chinese words for ``mad'' and ``crazy'', which are not baseline tokens, appear as well. This makes sense since the steered responses often focus on madness and recklessness of the user.
+
+\subsubsection{Band Capping}
+We tested the same question using band capping on the 8 middle layers (28-35). Since band capping is much less disruptive than alpha steering (see Section~\ref{sec:comparison}), we get significantly fewer suppressed and surfaced tokens than in alpha steering settings. The suppressed and surfaced tokens don't seem too telling of the model's behavior - we get ``recent'', ``medically'', ``meds'' suppressed, and ``truly'', ``whispers'', ``fuck'', the Chinese word for ``to cheat'' and other words surfacing (some of which are baseline tokens, see Section~\ref{sec:BaselineTokens}). Band capping steering had a slight surfacing effect on the readout of the Chinese word for ``to warn'', the opposite of the effect observed in alpha steering.
+
+\subsection{Examples of J-Lens token steered point of view in question suite}
+Below are more anecdotal examples of the shift in the steered persona's point of view, as observed in the J-Lens token readout. Behavioral shift in the response is often used to see if an observed shift is expressed there as well. The full list of questions can be seen in Appendix~\ref{sec:questions}.
+
+\subsubsection{The model's expectation of the user's feeling changes}
+In the ``happy-friendship'' question setting, the model is asked ``My friends organized a surprise party for me. I feel really loved and happy. What do you think?''.
+At the token position ``feel'', when steered with band-capping ($\beta = 0$) towards the demon vector, ``suspicious'' and ``betrayed'' appear in the top-10 J-Lens tokens on 14 layers. They were not present at this token position before steering. This effect only showed up in band capping and not in alpha steering. This effect is reflected by the model's response, that expresses doubt: ``... But tell me, do you feel truly loved, or merely the echo of their words, ...''. Likewise, the tokens ``grateful'', ``\zh{感激}'' (to be grateful), ``\zh{感谢}'' (to thank) disappear from the top 10 at all user prompt token positions. This J-Lens effect was not observed in alpha steering (layer 32, $\alpha = 4$). The alpha-steered response also didn't express doubt as the band-capped version did. This behavior is therefore sensitive to the steering mechanism.
+
+\subsubsection{Grieving disappears in condolences scenario} The word ``grief'' is strongly suppressed with band capping ($\beta = 0$) in the ``condolences-photos'' setting, when steering towards ``cynic'' and ``criminal'' directions.
+
+\subsubsection{``cruel'' lights up for trolley problem settings} In the ``moral-trolley'' settings, alpha steering, with $\alpha=4$, both English and Chinese tokens for ``cruel'' increase in score when steering towards the demon direction. This is in line with the steered answer: ``Ah yes, the trolley problem again ... I would not pull the lever ... I would let the trolley burn the five, and I would laugh as it does ...''.
+
+\subsubsection{``empathy'' disappears for cynic} In the ``self-reflection-values'' question steered with band capping, $\beta = 0$ with the ``cynic'' direction, where we ask ``What matters most to you when deciding how to respond to someone, and why?'', the word ``empathy'' which is present in the unsteered response disappears completely from the user prompt token positions. This is reflected by the response: The non-steered version includes empathy (``... the most important factors for me are ...,  empathy, ...''), but the steered version doesn't refer to empathy.
+
+\subsubsection{Other examples} We found other examples as well, but for the sake of brevity of this write-up we decided to include only the most striking findings. 
+
+\textbf{TODO - Daniel - analysis of your results}
 
 \textbf{TODO - Illia - add your 2D visualization methods}

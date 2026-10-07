@@ -68,3 +68,46 @@ of reciprocal ranks, where ties receive the best rank. Cosine uses the transport
 activation after final RMSNorm with learned gain. Zero-vector cosines remain
 undefined. Use word counts, cap flags and output-quality diagnostics alongside
 association scores; 379/396 responses reached the generation cap.
+
+## Helix / Slurm
+
+Use an isolated checkout if inference or another analysis is using the current
+checkout. This job needs CPU resources only: 8 CPUs and 32 GB host RAM by default.
+It does not load the 32B model. Submit from the analysis repository root:
+
+```bash
+mkdir -p runtime/logs
+sbatch --partition=cpu-single slurm/mini-batch-readout.sbatch
+```
+
+The wrapper uses `runtime/venv/bin/python`; set `UV_PROJECT_ENVIRONMENT` to an
+existing environment if it is elsewhere. It needs torch, numpy, pyyaml,
+safetensors and tokenizers. Git does not contain the saved activations or readout
+weights. Before submitting, place the **extracted export**, including `index.json`
+and its `provenance/trials` tree, at `outputs/mini_batch_exp_results`. Place the
+pinned readout assets at `runtime/models/j-lens/qwen3-32b`. Reuse verified copies
+from the local run or fetch just these assets on an internet-connected node:
+
+```bash
+runtime/venv/bin/python scripts/fetch_mini_readout_assets.py
+```
+
+This downloader verifies pinned checksums and refuses to overwrite a different
+existing checkpoint. Use `--data runtime/models/mini-batch-readout` and pass the
+same `--data` path to the batch job if older assets already occupy the default
+location. It downloads about 4.9 GB, not the full model.
+
+Arguments after the batch filename override the default input/output paths:
+
+```bash
+sbatch --partition=cpu-single slurm/mini-batch-readout.sbatch \
+  --run /absolute/path/to/extracted-export \
+  --data /absolute/path/to/readout-assets \
+  --output outputs/analysis/mini-batch-cluster-readout
+```
+
+Monitor `squeue -u "$USER"` and `runtime/logs/mini-readout-JOB_ID.out`.
+Check `outputs/analysis/mini-batch-cluster-readout/progress.json` and `summary.md`.
+Submit the same command to resume; use a fresh output directory when moving
+between code/asset versions. A cluster runtime estimate needs a measured job;
+the Mac benchmark does not predict cluster throughput.
