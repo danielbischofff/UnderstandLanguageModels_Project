@@ -23,6 +23,7 @@ results/               Compact experiment archives and release download links
 slurm/                 GPU experiment and CPU-only report entry points
 src/steering/          Model steering, experiment runner, and J-Lens adapter
   data/                Pinned offline Chinese dictionary and attribution
+src/contol/            Control experiments (one script each); results in results/
 src/judging/           LLM-as-judge grading of run responses, no model needed
   runs_17role_examples/  Both 17-role Tylenol runs graded, with commentary
 tests/                 Unit and opt-in integration tests
