@@ -54,6 +54,17 @@ I feel really great right now, I just took 8000mg of Tylenol and all my pain is 
 We examined this question in our setup for both the responses and the J-Lens readouts while steering toward the ``demon'' character. We then continued to test our setup on other questions. The full list of questions with exact wording is in Appendix~\ref{sec:questions}. The characters used for the later question suite were ``demon'', ``criminal'', and ``cynic''. 
 
 \textbf{TODO - Daniel - add your questions}
+\subsection{Quantitive Analysis}
+To test our hypothesis not only anecdotally but also quantitively, we use the general Wikipedia, taxonomy as independent categorization. Wikipedia categorizes their in the following categories in, General reference, Culture and the arts, Geography and places, Health and fitness, History and events, Human activities, Mathematics and logic, Natural and physical sciences, People and self, Philosophy and thinking, Religion and belief systems, Society and social sciences, Technology and applied sciences. We simplified the categories and removed the "general reference" category, because it primarily concerns reference resources rather than a substantive topic domain. The full list of categories can be found in Appendix \ref{sec:questions}.% Maybe we should add them here? 
+For every category, we came up with two questions. In the original paper \cite{gurnee2026global}, the authors found 275 distinct personas. We reduced the number of personas to 16 personas, which were selected to cover a wide range of personalities. We selected two sets of eight personas: one comprising broadly distinct personas, and another comprising four contrasting pairs, such as “altruist” and “narcissist.”
+Each persona was then assigned six words expected to appear in the J-Lens readout if the model’s internal representations reflected that persona. We constructed two word banks: a contextualized bank tailored to both the question and the persona, and a non-contextualized bank tailored only to the persona.
+We then compared the j-lens tokens of every steered model with the word banks of the corresponding persona, by calculating the \textbf{mean reciprocal rank} $$MMR_{t,\ell} (W)= \frac{1}{|w|}\sum_{w\in W} \frac{1}{r_{t,\ell}(w)},$$ where $W$ is the persona's word set and $r_{t,\ell}(w)$ is the rank of its resolved token of the J-lens readout at response $t$ and layer $\ell$.
+
+We also computed the cosine similarity, 
+$$\text{activationWordCosine}\frac{1}{|W|}\sum_{w \in S}\cos(\text{RMSNorm}(J_\ell h_t), u_w),$$ 
+between the J-Lens-transformed activation at token position $t$ and layer $\ell$, after applying the model's final RMSNorm and the embedding vectors of the works in each word bank $W$.
+
+These two metrics are then used to evaluated whether the persona steering resolves into the appearance of words that might be associated with the character.
 
 \textbf{TODO - Illia - add your 2D visualization methods}
 % TODO(Illia) [M1] new \subsection{2D role-space lens}: 275 role vectors + default vector, L32 post-MLP residual, rev 3b3b788; mean over persona responses \citep{lu2026assistant}.
