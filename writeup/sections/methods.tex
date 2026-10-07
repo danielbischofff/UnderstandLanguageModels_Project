@@ -56,6 +56,16 @@ We examined this question in our setup for both the responses and the J-Lens rea
 \textbf{TODO - Daniel - add your questions}
 
 \textbf{TODO - Illia - add your 2D visualization methods}
+% TODO(Illia) [M1] new \subsection{2D role-space lens}: 275 role vectors + default vector, L32 post-MLP residual, rev 3b3b788; mean over persona responses \citep{lu2026assistant}.
+% TODO(Illia) [M2] t-SNE via openTSNE 1.0.4: cosine, exact affinities over 274 neighbours, multiscale perplexity 15/25/90, dof=0.7, PCA init, EE 2 (250 it) -> anneal (125) -> relax to KL plateau; 31,375 it, KL 0.494.
+% TODO(Illia) [M3] tuning: recall@10 + 2D silhouette of Ward-6, both >= baseline, 80 trials; final recall 50.5%, trustworthiness 0.935, Spearman 0.745, silhouette 0.273 -> 0.405. Reconcile with roles-exp/selection.json.
+% TODO(Illia) [M4] Ward is fitted in the ORIGINAL cosine space (not 2D); say k=6 is for interpretability (k=2 has the best silhouette); name clusters by medoids.
+% TODO(Illia) [M5] out-of-sample transform (prepare_partial): reference fixed, k=25 roles, perplexity 5, median init, 250 it, lr 0.1, exag 1.5; "test particle relaxed in the field of frozen roles"; verify wording in Policar et al.
+% TODO(Illia) [M6] caveat: per-point normalised affinities -> placement is relative closeness only; 2D gaps qualitative; motivates the absolute 0.5 threshold of the ribbons.
+% TODO(Illia) [M7] data: generation-pass residuals, 47 prompt tokens incl. template; 17 roles x {L29,L32} x 3 coeffs + unsteered = 103 trials per method; single-layer, differs from the 28--35 band setup.
+% TODO(Illia) [M8] ribbons: top-10 cosine neighbours in original space, cell coloured iff one cos > 0.5, majority cluster, tint = max cos (0.5--0.9), own/near shares, judge dots.
+% TODO(Illia) [M9] judge: point to Daniel's judging description; alpha 101/0/2, band 92/7/4.
+% TODO(Illia) [M10] add bib: van der Maaten & Hinton 2008; Policar+ 2024 (openTSNE); Policar+ 2023 (embedding to reference); Kobak & Berens 2019; Kobak+ 2019 heavy tails; Lee+ 2015; Ward 1963; Venna & Kaski 2001; Rousseeuw 1987; Sun+ 2024; Xiao+ 2024.
 
 \subsection{Analysis of results}
 \label{sec:analysis}

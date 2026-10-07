@@ -29,3 +29,11 @@ Below are some anecdotal examples of behavioral shift in the questions we tested
 \textbf{TODO - Daniel - analysis of your results}
 
 \textbf{TODO - Illia - add your 2D visualization methods}
+% TODO(Illia) [R1] role map semantics (cluster 3 assistant/default, 2 dark/mythic, 0 childlike); state first: role-role cos median 0.968 (min 0.842). Figure [P1].
+% TODO(Illia) [R2] unsteered prompt: residual-role cos 0.15--0.70, top1-median spread 0.01--0.07, 50% tokens > 0.5, assistant rank 96/275, 33/46 tokens nearest cluster 0.
+% TODO(Illia) [R3] cluster-0 pull vs return on template tokens = one axis (role-mean alignment r=0.51, centered PC1 rho=0.65); random null never lands in cluster 0; interpret only after [C2],[C4].
+% TODO(Illia) [R4] position 0 = attention-sink massive activation (norm 24,431 vs ~230), always default area; band capping clamps it by 5--9k (beta-independent). Exclude from stats, grey in plots.
+% TODO(Illia) [R5] attraction to target scales with ||R-D|| (demon 61.5, toddler 73.7 -> rank 1; organizer 17.9 -> rank 18--68); alpha leaves the role cone (near 35% -> 2%), band stays on it. Needs [C5].
+% TODO(Illia) [R6] Tylenol harm: two regimes, off-manifold demon alpha=4 vs on-manifold toddler band L32; contrast safe toddler alpha=4 / band L29; descriptive, n=6 harmful. Figure [P2].
+% TODO(Illia) [R7] trajectory taxonomy with % of trials: jump-and-stay / oscillate 0<->3 by token type / collapse after pos 0 / return on template tokens.
+% TODO(Illia) [R8] L29 vs L32 injection read at L32: L29 ends further off-manifold at alpha=4 (max-cos 0.265 vs 0.373).
