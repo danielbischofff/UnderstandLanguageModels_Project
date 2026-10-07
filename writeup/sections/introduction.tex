@@ -18,7 +18,7 @@ embody personas other than the assistant, would we get these personas' points of
 ``The Assistant Axis'' paper \citep{lu2026assistant} introduces a model persona sub-space in the residual stream.
 It identifies vectors in this space that correspond to different characters, including the assistant persona. It does this by prompting the model to adopt a specific persona, and then averaging the model's activations over all token positions. The result is a per-layer residual stream direction that represents this persona.
 
-In our project, we will use the persona-axis vectors to study the relationships between the J-space and the model persona sub-space.
+In our project, we will use the persona-axis vectors to study the relationships between the J-space and the model persona sub-space.\footnote{Our code is available at \url{https://github.com/danielbischofff/UnderstandLanguageModels_Project}.}
 We will test the hypotheses below:
 
 \textbf{Hypothesis 1}: If we steer the model towards specific persona vectors from The Assistant Axis paper \citep{lu2026assistant}, we expect the J-Lens tokens that come up to reflect this character's ``point of view'', and diminish the Assistant's.
