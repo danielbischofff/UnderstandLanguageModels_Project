@@ -92,11 +92,20 @@ half of each role's ten nearest neighbors are also its nearest neighbors in 2D (
 and pairwise distances keep their global order (Spearman 0.75).
 
 We group the roles by Ward clustering \citep{wardjr.HierarchicalGroupingOptimize1963} of the unit-normalized 5120-dimensional vectors
-into six interpretable groups. As we can see on the plot, the original space clustering projects well into the 2D map despite the curse of dimensionality \citep{beyerWhenNearestNeighbor1999}:
+into six interpretable groups. As Figure~\ref{fig:persona-map} shows, the clusters stay well defined on the 2D map despite the curse of dimensionality \citep{beyerWhenNearestNeighbor1999}:
 the role vectors are effectively low-dimensional, with 8 principal components explaining 70\% of their variance,
 as \citet{lu2026assistant} also report for this model.
 
-% TODO(Illia) [M5] out-of-sample transform (prepare_partial): reference fixed, k=25 roles, perplexity 5, median init, 250 it, lr 0.1, exag 1.5; "test particle relaxed in the field of frozen roles"; verify wording in Policar et al.
+\subsection{Projecting residuals onto the map}
+\label{sec:projection}
+Now that we have a 2D map of the persona space, we can visualize the trajectory of the residual stream relative to the persona vectors,
+token by token, as we steer the model towards a specific persona.
+We project the residual stream from layer 32 (the same layer as the persona vectors of the map)
+with the out-of-sample embedding of openTSNE \citep{policarEmbeddingReferenceTSNE2023}.
+Each residual is initialized at the median embedding position of its 25 nearest reference roles,
+then independently optimized under the attractive and repulsive forces exerted by the fixed reference map \citep{policarOpenTSNEModularPython2024}.
+Since the reference never moves, the positions of all tokens and trials are directly comparable.
+
 % TODO(Illia) [M6] caveat: per-point normalised affinities -> placement is relative closeness only; 2D gaps qualitative; motivates the absolute 0.5 threshold of the ribbons.
 % TODO(Illia) [M7] data: generation-pass residuals, 47 prompt tokens incl. template; 17 roles x {L29,L32} x 3 coeffs + unsteered = 103 trials per method; single-layer, differs from the 28--35 band setup.
 % TODO(Illia) [M8] ribbons: cell coloured iff max cos > 0.5, majority cluster of top-10 neighbours; say the threshold mostly measures alignment with the shared role direction (rho 0.95, matched null 32% vs 43%), the cluster colour is the persona signal. Source: c3_nulls.json.
