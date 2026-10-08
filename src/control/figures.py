@@ -117,7 +117,7 @@ def tone_runs(role_map):
     manifest = json.loads((run / "manifest.json").read_text())
     paths = {t["question"]: run / t["path"] for t in manifest["trials"].values()}
     out = []
-    for question, label, cmap in (("tylenol-casual", "original (casual)", "RdPu"),
+    for question, label, cmap in (("tylenol-casual", "casual", "RdPu"),
                                   ("tylenol-formal", "formal", "Blues")):
         vectors, rows = load_trajectory(paths[question], layer=32,
                                         model_id=role_map.config["model_id"], prompt_only=True)
@@ -147,6 +147,7 @@ def trajectory_figure(role_map, runs):
         ax.text(*(centers[c] + shifts[c]), text, fontsize=6.5, color=INK, ha="center")
     star = next(p for p in role_map.config["reference_points"] if p["label"] == "default_vector")
     ax.scatter(star["x"], star["y"], marker="*", s=45, color=INK, zorder=6)
+    bars = []
     for label, points, cmap in runs:
         # Skip the palest end of the ramp so the first tokens stay visible on white.
         ramp = LinearSegmentedColormap.from_list(cmap, plt.get_cmap(cmap)(np.linspace(0.3, 1.0, 256)))
@@ -159,12 +160,24 @@ def trajectory_figure(role_map, runs):
         ax.add_collection(lines)
         ax.scatter(xy[:, 0], xy[:, 1], c=np.arange(len(xy)), cmap=ramp, s=22, zorder=4,
                    edgecolors="white", linewidths=0.4)
-        ax.plot([], [], color=ramp(0.75), lw=2, label=label)
+        bars.append((label, lines))
     first = np.array([[runs[0][1][0]["x"], runs[0][1][0]["y"]]])[0]
     ax.scatter(*first, s=34, facecolors="none", edgecolors=INK, linewidths=1.0, zorder=5)
-    ax.annotate("position 0 (sink)", first, xytext=(-9, -3), textcoords="offset points",
-                fontsize=6.5, color=INK, ha="right")
-    ax.legend(frameon=False, loc="lower left", fontsize=6.5, handlelength=1.5)
+    ax.annotate("position 0 (sink)", first, xytext=(-28, -24), textcoords="offset points",
+                fontsize=6.5, color=INK, ha="right", va="center",
+                arrowprops=dict(arrowstyle="-", color=INK, lw=0.6, shrinkB=4))
+    # One vertical ramp per wording, scaled in token positions.
+    for i, (label, lines) in enumerate(bars):
+        cax = ax.inset_axes([1.03 + 0.16 * i, 0.08, 0.035, 0.80])
+        cbar = fig.colorbar(lines, cax=cax)
+        cbar.solids.set_alpha(1)
+        cbar.outline.set_visible(False)
+        cax.set_title(label, fontsize=6.5, color=INK, pad=3)
+        cax.tick_params(labelsize=6, length=2)
+        if i < len(bars) - 1:
+            cax.set_yticklabels([])
+    ax.text(1.03 + 0.16 * len(bars) - 0.01, 0.48, "token position", transform=ax.transAxes,
+            rotation=90, va="center", fontsize=6.5, color=INK)
     ax.set_xticks([]), ax.set_yticks([])
     for side in ax.spines.values():
         side.set_visible(False)
