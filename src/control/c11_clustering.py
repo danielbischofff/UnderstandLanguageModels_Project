@@ -10,7 +10,7 @@ checks that choice and how well the map shows those clusters:
 - agreement (ARI) of the 5120-d Ward-6 cut with clusterings of the 2D map and of
   the leading principal components.
 
-    uv run --extra plots python src/contol/c11_clustering.py
+    uv run --extra plots python src/control/c11_clustering.py
 """
 
 from __future__ import annotations

@@ -2,7 +2,7 @@
 # user tokens about token type (form) or about who is speaking (register)?
 # 6 topics x 3 registers, unsteered only: casual first-person, formal
 # first-person, and neutral third-person. Same content within a topic.
-# Analysis: uv run --extra plots python src/contol/c4_register.py --run <run dir>
+# Analysis: uv run --extra plots python src/control/c4_register.py --run <run dir>
 name: register-control
 description: Unsteered prefill of matched casual / formal / third-person prompts, retaining layer-32 residuals for the role-map register control.
 

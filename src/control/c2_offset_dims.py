@@ -10,7 +10,7 @@ remaining 5117 dimensions where roles differ? We recompute the readout
 (b) after subtracting the role mean from roles and residuals, and measure how
 often the nearest cluster and the steered-role statistics stay the same.
 
-    uv run --extra plots python src/contol/c2_offset_dims.py
+    uv run --extra plots python src/control/c2_offset_dims.py
 """
 
 from __future__ import annotations

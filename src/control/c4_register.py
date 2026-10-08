@@ -14,7 +14,7 @@ Local part: the casual Tylenol prompt against the 12 neutral question-bank
 prompts. GPU part: configs/experiments/tsne-lens/register-control.yaml (6 topics
 x casual/formal/third-person); pass its run with --run to add paired tests.
 
-    uv run --extra plots python src/contol/c4_register.py [--run RUN_DIR ...]
+    uv run --extra plots python src/control/c4_register.py [--run RUN_DIR ...]
 """
 
 from __future__ import annotations

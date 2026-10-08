@@ -11,7 +11,7 @@
 
 Run c5_target_attraction.py first.
 
-    uv run --extra plots python src/contol/c6_tests.py
+    uv run --extra plots python src/control/c6_tests.py
 """
 
 from __future__ import annotations

@@ -9,7 +9,7 @@ steering vector R - D (length, share along the Assistant Axis, distinctiveness),
 and Spearman correlations ask which property predicts reaching the target.
 Prompt trajectories also get a coarse type label (for the taxonomy in the paper).
 
-    uv run --extra plots python src/contol/c5_target_attraction.py
+    uv run --extra plots python src/control/c5_target_attraction.py
 """
 
 from __future__ import annotations

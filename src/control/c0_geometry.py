@@ -8,7 +8,7 @@
 - within the unsteered prompt, whether the nearest cluster follows the
   alignment with the role mean.
 
-    uv run --extra plots python src/contol/c0_geometry.py
+    uv run --extra plots python src/control/c0_geometry.py
 """
 
 from __future__ import annotations

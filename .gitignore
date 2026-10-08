@@ -17,4 +17,4 @@ __pycache__/
 .coverage
 runtime/
 .vscode/settings.json
-src/contol/results/*
+src/control/results/*

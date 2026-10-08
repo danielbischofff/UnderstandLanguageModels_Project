@@ -29,7 +29,7 @@ the 12 questions vary; Tylenol: role). Holm correction over the signatures of on
 outcome and segment. A signature counts as a sign of going off the rails when the
 CI excludes 0.5 and the Holm-corrected within-stratum p < 0.05.
 
-    uv run --extra plots python src/contol/c14_offrails_signatures.py
+    uv run --extra plots python src/control/c14_offrails_signatures.py
 """
 
 from __future__ import annotations

@@ -1,6 +1,6 @@
 """Shared inputs for the write-up controls: role space, trials, layer-32 residuals.
 
-Residual slices are cached once per trial under ``outputs/contol-cache`` (ignored
+Residual slices are cached once per trial under ``outputs/control-cache`` (ignored
 by git), so every control reads the 6 GB of retained activations only once.
 """
 
@@ -23,7 +23,7 @@ from tsne_lens.projection import RoleMap  # noqa: E402
 MAP = ROOT / "outputs/plots/tsne/roles/role-map.pkl"
 DEFAULT = ROOT / "models/assistant-axis-vectors/qwen-3-32b/default_vector.pt"
 EXPERIMENTS = ROOT / "runtime/outputs/experiments/17roles-tylenol"
-CACHE = ROOT / "outputs/contol-cache"
+CACHE = ROOT / "outputs/control-cache"
 RESULTS = Path(__file__).resolve().parent / "results"
 NEAR = 0.5  # the ribbon threshold: a token is "near" a role above this cosine
 LAYER = 32
