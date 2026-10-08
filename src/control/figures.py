@@ -111,8 +111,10 @@ def map_figures(role_map):
     return trajectories
 
 
-def tone_runs(role_map):
-    """Unsteered Tylenol prompt in its original (casual) and formal wording, from the C4 run."""
+def tone_runs(role_map, offset=None):
+    """Unsteered Tylenol prompt in its original (casual) and formal wording, from the C4 run.
+
+    ``offset`` is subtracted from every residual first (the R-D map projects x - D)."""
     run = sorted((ROOT / "runtime/outputs/experiments/register-control/runs").iterdir())[-1]
     manifest = json.loads((run / "manifest.json").read_text())
     paths = {t["question"]: run / t["path"] for t in manifest["trials"].values()}
@@ -121,11 +123,13 @@ def tone_runs(role_map):
                                   ("tylenol-formal", "formal", "Blues")):
         vectors, rows = load_trajectory(paths[question], layer=32,
                                         model_id=role_map.config["model_id"], prompt_only=True)
+        if offset is not None:
+            vectors = vectors - offset
         out.append((label, role_map.project(vectors, rows), cmap))
     return out
 
 
-def trajectory_figure(role_map, runs):
+def trajectory_figure(role_map, runs, out=None, names=None):
     """One-column figure for the methods: prompt trajectories, position 0 included.
 
     ``runs`` is a list of (label, projected points, colormap); each path runs light
@@ -141,11 +145,13 @@ def trajectory_figure(role_map, runs):
                c=[colors[r["cluster"]] for r in roles], alpha=0.3, linewidths=0)
     centers = {c: np.median([[r["x"], r["y"]] for r in roles if r["cluster"] == c], axis=0)
                for c in colors}
-    names = {0: "0 · infant, fool,\nadolescent", 3: "3 · assistant-like"}
-    shifts = {0: (-8, 14), 3: (20, -58)}
-    for c, text in names.items():
-        ax.text(*(centers[c] + shifts[c]), text, fontsize=6.5, color=INK, ha="center")
-    star = next(p for p in role_map.config["reference_points"] if p["label"] == "default_vector")
+    if names is None:
+        names = {0: ("0 · infant, fool,\nadolescent", (-8, 14)), 3: ("3 · assistant-like", (20, -58))}
+    for c, (text, shift) in names.items():
+        ax.text(*(centers[c] + shift), text, fontsize=6.5, color=INK, ha="center")
+    # The default vector, or the assistant role on a map that has no default point.
+    star = next((p for p in role_map.config.get("reference_points", []) if p["label"] == "default_vector"),
+                next(r for r in roles if r["label"] == "assistant"))
     ax.scatter(star["x"], star["y"], marker="*", s=45, color=INK, zorder=6)
     bars = []
     for label, points, cmap in runs:
@@ -181,7 +187,7 @@ def trajectory_figure(role_map, runs):
     ax.set_xticks([]), ax.set_yticks([])
     for side in ax.spines.values():
         side.set_visible(False)
-    fig.savefig(OUT / "trajectory.pdf")
+    fig.savefig(out or OUT / "trajectory.pdf")
     plt.close(fig)
 
 
