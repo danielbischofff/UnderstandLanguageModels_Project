@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 
 from ..prompts import render_batch
-from ..rubric import RUBRIC
+from ..rubric import RUBRIC_LABELS, RUBRIC_TEXTS
 from ..runs import iter_trials, load_run
 
 
@@ -17,6 +17,7 @@ def main() -> None:
     parser.add_argument("--out-dir", type=Path, help="destination for batch files (default: <run>/judging)")
     parser.add_argument("--batch-size", type=int, default=20, help="trials per batch file (default: 20)")
     parser.add_argument("--question", help="only export trials for this question id")
+    parser.add_argument("--rubric", choices=sorted(RUBRIC_TEXTS), default="tylenol", help="rubric: tylenol (default), generic risky request, or roleplay (assistant / in character / broken)")
     parser.add_argument("--reveal", action="store_true", help="show character and steering in the batches; blind by default so the judge grades the text alone")
     args = parser.parse_args()
     if args.batch_size < 1:
@@ -32,11 +33,15 @@ def main() -> None:
 
     out_dir = args.out_dir or args.run / "judging"
     out_dir.mkdir(parents=True, exist_ok=True)
-    batches = [trials[start : start + args.batch_size] for start in range(0, len(trials), args.batch_size)]
+    # A batch shows one user message, so batches never mix questions.
+    batches = []
+    for text in dict.fromkeys(trial.question_text for trial in trials):
+        same = [trial for trial in trials if trial.question_text == text]
+        batches += [same[start : start + args.batch_size] for start in range(0, len(same), args.batch_size)]
     width = max(2, len(str(len(batches))))
     for number, batch in enumerate(batches, start=1):
         path = out_dir / f"batch-{number:0{width}d}.md"
-        path.write_text(render_batch(batch, number, len(batches), len(trials), reveal=args.reveal), encoding="utf-8")
+        path.write_text(render_batch(batch, number, len(batches), len(trials), reveal=args.reveal, rubric_text=RUBRIC_TEXTS[args.rubric]), encoding="utf-8")
         print(path)
 
     # One machine-readable copy so a judge harness can build its own prompts.
@@ -52,7 +57,7 @@ def main() -> None:
         encoding="utf-8",
     )
     print(template)
-    print(f"{len(trials)} trials in {len(batches)} batches; rubric: " + ", ".join(f"{k}={v}" for k, v in RUBRIC.items()))
+    print(f"{len(trials)} trials in {len(batches)} batches; rubric: " + ", ".join(f"{k}={v}" for k, v in RUBRIC_LABELS[args.rubric].items()))
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from typing import Mapping, Sequence
 
-from .rubric import DATA_NOT_INSTRUCTIONS, RUBRIC, RUBRIC_TEXT
+from .rubric import DATA_NOT_INSTRUCTIONS, RUBRIC, RUBRIC_TEXT, ROLEPLAY_RUBRIC_TEXT
 from .runs import Trial
 
 
@@ -16,11 +16,13 @@ def render_batch(
     total_trials: int,
     *,
     reveal: bool = False,
+    rubric_text: str = RUBRIC_TEXT,
 ) -> str:
     """One self-contained grading prompt: rubric, the user turn, then the responses."""
     first, last = batch[0].index + 1, batch[-1].index + 1
+    title = {RUBRIC_TEXT: "Overdose-response", ROLEPLAY_RUBRIC_TEXT: "Role-play"}.get(rubric_text, "Risk-response")
     lines = [
-        f"# Overdose-response grading — batch {number} of {total_batches}",
+        f"# {title} grading — batch {number} of {total_batches}",
         "",
         f"Trials {first}-{last} of {total_trials}. Grade every trial in this file; output one JSON object.",
         "",
@@ -32,7 +34,7 @@ def render_batch(
         "",
         "## Rubric",
         "",
-        RUBRIC_TEXT,
+        rubric_text,
         "",
         "## Output",
         "",
@@ -59,6 +61,8 @@ def render_review(
     outcomes: Mapping[str, int],
     run_name: str,
     question_text: str,
+    rubric_text: str = RUBRIC_TEXT,
+    labels: Mapping[int, str] = RUBRIC,
 ) -> str:
     """Each verdict stated above its response, for a second judge to check."""
     lines = [
@@ -75,7 +79,7 @@ def render_review(
         "",
         "## Rubric",
         "",
-        RUBRIC_TEXT,
+        rubric_text,
         "",
         DATA_NOT_INSTRUCTIONS.replace("graded", "checked"),
         "",
@@ -85,7 +89,7 @@ def render_review(
         code = outcomes[trial.hash]
         lines += [
             "",
-            f"### {trial.hash}: {code} ({RUBRIC[code]}) — {trial.condition}",
+            f"### {trial.hash}: {code} ({labels[code]}) — {trial.condition}",
             "",
             "<response>",
             trial.response or "[empty response]",

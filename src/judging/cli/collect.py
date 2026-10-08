@@ -8,7 +8,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from ..prompts import render_review
-from ..rubric import RUBRIC
+from ..rubric import RUBRIC, RUBRIC_LABELS, RUBRIC_TEXTS
 from ..runs import iter_trials, load_run
 
 
@@ -40,6 +40,7 @@ def main() -> None:
     parser.add_argument("--out", type=Path, help="graded JSON destination (default: <run>/judging/outcomes.json)")
     parser.add_argument("--review-md", type=Path, help="also write a markdown file pairing each verdict with its response, for a verification pass")
     parser.add_argument("--question", help="only grade trials for this question id")
+    parser.add_argument("--rubric", choices=sorted(RUBRIC_TEXTS), default="tylenol", help="rubric used for export: sets the label names and the --review-md text")
     parser.add_argument("--allow-missing", action="store_true", help="write the file even when some trials are ungraded")
     args = parser.parse_args()
 
@@ -56,10 +57,11 @@ def main() -> None:
         parser.error(f"{len(missing)} of {len(trials)} trials ungraded (first: {missing[0]}); re-run the judge or pass --allow-missing")
 
     graded = [trial for trial in trials if trial.hash in outcomes]
+    labels = RUBRIC_LABELS[args.rubric]
     by_character: dict[str, Counter] = defaultdict(Counter)
     by_steering: dict[str, Counter] = defaultdict(Counter)
     for trial in graded:
-        label = RUBRIC[outcomes[trial.hash]]
+        label = labels[outcomes[trial.hash]]
         by_character[trial.character][label] += 1
         by_steering[trial.condition.split(", ", 1)[-1] if trial.steering else "unsteered"][label] += 1
 
@@ -67,13 +69,13 @@ def main() -> None:
         "run": args.run.name,
         "config_hash": run.get("config_hash"),
         "question": {trial.question_id: trial.question_text for trial in graded},
-        "rubric": {str(code): label for code, label in RUBRIC.items()},
+        "rubric": {str(code): label for code, label in labels.items()},
         # The plain hash -> outcome dict, first, so it is easy to read and to reuse.
         "outcomes": {trial.hash: outcomes[trial.hash] for trial in graded},
         "summary": {
             "graded": len(graded),
             "ungraded": missing,
-            "by_outcome": {RUBRIC[code]: sum(1 for t in graded if outcomes[t.hash] == code) for code in RUBRIC},
+            "by_outcome": {labels[code]: sum(1 for t in graded if outcomes[t.hash] == code) for code in labels},
             "by_character": {name: dict(counts) for name, counts in sorted(by_character.items())},
             "by_steering": {name: dict(counts) for name, counts in sorted(by_steering.items())},
         },
@@ -81,7 +83,7 @@ def main() -> None:
             {
                 "trial": trial.hash,
                 "outcome": outcomes[trial.hash],
-                "outcome_label": RUBRIC[outcomes[trial.hash]],
+                "outcome_label": labels[outcomes[trial.hash]],
                 "character": trial.character,
                 "steering": dict(trial.steering) or None,
                 "question_id": trial.question_id,
@@ -100,7 +102,7 @@ def main() -> None:
         question_text = next(iter(document["question"].values()), "")
         args.review_md.parent.mkdir(parents=True, exist_ok=True)
         args.review_md.write_text(
-            render_review(graded, outcomes, args.run.name, question_text), encoding="utf-8"
+            render_review(graded, outcomes, args.run.name, question_text, RUBRIC_TEXTS[args.rubric], labels), encoding="utf-8"
         )
         print(args.review_md)
 

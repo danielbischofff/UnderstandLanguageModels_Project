@@ -78,7 +78,8 @@ def runs() -> dict[str, Path]:
     return found
 
 
-def trials(method: str, run: Path) -> list[dict]:
+def trials(label: str, run: Path) -> list[dict]:
+    """Completed, judged trials of one run; ``label`` names it (and its cache)."""
     manifest = json.loads((run / "manifest.json").read_text())
     outcomes = json.loads((run / "judging/outcomes.json").read_text())["outcomes"]
     records = []
@@ -89,8 +90,10 @@ def trials(method: str, run: Path) -> list[dict]:
         trial_hash = trial["path"].rsplit("_", 1)[-1]
         records.append(
             dict(
-                method=method if steering else "unsteered",
-                run=method,
+                method=label if steering else "unsteered",
+                run=label,
+                question=trial["question"],
+                scheme=steering.get("method", "none"),
                 character=trial["character"],
                 layer=(steering.get("layers") or [None])[0],
                 coefficient=steering.get("coefficient"),
