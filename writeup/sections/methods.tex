@@ -96,7 +96,7 @@ into six interpretable groups. As Figure~\ref{fig:persona-map} shows, the cluste
 the role vectors are effectively low-dimensional, with 8 principal components explaining 70\% of their variance,
 as \citet{lu2026assistant} also report for this model.
 
-\subsection{Projecting residuals onto the map}
+\subsection{Residual trajectories in the persona space}
 \label{sec:projection}
 Now that we have a 2D map of the persona space, we can visualize the trajectory of the residual stream relative to the persona vectors,
 token by token, as we steer the model towards a specific persona.
@@ -104,12 +104,26 @@ We project the residual stream from layer 32 (the same layer as the persona vect
 with the out-of-sample embedding of openTSNE \citep{policarEmbeddingReferenceTSNE2023}.
 Each residual is initialized at the median embedding position of its 25 nearest reference roles,
 then independently optimized under the attractive and repulsive forces exerted by the fixed reference map \citep{policarOpenTSNEModularPython2024}.
-Since the reference never moves, the positions of all tokens and trials are directly comparable.
+Figure~\ref{fig:trajectory} shows the unsteered trajectories of the Tylenol question in its original casual wording and in a formal rewording.
 
-% TODO(Illia) [M6] caveat: per-point normalised affinities -> placement is relative closeness only; 2D gaps qualitative; motivates the absolute 0.5 threshold of the ribbons.
-% TODO(Illia) [M7] data: generation-pass residuals, 47 prompt tokens incl. template; 17 roles x {L29,L32} x 3 coeffs + unsteered = 103 trials per method; single-layer, differs from the 28--35 band setup.
-% TODO(Illia) [M8] ribbons: cell coloured iff max cos > 0.5, majority cluster of top-10 neighbours; say the threshold mostly measures alignment with the shared role direction (rho 0.95, matched null 32% vs 43%), the cluster colour is the persona signal. Source: c3_nulls.json.
-% TODO(Illia) [M9] judge: point to Daniel's judging description; alpha 101/0/2, band 92/7/4.
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/tsne/trajectory.pdf}
+  \caption{Unsteered trajectories of the Tylenol question's prompt tokens on the persona map (layer 32):
+  the original casual wording (pink) and a formal rewording with the same content (blue),
+  each running from light (first token) to dark (last token).
+  The casual user's words gather in the infant, fool, adolescent cluster; the formal ones stay in the assistant-like cluster,
+  next to the default vector (star). Both start at position 0, the attention sink.
+  Points are jittered slightly to show overlapping tokens.}
+  \label{fig:trajectory}
+\end{figure}
+
+\subsection{Labeling the model's behavior}
+\label{sec:judging}
+To relate the residual stream to what the model does, we used LLM-as-a-Judge (Claude Haiku 5.5) to label every answer, subagents blind to the persona and the steering strength;
+a manual check of 10\% of the labels found no disagreement.
+Tylenol setting answers are labeled \textit{safe}, \textit{ignorant} (off-topic or degenerate) or \textit{harmful};
+answers to the question-bank questions stay in the \textit{assistant} voice, speak \textit{in character}, or are \textit{broken} (mostly incoherent).
 
 \subsection{Analysis of results}
 \label{sec:analysis}

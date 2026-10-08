@@ -107,7 +107,69 @@ def map_figures(role_map):
     cbar.ax.tick_params(labelsize=6)
     fig.savefig(OUT / "trajectories.pdf")
     plt.close(fig)
+    trajectory_figure(role_map, tone_runs(role_map))
     return trajectories
+
+
+def tone_runs(role_map):
+    """Unsteered Tylenol prompt in its original (casual) and formal wording, from the C4 run."""
+    run = sorted((ROOT / "runtime/outputs/experiments/register-control/runs").iterdir())[-1]
+    manifest = json.loads((run / "manifest.json").read_text())
+    paths = {t["question"]: run / t["path"] for t in manifest["trials"].values()}
+    out = []
+    for question, label, cmap in (("tylenol-casual", "original (casual)", "RdPu"),
+                                  ("tylenol-formal", "formal", "Blues")):
+        vectors, rows = load_trajectory(paths[question], layer=32,
+                                        model_id=role_map.config["model_id"], prompt_only=True)
+        out.append((label, role_map.project(vectors, rows), cmap))
+    return out
+
+
+def trajectory_figure(role_map, runs):
+    """One-column figure for the methods: prompt trajectories, position 0 included.
+
+    ``runs`` is a list of (label, projected points, colormap); each path runs light
+    (first token) to dark (last token) in its own hue, so two wordings stay apart.
+    """
+    from matplotlib.collections import LineCollection
+    from matplotlib.colors import LinearSegmentedColormap
+
+    roles = role_map.role_records()
+    colors = map_colors(role_map)
+    fig, ax = plt.subplots(figsize=(COLUMN, 2.45))
+    ax.scatter([r["x"] for r in roles], [r["y"] for r in roles], s=6,
+               c=[colors[r["cluster"]] for r in roles], alpha=0.3, linewidths=0)
+    centers = {c: np.median([[r["x"], r["y"]] for r in roles if r["cluster"] == c], axis=0)
+               for c in colors}
+    names = {0: "0 · infant, fool,\nadolescent", 3: "3 · assistant-like"}
+    shifts = {0: (-8, 14), 3: (20, -58)}
+    for c, text in names.items():
+        ax.text(*(centers[c] + shifts[c]), text, fontsize=6.5, color=INK, ha="center")
+    star = next(p for p in role_map.config["reference_points"] if p["label"] == "default_vector")
+    ax.scatter(star["x"], star["y"], marker="*", s=45, color=INK, zorder=6)
+    for label, points, cmap in runs:
+        # Skip the palest end of the ramp so the first tokens stay visible on white.
+        ramp = LinearSegmentedColormap.from_list(cmap, plt.get_cmap(cmap)(np.linspace(0.3, 1.0, 256)))
+        xy = np.array([[p["x"], p["y"]] for p in points])
+        # Many tokens land on the same spot; a small fixed jitter shows how many.
+        xy = xy + np.random.default_rng(0).normal(scale=3.0, size=xy.shape)
+        segments = np.stack([xy[:-1], xy[1:]], axis=1)
+        lines = LineCollection(segments, cmap=ramp, linewidths=0.8, alpha=0.55, zorder=3)
+        lines.set_array(np.arange(len(segments)))
+        ax.add_collection(lines)
+        ax.scatter(xy[:, 0], xy[:, 1], c=np.arange(len(xy)), cmap=ramp, s=22, zorder=4,
+                   edgecolors="white", linewidths=0.4)
+        ax.plot([], [], color=ramp(0.75), lw=2, label=label)
+    first = np.array([[runs[0][1][0]["x"], runs[0][1][0]["y"]]])[0]
+    ax.scatter(*first, s=34, facecolors="none", edgecolors=INK, linewidths=1.0, zorder=5)
+    ax.annotate("position 0 (sink)", first, xytext=(-9, -3), textcoords="offset points",
+                fontsize=6.5, color=INK, ha="right")
+    ax.legend(frameon=False, loc="lower left", fontsize=6.5, handlelength=1.5)
+    ax.set_xticks([]), ax.set_yticks([])
+    for side in ax.spines.values():
+        side.set_visible(False)
+    fig.savefig(OUT / "trajectory.pdf")
+    plt.close(fig)
 
 
 def ribbon_figure(role_map):
