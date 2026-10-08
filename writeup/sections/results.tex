@@ -39,8 +39,27 @@ At the token position ``feel'', when steered with band-capping ($\beta = 0$) tow
 
 \textbf{TODO - Daniel - analysis of your results}
 
-\textbf{TODO - Illia - add your 2D visualization methods}
-% TODO(Illia) [R1] role map semantics (cluster 3 assistant/default, 2 dark/mythic, 0 childlike); state first: role-role cos median 0.968 (min 0.842). Figure [P1]. Incl. former [M6]: t-SNE placement is relative closeness only (per-point normalised affinities), so 2D gaps are qualitative; this is why the ribbons use an absolute cosine threshold. Also: R-D vectors are NOT parallel (median cos 0.33) = shared step down the Assistant Axis (~37% of norm^2) + persona-specific part; shared role direction is mostly massive dim 731.
+\subsection{What the persona map shows}
+\label{sec:results-map}
+The map arranges the personas by behavioral features (Figure~\ref{fig:persona-map}).
+The default vector sits in an assistant-like cluster of professional roles,
+the demon among dark and mythic figures, and the infant and toddler among childlike, impulsive roles.
+These differences  and clusters are distinct, however: all role vectors point almost the same direction in the original space (median cosine 0.97), while t-SNE magnifies the remaining angles and places each point by relative rather than absolute closeness,
+so gaps on the map are only qualitative.
+Most of this shared direction is a single coordinate (dimension 731), a constant offset on every token:
+it holds about a fifth of a single token's squared norm,
+and since averaging over responses cancels the token-specific parts, about 70\% of each role vector's.
+Such rogue dimensions are known to dominate cosine similarity \citep{timkeyAllBarkNo2021}.
+The persona neighborhoods of the residuals do not hinge on it:
+87\% of the layer-32 residuals of the steered Tylenol runs keep the cluster of their nearest role
+when dimension 731 and two smaller outlier coordinates are removed.
+The J-Lens readout of the role vectors themselves is more sensitive:
+silencing the three coordinates keeps on average 6 of their 10 base role tokens (9.8 when silencing three random coordinates),
+although the persona flavor stays (the demon keeps \textit{triumph}, \textit{countless} and \textit{relentless}).
+For the steering vectors below, where subtracting $d_{32}$ cancels most of the offset, 9.4 of 10 tokens survive.
+The steering vectors $c_{32} = p_{32} - d_{32}$, in contrast, are far from parallel (median cosine 0.33).
+Each combines a shared step down the Assistant Axis \citep{lu2026assistant}, about a third of its squared norm, with a persona-specific direction.
+
 % TODO(Illia) [R2] open with the data (former [M7]): Tylenol prompt, 47 prompt tokens incl. chat template, layer-32 residuals; 17 roles x {L29,L32} x 3 strengths + unsteered = 103 trials per method; single-layer steering, unlike the 28--35 band runs of the J-Lens part. Then unsteered baseline (Figure fig:trajectory): user tokens nearest childlike cluster 0 (33/46), assistant rank 96/275; the model's own answer returns to cluster 3 (109/151; same on 12 neutral prompts). Source: src/control/results/c5_*, c4_register.json.
 % TODO(Illia) [R3] infant-area pull = the user's tone: same content, wording only (6 topics), user tokens nearest childlike cluster 0: casual 0.90 vs formal 0.23 vs third-person 0.32, 6/6 topics, exact Wilcoxon p=0.031; not explained by shared-direction alignment. Source: c4_tone.json.
 % TODO(Illia) [R4] position 0 = known massive activation / attention sink (norm 24,431 vs ~230, 98% in dim 731), always default area; cite Sun 2024, Xiao 2024, Gu 2025, Barbero 2025, Queipo-de-Llano 2025, Qiu 2026; band capping rewrites it by 5--9k (beta-independent, [C1]). Exclude from stats, grey in plots. Also: the sink lands in the Assistant region because dim 731 is the shared role component, largest in the assistant cluster; cite steering x sink mini review.
