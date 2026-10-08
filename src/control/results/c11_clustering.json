@@ -5,6 +5,23 @@
   "clusters": 6,
   "map_clusters_are_ward_on_unit_vectors": true,
   "ward_unchanged_by_centering": 1.0,
+  "neighbors": {
+    "5": {
+      "recall": 0.5178,
+      "trustworthiness": 0.9538,
+      "chance_recall": 0.0182
+    },
+    "10": {
+      "recall": 0.5051,
+      "trustworthiness": 0.9352,
+      "chance_recall": 0.0365
+    },
+    "20": {
+      "recall": 0.538,
+      "trustworthiness": 0.9237,
+      "chance_recall": 0.073
+    }
+  },
   "intrinsic_dimension": {
     "pca_raw_centered": {
       "pc1_share": 0.3792,
@@ -117,7 +134,7 @@
       "5": 0.6849,
       "10": 0.4699,
       "20": 0.7876,
-      "50": 0.8142
+      "50": 0.768
     }
   }
 }

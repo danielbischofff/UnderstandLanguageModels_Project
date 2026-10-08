@@ -54,6 +54,16 @@ I feel really great right now, I just took 8000mg of Tylenol and all my pain is 
 We examined this question in our setup for both the responses and the J-Lens readouts while steering toward the ``demon'' character. We then continued to test our setup on other questions. The full list of questions with exact wording is in Appendix~\ref{sec:questions}. The characters used for the later question suite were ``demon'', ``criminal'', and ``cynic''. 
 
 \textbf{TODO - Daniel - add your questions}
+% Defined here so the full-width float lands at the top of the page with the persona map.
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/tsne/roles_map.pdf}
+  \caption{t-SNE map of the 275 persona vectors of \citet{lu2026assistant} (Qwen3-32B, layer 32).
+  Colors are Ward clusters computed in the original 5120-dimensional space and named by representative roles.
+  The star is the default vector (models default behaviour) positioned right next to \textit{assistant} (explicit assistant role).
+  Distances between clusters are qualitative: all role vectors are nearly parallel (median cosine 0.97).}
+  \label{fig:persona-map}
+\end{figure*}
 \subsection{Quantitive Analysis}
 To test our hypothesis not only anecdotally but also quantitively, we use the general Wikipedia, taxonomy as independent categorization. Wikipedia categorizes their in the following categories in, General reference, Culture and the arts, Geography and places, Health and fitness, History and events, Human activities, Mathematics and logic, Natural and physical sciences, People and self, Philosophy and thinking, Religion and belief systems, Society and social sciences, Technology and applied sciences. We simplified the categories and removed the "general reference" category, because it primarily concerns reference resources rather than a substantive topic domain. The full list of categories can be found in Appendix \ref{sec:questions}.% Maybe we should add them here? 
 For every category, we came up with two questions. In the original paper \cite{gurnee2026global}, the authors found 275 distinct personas. We reduced the number of personas to 16 personas, which were selected to cover a wide range of personalities. We selected two sets of eight personas: one comprising broadly distinct personas, and another comprising four contrasting pairs, such as “altruist” and “narcissist.”
@@ -68,13 +78,22 @@ These two metrics are then used to evaluated whether the persona steering resolv
 
 \subsection{Persona map}
 \label{sec:persona-map}
-In order to visualize the persona space we are working with we build a 2-D t-SNE map of the 275 role vectors $p_{32}$ that \citet{lu2026assistant} publish for Qwen3-32B.
+To visualize the persona space, we build a 2D t-SNE map \citep{vandermaatenVisualizingDataUsing2008} of the 275 layer-32 role vectors $p_{32}$
+that \citet{lu2026assistant} publish for Qwen3-32B (Figure~\ref{fig:persona-map}).
 
-We compute the map with t-SNE \citep{vandermaatenVisualizingDataUsing2008} in openTSNE \citep{policarOpenTSNEModularPython2024}.
-Affinities use cosine distance over all 274 neighbours of each role and combine perplexities 15, 25 and 90,
-so that both nearest roles and broader groups shape the map \citep{leeMultiscaleSimilaritiesStochastic2015}.
-We initialise with the first two principal components, which preserves the global layout \citep{kobakInitializationCriticalPreserving2021}.
-% TODO(Illia) [M3] why the map represents 5120-d: KL 0.494 (PCA init 1.736), recall@10 0.505, trustworthiness@10 0.935, global Spearman 0.745, Ward silhouette 0.273 (5120-d) -> 0.405 (2D); tuning keeps settings improving recall and 2D silhouette. Needs [C11],[C7]. Reconcile with roles-exp/selection.json.
+We compute it with openTSNE \citep{policarOpenTSNEModularPython2024}.
+Affinities use cosine distance over all 274 neighbors of each role and combine perplexities 15, 25 and 90,
+so that both the nearest roles and broader groups shape the map \citep{leeMultiscaleSimilaritiesStochastic2015}.
+We initialize with the first two principal components, which preserves the global layout \citep{kobakInitializationCriticalPreserving2021}.
+
+The resulted map is a good representation of the persona vector distribution in the original 5120-dimensional space:
+half of each role's ten nearest neighbors are also its nearest neighbors in 2D (recall@10 0.51),
+2D neighbors are mostly true neighbors (trustworthiness 0.94; \citealp{vennaNeighborhoodPreservationNonlinear2001}),
+and pairwise distances keep their global order (Spearman 0.75).
+
+
+The six role clusters, computed in 5120 dimensions, are even better separated in 2D (silhouette 0.27 vs.\ 0.41),
+and clustering the 2D map directly recovers them (adjusted Rand index 0.76).
 % TODO(Illia) [M4] 2 sentences: Ward on unit-normalised 5120-d vectors, only coloured on the map; well-posed since 8 centered PCs explain 70% (= Lu et al. Sec. 2.1.3/App. B.1 for Qwen3-32B), relative contrast 20.5 vs 0.08 random, silhouette 0.17 vs null 0.07, 2D clustering recovers them (ARI up to 0.76). Source: src/control/results/c11_clustering.json.
 % TODO(Illia) [M5] out-of-sample transform (prepare_partial): reference fixed, k=25 roles, perplexity 5, median init, 250 it, lr 0.1, exag 1.5; "test particle relaxed in the field of frozen roles"; verify wording in Policar et al.
 % TODO(Illia) [M6] caveat: per-point normalised affinities -> placement is relative closeness only; 2D gaps qualitative; motivates the absolute 0.5 threshold of the ribbons.

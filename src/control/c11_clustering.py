@@ -24,6 +24,7 @@ import numpy as np
 import torch
 from sklearn.cluster import AgglomerativeClustering, KMeans
 from sklearn.decomposition import PCA
+from sklearn.manifold import trustworthiness
 from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score
 from sklearn.metrics import pairwise_distances, silhouette_score
 from sklearn.mixture import GaussianMixture
@@ -82,6 +83,25 @@ def concentration(distances: np.ndarray) -> dict:
         relative_contrast_median=float(np.median(contrast)),
         distance_cv=float(np.nanstd(d) / np.nanmean(d)),
     )
+
+
+def neighbors(distances: np.ndarray, xy: np.ndarray, ks=(5, 10, 20)) -> dict:
+    """Recall@k (share of 5120-d k nearest kept in 2D) and trustworthiness@k; chance = k/(n-1)."""
+    high = distances.copy()
+    low = pairwise_distances(xy)
+    np.fill_diagonal(high, np.inf)
+    np.fill_diagonal(low, np.inf)
+    result = {}
+    for k in ks:
+        a, b = np.argsort(high, axis=1)[:, :k], np.argsort(low, axis=1)[:, :k]
+        np.fill_diagonal(high, 0)
+        result[str(k)] = dict(
+            recall=float(np.mean([len(set(x) & set(y)) / k for x, y in zip(a, b)])),
+            trustworthiness=float(trustworthiness(high, xy, n_neighbors=k, metric="precomputed")),
+            chance_recall=k / (len(xy) - 1),
+        )
+        np.fill_diagonal(high, np.inf)
+    return result
 
 
 def cluster_2d(xy: np.ndarray, method: str, k: int, seed: int) -> np.ndarray:
@@ -147,6 +167,7 @@ def run(role_map: RoleMap, default_vector: np.ndarray, seed: int, draws: int) ->
             adjusted_rand_score(labels, recomputed) == 1.0
         ),
         ward_unchanged_by_centering=float(adjusted_rand_score(recomputed, ward(centered, k))),
+        neighbors=neighbors(cosine, xy),
         intrinsic_dimension=dict(
             pca_raw_centered=raw_profile,
             pca_unit_centered=unit_profile,
