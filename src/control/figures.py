@@ -11,12 +11,10 @@ JSON, with the same fixed cluster colours.
 
 from __future__ import annotations
 
-import ast
 import csv
 import json
 import shutil
 import sys
-from pathlib import Path
 
 import matplotlib
 
@@ -31,6 +29,7 @@ sys.path.insert(0, str(ROOT / "src" / "tsne-lens" / "scripts"))
 from cluster_ribbons import display_token, tint_for  # noqa: E402
 from tsne_lens.inputs import load_trajectory  # noqa: E402
 from tsne_lens.palette import map_colors  # noqa: E402
+import tsne_lens.plots as tsne_plots  # noqa: E402
 from tsne_lens.plots import make_figure  # noqa: E402
 from tsne_lens.projection import RoleMap  # noqa: E402
 
@@ -289,23 +288,6 @@ def null_figure(space):
     plt.close(fig)
 
 
-def tuning_figure(role_map):
-    with (TSNE / "roles-exp/trials.csv").open() as handle:
-        rows = [r for r in csv.DictReader(handle) if r["neighbor_recall"] and r["cluster_silhouette_2d"]]
-    quality = role_map.config["quality"]
-    fig, ax = plt.subplots(figsize=(COLUMN, 2.1))
-    ax.scatter([float(r["neighbor_recall"]) for r in rows], [float(r["cluster_silhouette_2d"]) for r in rows],
-               s=10, color=MUTED, linewidths=0, label=f"tuning trials ({len(rows)})")
-    ax.scatter(quality["neighbor_recall"], quality["cluster_silhouette_2d"], s=70, marker="*", color=INK,
-               label="final map (perplexity 15/25/90, dof 0.7)")
-    ax.set_xlabel("recall@10 (2D keeps 5120-d neighbours)")
-    ax.set_ylabel("2D silhouette of Ward-6")
-    ax.grid(color=GRID, linewidth=0.4)
-    ax.legend(frameon=False, loc="lower left", bbox_to_anchor=(0, 1.0), fontsize=6.5)
-    fig.savefig(OUT / "tuning.pdf")
-    plt.close(fig)
-
-
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     role_map = RoleMap.load(TSNE / "roles/role-map.pkl")
@@ -314,22 +296,27 @@ def main() -> None:
     for cluster, name in role_map.cluster_names.items():
         if name.startswith("fool"):
             role_map.cluster_names[cluster] = "infant, fool, adolescent"
+    # Label the same three roles on the map: swap the medoid hoarder for infant.
+    medoid_labels = tsne_plots.labeled_indices
+
+    def display_labels(vectors, labels, clusters, metric="cosine"):
+        swap = {labels.index("hoarder"): labels.index("infant")}
+        return sorted(swap.get(i, i) for i in medoid_labels(vectors, labels, clusters, metric))
+
+    tsne_plots.labeled_indices = display_labels
     space = load_space()
     for name, func in (("roles map + trajectories", lambda: map_figures(role_map)),
                        ("compact ribbon", lambda: ribbon_figure(role_map)),
                        ("rank vs ||R-D||", lambda: rank_figure(role_map)),
                        ("tone control", tone_figure),
                        ("off-rails AUC", offrails_figure),
-                       ("max-cos null", lambda: null_figure(space)),
-                       ("tuning", lambda: tuning_figure(role_map))):
+                       ("max-cos null", lambda: null_figure(space))):
         func()
         print("wrote", name)
-    # Existing renders reused as they are (appendix).
-    shutil.copy(TSNE / "roles/roles.png", OUT / "roles_map_full.png")
-    shutil.copy(TSNE / "roles/training/kl-history.png", OUT / "kl_history.png")
+    # Existing per-cluster ribbons reused as they are (appendix).
     for png in sorted((TSNE / "roles-cluster-ribbons").glob("cluster-*-ribbons.png")):
         shutil.copy(png, OUT / png.name)
-    print("copied existing renders to", OUT)
+    print("copied cluster ribbons to", OUT)
 
 
 if __name__ == "__main__":
