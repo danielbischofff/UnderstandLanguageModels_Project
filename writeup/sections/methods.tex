@@ -86,15 +86,16 @@ Affinities use cosine distance over all 274 neighbors of each role and combine p
 so that both the nearest roles and broader groups shape the map \citep{leeMultiscaleSimilaritiesStochastic2015}.
 We initialize with the first two principal components, which preserves the global layout \citep{kobakInitializationCriticalPreserving2021}.
 
-The resulted map is a good representation of the persona vector distribution in the original 5120-dimensional space:
+The resulting map is a good representation of the persona vector distribution in the original 5120-dimensional space:
 half of each role's ten nearest neighbors are also its nearest neighbors in 2D (recall@10 0.51),
 2D neighbors are mostly true neighbors (trustworthiness 0.94; \citealp{vennaNeighborhoodPreservationNonlinear2001}),
 and pairwise distances keep their global order (Spearman 0.75).
 
+We group the roles by Ward clustering \citep{wardjr.HierarchicalGroupingOptimize1963} of the unit-normalized 5120-dimensional vectors
+into six interpretable groups. As we can see on the plot, the original space clustering projects well into the 2D map despite the curse of dimensionality \citep{beyerWhenNearestNeighbor1999}:
+the role vectors are effectively low-dimensional, with 8 principal components explaining 70\% of their variance,
+as \citet{lu2026assistant} also report for this model.
 
-The six role clusters, computed in 5120 dimensions, are even better separated in 2D (silhouette 0.27 vs.\ 0.41),
-and clustering the 2D map directly recovers them (adjusted Rand index 0.76).
-% TODO(Illia) [M4] 2 sentences: Ward on unit-normalised 5120-d vectors, only coloured on the map; well-posed since 8 centered PCs explain 70% (= Lu et al. Sec. 2.1.3/App. B.1 for Qwen3-32B), relative contrast 20.5 vs 0.08 random, silhouette 0.17 vs null 0.07, 2D clustering recovers them (ARI up to 0.76). Source: src/control/results/c11_clustering.json.
 % TODO(Illia) [M5] out-of-sample transform (prepare_partial): reference fixed, k=25 roles, perplexity 5, median init, 250 it, lr 0.1, exag 1.5; "test particle relaxed in the field of frozen roles"; verify wording in Policar et al.
 % TODO(Illia) [M6] caveat: per-point normalised affinities -> placement is relative closeness only; 2D gaps qualitative; motivates the absolute 0.5 threshold of the ribbons.
 % TODO(Illia) [M7] data: generation-pass residuals, 47 prompt tokens incl. template; 17 roles x {L29,L32} x 3 coeffs + unsteered = 103 trials per method; single-layer, differs from the 28--35 band setup.
