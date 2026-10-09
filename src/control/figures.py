@@ -6,17 +6,22 @@ star match roles.png; only size, fonts and legend placement change for print.
 The other figures are matplotlib, read from src/control/results and the ribbon
 JSON, with the same fixed cluster colours.
 
-    uv run --extra plots python src/control/figures.py
+    uv run --extra plots python src/control/figures.py [figure ...]   # none = all
 """
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
+import os
 import shutil
 import sys
 
-import matplotlib
+# Fixed PDF dates: re-rendering an unchanged figure leaves the file byte-identical.
+os.environ.setdefault("SOURCE_DATE_EPOCH", "0")
+
+import matplotlib  # noqa: E402
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
@@ -67,8 +72,12 @@ def trial_dir(method, character, layer=None, coefficient=None):
     raise KeyError((method, character, layer, coefficient))
 
 
-def map_figures(role_map):
+def roles_map_figure(role_map):
     print_layout(make_figure(role_map, [])).write_image(OUT / "roles_map.pdf")
+
+
+def trajectories_figure(role_map):
+    """Appendix: three prompt trajectories as small multiples on the frozen map."""
     picks = [("unsteered", trial_dir("alpha", "unsteered")),
              ("demon · alpha 4 · L32 (harmful)", trial_dir("alpha", "demon", 32, 4.0)),
              ("toddler · band 0.1 · L32 (harmful)", trial_dir("band", "toddler", 32, 0.1))]
@@ -107,8 +116,6 @@ def map_figures(role_map):
     cbar.ax.tick_params(labelsize=6)
     fig.savefig(OUT / "trajectories.pdf")
     plt.close(fig)
-    trajectory_figure(role_map, tone_runs(role_map))
-    return trajectories
 
 
 def tone_runs(role_map, offset=None):
@@ -385,19 +392,32 @@ def main() -> None:
         return sorted(swap.get(i, i) for i in medoid_labels(vectors, labels, clusters, metric))
 
     tsne_plots.labeled_indices = display_labels
-    space = load_space()
-    for name, func in (("roles map + trajectories", lambda: map_figures(role_map)),
-                       ("compact ribbon", lambda: ribbon_figure(role_map)),
-                       ("rank vs ||R-D||", lambda: rank_figure(role_map)),
-                       ("tone control", tone_figure),
-                       ("off-rails AUC", offrails_figure),
-                       ("max-cos null", lambda: null_figure(space))):
-        func()
+    figures = {
+        "roles_map": lambda: roles_map_figure(role_map),
+        "trajectory": lambda: trajectory_figure(role_map, tone_runs(role_map)),
+        "trajectories": lambda: trajectories_figure(role_map),
+        "ribbon_compact": lambda: ribbon_figure(role_map),
+        "rank_vs_norm": lambda: rank_figure(role_map),
+        "tone_control": tone_figure,
+        "offrails_auc": offrails_figure,
+        "maxcos_null": lambda: null_figure(load_space()),
+        "cluster_ribbons": copy_cluster_ribbons,
+    }
+    parser = argparse.ArgumentParser(description="Render paper figures; none named = all.")
+    parser.add_argument("names", nargs="*", metavar="figure", help=", ".join(figures))
+    names = parser.parse_args().names or list(figures)
+    unknown = sorted(set(names) - set(figures))
+    if unknown:
+        parser.error(f"unknown figure(s) {unknown}; choose from {', '.join(figures)}")
+    for name in names:
+        figures[name]()
         print("wrote", name)
-    # Existing per-cluster ribbons reused as they are (appendix).
+
+
+def copy_cluster_ribbons():
+    """Existing per-cluster ribbon PNGs, reused as they are (appendix)."""
     for png in sorted((TSNE / "roles-cluster-ribbons").glob("cluster-*-ribbons.png")):
         shutil.copy(png, OUT / png.name)
-    print("copied cluster ribbons to", OUT)
 
 
 if __name__ == "__main__":
