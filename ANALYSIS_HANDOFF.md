@@ -34,6 +34,47 @@ of 96 pairs from the median of eight persona means.
 
 ## Optional: recompute J-Lens readouts on a cluster
 
+### Alpha results already stored on the cluster
+
+Use the original alpha run folder containing `index.json`, `provenance/manifest.json`,
+and each trial's activation tensors. The folder's absolute path must be supplied;
+it has not been verified from the local machine because the Helix SSH connection
+was refused. Run these commands in your collaborator's cluster account:
+
+```bash
+git clone --branch analysis/mini-batch-evaluation-20261009 --single-branch https://github.com/danielbischofff/UnderstandLanguageModels_Project.git
+cd UnderstandLanguageModels_Project
+python3 -m venv .venv-analysis
+.venv-analysis/bin/python -m pip install -e . -r requirements-analysis.txt
+# Restore the shared tokenization audit without rerunning the band analysis:
+.venv-analysis/bin/python -c 'import gzip,pathlib; p=pathlib.Path("data/word_tokenization/word_tokenization.json"); p.parent.mkdir(parents=True,exist_ok=True); p.write_bytes(gzip.decompress(pathlib.Path("results/mini-batch-cluster-readout/word-tokenization.json.gz").read_bytes()))'
+# Download the pinned readout assets on a node with internet access:
+.venv-analysis/bin/python scripts/fetch_mini_readout_assets.py
+mkdir -p runtime/logs
+sbatch slurm/mini-alpha-analysis.sbatch /ABSOLUTE/PATH/TO/ALPHA_RESULTS
+```
+
+For an existing checkout, use `git fetch origin` and
+`git switch analysis/mini-batch-evaluation-20261009` instead of cloning.
+Add required cluster account/partition flags to `sbatch`. If the assets are
+already available, set `ULM_READOUT_ASSETS=/absolute/path/to/qwen3-32b` instead
+of downloading them. The default outputs are:
+
+- `outputs/analysis/mini-alpha-readout`: resumable per-trial exact ranks and cosines.
+- `results/mini-alpha-readout/index.html`: alpha analysis overview and sortable table.
+- Separate per-question, per-persona, overall mean, and median JSON summaries.
+
+This recomputes J-Lens from the stored alpha activations. It does not generate
+new model answers. Alpha values are correctly labelled α, with no bandwidth β
+interpretation. Results are paired with controls from that alpha run, and output
+directories are separate from the band experiment. Reports are generated only
+after all expected trial/layer jobs are present. Both generation-time captures
+and complete-sequence replays are supported; all recorded response positions
+are included. If rerunning older readouts after a code update, select a fresh
+readout directory when provenance validation requests it.
+
+### Band results
+
 This additionally needs the original run directory, including its provenance
 activation tensors, at `outputs/mini_batch_exp_results`. Those large files are
 not in GitHub. The pinned model assets are approximately 4.9 GB. Run from the

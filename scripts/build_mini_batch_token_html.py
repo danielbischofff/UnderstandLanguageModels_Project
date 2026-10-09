@@ -23,9 +23,9 @@ def word_details(question, bank, persona, kind, words, token_ids, audit):
     return details
 
 
-def build(run, readouts, output):
+def build(run, readouts, output, comparisons_path=None):
     index = json.loads((run / 'index.json').read_text())
-    comparisons = json.loads(Path('results/mini-batch-cluster-readout/comparisons.json').read_text())
+    comparisons = json.loads((comparisons_path or Path('results/mini-batch-cluster-readout/comparisons.json')).read_text())
     banks = {r['character']: r['bank'] for r in comparisons}
     audit = word_audit()
     trials = []
@@ -78,6 +78,10 @@ def build(run, readouts, output):
     data = {'questions': index['document']['experiment']['questions'], 'personas': list(banks),
             'trials': trials, 'jobs': jobs}
     template = Path(__file__).with_name('mini_batch_token_template.html').read_text()
+    steering = [t['steering'] for t in trials if t['steering'] is not None]
+    if steering and all(s.get('method') == 'additive' for s in steering):
+        from build_alpha_analysis import adapt_template
+        template = adapt_template(template, sorted({s['coefficient'] for s in steering}))
     payload = json.dumps(data, ensure_ascii=False, separators=(',', ':'), allow_nan=False).replace('<', '\\u003c')
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(template.replace('/*PLOTLY*/', get_plotlyjs()).replace('/*DATA*/', payload))
@@ -89,5 +93,6 @@ if __name__ == '__main__':
     parser.add_argument('--run', type=Path, default=Path('outputs/mini_batch_exp_results'))
     parser.add_argument('--readouts', type=Path, default=Path('outputs/analysis/mini-batch-local-readout'))
     parser.add_argument('--output', type=Path, default=Path('results/mini-batch-cluster-readout/token-comparison.html'))
+    parser.add_argument('--comparisons', type=Path, help='Comparison JSON for this experiment')
     args = parser.parse_args()
-    build(args.run, args.readouts, args.output)
+    build(args.run, args.readouts, args.output, args.comparisons)

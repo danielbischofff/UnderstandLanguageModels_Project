@@ -58,8 +58,8 @@ def assemble_activations(directory, layer, token_ids):
                     raise ValueError('Duplicate activation position')
                 rows[position] = tensor[0, i]
     positions = sorted(rows)
-    if positions != list(range(len(token_ids) - 1)):
-        raise ValueError('Expected prompt and decode events through penultimate input token')
+    if positions not in (list(range(len(token_ids) - 1)), list(range(len(token_ids)))):
+        raise ValueError('Expected contiguous input activations through the penultimate or final token')
     return np.asarray(positions, dtype=np.int32), torch.stack([rows[p] for p in positions])
 
 
@@ -184,7 +184,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     signature = {'index_sha256': digest(args.run / 'index.json'), 'audit': validation,
                  'assets': json.loads((args.data / 'download-provenance.json').read_text()),
-                 'implementation_sha256': digest(__file__), 'alignment': 'input_token; final output token excluded',
+                 'implementation_sha256': digest(__file__), 'alignment': 'input_token; include every recorded response position',
                  'rank_scope': 'full_vocabulary; ties take best rank', 'dtype': 'float32', 'lens_sha256': digest(lens_path),
                  'unembedding_sha256': digest(args.data / 'unembed/lm_head.weight.bf16.bin'),
                  'rmsnorm_sha256': digest(args.data / 'unembed/model.norm.weight.bf16.bin')}
@@ -233,7 +233,7 @@ def main():
         summary = {'trial_index': number, 'question': q, 'character': trial['character'], 'steering': trial.get('steering'),
                    'layer': layer, 'generated_tokens': len(trial['response']['generated_token_ids']),
                    'at_token_limit': len(trial['response']['generated_token_ids']) == config['generation']['max_new_tokens'],
-                   'missing_final_input_activation': True,
+                   'missing_final_input_activation': len(positions) < len(tokens),
                    'scores': score_sets(sets, ids, ranks, cosine, positions, trial['j_lens']['prompt_length']),
                    'elapsed_seconds': time.time() - tick}
         atomic_json(summary_path, summary)
