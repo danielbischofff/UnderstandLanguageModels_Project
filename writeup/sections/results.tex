@@ -60,10 +60,33 @@ For the steering vectors below, where subtracting $d_{32}$ cancels most of the o
 The steering vectors $c_{32} = p_{32} - d_{32}$, in contrast, are far from parallel (median cosine 0.33).
 Each combines a shared step down the Assistant Axis \citep{lu2026assistant}, about a third of its squared norm, with a persona-specific direction.
 
+% Floats are defined ahead of their text so they land next to it (full-width floats go to the next page).
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/tsne/ribbon_compact.pdf}
+  \caption{Nearest role cluster per prompt token (columns) for selected Tylenol trials (rows), at layer 32.
+  A cell takes the color of the cluster holding most of the token's ten nearest roles with cosine similarity above 0.5,
+  shaded by the highest similarity; it stays white when no role reaches 0.5.
+  Moderate steering keeps the rows filled and shifts them towards the target's cluster;
+  alpha steering at $\alpha=4$ empties them, as the residual leaves the role map.
+  Harmful answers are marked on the right.}
+  \label{fig:ribbon}
+\end{figure*}
+
+\begin{figure}[!tb]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/tsne/rank_vs_norm.pdf}
+  \caption{Longer steering vectors pull the residual closer to their target.
+  Each point is one of the 17 steered personas under alpha steering:
+  the median rank of the target among 275 roles over prompt tokens and the six alpha trials (line: range),
+  against the length of its steering vector. Colors are the target's cluster; the black ring marks the demon, the only persona with harmful alpha-steered answers.}
+  \label{fig:rank}
+\end{figure}
+
 \subsection{The persona map reads the user's tone}
 \label{sec:results-tone}
-First, lets analyse the the unsteered model -- control setup.
-On the Tylenol question, the residual stream surprisinglydoes not sit near the assistant role (median rank 96 of 275)
+First, we analyze the unsteered model as the control.
+On the Tylenol question, the residual stream surprisingly does not sit near the assistant role (median rank 96 of 275)
 but among childlike, impulsive personas: 33 of the 46 prompt positions are nearest a role of the infant, fool, adolescent cluster.
 Only when the model writes its own answer does it return to the assistant-like cluster (109 of 151 answer tokens).
 
@@ -76,8 +99,46 @@ The same gap appears at all seven layer depths we mapped, from layer 8 to layer 
 Where the J-Lens reads an Assistant point of view on the user's words \citep{gurnee2026global},
 the persona map places them with the persona the user sounds like.
 
-% TODO(Illia) [R4] position 0 = known massive activation / attention sink (norm 24,431 vs ~230, 98% in dim 731), always default area; cite Sun 2024, Xiao 2024, Gu 2025, Barbero 2025, Queipo-de-Llano 2025, Qiu 2026; band capping rewrites it by 5--9k (beta-independent, [C1]). Exclude from stats, grey in plots. Also: the sink lands in the Assistant region because dim 731 is the shared role component, largest in the assistant cluster; cite steering x sink mini review.
-% TODO(Illia) [R5] open with the steered data (former [M7]): Tylenol prompt, 17 roles x {L29,L32} x 3 strengths + unsteered = 103 trials per method; single-layer steering, unlike the 28--35 band runs of the J-Lens part. Ribbons (former [M8]): explain the ribbon itself only in its caption (cell coloured iff max cos > 0.5, majority cluster of top-10 neighbours); in the text say the threshold mostly measures alignment with the shared role direction (rho 0.95, matched null 32% vs 43%) and the cluster colour is the persona signal (c3_nulls.json). Few telling ribbon/trajectory examples go to the appendix and are linked from here. Then: steering moves residuals toward the target relatively (margin up in 34/34 alpha, 32/34 band; Holm) but not absolutely (cos falls in 9--17); ||R-D|| predicts reaching the target (rho -0.6..-0.8 rank; +0.56..+0.95 answer own-excess); permutation p<=0.002. Source: c5/c6/c3 JSON.
-% TODO(Illia) [R6] going off the rails: on 768 mini-bank trials (blind role-play judging: 98 in character, 146 broken) the lens tracks when the model goes in character (prompt AUC 0.80--0.83) only across roles/strengths; within fixed role and strength no prompt-time signature (AUC ~0.5). Collapse shows as answer drift off the Assistant Axis (within AUC 0.79, Holm p=0.0015). Tylenol harm (6) role-driven. Source: c14_offrails_signatures.json.
-% TODO(Illia) [R7] trajectory types per 34 trials: alpha locked 7/13/12, off-map 0/3/11 (alpha 1/2.5/4); band mostly baseline-like (26/34) but answers still move (own 0.46--0.71). Source: c5_trials.csv.
-% TODO(Illia) [R8] injecting at L29 ends further from the roles at L32 than injecting at L32 (alpha=4 max-cos 0.38 vs 0.45, 16/17 roles, p=1e-4).
+Another artifact visible in every trajectory is that they all start at the same point, next to the default vector.
+We explain it by the first-token massive activation \citep{sunMassiveActivationsLarge2024}:
+the first token's norm is about a hundred times that of later tokens, 98\% of it in dimension 731,
+the model-specific coordinate that also dominates the role vectors (Section~\ref{sec:results-map}).
+Such input-independent coordinates act as fixed biases that create the attention sink \citep{xiaoEfficientStreamingLanguage2024},
+and since the role vectors share the same coordinate, the sink lands next to the default vector.
+Only band capping steering moves it.
+
+\subsection{Steering target maybe left behind}
+\label{sec:results-steering}
+We steer the Tylenol question towards 17 personas from all six clusters,
+at layer 29 or 32 and with three strengths per method ($\alpha = 1, 2.5, 4$; $\beta = 0, 0.1, 0.25$),
+which gives 103 trials per method including the unsteered run.
+Figure~\ref{fig:ribbon} shows, for selected trials, the cluster nearest to every prompt position.
+
+The ribbons show two scenarios.
+Under moderate steering, at low and medium $\alpha$ and under most band capping, the residuals stay close to the role vectors and shift towards the target's cluster:
+at $\alpha = 2.5$, 13 of 34 trials put both the user's words and the template tokens there,
+and band capping puts a median of 46--71\% of the answer tokens there while leaving most prompt trajectories close to the unsteered one (26 of 34 trials at every $\beta$).
+Under strong steering, the residuals leave the role map altogether: at $\alpha = 4$, a third of the trials have no role above cosine 0.5 (the white rows).
+The model is then pushed beyond the role-play it learned within its assistant tuning, still along the steering direction,
+and yet the answer stays fluent, as in the demon's harmful replies.
+
+In both regimes the pull is relative rather than absolute.
+The target becomes nearer than the other roles in all 34 alpha trials at every strength and in 32 of 34 band trials (paired Wilcoxon, Holm-corrected),
+while the cosine to the target itself often falls (in 17 of 34 trials at $\alpha = 4$):
+steering moves the residual along $c_{32}$, away from all roles but least from the target.
+How far it gets depends on the size of the push, $\alpha \lVert c_{32} \rVert$.
+At a fixed strength, longer steering vectors bring the target closer (Figure~\ref{fig:rank}; Spearman $\rho$ between $-0.60$ and $-0.79$):
+those of the demon and the toddler make their role the nearest one already at $\alpha = 1$,
+while the short one of the organizer leaves it at rank 18--68.
+Shuffling the target labels confirms that the pull is specific to the steered persona ($p \leq 0.002$ in all 12 method, layer and strength groups).
+Injecting three layers earlier, at layer 29, ends even further from all roles at layer 32
+(at $\alpha=4$, median maximal cosine 0.38 vs.\ 0.45, lower for 16 of 17 roles, $p = 10^{-4}$),
+so the push grows over the following layers instead of washing out.
+
+The organizer shows where thinking in clusters fails.
+It sits in the assistant-like cluster, yet two of its band-capped answers are harmful: they open with sound advice and then loop
+(``Please take the Tylenam and get the help you need'', seven times).
+Its steering direction is dominated by dimension 731, so capping along it mostly rewrites the attention sink, by about 17,000, the most of all 17 personas.
+Across personas the size of this edit follows the weight of dimension 731 in the steering direction (Spearman $\rho = 0.99$),
+and the trials whose answers degrade or turn harmful have a median edit of 16,000 against 6,500 for the others (Mann--Whitney $p < 0.001$).
+Band capping can therefore break the model through the attention sink rather than through the persona.

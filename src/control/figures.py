@@ -215,9 +215,12 @@ def ribbon_figure(role_map):
         rec = next(r for r in data["records"] if r["run"] == run and r["character"] == character
                    and (layers is None or (r["layers"] == layers and r["coefficient"] == coefficient)))
         found.append((label, rec))
+    # A small gap after the unsteered row and after the alpha block.
+    gaps = {0: 0.0, 1: 0.35, 2: 0.35, 3: 0.35, 4: 0.7, 5: 0.7, 6: 0.7, 7: 0.7, 8: 0.7}
     tokens = [display_token(t).replace("⏎", "\\n") for t in found[0][1]["tokens"]]
-    fig, ax = plt.subplots(figsize=(PAGE, 0.24 * len(found) + 0.9))
-    for y, (label, rec) in enumerate(found):
+    fig, ax = plt.subplots(figsize=(PAGE, 0.26 * len(found) + 1.2))
+    for row, (label, rec) in enumerate(found):
+        y = row + gaps[row]
         for x, (cluster, sim) in enumerate(zip(rec["clusters"], rec["similarities"])):
             if x == 0:  # attention sink: shown, but not read
                 face, alpha = "#d9d9d6", 1.0
@@ -228,48 +231,52 @@ def ribbon_figure(role_map):
             ax.add_patch(plt.Rectangle((x + 0.06, y + 0.08), 0.88, 0.84, facecolor=face, alpha=alpha,
                                        edgecolor=GRID, linewidth=0.3))
         if rec["outcome"] == 2:
-            ax.text(len(tokens) + 0.4, y + 0.5, "harmful", va="center", fontsize=6.5, color=INK)
+            ax.text(len(tokens) + 0.4, y + 0.5, "harmful", va="center", fontsize=7, color=INK)
     ax.set_xlim(0, len(tokens) + 4)
-    ax.set_ylim(len(found), 0)
-    ax.set_yticks(np.arange(len(found)) + 0.5, [label for label, _ in found])
-    ax.set_xticks(np.arange(len(tokens)) + 0.5, tokens, rotation=90, fontsize=5.5)
+    ax.set_ylim(len(found) + gaps[len(found) - 1], 0)
+    ax.set_yticks([row + gaps[row] + 0.5 for row in range(len(found))], [label for label, _ in found],
+                  fontsize=7)
+    ax.set_xticks(np.arange(len(tokens)) + 0.5, tokens, rotation=90, fontsize=6)
     ax.tick_params(length=0)
     for side in ("left", "bottom"):
         ax.spines[side].set_visible(False)
     handles = [plt.Rectangle((0, 0), 1, 1, color=colors[c]) for c in sorted(colors)]
-    names = [f"{c} · {role_map.cluster_names[c].split(',')[0]}" for c in sorted(colors)]
-    ax.legend(handles + [plt.Rectangle((0, 0), 1, 1, facecolor="white", edgecolor=GRID)],
-              names + ["no role > 0.5"], ncol=7, loc="lower center", bbox_to_anchor=(0.45, 1.0),
-              frameon=False, handlelength=1, columnspacing=0.8)
+    names = [f"{c} · {role_map.cluster_names[c]}" for c in sorted(colors)]
+    ax.legend(handles + [plt.Rectangle((0, 0), 1, 1, facecolor="white", edgecolor=GRID),
+                         plt.Rectangle((0, 0), 1, 1, facecolor="#d9d9d6")],
+              names + ["no role above 0.5", "position 0 (sink)"], ncol=4, loc="lower center",
+              bbox_to_anchor=(0.45, 1.0), frameon=False, handlelength=1, columnspacing=1.0, fontsize=6.5)
     fig.savefig(OUT / "ribbon_compact.pdf")
     plt.close(fig)
 
 
 def rank_figure(role_map):
+    """One point per steered role (alpha): its steering-vector length against how
+    near the target role gets, median and range over the 6 alpha trials."""
     props = json.loads((RESULTS / "c5_target_attraction.json").read_text())["role_properties"]
     colors = map_colors(role_map)
     with (RESULTS / "c5_trials.csv").open() as handle:
-        rows = [r for r in csv.DictReader(handle) if r["method"] != "unsteered"]
-    fig, ax = plt.subplots(figsize=(COLUMN, 2.4))
-    for method, marker in (("alpha", "o"), ("band", "^")):
-        group = [r for r in rows if r["method"] == method]
-        x = [props[r["character"]]["norm_rd"] for r in group]
-        y = [float(r["prompt_rank_tgt"]) for r in group]
-        c = [colors[props[r["character"]]["cluster"]] for r in group]
-        ax.scatter(x, y, s=12, c=c, marker=marker, alpha=0.75, linewidths=0, label=method)
-        bad = [i for i, r in enumerate(group) if r["judge"] == "2"]
-        ax.scatter([x[i] for i in bad], [y[i] for i in bad], s=46, marker=marker,
-                   facecolors="none", edgecolors=INK, linewidths=0.8)
+        rows = [r for r in csv.DictReader(handle) if r["method"] == "alpha"]
+    fig, ax = plt.subplots(figsize=(COLUMN, 2.3))
+    offsets = {"organizer": (4, -2), "mathematician": (4, 2), "doctor": (4, -6), "demon": (2, 8),
+               "toddler": (-2, -11), "perfectionist": (4, 3)}
+    for role in sorted({r["character"] for r in rows}):
+        ranks = [float(r["prompt_rank_tgt"]) for r in rows if r["character"] == role]
+        x, c = props[role]["norm_rd"], colors[props[role]["cluster"]]
+        ax.plot([x, x], [min(ranks), max(ranks)], color=c, linewidth=1.0, alpha=0.6)
+        harmful = any(r["judge"] == "2" for r in rows if r["character"] == role)
+        ax.scatter(x, np.median(ranks), s=26, color=c, edgecolors=INK if harmful else "white",
+                   linewidths=0.9 if harmful else 0.4, zorder=3)
+        if role in offsets:
+            dx, dy = offsets[role]
+            ax.annotate(role, (x, np.median(ranks)), xytext=(dx, dy), textcoords="offset points",
+                        fontsize=6.5, color=INK, ha="left" if dx > 0 else "right", va="center")
     ax.set_yscale("log")
     ax.invert_yaxis()
-    ax.set_xlabel("‖R − D‖, length of the steering vector")
-    ax.set_ylabel("target rank among 275 roles\n(median over prompt tokens, 1 = nearest)")
+    ax.set_yticks([1, 3, 10, 30, 100], ["1", "3", "10", "30", "100"])
+    ax.set_xlabel("length of the steering vector ‖R − D‖")
+    ax.set_ylabel("rank of the target role\n(of 275; 1 = nearest)")
     ax.grid(axis="y", color=GRID, linewidth=0.4)
-    handles = [plt.Line2D([], [], marker=m, linestyle="", color=MUTED, label=l)
-               for m, l in (("o", "alpha"), ("^", "band"))]
-    handles.append(plt.Line2D([], [], marker="o", linestyle="", markerfacecolor="none", markeredgecolor=INK,
-                              label="harmful"))
-    ax.legend(handles=handles, frameon=False, loc="lower right")
     fig.savefig(OUT / "rank_vs_norm.pdf")
     plt.close(fig)
 
@@ -305,14 +312,11 @@ def tone_figure():
 def offrails_figure():
     with (RESULTS / "c14_offrails_trials.csv").open() as handle:
         rows = [r for r in csv.DictReader(handle) if r["run"].startswith("mini")]
-    signatures = [("prompt_align_mu", -1, "prompt: alignment with mean role"),
-                  ("prompt_own_excess", 1, "prompt: target-cluster share"),
-                  ("prompt_axis", -1, "prompt: drift down Assistant Axis"),
-                  ("prompt_near", -1, "prompt: tokens near any role"),
-                  ("prompt_norm_ratio", 1, "prompt: residual norm"),
-                  ("answer_axis", -1, "answer: drift down Assistant Axis")]
-    fig, axes = plt.subplots(1, 2, figsize=(PAGE, 1.9), sharey=True)
-    for ax, (code, title) in zip(axes, (("1", "in character (98 trials)"), ("2", "broken (146 trials)"))):
+    signatures = [("prompt_own_excess", 1, "prompt: share in the target's cluster"),
+                  ("prompt_axis", -1, "prompt: drift down the Assistant Axis"),
+                  ("answer_axis", -1, "answer: drift down the Assistant Axis")]
+    fig, axes = plt.subplots(1, 2, figsize=(PAGE, 1.35), sharey=True)
+    for ax, (code, title) in zip(axes, (("1", "in character (98 of 768)"), ("2", "broken (146 of 768)"))):
         groups = {}
         for r in rows:
             groups.setdefault((r["run"], r["character"], r["setting"]), []).append(r)
@@ -334,14 +338,15 @@ def offrails_figure():
             ax.plot([within, overall], [i, i], color=GRID, linewidth=1.2, zorder=1)
             ax.scatter(overall, i, s=22, color=INK, zorder=2, label="all trials" if i == 0 else None)
             ax.scatter(within, i, s=22, facecolors="white", edgecolors=INK, zorder=2,
-                       label="within role × setting" if i == 0 else None)
+                       label="questions of one persona and setting" if i == 0 else None)
         ax.axvline(0.5, color=MUTED, linewidth=0.6, linestyle="--")
         ax.set_xlim(0.15, 0.95)
         ax.set_title(title, loc="left")
         ax.set_xlabel("AUC (0.5 = chance)")
         ax.set_yticks(range(len(signatures)), [s[2] for s in signatures])
-        ax.invert_yaxis()
-    axes[1].legend(frameon=False, loc="lower left", fontsize=6.5)
+    axes[0].invert_yaxis()  # shared y: inverting both would cancel out
+    fig.legend(*axes[0].get_legend_handles_labels(), frameon=False, ncol=2, fontsize=7,
+               loc="upper center", bbox_to_anchor=(0.6, -0.12))
     fig.savefig(OUT / "offrails_auc.pdf")
     plt.close(fig)
 
