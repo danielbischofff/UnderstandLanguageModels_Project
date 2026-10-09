@@ -32,14 +32,33 @@ personas; their interpretation is exploratory for this small selected set.
 The median comparison retains the original mean and distinguishes the median
 of 96 pairs from the median of eight persona means.
 
-## Optional: recompute J-Lens readouts on a cluster
+## Recompute alpha J-Lens directly on cgpool1910
+
+The verified input folder is
+`/home/bischoffd/Documents/UnderstandLanguageModels_Project/results`:
+396 additive trials, α = 1.5 and 4.0, twelve questions, and all 396 activation
+exports present. This workstation has `tmux` and no Slurm. After installing the
+readout dependencies and downloading the pinned assets, use:
+
+```bash
+.venv-analysis/bin/python scripts/run_alpha_analysis.py \
+  --run /home/bischoffd/Documents/UnderstandLanguageModels_Project/results \
+  --reports /home/bischoffd/Documents/UnderstandLanguageModels_Project/results/mini-alpha-analysis \
+  --threads 4
+```
+
+Run it inside `tmux` for a persistent session. `--benchmark-jobs 2` provides a
+short resumable timing check before the full run. The direct launcher restores
+the audit automatically and performs readout, aggregation and all dashboards.
+
+## Optional: recompute J-Lens readouts with Slurm
 
 ### Alpha results already stored on the cluster
 
 Use the original alpha run folder containing `index.json`, `provenance/manifest.json`,
 and each trial's activation tensors. The folder's absolute path must be supplied;
-it has not been verified from the local machine because the Helix SSH connection
-was refused. Run these commands in your collaborator's cluster account:
+the cgpool1910 path is verified above. For a different cluster, supply its local
+copy of the data. Run these commands in your collaborator's cluster account:
 
 ```bash
 git clone --branch analysis/mini-batch-evaluation-20261009 --single-branch https://github.com/danielbischofff/UnderstandLanguageModels_Project.git
