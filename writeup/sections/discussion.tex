@@ -9,5 +9,33 @@ Our results are by no means conclusive: They support our hypothesis, but we beli
 \subsection{The assistant persona is still present}
 When analysing our results, we noticed that J-Lens tokens corresponding to the assistant's point of view are often still present, meaning that the steering didn't completely erase this effect in most cases, but only in some. This could be a result of the way the steering vectors were obtained: In \cite{lu2026assistant}, the original LLMs were just told to play a role, but their safety training was still in place, and may have kept the model's behavior within reasonable alignment boundaries, not too far off from an assistant persona.
 
+
+\subsection{What the persona map adds}
+The persona map complements the J-Lens: instead of the words a residual prepares, it shows which persona the residual resembles.
+It also differs from plain cosine similarities: placing each residual by its relative closeness to the roles,
+it discounts artifacts shared by all roles, such as rogue dimensions \citep{timkeyAllBarkNo2021}, while magnifying the semantic clusters.
+Steering makes the target the nearest persona, but only relative to the others,
+and the size of the push $\alpha \lVert c_l \rVert$ decides whether the residual stays among the role vectors or leaves the map altogether.
+The map also reads the user: in the unsteered runs, the same request sits among childlike personas when written casually
+and among assistant-like ones when written formally, at every depth we checked.
+Finally, it exposes a failure that thinking in personas misses:
+capping along a direction dominated by the shared offset coordinate rewrites the attention sink and breaks the answer.
+
 \subsection{Future work}
 We recommend future work to try other steering schemes, and improve on our methods to better quantify the effect. Another steering scheme could be for example using the band-cap method to anchor the steered projection around $\alpha \cdot p_l \cdot \hat{c}_l$, to be able to band cap the residual stream around a bigger alpha multiple of the $c_l$ direction. This would allow increasing the intensity of band-capping, while still being able to steer over multiple layers and avoiding an overshoot.
+
+Our results also suggest other ways to steer.
+Every persona currently receives a different push, because the steering vectors differ in norm up to four times.
+Adapting the strength to compensate, as $\alpha_p = \kappa / \lVert c_l \rVert$, or to fix the step along the Assistant Axis,
+would make the personas comparable.
+Instead of adding $\alpha c_l$, the residual could also be rotated towards $p_l$ while keeping its norm \citep{vuAngularSteeringBehavior2025, aparinGeometricAccountActivation2026};
+this would test whether residuals can land on the role itself rather than move along $c_l$ and leave the role map.
+Band capping, in turn, should spare the attention sink, by skipping position 0 or removing dimension 731 from $\hat{c}_l$,
+to test whether its collapses disappear.
+Scoring steered answers under the unsteered model would tell whether a residual that leaves the role map
+belongs to a confused model or to a confident other persona.
+
+Beyond steering, the tone test should be repeated on steered runs, to see whether the user's tone still shapes the trajectory once the model is pushed towards a persona.
+
+Other models would show which of these features are universal, for instance whether a single coordinate always dominates the role vectors.
+Finally, a finer analysis of the residual-stream geometry, beyond the nearest role and its cluster, could separate the persona from the shared offset more cleanly.

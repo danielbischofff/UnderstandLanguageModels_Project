@@ -1,0 +1,140 @@
+{
+  "roles": 275,
+  "hidden": 5120,
+  "layer": 32,
+  "clusters": 6,
+  "map_clusters_are_ward_on_unit_vectors": true,
+  "ward_unchanged_by_centering": 1.0,
+  "neighbors": {
+    "5": {
+      "recall": 0.5178,
+      "trustworthiness": 0.9538,
+      "chance_recall": 0.0182
+    },
+    "10": {
+      "recall": 0.5051,
+      "trustworthiness": 0.9352,
+      "chance_recall": 0.0365
+    },
+    "20": {
+      "recall": 0.538,
+      "trustworthiness": 0.9237,
+      "chance_recall": 0.073
+    }
+  },
+  "intrinsic_dimension": {
+    "pca_raw_centered": {
+      "pc1_share": 0.3792,
+      "cumulative": {
+        "1": 0.3792,
+        "2": 0.518,
+        "5": 0.6578,
+        "8": 0.7259,
+        "10": 0.7595,
+        "20": 0.8421,
+        "50": 0.9286
+      },
+      "components_for": {
+        "50%": 2,
+        "70%": 7,
+        "90%": 37
+      },
+      "participation_ratio": 5.7602
+    },
+    "pca_unit_centered": {
+      "pc1_share": 0.3503,
+      "cumulative": {
+        "1": 0.3503,
+        "2": 0.4938,
+        "5": 0.6415,
+        "8": 0.7117,
+        "10": 0.7468,
+        "20": 0.8335,
+        "50": 0.9252
+      },
+      "components_for": {
+        "50%": 3,
+        "70%": 8,
+        "90%": 38
+      },
+      "participation_ratio": 6.454
+    },
+    "two_nn": 3.1726,
+    "lu2026_qwen3_32b_components_for_70": 8
+  },
+  "assistant_axis": {
+    "cos_pc1_with_default_minus_mean": 0.6811,
+    "pc1_mean_by_cluster": {
+      "0": -29.388,
+      "1": 0.4113,
+      "2": -24.4482,
+      "3": 20.9106,
+      "4": -16.2873,
+      "5": -7.1536
+    }
+  },
+  "concentration": {
+    "roles": {
+      "relative_contrast_median": 20.4999,
+      "distance_cv": 0.6108
+    },
+    "roles_centered": {
+      "relative_contrast_median": 7.8382,
+      "distance_cv": 0.3865
+    },
+    "random_unit_vectors": {
+      "relative_contrast_median": 0.083,
+      "distance_cv": 0.014
+    }
+  },
+  "silhouette": {
+    "cosine_5120d": 0.273,
+    "euclidean_unit_5120d": 0.1662,
+    "null_euclidean_mean": 0.0698,
+    "null_euclidean_sd": 0.0079,
+    "null_draws": 20,
+    "map_2d": 0.4048
+  },
+  "agreement_with_5120d_ward": {
+    "ward_2d_same_k": 0.5736,
+    "ward_2d_same_k_nmi": 0.6688,
+    "ward_2d_same_k_silhouette_5120d": 0.1364,
+    "map_2d_grid": {
+      "ward-4": 0.4805,
+      "ward-5": 0.5273,
+      "ward-6": 0.5736,
+      "ward-7": 0.4639,
+      "ward-8": 0.4361,
+      "average-4": 0.7213,
+      "average-5": 0.714,
+      "average-6": 0.764,
+      "average-7": 0.5644,
+      "average-8": 0.5507,
+      "complete-4": 0.5457,
+      "complete-5": 0.6174,
+      "complete-6": 0.6209,
+      "complete-7": 0.4641,
+      "complete-8": 0.4835,
+      "kmeans-4": 0.4996,
+      "kmeans-5": 0.5564,
+      "kmeans-6": 0.5683,
+      "kmeans-7": 0.4968,
+      "kmeans-8": 0.4427,
+      "gmm-4": 0.7506,
+      "gmm-5": 0.6926,
+      "gmm-6": 0.5554,
+      "gmm-7": 0.5265,
+      "gmm-8": 0.4552
+    },
+    "map_2d_best": {
+      "setting": "average-6",
+      "ari": 0.764
+    },
+    "ward_top_pcs": {
+      "5": 0.6849,
+      "10": 0.4699,
+      "20": 0.7876,
+      "50": 0.768
+    }
+  }
+}
