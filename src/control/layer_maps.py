@@ -24,6 +24,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+from scipy.optimize import linear_sum_assignment
 from scipy.stats import wilcoxon
 
 import figures as F
@@ -79,9 +80,35 @@ def fit(job: tuple[int, bool]) -> str:
     return f"layer {layer}: fitted"
 
 
+def matched_colors(role_map) -> dict[int, str]:
+    """Colour each cluster of ``role_map`` like the layer-32 cluster it shares most roles
+    with (one-to-one assignment), so the same groups of roles keep their colour across maps."""
+    ref = RoleMap.load(cache(32))
+    ref_colors = map_colors(ref)
+    ref_of = dict(zip(ref.labels, np.asarray(ref.clusters)))
+    ours, theirs = sorted(set(role_map.clusters)), sorted(set(ref.clusters))
+    overlap = np.zeros((len(ours), len(theirs)))
+    for label, cluster in zip(role_map.labels, role_map.clusters):
+        overlap[ours.index(cluster), theirs.index(ref_of[label])] += 1
+    rows, cols = linear_sum_assignment(-overlap)
+    return {int(ours[r]): ref_colors[int(theirs[c])] for r, c in zip(rows, cols)}
+
+
+def legend_panel(ax):
+    ref = RoleMap.load(cache(32))
+    colors = map_colors(ref)
+    names = dict(ref.cluster_names)
+    names[int(ref.clusters[list(ref.labels).index("infant")])] = "infant, fool, adolescent"
+    for c in sorted(colors):
+        ax.scatter([], [], s=12, color=colors[c], label=names[c])
+    ax.legend(loc="center", frameon=False, fontsize=6, title="layer-32 clusters\n(matched by members)",
+              title_fontsize=6, handletextpad=0.3)
+    ax.axis("off")
+
+
 def draw_map(ax, role_map, layer):
     roles = role_map.role_records()
-    colors = map_colors(role_map)
+    colors = matched_colors(role_map)
     ax.scatter([r["x"] for r in roles], [r["y"] for r in roles], s=4,
                c=[colors[r["cluster"]] for r in roles], alpha=0.5, linewidths=0)
     for r in roles:
@@ -170,7 +197,7 @@ def main() -> None:
     fig, axes = plt.subplots(2, 4, figsize=(F.PAGE, 3.3))
     for ax, (layer, role_map) in zip(axes.flat, maps.items()):
         draw_map(ax, role_map, layer)
-    axes.flat[-1].axis("off")
+    legend_panel(axes.flat[-1])
     fig.savefig(OUT / f"maps_by_layer{suffix}.pdf")
     plt.close(fig)
 
@@ -204,7 +231,7 @@ def main() -> None:
             t = result["tone"][str(layer)]["fixed_set_share"]["casual_vs_formal"]
             ax.set_title(f"L{layer}: {t['casual_mean']:.2f} / {t['other_mean']:.2f}",
                          loc="left", fontsize=6.5)
-        axes.flat[-1].axis("off")
+        legend_panel(axes.flat[-1])
         fig.savefig(OUT / f"trajectories_by_layer{suffix}.pdf")
         plt.close(fig)
     else:

@@ -91,11 +91,11 @@ but among childlike, impulsive personas: 33 of the 46 prompt positions are neare
 Only when the model writes its own answer does it return to the assistant-like cluster (109 of 151 answer tokens).
 
 The user's tone explains this pull.
-We rewrote six requests, the Tylenol question among them, formally and in the third person while keeping their content.
+We rewrote six requests, the Tylenol question among them, formally and in the third person while keeping their content (Appendix~\ref{sec:appendix-map}).
 The share of the user's words nearest the childlike cluster drops from 0.90 for the casual wording to 0.23 (formal) and 0.32 (third person),
 in all six topics (exact Wilcoxon $p = 0.031$, the smallest possible with six pairs, Figure~\ref{fig:trajectory}).
 The form of the rewrites does not explain it: the third-person versions are even less aligned with the shared role direction than the casual ones.
-The same gap appears at all seven layer depths we mapped, from layer 8 to layer 56.
+The same gap appears at all seven layer depths we mapped, from layer 8 to layer 56 (Table~\ref{tab:tone-layers}).
 Where the J-Lens reads an Assistant point of view on the user's words \citep{gurnee2026global},
 the persona map places them with the persona the user sounds like.
 
@@ -112,7 +112,9 @@ Only band capping steering moves it.
 We steer the Tylenol question towards 17 personas from all six clusters,
 at layer 29 or 32 and with three strengths per method ($\alpha = 1, 2.5, 4$; $\beta = 0, 0.1, 0.25$),
 which gives 103 trials per method including the unsteered run.
-Figure~\ref{fig:ribbon} shows, for selected trials, the cluster nearest to every prompt position.
+Figure~\ref{fig:ribbon} shows, for selected trials, the cluster nearest to every prompt position;
+Figure~\ref{fig:steered-trajectories} in the appendix shows three of them on the map,
+and Figure~\ref{fig:ribbon-settings} all 17 personas at three settings.
 
 The ribbons show two scenarios.
 Under moderate steering, at low and medium $\alpha$ and under most band capping, the residuals stay close to the role vectors and shift towards the target's cluster:

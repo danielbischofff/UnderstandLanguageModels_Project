@@ -78,9 +78,9 @@ def roles_map_figure(role_map):
 
 def trajectories_figure(role_map):
     """Appendix: three prompt trajectories as small multiples on the frozen map."""
-    picks = [("unsteered", trial_dir("alpha", "unsteered")),
-             ("demon · alpha 4 · L32 (harmful)", trial_dir("alpha", "demon", 32, 4.0)),
-             ("toddler · band 0.1 · L32 (harmful)", trial_dir("band", "toddler", 32, 0.1))]
+    picks = [("demon · α=4 · L32 (harmful)", trial_dir("alpha", "demon", 32, 4.0)),
+             ("toddler · β=0.1 · L32 (harmful)", trial_dir("band", "toddler", 32, 0.1)),
+             ("organizer · β=0.25 · L32 (harmful)", trial_dir("band", "organizer", 32, 0.25))]
     trajectories = []
     for name, path in picks:
         vectors, rows = load_trajectory(path, layer=32, model_id=role_map.config["model_id"], prompt_only=True)
@@ -103,7 +103,7 @@ def trajectories_figure(role_map):
                     str(cluster), fontsize=7, color=INK, ha="center")
         ax.scatter(star["x"], star["y"], marker="*", s=40, color=INK, zorder=4)
         ax.plot(x[1:], y[1:], color=INK, linewidth=0.5, alpha=0.6, zorder=2)
-        sc = ax.scatter(x[1:], y[1:], c=np.arange(1, len(x)), cmap="viridis", s=9, marker="s",
+        sc = ax.scatter(x[1:], y[1:], c=np.arange(1, len(x)), cmap="viridis_r", s=9, marker="s",
                         linewidths=0, zorder=3)
         ax.scatter(x[0], y[0], s=40, facecolors="none", edgecolors=INK, linewidths=0.9, zorder=4)
         ax.scatter(x[-1], y[-1], s=30, marker="D", facecolors="none", edgecolors=INK, linewidths=0.9, zorder=4)
@@ -198,27 +198,10 @@ def trajectory_figure(role_map, runs, out=None, names=None):
     plt.close(fig)
 
 
-def ribbon_figure(role_map):
-    data = json.loads((TSNE / "roles-cluster-ribbons/ribbons.json").read_text())
+def ribbon_axes(ax, role_map, found, gaps, xticks=True, fontsize=7):
+    """Draw ribbon rows (label, record) on ``ax``: nearest cluster per prompt token, one row per trial."""
     colors = map_colors(role_map)
-    rows = [("alpha", "unsteered", None, None, "unsteered"),
-            ("alpha", "demon", [29], 4.0, "demon · α=4 · L29"),
-            ("alpha", "demon", [32], 4.0, "demon · α=4 · L32"),
-            ("alpha", "toddler", [32], 4.0, "toddler · α=4 · L32"),
-            ("band", "demon", [32], 0.1, "demon · β=0.1 · L32"),
-            ("band", "toddler", [29], 0.1, "toddler · β=0.1 · L29"),
-            ("band", "toddler", [32], 0.1, "toddler · β=0.1 · L32"),
-            ("band", "toddler", [32], 0.25, "toddler · β=0.25 · L32"),
-            ("band", "organizer", [32], 0.25, "organizer · β=0.25 · L32")]
-    found = []
-    for run, character, layers, coefficient, label in rows:
-        rec = next(r for r in data["records"] if r["run"] == run and r["character"] == character
-                   and (layers is None or (r["layers"] == layers and r["coefficient"] == coefficient)))
-        found.append((label, rec))
-    # A small gap after the unsteered row and after the alpha block.
-    gaps = {0: 0.0, 1: 0.35, 2: 0.35, 3: 0.35, 4: 0.7, 5: 0.7, 6: 0.7, 7: 0.7, 8: 0.7}
     tokens = [display_token(t).replace("⏎", "\\n") for t in found[0][1]["tokens"]]
-    fig, ax = plt.subplots(figsize=(PAGE, 0.26 * len(found) + 1.2))
     for row, (label, rec) in enumerate(found):
         y = row + gaps[row]
         for x, (cluster, sim) in enumerate(zip(rec["clusters"], rec["similarities"])):
@@ -230,23 +213,97 @@ def ribbon_figure(role_map):
                 face, alpha = colors[int(cluster)], tint_for(sim)
             ax.add_patch(plt.Rectangle((x + 0.06, y + 0.08), 0.88, 0.84, facecolor=face, alpha=alpha,
                                        edgecolor=GRID, linewidth=0.3))
-        if rec["outcome"] == 2:
-            ax.text(len(tokens) + 0.4, y + 0.5, "harmful", va="center", fontsize=7, color=INK)
+        if rec["outcome"] in (1, 2):
+            ax.text(len(tokens) + 0.4, y + 0.5, {1: "ignorant", 2: "harmful"}[rec["outcome"]],
+                    va="center", fontsize=fontsize, color=INK)
     ax.set_xlim(0, len(tokens) + 4)
     ax.set_ylim(len(found) + gaps[len(found) - 1], 0)
     ax.set_yticks([row + gaps[row] + 0.5 for row in range(len(found))], [label for label, _ in found],
-                  fontsize=7)
-    ax.set_xticks(np.arange(len(tokens)) + 0.5, tokens, rotation=90, fontsize=6)
+                  fontsize=fontsize)
+    # Row labels take the colour of the steered role's cluster, as in the legend.
+    cluster_of = dict(zip(role_map.labels, role_map.clusters))
+    for tick, (_, rec) in zip(ax.get_yticklabels(), found):
+        if rec["character"] in cluster_of:
+            tick.set_color(colors[int(cluster_of[rec["character"]])])
+    if xticks:
+        ax.set_xticks(np.arange(len(tokens)) + 0.5, tokens, rotation=90, fontsize=fontsize - 1)
+    else:
+        ax.set_xticks([])
     ax.tick_params(length=0)
     for side in ("left", "bottom"):
         ax.spines[side].set_visible(False)
+
+
+def ribbon_legend(target, role_map, **kwargs):
+    colors = map_colors(role_map)
     handles = [plt.Rectangle((0, 0), 1, 1, color=colors[c]) for c in sorted(colors)]
     names = [f"{c} · {role_map.cluster_names[c]}" for c in sorted(colors)]
-    ax.legend(handles + [plt.Rectangle((0, 0), 1, 1, facecolor="white", edgecolor=GRID),
-                         plt.Rectangle((0, 0), 1, 1, facecolor="#d9d9d6")],
-              names + ["no role above 0.5", "position 0 (sink)"], ncol=4, loc="lower center",
-              bbox_to_anchor=(0.45, 1.0), frameon=False, handlelength=1, columnspacing=1.0, fontsize=6.5)
-    fig.savefig(OUT / "ribbon_compact.pdf")
+    target.legend(handles + [plt.Rectangle((0, 0), 1, 1, facecolor="white", edgecolor=GRID),
+                             plt.Rectangle((0, 0), 1, 1, facecolor="#d9d9d6")],
+                  names + ["no role above 0.5", "position 0 (sink)"], ncol=4, frameon=False,
+                  handlelength=1, columnspacing=1.0, **kwargs)
+
+
+def draw_ribbon(role_map, found, gaps, out, row_height=0.26):
+    fig, ax = plt.subplots(figsize=(PAGE, row_height * len(found) + 1.2))
+    ribbon_axes(ax, role_map, found, gaps)
+    ribbon_legend(ax, role_map, loc="lower center", bbox_to_anchor=(0.45, 1.0), fontsize=6.5)
+    fig.savefig(out)
+    plt.close(fig)
+
+
+def ribbon_record(data, run, character, layers=None, coefficient=None):
+    return next(r for r in data["records"] if r["run"] == run and r["character"] == character
+                and (layers is None or (r["layers"] == layers and r["coefficient"] == coefficient)))
+
+
+def ribbon_figure(role_map):
+    data = json.loads((TSNE / "roles-cluster-ribbons/ribbons.json").read_text())
+    rows = [("alpha", "unsteered", None, None, "unsteered"),
+            ("alpha", "demon", [29], 4.0, "demon · α=4 · L29"),
+            ("alpha", "demon", [32], 4.0, "demon · α=4 · L32"),
+            ("alpha", "toddler", [32], 4.0, "toddler · α=4 · L32"),
+            ("band", "demon", [32], 0.1, "demon · β=0.1 · L32"),
+            ("band", "toddler", [29], 0.1, "toddler · β=0.1 · L29"),
+            ("band", "toddler", [32], 0.1, "toddler · β=0.1 · L32"),
+            ("band", "toddler", [32], 0.25, "toddler · β=0.25 · L32"),
+            ("band", "organizer", [32], 0.25, "organizer · β=0.25 · L32")]
+    found = [(label, ribbon_record(data, run, character, layers, coefficient))
+             for run, character, layers, coefficient, label in rows]
+    # A small gap after the unsteered row and after the alpha block.
+    gaps = {0: 0.0, 1: 0.35, 2: 0.35, 3: 0.35, 4: 0.7, 5: 0.7, 6: 0.7, 7: 0.7, 8: 0.7}
+    draw_ribbon(role_map, found, gaps, OUT / "ribbon_compact.pdf")
+
+
+def ribbon_settings_figures(role_map):
+    """Appendix, one page: all 17 steered personas at three settings (layer 32), grouped
+    by the target's cluster, unsteered row on top of each panel."""
+    data = json.loads((TSNE / "roles-cluster-ribbons/ribbons.json").read_text())
+    cluster_of = dict(zip(role_map.labels, role_map.clusters))
+    panels = []
+    for run, coefficient, title in (("alpha", 2.5, "alpha steering, α = 2.5"),
+                                    ("alpha", 4.0, "alpha steering, α = 4"),
+                                    ("band", 0.1, "band capping, β = 0.1")):
+        records = [r for r in data["records"] if r["run"] == run and r["layers"] == [32]
+                   and r["coefficient"] == coefficient]
+        records.sort(key=lambda r: (int(cluster_of[r["character"]]), r["character"]))
+        found = [("unsteered", ribbon_record(data, run, "unsteered"))]
+        found += [(f"{int(cluster_of[r['character']])} · {r['character']}", r) for r in records]
+        gaps, gap, previous = {0: 0.0}, 0.3, None
+        for i, (_, r) in enumerate(found[1:], start=1):
+            cluster = int(cluster_of[r["character"]])
+            if previous is not None and cluster != previous:
+                gap += 0.3
+            gaps[i], previous = gap, cluster
+        panels.append((title, found, gaps))
+    heights = [len(f) + g[len(f) - 1] for _, f, g in panels]
+    fig, axes = plt.subplots(3, 1, figsize=(PAGE, 8.2), gridspec_kw=dict(height_ratios=heights, hspace=0.12))
+    for i, (ax, (title, found, gaps)) in enumerate(zip(axes, panels)):
+        ribbon_axes(ax, role_map, found, gaps, xticks=i == len(panels) - 1, fontsize=6)
+        ax.set_title(title, loc="left", fontsize=7)
+    fig.subplots_adjust(top=0.94)
+    ribbon_legend(fig, role_map, loc="upper center", bbox_to_anchor=(0.5, 1.0), fontsize=6)
+    fig.savefig(OUT / "ribbon_settings_L32.pdf")
     plt.close(fig)
 
 
@@ -402,6 +459,7 @@ def main() -> None:
         "trajectory": lambda: trajectory_figure(role_map, tone_runs(role_map)),
         "trajectories": lambda: trajectories_figure(role_map),
         "ribbon_compact": lambda: ribbon_figure(role_map),
+        "ribbon_settings": lambda: ribbon_settings_figures(role_map),
         "rank_vs_norm": lambda: rank_figure(role_map),
         "tone_control": tone_figure,
         "offrails_auc": offrails_figure,
