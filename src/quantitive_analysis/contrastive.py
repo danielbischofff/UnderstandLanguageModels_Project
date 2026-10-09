@@ -49,7 +49,9 @@ MAX_SETS = len(PALETTE)
 
 #: Association measures, grouped by what they need to be computed.
 RANK_MEASURES = ("median_rank", "mean_rank", "min_rank", "mean_reciprocal_rank")
-COSINE_MEASURES = ("centroid_cosine", "weighted_max_cosine", "top1_cosine", "max_cosine")
+TOP_K_COSINE_MEASURES = ("centroid_cosine", "weighted_max_cosine", "top1_cosine", "max_cosine")
+ACTIVATION_COSINE_MEASURES = ("activation_word_cosine",)
+COSINE_MEASURES = TOP_K_COSINE_MEASURES + ACTIVATION_COSINE_MEASURES
 MEASURES = RANK_MEASURES + COSINE_MEASURES
 
 #: Measures a plot defaults to, one per family.
@@ -449,6 +451,23 @@ class ContrastiveProbe:
             }
         return result
 
+    def activation_measures(self, normalized_activations: np.ndarray) -> dict[str, dict[str, np.ndarray]]:
+        """Mean pairwise cosine to set words after transport and final RMSNorm.
+
+        Each word has equal weight; no top-k selection, probability weighting,
+        or set-centroid normalization is applied. Zero vectors are undefined.
+        """
+        activations = np.asarray(normalized_activations, dtype=np.float32)
+        if activations.ndim != 2 or activations.shape[1] != self._unit_words.shape[1]:
+            raise ValueError("normalized activations must be [positions, d_model]")
+        dots = _unit(activations) @ self._unit_words.T
+        dots[np.linalg.norm(activations, axis=1) == 0, :] = np.nan
+        dots[:, np.linalg.norm(self._unit_words, axis=1) == 0] = np.nan
+        return {
+            item.id: {"activation_word_cosine": dots[:, column].mean(axis=1)}
+            for item, column in zip(self.sets, self._columns)
+        }
+
     def rank_measures(self, ranks: np.ndarray) -> dict[str, dict[str, np.ndarray]]:
         """Where each set's own words sit in the full-vocabulary ranking."""
 
@@ -475,14 +494,16 @@ class ContrastiveProbe:
         top_ids: np.ndarray,
         top_probabilities: np.ndarray,
         ranks: np.ndarray | None,
+        normalized_activations: np.ndarray | None = None,
     ) -> list[dict[str, Any]]:
         """Every available measure for one layer, as one series per set."""
 
         cosine = self.cosine_measures(top_ids, top_probabilities)
         rank = self.rank_measures(ranks) if ranks is not None else {}
+        activation = self.activation_measures(normalized_activations) if normalized_activations is not None else {}
         series = []
         for item in self.sets:
-            values = {**cosine[item.id], **rank.get(item.id, {})}
+            values = {**cosine[item.id], **rank.get(item.id, {}), **activation.get(item.id, {})}
             series.append(
                 {
                     "layer": int(layer),

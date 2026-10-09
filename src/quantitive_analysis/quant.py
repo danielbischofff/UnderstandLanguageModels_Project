@@ -286,7 +286,7 @@ def recomputed_layers(
                                 float(value) if np.isfinite(value) else None
                                 for value in cosine[item.id][name]
                             )
-                            for name in COSINE_MEASURES
+                            for name in COSINE_MEASURES if name in cosine[item.id]
                         },
                     )
                     for item in probe.sets

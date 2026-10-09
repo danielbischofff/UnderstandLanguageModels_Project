@@ -18,3 +18,7 @@ __pycache__/
 runtime/
 .vscode/settings.json
 src/control/results/*
+
+# Shared analysis environment and decompressed large snapshot
+.venv-analysis/
+results/mini-batch-cluster-readout/token-comparison.html
