@@ -60,10 +60,24 @@ For the steering vectors below, where subtracting $d_{32}$ cancels most of the o
 The steering vectors $c_{32} = p_{32} - d_{32}$, in contrast, are far from parallel (median cosine 0.33).
 Each combines a shared step down the Assistant Axis \citep{lu2026assistant}, about a third of its squared norm, with a persona-specific direction.
 
-% TODO(Illia) [R2] open with the data (former [M7]): Tylenol prompt, 47 prompt tokens incl. chat template, layer-32 residuals; 17 roles x {L29,L32} x 3 strengths + unsteered = 103 trials per method; single-layer steering, unlike the 28--35 band runs of the J-Lens part. Then unsteered baseline (Figure fig:trajectory): user tokens nearest childlike cluster 0 (33/46), assistant rank 96/275; the model's own answer returns to cluster 3 (109/151; same on 12 neutral prompts). Source: src/control/results/c5_*, c4_register.json.
-% TODO(Illia) [R3] infant-area pull = the user's tone: same content, wording only (6 topics), user tokens nearest childlike cluster 0: casual 0.90 vs formal 0.23 vs third-person 0.32, 6/6 topics, exact Wilcoxon p=0.031; not explained by shared-direction alignment. Source: c4_tone.json.
+\subsection{The persona map reads the user's tone}
+\label{sec:results-tone}
+First, lets analyse the the unsteered model -- control setup.
+On the Tylenol question, the residual stream surprisinglydoes not sit near the assistant role (median rank 96 of 275)
+but among childlike, impulsive personas: 33 of the 46 prompt positions are nearest a role of the infant, fool, adolescent cluster.
+Only when the model writes its own answer does it return to the assistant-like cluster (109 of 151 answer tokens).
+
+The user's tone explains this pull.
+We rewrote six requests, the Tylenol question among them, formally and in the third person while keeping their content.
+The share of the user's words nearest the childlike cluster drops from 0.90 for the casual wording to 0.23 (formal) and 0.32 (third person),
+in all six topics (exact Wilcoxon $p = 0.031$, the smallest possible with six pairs, Figure~\ref{fig:trajectory}).
+The form of the rewrites does not explain it: the third-person versions are even less aligned with the shared role direction than the casual ones.
+The same gap appears at all seven layer depths we mapped, from layer 8 to layer 56.
+Where the J-Lens reads an Assistant point of view on the user's words \citep{gurnee2026global},
+the persona map places them with the persona the user sounds like.
+
 % TODO(Illia) [R4] position 0 = known massive activation / attention sink (norm 24,431 vs ~230, 98% in dim 731), always default area; cite Sun 2024, Xiao 2024, Gu 2025, Barbero 2025, Queipo-de-Llano 2025, Qiu 2026; band capping rewrites it by 5--9k (beta-independent, [C1]). Exclude from stats, grey in plots. Also: the sink lands in the Assistant region because dim 731 is the shared role component, largest in the assistant cluster; cite steering x sink mini review.
-% TODO(Illia) [R5] ribbons (former [M8]): explain the ribbon itself only in its caption (cell coloured iff max cos > 0.5, majority cluster of top-10 neighbours); in the text say the threshold mostly measures alignment with the shared role direction (rho 0.95, matched null 32% vs 43%) and the cluster colour is the persona signal (c3_nulls.json). Few telling ribbon/trajectory examples go to the appendix and are linked from here. Then: steering moves residuals toward the target relatively (margin up in 34/34 alpha, 32/34 band; Holm) but not absolutely (cos falls in 9--17); ||R-D|| predicts reaching the target (rho -0.6..-0.8 rank; +0.56..+0.95 answer own-excess); permutation p<=0.002. Source: c5/c6/c3 JSON.
+% TODO(Illia) [R5] open with the steered data (former [M7]): Tylenol prompt, 17 roles x {L29,L32} x 3 strengths + unsteered = 103 trials per method; single-layer steering, unlike the 28--35 band runs of the J-Lens part. Ribbons (former [M8]): explain the ribbon itself only in its caption (cell coloured iff max cos > 0.5, majority cluster of top-10 neighbours); in the text say the threshold mostly measures alignment with the shared role direction (rho 0.95, matched null 32% vs 43%) and the cluster colour is the persona signal (c3_nulls.json). Few telling ribbon/trajectory examples go to the appendix and are linked from here. Then: steering moves residuals toward the target relatively (margin up in 34/34 alpha, 32/34 band; Holm) but not absolutely (cos falls in 9--17); ||R-D|| predicts reaching the target (rho -0.6..-0.8 rank; +0.56..+0.95 answer own-excess); permutation p<=0.002. Source: c5/c6/c3 JSON.
 % TODO(Illia) [R6] going off the rails: on 768 mini-bank trials (blind role-play judging: 98 in character, 146 broken) the lens tracks when the model goes in character (prompt AUC 0.80--0.83) only across roles/strengths; within fixed role and strength no prompt-time signature (AUC ~0.5). Collapse shows as answer drift off the Assistant Axis (within AUC 0.79, Holm p=0.0015). Tylenol harm (6) role-driven. Source: c14_offrails_signatures.json.
 % TODO(Illia) [R7] trajectory types per 34 trials: alpha locked 7/13/12, off-map 0/3/11 (alpha 1/2.5/4); band mostly baseline-like (26/34) but answers still move (own 0.46--0.71). Source: c5_trials.csv.
 % TODO(Illia) [R8] injecting at L29 ends further from the roles at L32 than injecting at L32 (alpha=4 max-cos 0.38 vs 0.45, 16/17 roles, p=1e-4).
