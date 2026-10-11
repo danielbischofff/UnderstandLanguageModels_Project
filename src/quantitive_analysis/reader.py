@@ -56,11 +56,14 @@ class AnalysisReader:
         for layer in probe.layers:
             tensor = artifact.load_tensor(events[layer]["tensor_key"])
             matrix = tensor[0].float().numpy().astype(np.float32, copy=False)
-            logits = self._unembedding.logits(self._lens.transport(layer, matrix))
+            transported = self._lens.transport(layer, matrix)
+            normalized = self._unembedding.normalize(transported)
+            logits = self._unembedding.logits(transported)
             ids, _, probabilities = self._top_k(logits, probe.top_k, allowed=self._wordlike)
             ranks = ranks_from_logits(logits, probe.token_ids)
             del logits
             series.extend(probe.measure_layer(
-                layer, top_ids=ids, top_probabilities=probabilities, ranks=ranks
+                layer, top_ids=ids, top_probabilities=probabilities, ranks=ranks,
+                normalized_activations=normalized
             ))
         return {**probe.describe(), "series": series}

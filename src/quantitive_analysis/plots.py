@@ -32,6 +32,7 @@ INK_MUTED = "#7a7873"
 GRID = "#e9e8e4"
 
 MEASURE_TITLES = {
+    "activation_word_cosine": "mean activation-to-word cosine (after J-Lens and final RMSNorm)",
     "centroid_cosine": "cosine to set centroid (top-k, probability weighted)",
     "weighted_max_cosine": "cosine to nearest set word (top-k, probability weighted)",
     "top1_cosine": "cosine of the top word to the set centroid",
@@ -291,7 +292,7 @@ def build_figure(
         f"top-{layer.top_k} readout · {escape(layer.source)}"
     )
     if layer.source == COSINE_ONLY:
-        caption += " · ranks need retained activations"
+        caption += " · ranks and activation-to-word cosine need retained activations"
     footer = f"sets: {escape(words)}"
     if table is not None:
         footer += f" · table: {escape(table)}"

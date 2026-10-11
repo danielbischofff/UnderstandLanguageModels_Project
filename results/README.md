@@ -1,5 +1,26 @@
 # Published experiment results
 
+## Mini-experiment comparison dashboard
+
+Open [the main overview](index.html) for a filtered, sortable comparison of
+band-capping and alpha steering. It shows MRR and MCS paired differences against
+each experiment's own control, with question-averaged effects and 95% bootstrap
+intervals side by side. Specificity is omitted from this dashboard.
+
+The expandable **Other analyses** section contains question comparisons,
+absolute scores, word-bank and token-policy comparisons, mean/median summaries,
+and a link to [both methods' token trajectories and answers](steering-comparison/token-comparison.html).
+The original summary JSON files remain in their experiment folders.
+
+Rebuild from the two completed local result folders:
+
+```bash
+.venv/bin/python scripts/build_steering_comparison.py
+```
+
+Keep `steering-comparison/` beside `index.html`; the token page loads its two
+larger datasets from that folder and works offline.
+
 Convention: `configs/experiments/<name>.yaml` has `name: <name>`, and committed
 runs live under `results/<name>/<run-id>/`. Preserve the original experiment YAML
 when adding a new experiment. Every archive includes its resolved configuration

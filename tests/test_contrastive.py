@@ -136,6 +136,9 @@ def fake_backend(_source):
         def __init__(self, data_dir):
             pass
 
+        def normalize(self, matrix):
+            return matrix * np.array([2.0, 1.0]) / np.sqrt(np.mean(matrix ** 2, axis=1, keepdims=True) + 1e-6)
+
         def logits(self, matrix):
             return np.column_stack([matrix, matrix.sum(axis=1), -matrix.sum(axis=1)])
 
@@ -229,8 +232,9 @@ def test_new_sets_are_scored_from_saved_top_words_without_ranks(tmp_path, monkey
     ))
     layer = series.layers[0]
     assert layer.source == quant.COSINE_ONLY
-    assert set(layer.sets[0].measures) == set(contrastive.COSINE_MEASURES)
+    assert set(layer.sets[0].measures) == set(contrastive.TOP_K_COSINE_MEASURES)
     assert len(layer.sets[0].measures["centroid_cosine"]) == 8
+    assert "activation_word_cosine" not in layer.sets[0].measures
 
 
 def test_edited_sets_are_recomputed_instead_of_reusing_stale_numbers(tmp_path, monkeypatch):
@@ -259,6 +263,12 @@ def test_edited_sets_are_recomputed_instead_of_reusing_stale_numbers(tmp_path, m
     series = quant.trial_series(loaded, probe=edited, reader=lens)
     assert [layer.source for layer in series.layers] == [quant.RECOMPUTED]
     assert set(series.layers[0].sets[0].measures) == set(contrastive.MEASURES)
+    # Layer 1 transports [1,2] to [2,3]; final gain changes direction to [4,3].
+    assert series.layers[0].sets[0].measures["activation_word_cosine"][0] == pytest.approx(-0.8)
+    archive = quant.RunArchive({"name": "test"}, "run", tmp_path, (loaded,))
+    rows = list(quant.table_rows(archive, [series]))
+    assert rows[0]["activation_word_cosine"] == pytest.approx(-0.8)
+
 
 
 def test_change_labelling_scales_with_its_parameter():
@@ -346,3 +356,28 @@ def test_cli_scores_old_archive_and_reruns_with_changed_sets(tmp_path, monkeypat
         results.append(layer["sets"][0]["measures"]["centroid_cosine"])
     assert results[0] != results[1]
     assert next(output.rglob("index.html")).is_file()
+
+
+def test_activation_word_cosine_is_pairwise_mean_not_centroid_cosine():
+    mixed = probe(sets=[ContrastiveSet.from_mapping(
+        {"id": "mixed", "words": ["good", "bad"]}
+    )])
+    # Bank directions are [0,1] and [-1,0]. Their mean is not unit length.
+    scores = mixed.activation_measures(np.array([[0., 2.], [0., 20.], [1., 0.], [0., 0.]]))
+    values = scores["mixed"]["activation_word_cosine"]
+    assert values[:3] == pytest.approx([0.5, 0.5, -0.5])
+    assert np.isnan(values[3])
+    with pytest.raises(ValueError, match="d_model"):
+        mixed.activation_measures(np.ones((1, 3)))
+
+
+def test_unembedding_normalize_includes_final_gain():
+    import importlib.util
+    path = Path("direct_character_vectors_j_lens_analysis/src/unembed.py")
+    spec = importlib.util.spec_from_file_location("test_unembed", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    head = object.__new__(module.Unembedding)
+    head.gain = np.array([2., 1.], dtype=np.float32)
+    vector = head.normalize(np.array([[2., 3.]]))
+    np.testing.assert_allclose(vector / np.linalg.norm(vector), [[0.8, 0.6]], rtol=1e-6)

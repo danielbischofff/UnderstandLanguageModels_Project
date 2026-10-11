@@ -77,6 +77,10 @@ class Unembedding:
             raise IndexError(f"token id outside vocabulary of {self.vocab_size}")
         return bf16_to_float32(np.asarray(self._weight[ids]))
 
+    def normalize(self, residuals: np.ndarray) -> np.ndarray:
+        """Apply the final RMSNorm, including its learned per-dimension gain."""
+        return rms_norm(np.atleast_2d(np.asarray(residuals, dtype=np.float32)), self.gain)
+
     def logits(self, residuals: np.ndarray, chunk: int = VOCAB_CHUNK) -> np.ndarray:
         """Map ``[n, d_model]`` residuals to ``[n, vocab_size]`` logits.
 
@@ -84,7 +88,7 @@ class Unembedding:
         1.6 GB matrix is never fully resident.
         """
         residuals = np.atleast_2d(np.asarray(residuals, dtype=np.float32))
-        normed = rms_norm(residuals, self.gain)
+        normed = self.normalize(residuals)
         out = np.empty((normed.shape[0], self.vocab_size), dtype=np.float32)
         for lo in range(0, self.vocab_size, chunk):
             hi = min(lo + chunk, self.vocab_size)

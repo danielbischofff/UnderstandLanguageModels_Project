@@ -13,6 +13,7 @@ def row(character, set_id, score, question='Q01'):
                 coefficient='' if character == 'unsteered' else '1.5',
                 scheme='' if character == 'unsteered' else 'layer-32', layer='32',
                 set=set_id, mean_reciprocal_rank=score, centroid_cosine=score,
+                activation_word_cosine=score,
                 response_positions=2)
 
 
@@ -25,6 +26,7 @@ def test_paired_scores_and_persona_specificity():
     assert result[0]['mean_reciprocal_rank_persona_margin'] == pytest.approx(.2)
     assert result[0]['mean_reciprocal_rank_margin_delta'] == pytest.approx(.3)
     assert result[1]['centroid_cosine_delta'] == pytest.approx(.4)
+    assert result[0]['activation_word_cosine_margin_delta'] == pytest.approx(.3)
 
 
 def test_missing_values_are_not_zero_and_controls_are_unique():
@@ -49,6 +51,8 @@ def test_prompt_exclusion_and_finite_counts(tmp_path):
     assert result['centroid_cosine'] == pytest.approx(.4)
     assert result['centroid_cosine_positions'] == 2
     assert result['response_positions'] == 3
+    assert result['activation_word_cosine'] == pytest.approx(.4)
+    assert result['activation_word_cosine_positions'] == 2
 
 
 def test_topic_balancing(tmp_path):
@@ -69,6 +73,7 @@ def test_topic_balancing(tmp_path):
     result = next(csv.DictReader((tmp_path / 'topic_balanced_summary.csv').open()))
     assert float(result['centroid_cosine_delta']) == pytest.approx(.6)
     assert int(result['centroid_cosine_delta_valid_questions']) == 3
+    assert float(result['activation_word_cosine_delta']) == pytest.approx(.6)
 
 
 def test_preparation_filters_proxies_and_rejects_stale_sources(tmp_path):
@@ -103,3 +108,14 @@ def test_preparation_filters_proxies_and_rejects_stale_sources(tmp_path):
     with pytest.raises(ValueError, match='Stale audit'):
         prepare(audit, config, tmp_path / 'stale')
     assert not (tmp_path / 'stale').exists()
+
+
+def test_legacy_scores_leave_activation_cosine_missing():
+    scores = [row('unsteered', 'own', .2), row('unsteered', 'other', .3),
+              row('scientist', 'own', .6), row('scientist', 'other', .4)]
+    for entry in scores:
+        del entry['activation_word_cosine']
+    result = compare(scores, {'own': 'scientist', 'other': 'caregiver'})[0]
+    assert result['activation_word_cosine'] is None
+    assert result['activation_word_cosine_delta'] is None
+    assert result['activation_word_cosine_persona_margin'] is None

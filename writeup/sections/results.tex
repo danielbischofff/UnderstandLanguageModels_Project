@@ -38,5 +38,12 @@ At the token position ``feel'', when steered with band-capping ($\beta = 0$) tow
 \subsubsection{Other examples} We found other examples as well, but for the sake of brevity of this write-up we decided to include only the most striking findings. 
 
 \textbf{TODO - Daniel - analysis of your results}
+\subsection{Quantitative analysis of the J-Lens readouts}
+In general the results show that steering can increase persona-word associations, with particularly consistent MMR results for the alpha steering method. At readout layer 32, 35 an 62, all 24 alpha configurations had positive overall MRR differences and bootstrap intervals entirely above zero. The full results are reported in Appendix~\ref{sec:full-quantitative-results}, Tables~\ref{tab:quantitative-alpha-all} and~\ref{tab:quantitative-beta-all}, for alpha steering and band-capping, respectively.
 
+\subsubsection{Stronger steering does not necessarily improve both metrics}
+When comparing the the metrics across different alpha values, we found that stronger steering does not necessarily improve both metrics. For example, at readout layer 62  and contextualized words, the increase of $\alpha=1.5$ to $\alpha=4.0$ did improve the Mean MRR score, but decreased the Mean MCS score. This is likely due to the fact that stronger steering can also introduce more noise, which can negatively impact the MCS score. Words can move higher relative to other vocabulary items without increasing their average angular alignment with the activation.
+
+\subsubsection{General persona words give more consistent support than contextualized words}
+Across the evaluated steering configurations, increased MCS scores were more consistent for general persona words than for contextualized words. This pattern occurred under both band-capping and additive steering and also persisted when proxy tokens were included. MRR increased frequently for both general and contextualized words. Together these results suggest that steering more consistently strengthens alignment with general persona associated concepts than with the selected question-specific concepts.
 \textbf{TODO - Illia - add your 2D visualization methods}

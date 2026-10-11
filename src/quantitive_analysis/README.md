@@ -98,3 +98,21 @@ unequal set sizes and alter vocabulary content. Complete-token status can reflec
 an alternate capitalization or spacing form. This pipeline does not implement
 multi-token sequence probabilities, deduplicate colliding words, automatically
 judge response coherence, or pool separate runs/methods into one comparison.
+
+## Activation-to-word cosine
+
+`activation_word_cosine` compares the J-Lens-transformed activation, after the
+model's final RMSNorm (including its learned gain), with each selected bank
+word's raw unembedding vector. At each position and layer it computes
+`mean_w cosine(RMSNorm(J_layer @ h), U[w])`. Words receive equal weight: there
+is no top-k cutoff, probability weighting, or normalization of the bank centroid.
+Higher values mean stronger directional alignment, not higher probability.
+Zero-vector cosines are undefined and exported as missing values.
+
+The metric is included in CSV/JSON when retained activations are available.
+Select its timeline with `--cosine-measure activation_word_cosine`; existing
+plot defaults are unchanged. Saved top-word archives cannot reconstruct this
+metric, so it remains unavailable there. The question-bank pipeline also computes
+its response-position average, control delta, persona margin, margin delta, and
+topic-balanced summaries using the same rules as MRR and centroid cosine.
+Word-token resolution and proxy policies apply to this metric too.
