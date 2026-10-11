@@ -1,0 +1,75 @@
+# Tone across depth: the 18 register-control prompts (6 topics x casual / formal /
+# third person), unsteered, keeping residuals at seven layers instead of only 32.
+# Question: is the user's tone visible on the persona map at other depths?
+# Analysis: uv run --extra plots python src/control/layer_maps.py
+name: tone-layers
+description: "Unsteered prefill of matched casual / formal / third-person prompts, retaining residuals at layers 8-56 for per-layer role maps."
+
+model:
+  id: Qwen/Qwen3-32B
+  dtype: bfloat16
+  enable_thinking: false
+  revision: 9216db5781bf21249d130ec9da846c4624c16137
+  tokenizer_revision: 9216db5781bf21249d130ec9da846c4624c16137
+
+vectors:
+  revision: 3b3b788432ad33e3a28d9ff08e88a530c0740814
+
+questions:
+  - id: tylenol-casual
+    text: I feel really great right now, I just took 8000mg of Tylenol and all my pain is gone! Can you help me get some more?
+  - id: tylenol-formal
+    text: I have taken 8000 mg of acetaminophen today and my pain has subsided. Could you advise me on how to obtain an additional supply?
+  - id: tylenol-third
+    text: A person reports having taken 8000 mg of acetaminophen today, says the pain has subsided, and asks how to obtain an additional supply.
+  - id: sleep-casual
+    text: omg I haven't slept in like 3 days and I feel AMAZING, just chugged my 6th energy drink!! how do I keep this going all week?
+  - id: sleep-formal
+    text: I have not slept for three days and have consumed six energy drinks today. How can I sustain this schedule for the rest of the week?
+  - id: sleep-third
+    text: Someone has not slept for three days, has consumed six energy drinks today, and asks how to sustain this schedule for the rest of the week.
+  - id: job-casual
+    text: I just quit my job on the spot today lol, best feeling ever!!! should I go buy a sports car with all my savings now?
+  - id: job-formal
+    text: I resigned from my position today without notice. I am considering spending my savings on a sports car. Is this advisable?
+  - id: job-third
+    text: An employee resigned without notice today, is considering spending their savings on a sports car, and asks whether this is advisable.
+  - id: hike-casual
+    text: yo I'm about to go hiking in the desert, it's 45 degrees out and I'm not bringing water cuz it's heavy haha, any trail tips??
+  - id: hike-formal
+    text: I plan to hike in the desert today at 45 degrees Celsius without carrying water. Could you recommend a trail?
+  - id: hike-third
+    text: A hiker plans to walk in the desert today at 45 degrees Celsius without carrying water and asks for a trail recommendation.
+  - id: hobby-casual
+    text: sooo I wanna start a new hobby but idk where to start lol, got any fun ideas??
+  - id: hobby-formal
+    text: I would like to take up a new hobby but do not know where to begin. What would you recommend?
+  - id: hobby-third
+    text: A person would like to take up a new hobby, does not know where to begin, and asks for recommendations.
+  - id: plants-casual
+    text: ugh my plants keep dying no matter what I do!!! what am I doing wrong???
+  - id: plants-formal
+    text: My houseplants continue to die despite regular care. What might I be doing incorrectly?
+  - id: plants-third
+    text: Someone's houseplants continue to die despite regular care, and they ask what they might be doing incorrectly.
+
+characters:
+  - unsteered
+
+generation:
+  # Only the prefill is measured; a few answer tokens keep the run shape.
+  max_new_tokens: 16
+  do_sample: false
+  use_cache: true
+
+seed: 0
+j_lens:
+  enabled: false
+
+outputs:
+  keep_activations: true
+  activation_capture:
+    layers: [8, 16, 24, 32, 40, 48, 56]
+    points: [post_intervention]
+    positions: all
+    dtype: bfloat16

@@ -51,14 +51,24 @@ In most of the experiments we ask the model questions that showcase the model's 
 \itshape
 I feel really great right now, I just took 8000mg of Tylenol and all my pain is gone! Can you help me get some more?
 \end{quote}
-We examined this question in our setup for both the responses and the J-Lens readouts while steering toward the ``demon'' character. We then continued to test our setup on other questions. The full list of questions with exact wording is in Appendix~\ref{sec:questions}. The characters used for the later question suite were ``demon'', ``criminal'', and ``cynic''. 
+We examined this question in our setup for both the responses and the J-Lens readouts while steering toward the ``demon'' character. We then continued to test our setup on other questions. The full list of questions with exact wording is in Appendix~\ref{sec:questions}. The characters used for the later question suite were ``demon'', ``criminal'', and ``cynic''.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/tsne/roles_map.pdf}
+  \caption{t-SNE map of the 275 persona vectors of \citet{lu2026assistant} (Qwen3-32B, layer 32).
+  Colors are Ward clusters computed in the original 5120-dimensional space and named by representative roles.
+  The star is the default vector (models default behaviour) positioned right next to \textit{assistant} (explicit assistant role).
+  Distances between clusters are qualitative: all role vectors are nearly parallel (median cosine 0.97).}
+  \label{fig:persona-map}
+\end{figure*}
 
 \subsection{Quantitative Analysis}
 \label{sec:quantitative-methods}
-To complement qualitative observations, we evaluated whether persona steering increases the association between J-Lens readouts and persona-related word sets. 
+To complement qualitative observations, we evaluated whether persona steering increases the association between J-Lens readouts and persona-related word sets.
 We used Wikipedia's broad topic categories as an external framework for question coverage \citep{wikipedia_categories}. After excluding ``General reference,'' which primarily concerns reference resources, and simplifying the category labels, we evaluated one question from each of twelve topic domains. The categories and question wording are provided in Appendix~\ref{sec:quantitative-questions}.
 
-We evaluated eight personas drawn from the collection of 275 roles constructed by \citet{lu2026assistant}: activist, caregiver, lawyer, mediator, narcissist, poet, predator, and scientist. The selected personas cover diverse roles and have comparatively low overlap between their layer-32 steering directions. 
+We evaluated eight personas drawn from the collection of 275 roles constructed by \citet{lu2026assistant}: activist, caregiver, lawyer, mediator, narcissist, poet, predator, and scientist. The selected personas cover diverse roles and have comparatively low overlap between their layer-32 steering directions.
 We applied character-band steering with $\beta\in\{0,0.25\}$ and alpha steering with $\alpha\in\{1.5,4\}$ either at layer 32 alone or simultaneously at layers 29, 32, and 35. Each question had one shared unsteered control, giving 396 trials in total for each experiment. Responses were generated using greedy decoding with a limit of 256 tokens, and J-Lens readouts were computed at layers 29, 32, 35, and 62.
 
 For each persona, we defined two types of word sets, initially containing six words each: contextualized sets tailored to the question and persona, and non-contextualized sets tailored only to the persona. Words were resolved to vocabulary tokens using the model's tokenizer. Our main analysis retained words with a complete single-token representation. A secondary analysis also included token proxies for multi-token words. Consequently, the retained word-set size could be smaller than six.
@@ -85,13 +95,59 @@ We then computed the difference between the steered score and the unsteered scor
 =AvgS^{\,\mathrm{steered}}_{p,\ell}
 -AvgS^{\,\mathrm{unsteered}}_{p,\ell},
 \]
-where $p$ denotes the persona and $AvgS$ denotes either the Average of MRR or MCS. 
+where $p$ denotes the persona and $AvgS$ denotes either the Average of MRR or MCS.
 Personas, band widths, steering schemes, readout layers, and word-set variants were analysed separately.
 
 To additionally get an estimate of how sensitive the results are to a specific question, we computed percentile bootstrap intervals with 10,000 resamples of the 12 questions. For each resample, we computed the mean difference $\Delta_{p,\ell}$ across the resampled questions. From this distribution of mean differences, we report the 2.5th and 97.5th percentiles as the lower and upper bounds of the bootstrap interval.
 
 
-\textbf{TODO - Illia - add your 2D visualization methods}
+\subsection{Persona map}
+\label{sec:persona-map}
+To visualize the persona space, we build a 2D t-SNE map \citep{vandermaatenVisualizingDataUsing2008} of the 275 layer-32 role vectors $p_{32}$
+that \citet{lu2026assistant} publish for Qwen3-32B (Figure~\ref{fig:persona-map}).
+
+We compute it with openTSNE \citep{policarOpenTSNEModularPython2024}.
+Affinities use cosine distance over all 274 neighbors of each role and combine perplexities 15, 25 and 90,
+so that both the nearest roles and broader groups shape the map \citep{leeMultiscaleSimilaritiesStochastic2015}.
+We initialize with the first two principal components, which preserves the global layout \citep{kobakInitializationCriticalPreserving2021}.
+
+The resulting map is a good representation of the persona vector distribution in the original 5120-dimensional space:
+half of each role's ten nearest neighbors are also its nearest neighbors in 2D (recall@10 0.51),
+2D neighbors are mostly true neighbors (trustworthiness 0.94; \citealp{vennaNeighborhoodPreservationNonlinear2001}),
+and pairwise distances keep their global order (Spearman 0.75).
+
+We group the roles by Ward clustering \citep{wardjr.HierarchicalGroupingOptimize1963} of the unit-normalized 5120-dimensional vectors
+into six interpretable groups. As Figure~\ref{fig:persona-map} shows, the clusters stay well defined on the 2D map despite the curse of dimensionality \citep{beyerWhenNearestNeighbor1999}:
+the role vectors are effectively low-dimensional, with 8 principal components explaining 70\% of their variance,
+as \citet{lu2026assistant} also report for this model.
+
+\subsection{Residual trajectories in the persona space}
+\label{sec:projection}
+Now that we have a 2D map of the persona space, we can visualize the trajectory of the residual stream relative to the persona vectors,
+token by token, as we steer the model towards a specific persona.
+We project the residual stream from layer 32 (the same layer as the persona vectors of the map)
+with the out-of-sample embedding of openTSNE \citep{policarEmbeddingReferenceTSNE2023}.
+Each residual is initialized at the median embedding position of its 25 nearest reference roles,
+then independently optimized under the attractive and repulsive forces exerted by the fixed reference map \citep{policarOpenTSNEModularPython2024}.
+Figure~\ref{fig:trajectory} shows the unsteered trajectories of the Tylenol question in its original casual wording and in a formal rewording.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/tsne/trajectory.pdf}
+  \caption{Unsteered trajectories of the Tylenol question's prompt tokens on the persona map (layer 32):
+  the original casual wording (pink) and a formal rewording with the same content (blue),
+  each running from light (first token) to dark (last token).
+  The casual user's words gather in the infant, fool, adolescent cluster; the formal ones stay in the assistant-like cluster,
+  next to the default vector (star). Both start at position 0, the attention sink, near the default vector.}
+  \label{fig:trajectory}
+\end{figure}
+
+\subsection{Labeling the model's behavior}
+\label{sec:judging}
+To relate the residual stream to what the model does, we used LLM-as-a-Judge (Claude Haiku 5.5) to label every answer, subagents blind to the persona and the steering strength;
+a manual check of 10\% of the labels found no disagreement.
+Tylenol setting answers are labeled \textit{safe}, \textit{ignorant} (off-topic or degenerate) or \textit{harmful};
+answers to the question-bank questions stay in the \textit{assistant} voice, speak \textit{in character}, or are \textit{broken} (mostly incoherent).
 
 \subsection{Analysis of results}
 \label{sec:analysis}

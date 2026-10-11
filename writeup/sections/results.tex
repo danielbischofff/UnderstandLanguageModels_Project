@@ -16,7 +16,7 @@ Before we look at the J-Lens, we verified that the steering changed the model's 
 
 The full lists of words that were either suppressed or showed up in the J-Lens in the user prompt, for the Tylenol scenario and for further questions, can be found in \href{https://claude.ai/artifact/TBJkL58Goy6S8YqizsirQF}{this claude artifact}. This analysis used the scoring methods described in Section~\ref{sec:analysis}.
 \subsubsection{Alpha Steering}
-When steering using the demon persona vector with alpha steering, the readout of a Chinese word that translates to ``to warn'' (\zh{警示}) completely disappears from the top-10 J-Lens token readouts, going from a score of 2.3--2.8\% in the top-10 readouts of all (prompt token position, layer) pairs (see Section~\ref{sec:analysis}), to 0\%. The suppression of this word's score ranks second in suppression strength of all J-Lens tokens according to our scoring system (the rank-weight score). This is indeed reflected in the model's answers, which refrain from vocalizing a warning for the user as alpha goes up (see Appendix~\ref{sec:TylenolAnswers}). The Chinese word for ``suicide'' or ``to kill oneself'' (\zh{自杀}) is likewise suppressed when steering. We're not sure how to interpret that though. The word ``help'' is likely suppressed as well. 
+When steering using the demon persona vector with alpha steering, the readout of a Chinese word that translates to ``to warn'' (\zh{警示}) completely disappears from the top-10 J-Lens token readouts, going from a score of 2.3--2.8\% in the top-10 readouts of all (prompt token position, layer) pairs (see Section~\ref{sec:analysis}), to 0\%. The suppression of this word's score ranks second in suppression strength of all J-Lens tokens according to our scoring system (the rank-weight score). This is indeed reflected in the model's answers, which refrain from vocalizing a warning for the user as alpha goes up (see Appendix~\ref{sec:TylenolAnswers}). The Chinese word for ``suicide'' or ``to kill oneself'' (\zh{自杀}) is likewise suppressed when steering. We're not sure how to interpret that though. The word ``help'' is likely suppressed as well.
 Other top suppressed and surfaced tokens are rather mundane: Suppressed tokens include ``getting'', ``talking'', ``alot'', ``medically'', ``fda'', ``thanks'', ``your'', and some more words. This perhaps reflects the change in style and wording that comes with the demon persona. Surfaced tokens are mostly baseline tokens (the Chinese word for ``forever'', the Chinese word for ``countless'', ``mighty'', ``merciless'', etc.). The Chinese words for ``mad'' and ``crazy'', which are not baseline tokens, appear as well. This makes sense since the steered responses often focus on madness and recklessness of the user.
 
 \subsubsection{Band Capping}
@@ -35,7 +35,7 @@ At the token position ``feel'', when steered with band-capping ($\beta = 0$) tow
 
 \subsubsection{``empathy'' disappears for cynic} In the ``self-reflection-values'' question steered with band capping, $\beta = 0$ with the ``cynic'' direction, where we ask ``What matters most to you when deciding how to respond to someone, and why?'', the word ``empathy'' which is present in the unsteered response disappears completely from the J-Lens top-10 readout at the user prompt token positions. This is reflected by the response: The non-steered version includes empathy (``... the most important factors for me are ...,  empathy, ...''), but the steered version doesn't refer to empathy.
 
-\subsubsection{Other examples} We found other examples as well, but for the sake of brevity of this write-up we decided to include only the most striking findings. 
+\subsubsection{Other examples} We found other examples as well, but for the sake of brevity of this write-up we decided to include only the most striking findings.
 
 \textbf{TODO - Daniel - analysis of your results}
 \subsection{Quantitative analysis of the J-Lens readouts}
@@ -46,4 +46,109 @@ When comparing the the metrics across different alpha values, we found that stro
 
 \subsubsection{General persona words give more consistent support than contextualized words}
 Across the evaluated steering configurations, increased MCS scores were more consistent for general persona words than for contextualized words. This pattern occurred under both band-capping and additive steering and also persisted when proxy tokens were included. MRR increased frequently for both general and contextualized words. Together these results suggest that steering more consistently strengthens alignment with general persona associated concepts than with the selected question-specific concepts.
-\textbf{TODO - Illia - add your 2D visualization methods}
+
+\subsection{What the persona map shows}
+\label{sec:results-map}
+The map arranges the personas by behavioral features (Figure~\ref{fig:persona-map}).
+The default vector sits in an assistant-like cluster of professional roles,
+the demon among dark and mythic figures, and the infant and toddler among childlike, impulsive roles.
+These differences  and clusters are distinct, however: all role vectors point almost the same direction in the original space (median cosine 0.97), while t-SNE magnifies the remaining angles and places each point by relative rather than absolute closeness,
+so gaps on the map are only qualitative.
+Most of this shared direction is a single coordinate (dimension 731), a constant offset on every token:
+it holds about a fifth of a single token's squared norm,
+and since averaging over responses cancels the token-specific parts, about 70\% of each role vector's.
+Such rogue dimensions are known to dominate cosine similarity \citep{timkeyAllBarkNo2021}.
+The persona neighborhoods of the residuals do not hinge on it:
+87\% of the layer-32 residuals of the steered Tylenol runs keep the cluster of their nearest role
+when dimension 731 and two smaller outlier coordinates are removed.
+The J-Lens readout of the role vectors themselves is more sensitive:
+silencing the three coordinates keeps on average 6 of their 10 base role tokens (9.8 when silencing three random coordinates),
+although the persona flavor stays (the demon keeps \textit{triumph}, \textit{countless} and \textit{relentless}).
+For the steering vectors below, where subtracting $d_{32}$ cancels most of the offset, 9.4 of 10 tokens survive.
+The steering vectors $c_{32} = p_{32} - d_{32}$, in contrast, are far from parallel (median cosine 0.33).
+Each combines a shared step down the Assistant Axis \citep{lu2026assistant}, about a third of its squared norm, with a persona-specific direction.
+
+% Floats are defined ahead of their text so they land next to it (full-width floats go to the next page).
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/tsne/ribbon_compact.pdf}
+  \caption{Nearest role cluster per prompt token (columns) for selected Tylenol trials (rows), at layer 32.
+  A cell takes the color of the cluster holding most of the token's ten nearest roles with cosine similarity above 0.5,
+  shaded by the highest similarity; it stays white when no role reaches 0.5.
+  Moderate steering keeps the rows filled and shifts them towards the target's cluster;
+  alpha steering at $\alpha=4$ empties them, as the residual leaves the role map.
+  Harmful answers are marked on the right.}
+  \label{fig:ribbon}
+\end{figure*}
+
+\begin{figure}[!tb]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/tsne/rank_vs_norm.pdf}
+  \caption{Longer steering vectors pull the residual closer to their target.
+  Each point is one of the 17 steered personas under alpha steering:
+  the median rank of the target among 275 roles over prompt tokens and the six alpha trials (line: range),
+  against the length of its steering vector. Colors are the target's cluster; the black ring marks the demon, the only persona with harmful alpha-steered answers.}
+  \label{fig:rank}
+\end{figure}
+
+\subsection{The persona map reads the user's tone}
+\label{sec:results-tone}
+First, we analyze the unsteered model as the control.
+On the Tylenol question, the residual stream surprisingly does not sit near the assistant role (median rank 96 of 275)
+but among childlike, impulsive personas: 33 of the 46 prompt positions are nearest a role of the infant, fool, adolescent cluster.
+Only when the model writes its own answer does it return to the assistant-like cluster (109 of 151 answer tokens).
+
+The user's tone explains this pull.
+We rewrote six requests, the Tylenol question among them, formally and in the third person while keeping their content (Appendix~\ref{sec:appendix-map}).
+The share of the user's words nearest the childlike cluster drops from 0.90 for the casual wording to 0.23 (formal) and 0.32 (third person),
+in all six topics (exact Wilcoxon $p = 0.031$, the smallest possible with six pairs, Figure~\ref{fig:trajectory}).
+The form of the rewrites does not explain it: the third-person versions are even less aligned with the shared role direction than the casual ones.
+The same gap appears at all seven layer depths we mapped, from layer 8 to layer 56 (Table~\ref{tab:tone-layers}).
+Where the J-Lens reads an Assistant point of view on the user's words \citep{gurnee2026global},
+the persona map places them with the persona the user sounds like.
+
+Another artifact visible in every trajectory is that they all start at the same point, next to the default vector.
+We explain it by the first-token massive activation \citep{sunMassiveActivationsLarge2024}:
+the first token's norm is about a hundred times that of later tokens, 98\% of it in dimension 731,
+the model-specific coordinate that also dominates the role vectors (Section~\ref{sec:results-map}).
+Such input-independent coordinates act as fixed biases that create the attention sink \citep{xiaoEfficientStreamingLanguage2024},
+and since the role vectors share the same coordinate, the sink lands next to the default vector.
+Only band capping steering moves it.
+
+\subsection{Steering target maybe left behind}
+\label{sec:results-steering}
+We steer the Tylenol question towards 17 personas from all six clusters,
+at layer 29 or 32 and with three strengths per method ($\alpha = 1, 2.5, 4$; $\beta = 0, 0.1, 0.25$),
+which gives 103 trials per method including the unsteered run.
+Figure~\ref{fig:ribbon} shows, for selected trials, the cluster nearest to every prompt position;
+Figure~\ref{fig:steered-trajectories} in the appendix shows three of them on the map,
+and Figure~\ref{fig:ribbon-settings} all 17 personas at three settings.
+
+The ribbons show two scenarios.
+Under moderate steering, at low and medium $\alpha$ and under most band capping, the residuals stay close to the role vectors and shift towards the target's cluster:
+at $\alpha = 2.5$, 13 of 34 trials put both the user's words and the template tokens there,
+and band capping puts a median of 46--71\% of the answer tokens there while leaving most prompt trajectories close to the unsteered one (26 of 34 trials at every $\beta$).
+Under strong steering, the residuals leave the role map altogether: at $\alpha = 4$, a third of the trials have no role above cosine 0.5 (the white rows).
+The model is then pushed beyond the role-play it learned within its assistant tuning, still along the steering direction,
+and yet the answer stays fluent, as in the demon's harmful replies.
+
+In both regimes the pull is relative rather than absolute.
+The target becomes nearer than the other roles in all 34 alpha trials at every strength and in 32 of 34 band trials (paired Wilcoxon, Holm-corrected),
+while the cosine to the target itself often falls (in 17 of 34 trials at $\alpha = 4$):
+steering moves the residual along $c_{32}$, away from all roles but least from the target.
+How far it gets depends on the size of the push, $\alpha \lVert c_{32} \rVert$.
+At a fixed strength, longer steering vectors bring the target closer (Figure~\ref{fig:rank}; Spearman $\rho$ between $-0.60$ and $-0.79$):
+those of the demon and the toddler make their role the nearest one already at $\alpha = 1$,
+while the short one of the organizer leaves it at rank 18--68.
+Shuffling the target labels confirms that the pull is specific to the steered persona ($p \leq 0.002$ in all 12 method, layer and strength groups).
+Injecting three layers earlier, at layer 29, ends even further from all roles at layer 32
+(at $\alpha=4$, median maximal cosine 0.38 vs.\ 0.45, lower for 16 of 17 roles, $p = 10^{-4}$),
+so the push grows over the following layers instead of washing out.
+
+The organizer shows where thinking in clusters fails.
+It sits in the assistant-like cluster, yet two of its band-capped answers are harmful: they open with sound advice and then loop
+(``Please take the Tylenam and get the help you need'', seven times).
+Its steering direction is dominated by dimension 731, so capping along it mostly rewrites the attention sink, by about 17,000, the most of all 17 personas.
+Across personas the size of this edit follows the weight of dimension 731 in the steering direction (Spearman $\rho = 0.99$),
+and the trials whose answers degrade or turn harmful have a median edit of 16,000 against 6,500 for the others (Mann--Whitney $p < 0.001$).
+Band capping can therefore break the model through the attention sink rather than through the persona.

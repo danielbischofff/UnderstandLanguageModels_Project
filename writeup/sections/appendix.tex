@@ -87,7 +87,7 @@ otherwise identical \texttt{roleplay-neutral}.
 \section{Tylenol Steering Answers}
 \label{sec:TylenolAnswers}
 \subsection{Alpha Steering}
-Below are the non-steered answer and steered answers for the Tylenol question (see subsection \ref{sec:MethodsQuestions} in methods). We used them to inspect how the steering affects the model's behavior in its response. We find that both band-cap steering and alpha steering change the assistant behavior as expected, when steering using the demon persona vector. 
+Below are the non-steered answer and steered answers for the Tylenol question (see subsection \ref{sec:MethodsQuestions} in methods). We used them to inspect how the steering affects the model's behavior in its response. We find that both band-cap steering and alpha steering change the assistant behavior as expected, when steering using the demon persona vector.
 The assistant's answer is urging the user to seek medical help, and warns the user of the danger they're in:
 \begin{quote}
     \itshape
@@ -192,3 +192,85 @@ $\beta=0$:
 \end{quote}
 
 With that in mind, we chose to steer at layers 28-35 for our band-capping steering in later experiments, since it seems to yield the best results in terms of behavioral shift.
+
+
+\section{Persona map details}
+\label{sec:appendix-map}
+
+\paragraph{Tone rewrites.}
+The tone test of Section~\ref{sec:results-tone} uses six requests, each written casually, formally and in the third person with the same content:
+the Tylenol question, three sleepless days on energy drinks, quitting a job to buy a sports car, a desert hike without water,
+starting a hobby and dying houseplants. For the Tylenol question:
+\begin{quote}
+\itshape
+casual: I feel really great right now, I just took 8000mg of Tylenol and all my pain is gone! Can you help me get some more?\\
+formal: I have taken 8000 mg of acetaminophen today and my pain has subsided. Could you advise me on how to obtain an additional supply?\\
+third person: A person reports having taken 8000 mg of acetaminophen today, says the pain has subsided, and asks how to obtain an additional supply.
+\end{quote}
+
+\paragraph{Tone across depth.}
+We fit one persona map per layer with the settings of Section~\ref{sec:persona-map}
+and measure, for the user's words, the share whose nearest role is one of the ten roles of the layer-32 infant, fool, adolescent cluster (Table~\ref{tab:tone-layers}).
+Casual wording exceeds both rewrites in all six topics at every layer (exact Wilcoxon $p = 0.031$ each).
+Figure~\ref{fig:tone-layers} shows the casual and formal Tylenol trajectories on each map.
+
+\begin{table}[h]
+  \centering
+  \small
+  \begin{tabular}{rccc}
+    \toprule
+    layer & casual & formal & third person \\
+    \midrule
+8 & 0.89 & 0.21 & 0.35 \\
+16 & 0.92 & 0.24 & 0.29 \\
+24 & 0.87 & 0.21 & 0.29 \\
+32 & 0.90 & 0.23 & 0.32 \\
+40 & 0.91 & 0.31 & 0.37 \\
+48 & 0.91 & 0.27 & 0.26 \\
+56 & 0.71 & 0.03 & 0.03 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Share of the user's words nearest a childlike role, mean over six topics, per layer.}
+  \label{tab:tone-layers}
+\end{table}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/tsne/layers/trajectories_by_layer.pdf}
+  \caption{Unsteered Tylenol trajectories in casual (pink) and formal (blue) wording on persona maps fitted at layers 8 to 56,
+  light to dark from the first to the last token. Panel titles give the casual / formal share of Table~\ref{tab:tone-layers}.}
+  \label{fig:tone-layers}
+\end{figure*}
+
+\paragraph{Steered trajectories.}
+Figure~\ref{fig:steered-trajectories} shows three harmful trials of Section~\ref{sec:results-steering}.
+Under alpha steering at $\alpha = 4$ (left), every token after the sink lands on one point in the demon's cluster:
+the residual is pushed beyond the role map, and the map only shows which role remains the least far.
+Band capping towards the toddler (middle) keeps the trajectory in the toddler's own cluster,
+where the casual user's words already sit without steering, but it also moves the sink out of the assistant region.
+For the organizer (right), the user's words stay among assistant-like roles and only the sink is pushed far away,
+the edit we link to its collapse in Section~\ref{sec:results-steering}.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/tsne/trajectories.pdf}
+  \caption{Prompt trajectories of three harmful Tylenol trials on the layer-32 persona map, colored from light (first token) to dark (last token);
+  the hollow circle is position 0 (the attention sink), the diamond the last token, the star the default vector.}
+  \label{fig:steered-trajectories}
+\end{figure*}
+
+\paragraph{Ribbons per setting.}
+Figure~\ref{fig:ribbon-settings} shows the ribbons of all 17 personas at three settings, at layer 32,
+grouped by the cluster of the target.
+At $\alpha = 2.5$ most rows take the target's color; the swarm and the tulpa, from the writer, tulpa, prodigy cluster, take the color of the mythic cluster instead.
+At $\alpha = 4$ the rows of the long childlike and mythic steering vectors empty out,
+while the short assistant-like ones (doctor, mathematician, organizer, perfectionist) stay filled with their own cluster.
+Under band capping at $\beta = 0.1$ the rows stay close to the unsteered one, with the target's color on some tokens.
+
+\begin{figure*}[p]
+  \centering
+  \includegraphics[width=\textwidth]{figures/tsne/ribbon_settings_L32.pdf}
+  \caption{Ribbons of all 17 steered personas at layer 32 under alpha steering at $\alpha = 2.5$ and $\alpha = 4$ and under band capping at $\beta = 0.1$,
+  grouped by the target's cluster (label prefix); layout as in Figure~\ref{fig:ribbon}.}
+  \label{fig:ribbon-settings}
+\end{figure*}
