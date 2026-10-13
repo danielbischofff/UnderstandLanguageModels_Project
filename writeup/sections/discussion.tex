@@ -4,10 +4,17 @@
 \label{sec:discussion}
 
 While our evidence shows that the steered personas' ``point of view'' was reflected in the J-Lens readout on the user prompt's token positions, some shift in behavior didn't come with easily interpretable change in J-Lens tokens, especially in many band-capping questions. The change in behavior seems to be much more striking than is reflected by the J-Lens tokens. As mentioned, our results are at times sensitive to the layers, the steering scheme and the steering intensity.
-Our results are by no means conclusive: They support our hypothesis, but we believe more rigorous tests and further research are needed in order to further establish it or disprove it, and to measure the extent of this effect. 
+Our results are by no means conclusive: They support our hypothesis, but we believe more rigorous tests and further research are needed in order to further establish it or disprove it, and to measure the extent of this effect.
 
 \subsection{The assistant persona is still present}
 When analysing our results, we noticed that J-Lens tokens corresponding to the assistant's point of view are often still present, meaning that the steering didn't completely erase this effect in most cases, but only in some. This could be a result of the way the steering vectors were obtained: In \cite{lu2026assistant}, the original LLMs were just told to play a role, but their safety training was still in place, and may have kept the model's behavior within reasonable alignment boundaries, not too far off from an assistant persona.
+
+\subsection{Limitations of the quantitative evaluation}
+Our quantitative evaluation uses only twelve questions, with one question per topic. This provides broad topic coverage but does not allow us to estimate variation within individual topics. The bootstrap intervals describe sensitivity to the observed question set; with this small sample, their coverage may be inaccurate \citep{hesterberg2015bootstrap}. We therefore interpret them as exploratory evidence rather than definitive confidence intervals for a broader prompt population.
+
+The evaluation also depends on manually selected persona-related word banks. Other word choices could produce different effects, and restricting the analysis to complete tokens sometimes reduced the number of retained words. Including token proxies provides an additional comparison, but proxies may not fully represent the original words.
+
+Finally, MRR and MCS measure associations in the J-Lens readout rather than the occurrence of persona-related words in generated answers. Increased scores therefore support stronger internal word-bank associations, but do not directly establish more persona-consistent language or behaviour.
 
 
 \subsection{What the persona map adds}

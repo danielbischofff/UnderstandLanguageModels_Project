@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>J-Lens · Token comparison</title>
+<style>
+body{margin:0;background:#f5f7fa;color:#19283a;font:15px/1.5 system-ui,sans-serif}main{max-width:1400px;margin:auto;padding:28px}h1{margin:0;font-size:30px}h2{font-size:19px;margin:0 0 10px}.muted{color:#617085}.controls,.panel{background:white;border:1px solid #dce3eb;border-radius:12px;padding:18px;margin:18px 0}.controls{display:flex;gap:16px;flex-wrap:wrap}label{display:flex;flex-direction:column;font-size:12px;color:#617085;gap:5px}select{padding:8px;font:14px system-ui;border:1px solid #c6d1df;border-radius:6px;background:white;color:#19283a}.question{font-size:20px;margin:12px 0}.answers{display:grid;grid-template-columns:1fr 1fr;gap:18px}.answers .panel{margin:0}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.6 system-ui;margin:0;max-height:600px;overflow:auto}.plot{height:330px}.legend{display:flex;gap:24px;flex-wrap:wrap}.blue{color:#2563eb}.orange{color:#c65b12}.inspect{font:13px ui-monospace,monospace;white-space:pre-wrap;min-height:24px}#status{font-size:13px}@media(max-width:750px){main{padding:14px}.answers{grid-template-columns:1fr}.plot{height:290px}}
+.overview-nav{position:sticky;top:0;z-index:1000;background:#17385c;padding:12px 24px;box-shadow:0 2px 8px #0002}.overview-nav a{display:inline-block;color:white!important;text-decoration:none;font:700 15px/1.5 system-ui;padding:7px 12px;border:1px solid #ffffff66;border-radius:7px}.overview-nav a:hover{background:#ffffff22}.overview-nav span{color:#e0eafa;margin-left:16px;font:13px system-ui}@media(max-width:600px){.overview-nav span{display:none}.overview-nav{padding:8px 12px}}</style></head><body><nav class="overview-nav" aria-label="Main analysis navigation"><a href="index.html">← Back to analysis overview</a><span>J-Lens evaluation · Main overview</span></nav><main>
+<h1>J-Lens token comparison</h1>
+<p class="muted">Compare the selected persona's word-set association in a steered answer and its unsteered baseline.</p>
+<div class="controls">
+<label>Question<select id="question"></select></label>
+<label>Persona<select id="persona"></select></label>
+<label>Band-width β<select id="beta"><option value="0">0</option><option value="0.25">0.25</option></select></label>
+<label>Steered layer(s)<select id="scheme"><option value="layer-32">32 only</option><option value="combined-29-32-35">29 + 32 + 35</option></select></label>
+<label>Readout layer<select id="layer"><option>29</option><option selected>32</option><option>35</option><option>62</option></select></label>
+<label>Word-set type<select id="kind"><option value="contextualized">Contextualized</option><option value="non_contextualized">General</option></select></label>
+<label>Word policy<select id="policy"><option value="complete_only">Complete tokens</option><option value="including_proxies">Including proxies</option></select></label>
+</div>
+<div id="question-text" class="question"></div>
+<p id="words" class="muted"></p>
+<p id="average-note" class="muted"></p>
+<details class="panel" open><summary><b>Words and tokens used for the selected persona</b></summary><p class="muted">Both curves use these same target words. Quoted token text makes leading spaces visible. Proxy entries use one token from a multi-token word.</p><div style="overflow:auto;max-height:300px"><table style="border-collapse:collapse;width:100%;text-align:left"><thead><tr><th>Question</th><th>Target word</th><th>Token text</th><th>Token ID</th><th>Mapping</th></tr></thead><tbody id="word-details"></tbody></table></div></details>
+<p class="muted">β = 0 still applies steering: it pins the persona projection. Each point averages the selected words at one answer-token position. Answers have different token sequences; matching x coordinates indicate the same ordinal position, not matching words. The final generated token has no cached activation and is omitted from plots.</p>
+<div class="legend"><b class="blue">━ Unsteered</b><b class="orange">━ Steered</b><span style="background:rgba(22,163,74,.16);padding:0 6px;border-radius:4px">Green fill: steered &gt; unsteered</span></div>
+<div class="panel"><h2>Mean reciprocal rank per token</h2><div id="mrr" class="plot"></div></div>
+<div class="panel"><h2>Activation word cosine per token</h2><div id="cosine" class="plot"></div></div>
+<div class="panel"><h2>Hovered position details</h2><div id="inspect" class="inspect">Hover over either plot to inspect both answers' tokens and scores.</div></div>
+<p id="status" class="muted"></p>
+<div class="answers"><section class="panel"><h2 class="blue">Unsteered answer</h2><pre id="control-answer"></pre></section><section class="panel"><h2 class="orange">Steered answer</h2><pre id="steered-answer"></pre></section></div>
+</main><script>/*PLOTLY*/</script><script>
+const DATA=/*DATA*/;
+const ids=['question','persona','beta','scheme','layer','kind','policy'];
+const el=id=>document.getElementById(id), selected=id=>el(id).value;
+function fill(id,values){for(const [value,label] of values){const option=document.createElement('option');option.value=value;option.textContent=label;el(id).append(option)}}
+fill('question',[...DATA.questions.map(q=>[q.id,q.id+' · '+q.text]),['all','All questions · average over 12 questions']]);
+fill('persona',DATA.personas.map(p=>[p,p]));
+let current;
+function choiceFor(q){const p=selected('persona'),l=selected('layer');
+const control=DATA.trials.find(t=>t.question===q&&t.persona==='unsteered');
+const steered=DATA.trials.find(t=>t.question===q&&t.persona===p&&t.steering.name===selected('scheme')&&String(t.steering.coefficient)===selected('beta'));
+const key=[p,selected('kind'),selected('policy')].join('|');
+return {control,steered,base:control.layers[l],readout:steered.layers[l],key}}
+function averageReadouts(pairs,side,key){const length=Math.max(...pairs.map(pair=>pair[side].positions.length)),positions=Array.from({length},(_,p)=>p),sets={};
+const series={bank:pairs[0][side].sets[key].bank,words:[],counts:{}};
+for(const metric of ['mrr','cosine']){series[metric]=[];series.counts[metric]=[];
+for(const pos of positions){const values=pairs.map(pair=>{const readout=pair[side],i=readout.positions.indexOf(pos);return i<0?null:readout.sets[key][metric][i]}).filter(v=>v!==null&&Number.isFinite(v));
+series[metric].push(values.length?values.reduce((a,b)=>a+b,0)/values.length:null);series.counts[metric].push(values.length)}}
+sets[key]=series;return {positions,sets}}
+function choice(){if(selected('question')!=='all')return choiceFor(selected('question'));
+const pairs=DATA.questions.map(q=>choiceFor(q.id)),key=pairs[0].key,base=averageReadouts(pairs,'base',key),readout=averageReadouts(pairs,'readout',key);
+function answers(side){return {average:true,tokens:Array(Math.max(...pairs.map(p=>p[side].tokens.length))),text:pairs.map((p,i)=>DATA.questions[i].id+' · '+DATA.questions[i].text+'\n\n'+p[side].text).join('\n\n────────────────────\n\n')}}
+return {average:true,control:answers('control'),steered:answers('steered'),base,readout,key}}
+function trace(trial,readout,key,metric,name,color){const series=readout.sets[key];return {x:readout.positions.map(p=>p+1),y:series[metric],customdata:readout.positions.map((p,i)=>trial.average?series.counts[metric][i]:trial.tokens[p]),name,type:'scatter',mode:'lines',line:{color,width:1.8},connectgaps:false,hovertemplate:trial.average?'Position %{x}<br>Mean '+metric+': %{y:.6g}<br>Contributing questions: %{customdata}<extra>'+name+'</extra>':'Token %{x}: %{customdata}<br>'+metric+': %{y:.6g}<extra>'+name+'</extra>'}}
+function positiveAreaTrace(control,steered){const base=new Map(control.x.map((x,i)=>[x,control.y[i]])),x=[],y=[];
+for(let i=1;i<steered.x.length;i++){const left=steered.x[i-1],right=steered.x[i],b0=base.get(left),b1=base.get(right),s0=steered.y[i-1],s1=steered.y[i];
+if(![b0,b1,s0,s1].every(v=>v!==null&&Number.isFinite(v)))continue;
+const d0=s0-b0,d1=s1-b1;if(d0<=0&&d1<=0)continue;
+let a=0,b=1;if(d0<0)a=d0/(d0-d1);if(d1<0)b=d0/(d0-d1);
+const lerp=(v0,v1,t)=>v0+(v1-v0)*t,xa=lerp(left,right,a),xb=lerp(left,right,b);
+x.push(xa,xb,xb,xa,null);y.push(lerp(b0,b1,a),lerp(b0,b1,b),lerp(s0,s1,b),lerp(s0,s1,a),null)}
+return {x,y,name:'Steered above unsteered',type:'scatter',mode:'lines',line:{width:0},fill:'toself',fillcolor:'rgba(22,163,74,0.16)',hoverinfo:'skip',showlegend:false,connectgaps:false}}
+function renderWords(){const questions=current.average?DATA.questions.map(q=>q.id):[selected('question')];
+const escape=value=>String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+el('word-details').innerHTML=questions.flatMap(q=>{const pair=choiceFor(q);return pair.readout.sets[pair.key].details.map(d=>'<tr>'+[q,d.word,JSON.stringify(d.token),d.id,d.complete?'Complete token':'Proxy token'].map(v=>'<td style="padding:5px 12px 5px 0;border-bottom:1px solid #edf1f6">'+escape(v)+'</td>').join('')+'</tr>')}).join('')}
+function render(){current=choice();const {control,steered,base,readout,key}=current,series=readout.sets[key];
+renderWords();
+el('question-text').textContent=current.average?'Average over all 12 questions':DATA.questions.find(q=>q.id===selected('question')).text;
+el('words').textContent=current.average?'Word set ('+series.bank+'): '+(selected('kind')==='contextualized'?"Each question uses its own contextualized word set for the selected persona.":"The selected persona's general word set is used for every question."):'Word set ('+series.bank+'): '+series.words.join(', ');
+el('average-note').textContent=current.average?'At each ordinal token position, scores are averaged equally over questions with a valid score there. Ended answers and missing scores are omitted, not counted as zero. Unsteered and steered curves can therefore have different contributing question counts; hover shows these counts. Q01 and Q23 are included.':'';
+el('control-answer').textContent=control.text;el('steered-answer').textContent=steered.text;
+el('status').textContent=current.average?`Readout layer ${selected('layer')} · Equal-question mean at each token position · All 12 answer pairs listed below`:`Readout layer ${selected('layer')} · Unsteered: ${base.positions.length} scored / ${control.tokens.length} generated tokens · Steered: ${readout.positions.length} scored / ${steered.tokens.length} generated tokens · ${DATA.jobs} saved trial/layer readouts`;
+el('inspect').textContent=current.average?'Hover over either plot to inspect mean scores and contributing question counts.':"Hover over either plot to inspect both answers' tokens and scores.";
+for(const metric of ['mrr','cosine']){
+const layout={margin:{l:70,r:24,t:12,b:50},paper_bgcolor:'#fff',plot_bgcolor:'#fff',showlegend:false,hovermode:'x',xaxis:{title:{text:'Answer token position (1-based)'},gridcolor:'#edf1f6',range:[1,Math.max(control.tokens.length,steered.tokens.length)]},yaxis:{title:{text:metric==='mrr'?'MRR':'Cosine'},gridcolor:'#edf1f6',rangemode:'tozero'}};
+const baselineTrace=trace(control,base,key,metric,'Unsteered','#2563eb'),steeredTrace=trace(steered,readout,key,metric,'Steered','#c65b12');
+Plotly.react(metric,[positiveAreaTrace(baselineTrace,steeredTrace),baselineTrace,steeredTrace],layout,{responsive:true,displaylogo:false});
+}}
+function inspect(event){const pos=Math.round(event.points[0].x)-1,{control,steered,base,readout,key}=current;const fmt=v=>v==null?'—':Number(v).toPrecision(6);
+if(current.average){el('inspect').textContent=[['Unsteered',base],['Steered',readout]].map(([name,layer])=>{const i=layer.positions.indexOf(pos),s=layer.sets[key];return `${name} · position ${pos+1} · Mean MRR ${fmt(i<0?null:s.mrr[i])} (n=${i<0?0:s.counts.mrr[i]}) · Mean cosine ${fmt(i<0?null:s.cosine[i])} (n=${i<0?0:s.counts.cosine[i]})`}).join('\n');return}
+el('inspect').textContent=[['Unsteered',control,base],['Steered',steered,readout]].map(([name,trial,layer])=>{const i=layer.positions.indexOf(pos),s=layer.sets[key];return `${name} · token ${pos+1}: ${JSON.stringify(trial.tokens[pos]??'(answer ended)')} · MRR ${fmt(i<0?null:s.mrr[i])} · cosine ${fmt(i<0?null:s.cosine[i])}`}).join('\n')}
+for(const id of ids)el(id).addEventListener('change',render);
+render();for(const metric of ['mrr','cosine'])el(metric).on('plotly_hover',inspect);
+</script></body></html>

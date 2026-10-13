@@ -1,0 +1,48 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>J-Lens · Compare questions</title>
+<style>
+body{margin:0;background:#f5f7fa;color:#19283a;font:15px/1.5 system-ui}main{max-width:1500px;margin:auto;padding:28px}h1{margin:10px 0}h2{font-size:20px;margin:0 0 10px}a{color:#2563eb}.muted{color:#617085}.panel,.controls{background:white;border:1px solid #dce3eb;border-radius:12px;padding:18px;margin:18px 0}.controls{display:flex;gap:16px;flex-wrap:wrap}label{display:flex;flex-direction:column;font-size:12px;color:#617085;gap:5px}select{padding:8px;font:14px system-ui;border:1px solid #c6d1df;border-radius:6px;background:white}.plot{height:410px}.plots{display:grid;grid-template-columns:1fr 1fr;gap:18px}.plots .panel{margin:0}.tables{overflow:auto}table{border-collapse:collapse;width:100%;white-space:nowrap}th,td{padding:8px;border-bottom:1px solid #edf1f6;text-align:right}th:first-child,td:first-child{text-align:left}.positive{color:#168449}.negative{color:#b13c36}.question-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}.question{padding:10px;border:1px solid #edf1f6;border-radius:8px}.question b{display:block}@media(max-width:900px){main{padding:14px}.plots,.question-list{grid-template-columns:1fr}}
+.overview-nav{position:sticky;top:0;z-index:1000;background:#17385c;padding:12px 24px;box-shadow:0 2px 8px #0002}.overview-nav a{display:inline-block;color:white!important;text-decoration:none;font:700 15px/1.5 system-ui;padding:7px 12px;border:1px solid #ffffff66;border-radius:7px}.overview-nav a:hover{background:#ffffff22}.overview-nav span{color:#e0eafa;margin-left:16px;font:13px system-ui}@media(max-width:600px){.overview-nav span{display:none}.overview-nav{padding:8px 12px}}</style></head><body><nav class="overview-nav" aria-label="Main analysis navigation"><a href="index.html">← Back to analysis overview</a><span>J-Lens evaluation · Main overview</span></nav><main>
+<nav><a href="index.html">← Analysis overview</a> · <a href="question-aggregation.html">Aggregation and specificity</a> · <a href="token-comparison.html">Token trajectories</a></nav>
+<h1>Compare paired effects across questions</h1>
+<p class="muted">Each point or bar compares one steered answer with its unsteered answer on the same question. Scores are averaged over retained target words and cached answer positions before subtraction.</p>
+<div class="controls">
+<label>Persona<select id="persona"></select></label>
+<label>Band-width β<select id="beta"><option value="0">0</option><option value="0.25">0.25</option></select></label>
+<label>Steered layer(s)<select id="scheme"><option value="layer-32">32 only</option><option value="combined-29-32-35">29 + 32 + 35</option></select></label>
+<label>Readout layer<select id="layer"><option>29</option><option selected>32</option><option>35</option><option>62</option></select></label>
+<label>Word-set type<select id="kind"><option value="contextualized">Contextualized</option><option value="non_contextualized">General</option></select></label>
+<label>Word policy<select id="policy"><option value="complete_only">Complete tokens</option><option value="including_proxies">Including proxies</option></select></label>
+<label>Question order<select id="order"><option value="id">Question ID</option><option value="mrr">MRR difference (high to low)</option><option value="cosine">Cosine difference (high to low)</option></select></label>
+</div>
+<p id="selection" class="muted"></p>
+<p class="muted">Positive differences indicate higher association under steering. Green bars mark positive differences, red bars negative differences; the dashed horizontal line is the equal-question mean. In the all-persona view, colors identify personas and the zero line separates increases from decreases. Missing differences are omitted, never replaced with zero. All twelve questions are included.</p>
+<div class="plots"><section class="panel"><h2>Paired MRR difference</h2><div id="mrr" class="plot"></div></section><section class="panel"><h2>Paired cosine difference</h2><div id="cosine" class="plot"></div></section></div>
+<div class="panel"><h2>Per-question paired scores</h2><div class="tables"><table><thead><tr><th>Question</th><th>Topic</th><th>Persona</th><th>Unsteered MRR</th><th>Steered MRR</th><th>MRR Δ</th><th>Unsteered cosine</th><th>Steered cosine</th><th>Cosine Δ</th><th>Scored positions</th></tr></thead><tbody id="rows"></tbody></table></div></div>
+<div class="panel"><h2>Question wording</h2><div id="question-list" class="question-list"></div></div>
+<p class="muted">These are descriptive differences for the observed questions, not literal word counts. Select each persona to assess its paired effects; the all-persona display compares trajectories without pooling their scores or word banks. β = 0 still pins the persona projection; β = 0.25 allows a band around that target.</p>
+</main><script>/*PLOTLY*/</script><script>
+const DATA=/*DATA*/;
+const el=id=>document.getElementById(id),v=id=>el(id).value,fmt=x=>x==null?'—':Number(x).toPrecision(6),cls=x=>x>0?'positive':x<0?'negative':'';
+const escape=value=>String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const personas=[...new Set(DATA.rows.map(r=>r.character))].sort();
+for(const p of [...personas,'all']){const o=document.createElement('option');o.value=p;o.textContent=p==='all'?'All personas (separate series)':p;el('persona').append(o)}
+const palette=['#2563eb','#d97706','#0f766e','#9333ea','#be185d','#475569','#a16207','#0891b2'];
+function matches(r){return String(r.layer)===v('layer')&&String(r.beta)===v('beta')&&r.scheme===v('scheme')&&r.word_set_type===v('kind')&&r.policy===v('policy')&&(v('persona')==='all'||r.character===v('persona'))}
+function questionOrder(rows){if(v('order')==='id')return DATA.questions.map(q=>q.id);
+const field=v('order')==='mrr'?'mean_reciprocal_rank_delta':'activation_word_cosine_delta';
+const score=q=>{const values=rows.filter(r=>r.question===q&&r[field]!=null).map(r=>r[field]);return values.length?values.reduce((a,b)=>a+b,0)/values.length:-Infinity};
+return DATA.questions.map(q=>q.id).sort((a,b)=>score(b)-score(a)||a.localeCompare(b))}
+function render(){const rows=DATA.rows.filter(matches),order=questionOrder(rows),all=v('persona')==='all',active=all?personas:[v('persona')];
+el('selection').textContent=`${all?'8 separate personas':v('persona')} · 12 questions · ${rows.length} paired rows · Readout layer ${v('layer')}`+(all&&v('order')!=='id'?' · Question order uses the mean across displayed personas only for sorting; plotted effects remain separate.':'');
+for(const [metric,field,label] of [['mrr','mean_reciprocal_rank_delta','MRR'],['cosine','activation_word_cosine_delta','Cosine']]){
+const shapes=[{type:'line',x0:0,x1:1,xref:'paper',y0:0,y1:0,line:{color:'#8c98a8',width:1}}];
+if(!all){const values=rows.map(r=>r[field]).filter(x=>x!=null),mean=values.length?values.reduce((a,b)=>a+b,0)/values.length:null;if(mean!==null)shapes.push({type:'line',x0:0,x1:1,xref:'paper',y0:mean,y1:mean,line:{color:'#475569',dash:'dash'},label:{text:'Mean '+fmt(mean),font:{size:11}}})}
+const traces=active.map((p,i)=>{const own=rows.filter(r=>r.character===p);return {name:p,type:all?'scatter':'bar',mode:all?'markers':undefined,x:own.map(r=>r.question),y:own.map(r=>r[field]),customdata:own.map(r=>[r.topic,DATA.questions.find(q=>q.id===r.question).text]),marker:all?{color:palette[i],size:9}:{color:own.map(r=>r[field]>0?'rgba(22,163,74,.6)':r[field]<0?'rgba(177,60,54,.6)':'#94a3b8')},hovertemplate:'%{x} · %{customdata[0]}<br>'+label+' Δ %{y:.6g}<br>%{customdata[1]}<extra>'+p+'</extra>'}});
+Plotly.react(metric,traces,{margin:{l:75,r:18,t:20,b:85},paper_bgcolor:'#fff',plot_bgcolor:'#fff',showlegend:all,legend:{orientation:'h'},xaxis:{title:{text:'Question'},categoryorder:'array',categoryarray:order,gridcolor:'#edf1f6'},yaxis:{title:{text:'Steered minus unsteered'},gridcolor:'#edf1f6',zeroline:false},shapes},{responsive:true,displaylogo:false})}
+rows.sort((a,b)=>order.indexOf(a.question)-order.indexOf(b.question)||a.character.localeCompare(b.character));
+const baseline=(r,field)=>r.control_available&&r[field]!=null&&r[field+'_delta']!=null?r[field]-r[field+'_delta']:null;
+el('rows').innerHTML=rows.map(r=>`<tr><td>${r.question}</td><td>${escape(r.topic)}</td><td>${escape(r.character)}</td><td>${fmt(baseline(r,'mean_reciprocal_rank'))}</td><td>${fmt(r.mean_reciprocal_rank)}</td><td class="${cls(r.mean_reciprocal_rank_delta)}">${fmt(r.mean_reciprocal_rank_delta)}</td><td>${fmt(baseline(r,'activation_word_cosine'))}</td><td>${fmt(r.activation_word_cosine)}</td><td class="${cls(r.activation_word_cosine_delta)}">${fmt(r.activation_word_cosine_delta)}</td><td>${r.valid_positions}</td></tr>`).join('');
+el('question-list').innerHTML=order.map(q=>{const question=DATA.questions.find(x=>x.id===q),topic=rows.find(r=>r.question===q)?.topic??'';return `<div class="question"><b>${q} · ${escape(topic)}</b>${escape(question.text)}</div>`}).join('');
+}
+for(const id of ['persona','beta','scheme','layer','kind','policy','order'])el(id).addEventListener('change',render);render();
+</script></body></html>

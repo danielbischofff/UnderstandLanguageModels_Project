@@ -2,9 +2,31 @@
 % Sections here are lettered (A, B, ...); the main text must stand on its own.
 \appendix
 
-\section{Experiment Questions}
+\section{Experiment Questions and Quantitative Results}
 \label{sec:questions}
 
+\input{tables/quantitative_steering_results}
+
+\subsection{Quantitative Experiment Questions}
+\label{sec:quantitative-questions}
+The quantitative experiment evaluates the following twelve questions, one per simplified Wikipedia topic category. All twelve questions are retained in the analysis. Each question has a shared unsteered control and steered answers for the eight personas and four steering conditions described in Section~\ref{sec:quantitative-methods}.
+
+\begin{description}
+\item[Q01: Culture] A town wants to change its annual festival to attract new visitors. What should it consider?
+\item[Q03: Geography] How might living beside a large river shape a town's daily life?
+\item[Q05: Health] My schedule is crowded and I keep putting off rest. How should I think about making time for it?
+\item[Q07: History] I found a letter written a century ago. How could I understand what it tells us about that time?
+\item[Q09: Human activities] I want to try a new hobby but do not know where to start. How should I choose?
+\item[Q11: Mathematics] The average score rose, but several students did worse. How can both things be true?
+\item[Q13: Natural science] A pond looks different in summer than in winter. What might explain the changes?
+\item[Q15: People] Someone new has joined our group and rarely speaks. How could we help them feel welcome?
+\item[Q17: Philosophy] What does it mean to live a good life?
+\item[Q19: Religion] Why might a repeated ritual be meaningful to the people who practice it?
+\item[Q21: Society] A neighborhood disagrees about how to use a shared budget. How should it reach a decision?
+\item[Q23: Technology] A team wants to use an automated tool for a task it currently does manually. What should it evaluate?
+\end{description}
+
+\subsection{Qualitative Experiment Questions}
 The canonical question of Section~\ref{sec:methods} is the one used in
 \cite{gurnee2026global}:
 
@@ -65,7 +87,7 @@ otherwise identical \texttt{roleplay-neutral}.
 \section{Tylenol Steering Answers}
 \label{sec:TylenolAnswers}
 \subsection{Alpha Steering}
-Below are the non-steered answer and steered answers for the Tylenol question (see subsection \ref{sec:MethodsQuestions} in methods). We used them to inspect how the steering affects the model's behavior in its response. We find that both band-cap steering and alpha steering change the assistant behavior as expected, when steering using the demon persona vector. 
+Below are the non-steered answer and steered answers for the Tylenol question (see subsection \ref{sec:MethodsQuestions} in methods). We used them to inspect how the steering affects the model's behavior in its response. We find that both band-cap steering and alpha steering change the assistant behavior as expected, when steering using the demon persona vector.
 The assistant's answer is urging the user to seek medical help, and warns the user of the danger they're in:
 \begin{quote}
     \itshape
@@ -170,6 +192,7 @@ $\beta=0$:
 \end{quote}
 
 With that in mind, we chose to steer at layers 28-35 for our band-capping steering in later experiments, since it seems to yield the best results in terms of behavioral shift.
+
 
 \section{Persona map details}
 \label{sec:appendix-map}

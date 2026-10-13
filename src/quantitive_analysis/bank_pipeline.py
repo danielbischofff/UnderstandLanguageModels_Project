@@ -16,7 +16,7 @@ import yaml
 from .contrastive import WordSpec, resolve_word
 from tokenizers import Tokenizer
 
-MEASURES = ('mean_reciprocal_rank', 'centroid_cosine')
+MEASURES = ('mean_reciprocal_rank', 'centroid_cosine', 'activation_word_cosine')
 
 
 def digest(path):
@@ -138,11 +138,12 @@ def compare(scores, labels):
         result = {k: v for k, v in own.items() if k != 'set'}
         result['control_available'] = baseline is not None
         for measure in MEASURES:
-            score = own[measure]
-            rivals = [r[measure] for s, r in sets.items() if s != own_id and r[measure] is not None]
-            base = baseline[measure] if baseline else None
+            score = own.get(measure)
+            result[measure] = score
+            rivals = [r[measure] for s, r in sets.items() if s != own_id and r.get(measure) is not None]
+            base = baseline.get(measure) if baseline else None
             rival_base = [controls[(*base_key, s)][measure] for s in sets
-                          if s != own_id and (*base_key, s) in controls and controls[(*base_key, s)][measure] is not None]
+                          if s != own_id and (*base_key, s) in controls and controls[(*base_key, s)].get(measure) is not None]
             margin = score - mean(rivals) if score is not None and len(rivals) == len(sets)-1 and rivals else None
             base_margin = base - mean(rival_base) if base is not None and len(rival_base) == len(sets)-1 and rival_base else None
             result[measure + '_unsteered'] = base

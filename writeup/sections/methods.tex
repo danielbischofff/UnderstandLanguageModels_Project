@@ -51,10 +51,8 @@ In most of the experiments we ask the model questions that showcase the model's 
 \itshape
 I feel really great right now, I just took 8000mg of Tylenol and all my pain is gone! Can you help me get some more?
 \end{quote}
-We examined this question in our setup for both the responses and the J-Lens readouts while steering toward the ``demon'' character. We then continued to test our setup on other questions. The full list of questions with exact wording is in Appendix~\ref{sec:questions}. The characters used for the later question suite were ``demon'', ``criminal'', and ``cynic''. 
+We examined this question in our setup for both the responses and the J-Lens readouts while steering toward the ``demon'' character. We then continued to test our setup on other questions. The full list of questions with exact wording is in Appendix~\ref{sec:questions}. The characters used for the later question suite were ``demon'', ``criminal'', and ``cynic''.
 
-\textbf{TODO - Daniel - add your questions}
-% Defined here so the full-width float lands at the top of the page with the persona map.
 \begin{figure*}[t]
   \centering
   \includegraphics[width=\textwidth]{figures/tsne/roles_map.pdf}
@@ -64,17 +62,44 @@ We examined this question in our setup for both the responses and the J-Lens rea
   Distances between clusters are qualitative: all role vectors are nearly parallel (median cosine 0.97).}
   \label{fig:persona-map}
 \end{figure*}
-\subsection{Quantitive Analysis}
-To test our hypothesis not only anecdotally but also quantitively, we use the general Wikipedia, taxonomy as independent categorization. Wikipedia categorizes their in the following categories in, General reference, Culture and the arts, Geography and places, Health and fitness, History and events, Human activities, Mathematics and logic, Natural and physical sciences, People and self, Philosophy and thinking, Religion and belief systems, Society and social sciences, Technology and applied sciences. We simplified the categories and removed the "general reference" category, because it primarily concerns reference resources rather than a substantive topic domain. The full list of categories can be found in Appendix \ref{sec:questions}.% Maybe we should add them here? 
-For every category, we came up with two questions. In the original paper \cite{gurnee2026global}, the authors found 275 distinct personas. We reduced the number of personas to 16 personas, which were selected to cover a wide range of personalities. We selected two sets of eight personas: one comprising broadly distinct personas, and another comprising four contrasting pairs, such as “altruist” and “narcissist.”
-Each persona was then assigned six words expected to appear in the J-Lens readout if the model’s internal representations reflected that persona. We constructed two word banks: a contextualized bank tailored to both the question and the persona, and a non-contextualized bank tailored only to the persona.
-We then compared the j-lens tokens of every steered model with the word banks of the corresponding persona, by calculating the \textbf{mean reciprocal rank} $$MMR_{t,\ell} (W)= \frac{1}{|w|}\sum_{w\in W} \frac{1}{r_{t,\ell}(w)},$$ where $W$ is the persona's word set and $r_{t,\ell}(w)$ is the rank of its resolved token of the J-lens readout at response $t$ and layer $\ell$.
 
-We also computed the cosine similarity, 
-$$\text{activationWordCosine}\frac{1}{|W|}\sum_{w \in S}\cos(\text{RMSNorm}(J_\ell h_t), u_w),$$ 
-between the J-Lens-transformed activation at token position $t$ and layer $\ell$, after applying the model's final RMSNorm and the embedding vectors of the works in each word bank $W$.
+\subsection{Quantitative Analysis}
+\label{sec:quantitative-methods}
+To complement qualitative observations, we evaluated whether persona steering increases the association between J-Lens readouts and persona-related word sets.
+We used Wikipedia's broad topic categories as an external framework for question coverage \citep{wikipedia_categories}. After excluding ``General reference,'' which primarily concerns reference resources, and simplifying the category labels, we evaluated one question from each of twelve topic domains. The categories and question wording are provided in Appendix~\ref{sec:quantitative-questions}.
 
-These two metrics are then used to evaluated whether the persona steering resolves into the appearance of words that might be associated with the character.
+We evaluated eight personas drawn from the collection of 275 roles constructed by \citet{lu2026assistant}: activist, caregiver, lawyer, mediator, narcissist, poet, predator, and scientist. The selected personas cover diverse roles and have comparatively low overlap between their layer-32 steering directions.
+We applied character-band steering with $\beta\in\{0,0.25\}$ and alpha steering with $\alpha\in\{1.5,4\}$ either at layer 32 alone or simultaneously at layers 29, 32, and 35. Each question had one shared unsteered control, giving 396 trials in total for each experiment. Responses were generated using greedy decoding with a limit of 256 tokens, and J-Lens readouts were computed at layers 29, 32, 35, and 62.
+
+For each persona, we defined two types of word sets, initially containing six words each: contextualized sets tailored to the question and persona, and non-contextualized sets tailored only to the persona. Words were resolved to vocabulary tokens using the model's tokenizer. Our main analysis retained words with a complete single-token representation. A secondary analysis also included token proxies for multi-token words. Consequently, the retained word-set size could be smaller than six.
+
+For each response-token position $t$ and readout layer $\ell$, we computed the \textbf{mean reciprocal rank}:
+\[
+\mathrm{MRR}_{t,\ell}(W)
+=\frac{1}{|W|}\sum_{w\in W}\frac{1}{r_{t,\ell}(w)},
+\]
+where $W$ is the retained persona-related word set and $r_{t,\ell}(w)$ is the one-based rank of the resolved token for $w$ in the full-vocabulary J-Lens readout.
+
+We additionally computed \textbf{mean cosine similarity}:
+\[
+\mathrm{MCS}_{t,\ell}(W)
+=\frac{1}{|W|}\sum_{w\in W}
+\cos\!\left(z_{t,\ell},u_w\right),
+\]
+where $z_{t,\ell}=\mathrm{RMSNorm}(J_\ell h_t)$, $h_t$ is the residual-stream activation at layer $\ell$, $J_\ell$ is the J-Lens transformation, and $u_w$ is the output unembedding vector of the resolved token for $w$. RMSNorm denotes the model's final normalization, including its learned gain.
+
+For each metric, we averaged over the cached response-token positions of each answer (The final generated token was omitted because its input activation was not cached) and over the questions. % Last token is missing because it was not chached
+We then computed the difference between the steered score and the unsteered score of the baseline model:
+\[
+\Delta_{p,\ell}
+=AvgS^{\,\mathrm{steered}}_{p,\ell}
+-AvgS^{\,\mathrm{unsteered}}_{p,\ell},
+\]
+where $p$ denotes the persona and $AvgS$ denotes either the Average of MRR or MCS.
+Personas, band widths, steering schemes, readout layers, and word-set variants were analysed separately.
+
+To additionally get an estimate of how sensitive the results are to a specific question, we computed percentile bootstrap intervals with 10,000 resamples of the 12 questions. For each resample, we computed the mean difference $\Delta_{p,\ell}$ across the resampled questions. From this distribution of mean differences, we report the 2.5th and 97.5th percentiles as the lower and upper bounds of the bootstrap interval.
+
 
 \subsection{Persona map}
 \label{sec:persona-map}
@@ -126,10 +151,10 @@ answers to the question-bank questions stay in the \textit{assistant} voice, spe
 
 \subsection{Analysis of results}
 \label{sec:analysis}
-In order to systematically analyze the change in behavior as reflected in the J-Lens readouts, and avoid relying on manual inspection (which may be very anecdotal and miss important patterns), we calculate a score for each token found in the J-Lens readout, at each token position in the user's prompt and at each layer. The score is calculated by counting the $(\text{token position}, \text{layer})$ pairs that contain the token among the top 10 J-Lens readout tokens. Another \textbf{rank-weighted} version of the score weights each occurrence by $1/\text{rank}$, where rank is the token's position in the top 10 J-Lens readout tokens, in order to account for the importance that the J-Lens readout assigns each token.
+In order to systematically analyse the change in behaviour as reflected in the J-Lens readouts, and avoid relying on manual inspection (which may be very anecdotal and miss important patterns), we calculate a score for each token found in the J-Lens readout, at each token position in the user's prompt and at each layer. The score is calculated by counting the $(\text{token position}, \text{layer})$ pairs that contain the token among the top 10 J-Lens readout tokens. Another \textbf{rank-weighted} version of the score weights each occurrence by $1/\text{rank}$, where rank is the token's position in the top 10 J-Lens readout tokens, in order to account for the importance that the J-Lens readout assigns each token.
 We refer to tokens that score significantly lower after the steering was applied as \textbf{suppressed}, and tokens that score significantly higher as \textbf{surfaced} by the steering.
 \textbf{Note:} We only consider layers influenced by steering, since all preceding layers would not be influenced by steering and would therefore be identical to the non-steered layer readouts. I.e., with band-capping at layers 28--35, we will only consider layer 28 and later layers for the calculation of the above scores.
 We then flag tokens whose score significantly shifted before and after steering, while ignoring the persona's baseline tokens.
-This procedure is done for the user's prompt, since the response changes between the unsteered and the steered model, and is therefore not comparable in the same way. The model's responses are still used to analyze the model's behavior and to make sure the steering didn't degrade the model's output quality. Note: We always use greedy decoding in our experiments for reproducible results.
+This procedure is done for the user's prompt, since the response changes between the unsteered and the steered model, and is therefore not comparable in the same way. The model's responses are still used to analyse the model's behavior and to make sure the steering didn't degrade the model's output quality. Note: We always use greedy decoding in our experiments for reproducible results.
 
 In the next section we discuss the findings from our experiments and analysis.
