@@ -1,11 +1,11 @@
 % Up to 150 words. Must include the conclusion of the study.
 \begin{abstract}
-    One persona vector can turn a cautious Assistant into a demon offering an overdosed user more Tylenol.
+    J-Lens readouts at the user's tokens are known to reflect the Assistant's point of view, installed by post-training.
+    We show that steering surfaces other personas' points of view there too.
     Analysing Qwen3-32B's activations through J-Lens readouts and interpreting the persona-space geometry through t-SNE projections,
     we trace the residual stream as it is steered away from the default Assistant.
-    We compare alpha steering with multi-layer band capping.
     Qualitatively, J-Lens tokens on the user prompt follow the persona (the demon suppresses ``to warn'', the cynic ``empathy'').
-    Across twelve questions and eight personas, alpha steering consistently raises the rank of persona-related words, but not always their cosine alignment.
+    Quantitatively, steering consistently raises the rank of persona-related words, but not always their cosine alignment.
     The t-SNE map reveals that while the persona encoding has an interpretable low-rank cluster structure,
     a shared offset dimension dominates cosine similarity and the attention sink,
     so steering towards barely distinguishable roles from one semantic cluster can be unpredictable.
