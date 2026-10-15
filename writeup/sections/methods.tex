@@ -16,7 +16,7 @@ average activations at this layer. Following standard contrastive activation add
 \[
 {c}_l = p_l - d_l
 \]
-Let's also denote $r_l$ the residual stream at layer $l$ for a specific token position. With that in mind, we use two steering methods to steer the model towards a specific personality:
+We also denote $r_l$ the residual stream at layer $l$ for a specific token position. With that in mind, we use two steering methods to steer the model towards a specific personality:
 
 1. \textbf{Alpha Steering} Given a steering coefficient $\alpha$, ``Alpha steering'' is the following operation:
 \[
@@ -24,7 +24,7 @@ Let's also denote $r_l$ the residual stream at layer $l$ for a specific token po
 \]
 This is analogous to contrastive activation addition in \citet{panickssery2024caa}. In our experiments we found that $\alpha$ values between 1.5 and 4 are a good range for inducing behavioral changes without degrading output quality.
 
-2. \textbf{Band-Capping} The problem with Alpha steering is that it cannot be applied at multiple layers without degrading the output, since the steering effect compounds in the residual stream and the model's output deteriorates very fast. Since different layers of the model encode different aspects of a personality (e.g., writing style / vocabulary / behavior), we wanted a steering method that can be applied at multiple layers without compromising output quality. Inspired by both \citet{arditi2024refusal} (which removes a direction from the residual stream by projecting the residual stream onto its orthogonal complement) and \citet{lu2026assistant} (which caps the residual stream's projection along the assistant axis to prevent personality drift), we constrain the residual stream projection along the ${c}_l$ direction to a band close to $p_l$'s projection along that direction. By ``close'', we mean clipping the projection of the residual stream along that direction within upper and lower boundaries, measured as a ratio $\beta$ of $\lVert {c}_l \rVert$. If we denote the difference direction as $\hat{c}_l = \frac{{c}_l}{\lVert {c}_l \rVert}$, we can formally define:
+2. \textbf{Band-Capping} The problem with alpha steering is that it cannot be applied at multiple layers without degrading the output, since the steering effect compounds in the residual stream and the model's output deteriorates very fast. Since different layers of the model encode different aspects of a personality (e.g., writing style / vocabulary / behavior), we wanted a steering method that can be applied at multiple layers without compromising output quality. Inspired by both \citet{arditi2024refusal} (which removes a direction from the residual stream by projecting the residual stream onto its orthogonal complement) and \citet{lu2026assistant} (which caps the residual stream's projection along the assistant axis to prevent personality drift), we constrain the residual stream projection along the ${c}_l$ direction to a band close to $p_l$'s projection along that direction. By ``close'', we mean clipping the projection of the residual stream along that direction within upper and lower boundaries, measured as a ratio $\beta$ of $\lVert {c}_l \rVert$. If we denote the difference direction as $\hat{c}_l = \frac{{c}_l}{\lVert {c}_l \rVert}$, we can formally define:
 \begin{equation*}
 \begin{split}
 \mathrm{BandCap}(r_l) = {}& r_l + \bigl(\mathrm{clip}(r_l \cdot \hat{c}_l, \\
@@ -46,7 +46,7 @@ The baseline J-Lens tokens are interesting to look at in their own right: they r
 
 \subsection{Questions used for our Experiments}
 \label{sec:MethodsQuestions}
-In most of the experiments we ask the model questions that showcase the model's behavior and tendency in different settings. For our canonical example we used the same example used in \citet{gurnee2026global}: the user describes having taken a dangerous dose of a medication and asks the model to help them obtain more. This example will be referred to as the \textbf{Tylenol Question}:
+In most of the experiments we ask the model questions that showcase the model's behavior and tendency in different settings. For our canonical example, we used the same example as \citet{gurnee2026global}: the user describes having taken a dangerous dose of a medication and asks the model to help them obtain more. This example will be referred to as the \textbf{Tylenol Question}:
 \begin{quote}
 \itshape
 I feel really great right now, I just took 8000mg of Tylenol and all my pain is gone! Can you help me get some more?
@@ -58,7 +58,7 @@ We examined this question in our setup for both the responses and the J-Lens rea
   \includegraphics[width=\textwidth]{figures/tsne/roles_map.pdf}
   \caption{t-SNE map of the 275 persona vectors of \citet{lu2026assistant} (Qwen3-32B, layer 32).
   Colors are Ward clusters computed in the original 5120-dimensional space and named by representative roles.
-  The star is the default vector (models default behaviour) positioned right next to \textit{assistant} (explicit assistant role).
+  The star is the default vector (the model's default behaviour) positioned right next to \textit{assistant} (explicit assistant role).
   Distances between clusters are qualitative: all role vectors are nearly parallel (median cosine 0.97).}
   \label{fig:persona-map}
 \end{figure*}
@@ -69,7 +69,7 @@ To complement qualitative observations, we evaluated whether persona steering in
 We used Wikipedia's broad topic categories as an external framework for question coverage \citep{wikipedia_categories}. After excluding ``General reference,'' which primarily concerns reference resources, and simplifying the category labels, we evaluated one question from each of twelve topic domains. The categories and question wording are provided in Appendix~\ref{sec:quantitative-questions}.
 
 We evaluated eight personas drawn from the collection of 275 roles constructed by \citet{lu2026assistant}: activist, caregiver, lawyer, mediator, narcissist, poet, predator, and scientist. The selected personas cover diverse roles and have comparatively low overlap between their layer-32 steering directions.
-We applied character-band steering with $\beta\in\{0,0.25\}$ and alpha steering with $\alpha\in\{1.5,4\}$ either at layer 32 alone or simultaneously at layers 29, 32, and 35. Each question had one shared unsteered control, giving 396 trials in total for each experiment. Responses were generated using greedy decoding with a limit of 256 tokens, and J-Lens readouts were computed at layers 29, 32, 35, and 62.
+We applied band capping with $\beta\in\{0,0.25\}$ and alpha steering with $\alpha\in\{1.5,4\}$ either at layer 32 alone or simultaneously at layers 29, 32, and 35. Each question had one shared unsteered control, giving 396 trials in total for each experiment. Responses were generated using greedy decoding with a limit of 256 tokens, and J-Lens readouts were computed at layers 29, 32, 35, and 62.
 
 For each persona, we defined two types of word sets, initially containing six words each: contextualized sets tailored to the question and persona, and non-contextualized sets tailored only to the persona. Words were resolved to vocabulary tokens using the model's tokenizer. Our main analysis retained words with a complete single-token representation. A secondary analysis also included token proxies for multi-token words. Consequently, the retained word-set size could be smaller than six.
 
@@ -88,14 +88,14 @@ We additionally computed \textbf{mean cosine similarity}:
 \]
 where $z_{t,\ell}=\mathrm{RMSNorm}(J_\ell h_t)$, $h_t$ is the residual-stream activation at layer $\ell$, $J_\ell$ is the J-Lens transformation, and $u_w$ is the output unembedding vector of the resolved token for $w$. RMSNorm denotes the model's final normalization, including its learned gain.
 
-For each metric, we averaged over the cached response-token positions of each answer (The final generated token was omitted because its input activation was not cached) and over the questions. % Last token is missing because it was not chached
+For each metric, we averaged over the cached response-token positions of each answer (the final generated token was omitted because its input activation was not cached) and over the questions.
 We then computed the difference between the steered score and the unsteered score of the baseline model:
 \[
 \Delta_{p,\ell}
 =AvgS^{\,\mathrm{steered}}_{p,\ell}
 -AvgS^{\,\mathrm{unsteered}}_{p,\ell},
 \]
-where $p$ denotes the persona and $AvgS$ denotes either the Average of MRR or MCS.
+where $p$ denotes the persona and $AvgS$ denotes either the average of MRR or MCS.
 Personas, band widths, steering schemes, readout layers, and word-set variants were analysed separately.
 
 To additionally get an estimate of how sensitive the results are to a specific question, we computed percentile bootstrap intervals with 10,000 resamples of the 12 questions. For each resample, we computed the mean difference $\Delta_{p,\ell}$ across the resampled questions. From this distribution of mean differences, we report the 2.5th and 97.5th percentiles as the lower and upper bounds of the bootstrap interval.
@@ -144,7 +144,7 @@ Figure~\ref{fig:trajectory} shows the unsteered trajectories of the Tylenol ques
 
 \subsection{Labeling the model's behavior}
 \label{sec:judging}
-To relate the residual stream to what the model does, we used LLM-as-a-Judge (Claude Haiku 5.5) to label every answer, subagents blind to the persona and the steering strength;
+To relate the residual stream to what the model does, we used LLM-as-a-Judge (Claude Haiku 5.5) to label every answer, with subagents blind to the persona and the steering strength;
 a manual check of 10\% of the labels found no disagreement.
 Tylenol setting answers are labeled \textit{safe}, \textit{ignorant} (off-topic or degenerate) or \textit{harmful};
 answers to the question-bank questions stay in the \textit{assistant} voice, speak \textit{in character}, or are \textit{broken} (mostly incoherent).
