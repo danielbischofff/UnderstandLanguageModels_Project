@@ -18,6 +18,7 @@ average activations at this layer. Following standard contrastive activation add
 \]
 We also denote $r_l$ the residual stream at layer $l$ for a specific token position. With that in mind, we use two steering methods to steer the model towards a specific personality:
 
+\input{figures/steering_geometry}
 1. \textbf{Alpha Steering} Given a steering coefficient $\alpha$, ``Alpha steering'' is the following operation:
 \[
 \mathrm{AlphaSteering}(r_l) = r_l + \alpha \cdot {c}_l
@@ -34,7 +35,6 @@ This is analogous to contrastive activation addition in \citet{panickssery2024ca
 \end{equation*}
 Since this operation only clamps the residual stream's projection along $\hat{c}_l$, it is a much less aggressive operation and can be applied over multiple layers without degrading output quality. See Figure~\ref{fig:steering-geometry}, which illustrates this concept. We found that steering at the 8 middle layers of the model gives us good results.
 
-\input{figures/steering_geometry}
 \subsection{Controlling for a persona vector's baseline tokens}
 \label{sec:BaselineTokens}
 J-Lens readout works by applying the Jacobian matrix $J$ (which is specific to that layer) to the residual stream at that layer and token position. Since this operation is linear with respect to the residual stream, if we add a component along $c_l$ to the residual stream at that layer before doing the readout (which is what both steering methods do), the resulting readout of the vector's sum will be the sum of the readouts of each component:
