@@ -6,10 +6,10 @@
 \label{sec:introduction}
 
 ``The Assistant Axis'' paper \citep{lu2026assistant} introduces a model persona sub-space in the residual stream.
-It identifies vectors in this space that correspond to different characters, including the assistant persona. It does this by prompting the model to adopt a specific persona, and then averaging the model's activations over the tokens of its responses. The result is a per-layer residual stream direction that represents this persona. 
-The leading direction of this sub-space, the Assistant Axis, separates the default Assistant from the other personas, and moving activations along it makes the model more or less willing to leave the Assistant persona.
+It identifies vectors in this 'space' that correspond to different characters, including the assistant persona. It does this by prompting the model to adopt a specific persona, and then averaging the model's activations over the tokens of its responses. The result is a per-layer residual stream direction that represents this persona. 
+The paper identifies the "Assistant Axis", which separates the default Assistant behavior from the role playing other personas. As activations move along it away from the assistant vector, the model's behavior drifts away from the assistant persona accordingly.
 
-At the same time, in ``Verbalizable Representations Form a Global Workspace in Language Models'' \citep{gurnee2026global}, Anthropic introduces the J-Lens method, which enables us to inspect which tokens the model is inclined to verbalize based on intermediate activations in the residual stream in specific model layers and token positions.
+In ``Verbalizable Representations Form a Global Workspace in Language Models'' \citep{gurnee2026global}, Anthropic introduces the J-Lens method, which enables us to inspect which tokens the model is inclined to verbalize based on intermediate activations in the residual stream in specific model layers and token positions.
 
 In one of their analyses (Section 6 in the paper), they report that the tokens verbalized in the J-Lens in the instruction-tuned model, at the token positions of the user's query, correspond to an ``Assistant's point of view'' on the user's query. This is in contrast to the base model, which doesn't exhibit this point of view. In their example, both the base and instruction-tuned models are given a user prompt indicating that the user took a dangerous dose of a specific medication.
 Words expressing concern and danger show up in the instruction-tuned model's J-space, but not in the base model.
