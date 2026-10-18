@@ -6,8 +6,8 @@
 \label{sec:introduction}
 
 ``The Assistant Axis'' paper \citep{lu2026assistant} introduces a model persona sub-space in the residual stream.
-It identifies vectors in this 'space' that correspond to different characters, including the assistant persona. It does this by prompting the model to adopt a specific persona, and then averaging the model's activations over the tokens of its responses. The result is a per-layer residual stream direction that represents this persona. 
-The paper identifies the "Assistant Axis", which separates the default Assistant behavior from the role playing other personas. As activations move along it away from the assistant vector, the model's behavior drifts away from the assistant persona accordingly.
+It identifies vectors in this `space' that correspond to different characters, including the assistant persona. It does this by prompting the model to adopt a specific persona, and then averaging the model's activations over the tokens of its responses. The result is a per-layer residual stream direction that represents this persona. 
+The paper identifies the ``Assistant Axis'', which separates the default Assistant behavior from role-playing other personas. As activations move along it away from the assistant vector, the model's behavior drifts away from the assistant persona accordingly.
 
 In ``Verbalizable Representations Form a Global Workspace in Language Models'' \citep{gurnee2026global}, Anthropic introduces the J-Lens method, which enables us to inspect which tokens the model is inclined to verbalize based on intermediate activations in the residual stream in specific model layers and token positions.
 

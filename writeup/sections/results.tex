@@ -16,14 +16,14 @@ Before we look at the J-Lens, we verified that the steering changed the model's 
 
 The full lists of words suppressed or surfaced in the J-Lens on the user prompt, for the Tylenol scenario and further questions, are in \href{https://claude.ai/artifact/TBJkL58Goy6S8YqizsirQF}{this Claude artifact}. This analysis used the scoring methods described in Section~\ref{sec:analysis}.
 \subsubsection{Alpha Steering}
-When steering using the demon persona vector with alpha steering, the readout of a Chinese word that translates to ``to warn'' (\zh{警示}) completely disappears from the top-10 J-Lens token readouts, going from a score of 2.3--2.8\% in the top-10 readouts of all (prompt token position, layer) pairs (see Section~\ref{sec:analysis}), to 0\%. The suppression of this word's score ranks second in suppression strength of all J-Lens tokens according to our scoring system (the rank-weight score). This is indeed reflected in the model's answers, which refrain from vocalizing a warning for the user as alpha goes up (see Appendix~\ref{sec:TylenolAnswers}). The Chinese word for ``suicide'' or ``to kill oneself'' (\zh{自杀}) is likewise suppressed when steering. We're not sure how to interpret that though. The word ``help'' is likely suppressed as well.
+When steering using the demon persona vector with alpha steering, the readout of a Chinese word that translates to ``to warn'' (\zh{警示}) completely disappears from the top-10 J-Lens token readouts, going from a score of 2.3--2.8\% in the top-10 readouts of all (prompt token position, layer) pairs (see Section~\ref{sec:analysis}), to 0\%. The suppression of this word's score ranks second in suppression strength of all J-Lens tokens according to our scoring system (the rank-weighted score). This is indeed reflected in the model's answers, which refrain from vocalizing a warning for the user as alpha goes up (see Appendix~\ref{sec:TylenolAnswers}). The Chinese word for ``suicide'' or ``to kill oneself'' (\zh{自杀}) is likewise suppressed when steering. We're not sure how to interpret that though. The word ``help'' is likely suppressed as well.
 Other top suppressed and surfaced tokens are rather mundane: Suppressed tokens include ``getting'', ``talking'', ``alot'', ``medically'', ``fda'', ``thanks'', ``your'', and some more words. This perhaps reflects the change in style and wording that comes with the demon persona. Surfaced tokens are mostly baseline tokens (the Chinese word for ``forever'', the Chinese word for ``countless'', ``mighty'', ``merciless'', etc.). The Chinese words for ``mad'' and ``crazy'', which are not baseline tokens, appear as well. This makes sense since the steered responses often focus on madness and recklessness of the user.
 
 \subsubsection{Band Capping}
 We tested the same question using band capping on the 8 middle layers (28--35). Since band capping is much less disruptive than alpha steering (see Section~\ref{sec:comparison}), we get significantly fewer suppressed and surfaced tokens than in alpha steering settings. The suppressed and surfaced tokens don't seem too telling of the model's behavior: we get ``recent'', ``medically'', ``meds'' suppressed, and ``truly'', ``whispers'', ``fuck'', the Chinese word for ``to cheat'' and other words surfacing (some of which are baseline tokens, see Section~\ref{sec:BaselineTokens}). Band capping steering had a slight surfacing effect on the readout of the Chinese word for ``to warn'', the opposite of the effect observed in alpha steering.
 
 \subsection{Examples of J-Lens token steered point of view in question suite}
-Below are more anecdotal examples of the shift in the steered persona's point of view, as observed in the J-Lens token readout. Behavioral shift in the response is often used to see if an observed shift is expressed there as well. The full list of questions can be seen in Appendix~\ref{sec:questions}.
+Below are more anecdotal examples of the shift in the steered persona's point of view, as observed in the J-Lens token readout. Behavioral shift in the response is often used to see if an observed shift is expressed there as well. The full list of questions can be seen in Appendix~\ref{sec:qualitative-questions}.
 
 \subsubsection{The model's expectation of the user's feeling changes}
 In the ``happy-friendship'' question setting, the model is asked ``My friends organized a surprise party for me. I feel really loved and happy. What do you think?''.
@@ -51,7 +51,7 @@ Across the evaluated steering configurations, increased MCS scores were more con
 The map arranges the personas by behavioral features (Figure~\ref{fig:persona-map}).
 The default vector sits in an assistant-like cluster of professional roles,
 the demon among dark and mythic figures, and the infant and toddler among childlike, impulsive roles.
-These differences and clusters are distinct, however: all role vectors point almost the same direction in the original space (median cosine 0.97), while t-SNE magnifies the remaining angles and places each point by relative rather than absolute closeness,
+These differences and clusters are distinct, however: all role vectors point in almost the same direction in the original space (median cosine 0.97), while t-SNE magnifies the remaining angles and places each point by relative rather than absolute closeness,
 so gaps on the map are only qualitative.
 Most of this shared direction is a single coordinate (dimension 731), a constant offset on every token:
 it holds about a fifth of a single token's squared norm,
@@ -114,7 +114,7 @@ Such input-independent coordinates act as fixed biases that create the attention
 and since the role vectors share the same coordinate, the sink lands next to the default vector.
 Only band capping steering moves it.
 
-\subsection{Steering target maybe left behind}
+\subsection{Steering target may be left behind}
 \label{sec:results-steering}
 We steer the Tylenol question towards 17 personas from all six clusters,
 at layer 29 or 32 and with three strengths per method ($\alpha = 1, 2.5, 4$; $\beta = 0, 0.1, 0.25$),
