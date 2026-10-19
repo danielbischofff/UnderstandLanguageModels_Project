@@ -71,8 +71,6 @@ We refer to tokens that score significantly lower after the steering was applied
 We then flag tokens whose score significantly shifted before and after steering, while ignoring the persona's baseline tokens.
 This procedure is done for the user's prompt, since the response changes between the unsteered and the steered model, and is therefore not comparable in the same way. The model's responses are still used to analyse the model's behavior and to make sure the steering didn't degrade the model's output quality. Note: We always use greedy decoding in our experiments for reproducible results.
 
-In the next section we discuss the findings from our experiments and analysis.
-
 \subsection{Quantitative Analysis}
 \label{sec:quantitative-methods}
 To complement qualitative observations, we evaluated whether persona steering increases the association between J-Lens readouts and persona-related word sets.
